@@ -1,0 +1,39 @@
+import { Router } from "express";
+
+import { authenticate } from "../../common/middleware/auth.middleware.js";
+import { authorizeRoles } from "../../common/middleware/role.middleware.js";
+import { validate } from "../../common/middleware/validate.middleware.js";
+
+import {
+  acceptReviewerApplication,
+  getReviewerApplicationsForStaff,
+  rejectReviewerApplication,
+} from "./staff.controller.js";
+
+import {
+  acceptReviewerApplicationSchema,
+  rejectReviewerApplicationSchema,
+  staffReviewerApplicationListSchema,
+} from "./staff.schema.js";
+
+export const staffRouter = Router();
+
+staffRouter.use(authenticate, authorizeRoles("Staff", "Admin"));
+
+staffRouter.get(
+  "/",
+  validate(staffReviewerApplicationListSchema),
+  getReviewerApplicationsForStaff,
+);
+
+staffRouter.post(
+  "/accept",
+  validate(acceptReviewerApplicationSchema),
+  acceptReviewerApplication,
+);
+
+staffRouter.post(
+  "/reject",
+  validate(rejectReviewerApplicationSchema),
+  rejectReviewerApplication,
+);

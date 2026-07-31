@@ -1,0 +1,29 @@
+import {
+  createDateRangeQuerySchema,
+  createLimitQuerySchema,
+  createYearQuerySchema,
+} from "./common-dashboard.schema.js";
+
+export const staffRevenueSchema = createYearQuerySchema();
+
+export const staffRecentOrdersSchema = createLimitQuerySchema(10, 100);
+
+export const staffTopMerchantsSchema = createLimitQuerySchema(5, 50);
+
+export const staffTopReviewersSchema = createLimitQuerySchema(5, 50);
+
+export const staffTopFoodsSchema = createLimitQuerySchema(10, 100);
+
+export const staffUserGrowthSchema = createYearQuerySchema();
+
+export const staffOrderGrowthSchema = createYearQuerySchema();
+
+export const staffPaymentStatisticsSchema = createYearQuerySchema();
+
+export const staffPeakHoursSchema = createYearQuerySchema();
+
+export const staffWeekdayStatisticsSchema = createYearQuerySchema();
+
+export const staffOrderPerformanceSchema = createYearQuerySchema();
+
+export const staffDailyRevenueSchema = createDateRangeQuerySchema();

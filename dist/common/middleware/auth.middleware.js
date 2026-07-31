@@ -1,0 +1,20 @@
+import { AppError } from "../errors/app-error.js";
+import { verifyAccessToken } from "../utils/jwt.js";
+export const authenticate = (req, _res, next) => {
+    const authorizationHeader = req.headers.authorization;
+    if (!authorizationHeader) {
+        return next(new AppError(401, "Bạn chưa cung cấp access token"));
+    }
+    const [scheme, token] = authorizationHeader.split(" ");
+    if (scheme !== "Bearer" || !token) {
+        return next(new AppError(401, "Access token không đúng định dạng Bearer"));
+    }
+    try {
+        const payload = verifyAccessToken(token);
+        req.user = payload;
+        return next();
+    }
+    catch {
+        return next(new AppError(401, "Access token không hợp lệ hoặc đã hết hạn"));
+    }
+};

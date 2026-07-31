@@ -1,0 +1,78 @@
+import { Router } from "express";
+
+import { authenticate } from "../../common/middleware/auth.middleware.js";
+import { authorizeRoles } from "../../common/middleware/role.middleware.js";
+import { validate } from "../../common/middleware/validate.middleware.js";
+
+import {
+  createReview,
+  deleteReview,
+  getMerchantReviews,
+  getMerchantReviewsByQuery,
+  getMyReviews,
+  getReviewDetailsByQuery,
+  updateReview,
+  updateReviewByBody,
+} from "./review.controller.js";
+
+import {
+  createReviewSchema,
+  merchantReviewsByQuerySchema,
+  merchantReviewsSchema,
+  reviewDetailsQuerySchema,
+  reviewIdSchema,
+  updateReviewByBodySchema,
+  updateReviewSchema,
+} from "./review.schema.js";
+
+export const reviewRouter = Router();
+
+reviewRouter.get(
+  "/merchant",
+  validate(merchantReviewsByQuerySchema),
+  getMerchantReviewsByQuery,
+);
+
+reviewRouter.get(
+  "/merchant/review-details",
+  validate(reviewDetailsQuerySchema),
+  getReviewDetailsByQuery,
+);
+
+reviewRouter.get(
+  "/merchant/:merchantId",
+  validate(merchantReviewsSchema),
+  getMerchantReviews,
+);
+
+reviewRouter.use(authenticate);
+
+reviewRouter.get("/mine", authorizeRoles("Customer", "Reviewer"), getMyReviews);
+
+reviewRouter.post(
+  "/merchant",
+  authorizeRoles("Customer", "Reviewer"),
+  validate(createReviewSchema),
+  createReview,
+);
+
+reviewRouter.put(
+  "/merchant",
+  authorizeRoles("Customer", "Reviewer"),
+  validate(updateReviewByBodySchema),
+  updateReviewByBody,
+);
+
+reviewRouter.post(
+  "/",
+  authorizeRoles("Customer", "Reviewer"),
+  validate(createReviewSchema),
+  createReview,
+);
+
+reviewRouter.put(
+  "/:id",
+  authorizeRoles("Customer", "Reviewer"),
+  validate(updateReviewSchema),
+  updateReview,
+);

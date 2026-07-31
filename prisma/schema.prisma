@@ -1,0 +1,723 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  Customer
+  Reviewer
+  Merchant
+  Staff
+  Admin
+}
+
+enum ApplicationStatus {
+  Draft
+  Pending
+  Accepted
+  Rejected
+}
+
+enum ApplicationType {
+  Merchant
+}
+
+enum MerchantStatus {
+  Active
+  Inactive
+  Suspended
+}
+
+enum OrderType {
+  Online
+  Offline
+}
+
+enum PaymentMethod {
+  COD
+  Cash
+  BankTransfer
+  SePay
+}
+
+enum OrderStatus {
+  Pending
+  Accepted
+  Rejected
+  Completed
+  NotReceived
+  Cancelled
+}
+
+enum OrderPaymentStatus {
+  Unpaid
+  Pending
+  Paid
+  Rejected
+}
+
+enum BillStatus {
+  Requested
+  PendingCustomerConfirmation
+  Confirmed
+  Rejected
+}
+
+enum ReviewerApplicationStatus {
+  Pending
+  Accepted
+  Rejected
+}
+
+enum CampaignDiscountType {
+  Percentage
+  FixedAmount
+}
+
+enum NotificationType {
+  Order
+  Payment
+  Application
+  Review
+  Affiliate
+  System
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  phoneNumber  String?
+  fullName     String
+  avatarUrl    String?
+  role         UserRole @default(Customer)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  customer      Customer?
+  merchant      Merchant?
+  refreshTokens RefreshToken[]
+  passwordResetTokens PasswordResetToken[]
+  applications  Application[]
+  notifications Notification[]
+
+  @@map("users")
+}
+
+model Customer {
+  id                   String                       @id @default(uuid())
+  userId               String                       @unique
+  createdAt            DateTime                     @default(now())
+  updatedAt            DateTime                     @updatedAt
+  orders               Order[]
+  wishlists            Wishlist[]
+  reviews              Review[]
+  reviewerApplications ReviewerApplication[]
+  affiliateLinks       AffiliateLink[]
+  earningTransactions  ReviewerEarningTransaction[]
+  affiliateClicks      AffiliateClick[]
+  checkIns             CheckIn[]
+  reviewerPoints       Int                          @default(0)
+  reviewerRank         String                       @default("Bronze")
+  pointTransactions    ReviewerPointTransaction[]
+  user                 User                         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("customers")
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+model PasswordResetToken {
+  id        String    @id @default(uuid())
+  userId    String
+  tokenHash String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([tokenHash])
+  @@map("password_reset_tokens")
+}
+
+model Application {
+  id              String            @id @default(uuid())
+  applicantUserId String
+  type            ApplicationType   @default(Merchant)
+  status          ApplicationStatus @default(Pending)
+
+  name           String
+  description    String?
+  restaurantType String
+  mainDishType   String
+  priceRange     String
+  email          String
+  phone          String
+  logoUrl        String?
+  openingHours   String
+  address        String
+  latitude       Decimal? @db.Decimal(10, 7)
+  longitude      Decimal? @db.Decimal(10, 7)
+
+  rejectionReason String?
+  reviewedById    String?
+  reviewedAt      DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  applicant User              @relation(fields: [applicantUserId], references: [id], onDelete: Cascade)
+  menus     ApplicationMenu[]
+
+  @@index([applicantUserId])
+  @@index([status])
+  @@map("applications")
+}
+
+model ApplicationMenu {
+  id            String @id @default(uuid())
+  applicationId String
+
+  name        String
+  description String?
+  price       Decimal @db.Decimal(12, 2)
+  imageUrl    String?
+  category    String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  application Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  @@index([applicationId])
+  @@map("application_menus")
+}
+
+model Merchant {
+  id     String @id @default(uuid())
+  userId String @unique
+
+  name           String
+  description    String?
+  restaurantType String
+  mainDishType   String
+  priceRange     String
+
+  email        String
+  phone        String
+  address      String
+  openingHours String
+
+  latitude  Decimal? @db.Decimal(10, 7)
+  longitude Decimal? @db.Decimal(10, 7)
+
+  logoUrl String?
+
+  rating      Decimal @default(0) @db.Decimal(3, 2)
+  reviewCount Int     @default(0)
+  totalViews  Int     @default(0)
+
+  status         MerchantStatus  @default(Active)
+  foods          Food[]
+  orders         Order[]
+  wishlists      Wishlist[]
+  reviews        Review[]
+  affiliateLinks AffiliateLink[]
+  campaigns      Campaign[]
+  checkIns       CheckIn[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@index([name])
+  @@map("merchants")
+}
+
+model Category {
+  id          String   @id @default(uuid())
+  parentId    String?
+  name        String
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children Category[] @relation("CategoryTree")
+
+  foodCategories FoodCategory[]
+
+  @@unique([parentId, name])
+  @@index([parentId])
+  @@index([isActive])
+  @@map("categories")
+}
+
+model Food {
+  id          String  @id @default(uuid())
+  merchantId  String
+  name        String
+  description String?
+  price       Decimal @db.Decimal(12, 2)
+  imageUrl    String?
+  isAvailable Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  categories   FoodCategory[]
+  toppings     FoodTopping[]
+  orderDetails OrderDetail[]
+
+  @@index([merchantId])
+  @@index([isAvailable])
+  @@index([name])
+  @@map("foods")
+}
+
+model FoodCategory {
+  foodId     String
+  categoryId String
+  createdAt  DateTime @default(now())
+
+  food Food @relation(fields: [foodId], references: [id], onDelete: Cascade)
+
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([foodId, categoryId])
+  @@index([categoryId])
+  @@map("food_categories")
+}
+
+model FoodTopping {
+  id       String  @id @default(uuid())
+  foodId   String
+  name     String
+  price    Decimal @default(0) @db.Decimal(12, 2)
+  isActive Boolean @default(true)
+
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  orderDetailToppings OrderDetailTopping[]
+
+  food Food @relation(fields: [foodId], references: [id], onDelete: Cascade)
+
+  @@unique([foodId, name])
+  @@index([foodId])
+  @@index([isActive])
+  @@map("food_toppings")
+}
+
+model Order {
+  id         String @id @default(uuid())
+  customerId String
+  merchantId String
+
+  affiliateLinkId String?
+  campaignId      String?
+
+  name          String
+  orderType     OrderType
+  paymentMethod PaymentMethod
+  status        OrderStatus        @default(Pending)
+  paymentStatus OrderPaymentStatus @default(Unpaid)
+
+  notes           String?
+  deliveryAddress String?
+
+  subtotal           Decimal @db.Decimal(12, 2)
+  discount           Decimal @default(0) @db.Decimal(12, 2)
+  finalPrice         Decimal @db.Decimal(12, 2)
+  reviewerCommission Decimal @default(0) @db.Decimal(12, 2)
+
+  rejectionReason String?
+
+  orderedAt   DateTime  @default(now())
+  acceptedAt  DateTime?
+  rejectedAt  DateTime?
+  completedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Restrict)
+
+  merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Restrict)
+
+  affiliateLink AffiliateLink? @relation(fields: [affiliateLinkId], references: [id], onDelete: SetNull)
+
+  campaign Campaign? @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+
+  earningTransaction ReviewerEarningTransaction?
+
+  details OrderDetail[]
+  bill    Bill?
+  review  Review?
+  checkIn CheckIn?
+
+  @@index([customerId])
+  @@index([merchantId])
+  @@index([affiliateLinkId])
+  @@index([status])
+  @@index([paymentStatus])
+  @@index([orderedAt])
+  @@index([campaignId])
+  @@map("orders")
+}
+
+model OrderDetail {
+  id      String @id @default(uuid())
+  orderId String
+  foodId  String
+
+  foodNameSnapshot String
+  quantity         Int
+  unitPrice        Decimal        @db.Decimal(12, 2)
+  notes            String?
+  lineTotal        Decimal        @db.Decimal(12, 2)
+  reviewDetails    ReviewDetail[]
+
+  createdAt DateTime @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  food Food @relation(fields: [foodId], references: [id], onDelete: Restrict)
+
+  toppings OrderDetailTopping[]
+
+  @@index([orderId])
+  @@index([foodId])
+  @@map("order_details")
+}
+
+model OrderDetailTopping {
+  id            String @id @default(uuid())
+  orderDetailId String
+  toppingId     String
+
+  toppingNameSnapshot String
+  priceSnapshot       Decimal @db.Decimal(12, 2)
+
+  createdAt DateTime @default(now())
+
+  orderDetail OrderDetail @relation(fields: [orderDetailId], references: [id], onDelete: Cascade)
+
+  topping FoodTopping @relation(fields: [toppingId], references: [id], onDelete: Restrict)
+
+  @@index([orderDetailId])
+  @@index([toppingId])
+  @@map("order_detail_toppings")
+}
+
+model Bill {
+  id      String @id @default(uuid())
+  orderId String @unique
+
+  method PaymentMethod
+  status BillStatus
+
+  amount Decimal @db.Decimal(12, 2)
+
+  evidenceUrl     String?
+  transferContent String?
+  sepayReference  String? @unique
+
+  requestedAt         DateTime?
+  merchantConfirmedAt DateTime?
+  customerConfirmedAt DateTime?
+  rejectedAt          DateTime?
+  rejectionReason     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@index([createdAt])
+  @@map("bills")
+}
+
+model Wishlist {
+  customerId String
+  merchantId String
+  createdAt  DateTime @default(now())
+
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  @@id([customerId, merchantId])
+  @@index([merchantId])
+  @@map("wishlists")
+}
+
+model Review {
+  id         String @id @default(uuid())
+  customerId String
+  merchantId String
+  orderId    String @unique
+
+  rating   Int
+  content  String?
+  imageUrl String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Restrict)
+
+  merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Restrict)
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Restrict)
+
+  details ReviewDetail[]
+
+  @@index([customerId])
+  @@index([merchantId])
+  @@index([createdAt])
+  @@map("reviews")
+}
+
+model ReviewDetail {
+  id            String @id @default(uuid())
+  reviewId      String
+  orderDetailId String
+
+  rating  Int?
+  content String?
+
+  createdAt DateTime @default(now())
+
+  review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+
+  orderDetail OrderDetail @relation(fields: [orderDetailId], references: [id], onDelete: Restrict)
+
+  @@unique([reviewId, orderDetailId])
+  @@index([orderDetailId])
+  @@map("review_details")
+}
+
+model ReviewerApplication {
+  id         String @id @default(uuid())
+  customerId String
+
+  status ReviewerApplicationStatus @default(Pending)
+
+  motivation String
+  experience String?
+
+  facebookUrl  String?
+  instagramUrl String?
+  tiktokUrl    String?
+  youtubeUrl   String?
+  otherSocialUrl String?
+
+  rejectionReason String?
+  reviewedById    String?
+  reviewedAt      DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@index([customerId])
+  @@index([status])
+  @@map("reviewer_applications")
+}
+
+model AffiliateLink {
+  id         String @id @default(uuid())
+  reviewerId String
+  merchantId String
+
+  linkCode String @unique
+
+  clickCount       Int     @default(0)
+  successfulOrders Int     @default(0)
+  totalEarnings    Decimal @default(0) @db.Decimal(12, 2)
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  reviewer Customer @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
+
+  merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  clicks AffiliateClick[]
+  orders Order[]
+
+  @@unique([reviewerId, merchantId])
+  @@index([reviewerId])
+  @@index([merchantId])
+  @@index([isActive])
+  @@map("affiliate_links")
+}
+
+model AffiliateClick {
+  id              String  @id @default(uuid())
+  affiliateLinkId String
+  customerId      String?
+
+  ipHash    String?
+  userAgent String?
+
+  clickedAt DateTime @default(now())
+
+  affiliateLink AffiliateLink @relation(fields: [affiliateLinkId], references: [id], onDelete: Cascade)
+
+  customer Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+
+  @@index([affiliateLinkId])
+  @@index([customerId])
+  @@index([clickedAt])
+  @@map("affiliate_clicks")
+}
+
+model ReviewerEarningTransaction {
+  id         String @id @default(uuid())
+  reviewerId String
+  orderId    String @unique
+
+  amount        Decimal @db.Decimal(12, 2)
+  earningsAfter Decimal @db.Decimal(12, 2)
+
+  type   String
+  reason String?
+
+  createdAt DateTime @default(now())
+
+  reviewer Customer @relation(fields: [reviewerId], references: [id], onDelete: Restrict)
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Restrict)
+
+  @@index([reviewerId])
+  @@index([createdAt])
+  @@map("reviewer_earning_transactions")
+}
+
+model ReviewerPointTransaction {
+  id         String @id @default(uuid())
+  reviewerId String
+  amount     Int
+  pointsAfter Int
+  type       String
+  reason     String?
+  referenceId String?
+  createdAt  DateTime @default(now())
+
+  reviewer Customer @relation(fields: [reviewerId], references: [id], onDelete: Restrict)
+
+  @@index([reviewerId])
+  @@index([createdAt])
+  @@map("reviewer_point_transactions")
+}
+
+model Campaign {
+  id         String @id @default(uuid())
+  merchantId String
+
+  name        String
+  description String?
+  code        String @unique
+
+  discountType  CampaignDiscountType
+  discountValue Decimal              @db.Decimal(12, 2)
+
+  minimumOrderAmount Decimal  @default(0) @db.Decimal(12, 2)
+  maximumDiscount    Decimal? @db.Decimal(12, 2)
+
+  startAt DateTime
+  endAt   DateTime
+
+  usageLimit Int?
+  usedCount  Int     @default(0)
+  maxUsagePerUser Int @default(1)
+  isGlobal        Boolean @default(false)
+  isNewUserOnly   Boolean @default(false)
+  isActive   Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  orders Order[]
+
+  @@index([merchantId])
+  @@index([isActive])
+  @@index([startAt])
+  @@index([endAt])
+  @@map("campaigns")
+}
+
+model CheckIn {
+  id         String @id @default(uuid())
+  orderId    String @unique
+  customerId String
+  merchantId String
+  qrToken    String @unique
+
+  generatedAt DateTime @default(now())
+  checkedInAt DateTime?
+
+  order    Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Restrict)
+
+  @@index([customerId])
+  @@index([merchantId])
+  @@index([checkedInAt])
+  @@map("check_ins")
+}
+
+model Notification {
+  id     String @id @default(uuid())
+  userId String
+
+  type    NotificationType
+  title   String
+  message String
+
+  referenceId   String?
+  referenceType String?
+
+  isRead Boolean @default(false)
+
+  createdAt DateTime  @default(now())
+  readAt    DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isRead])
+  @@index([createdAt])
+  @@map("notifications")
+}

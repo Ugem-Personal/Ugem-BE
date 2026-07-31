@@ -1,0 +1,336 @@
+import { ApplicationStatus, ApplicationType, Prisma, UserRole, } from "../../generated/prisma/client.js";
+import { prisma } from "../../config/prisma.js";
+import { AppError } from "../../common/errors/app-error.js";
+const applicationInclude = {
+    menus: {
+        orderBy: {
+            createdAt: "asc",
+        },
+    },
+    applicant: {
+        select: {
+            id: true,
+            email: true,
+            fullName: true,
+            phoneNumber: true,
+            avatarUrl: true,
+            role: true,
+        },
+    },
+};
+const mapApplication = (application) => {
+    return {
+        id: application.id,
+        applicantUserId: application.applicantUserId,
+        type: application.type,
+        status: application.status,
+        name: application.name,
+        description: application.description,
+        restaurantType: application.restaurantType,
+        mainDishType: application.mainDishType,
+        priceRange: application.priceRange,
+        email: application.email,
+        phone: application.phone,
+        logoUrl: application.logoUrl,
+        openingHours: application.openingHours,
+        address: application.address,
+        latitude: application.latitude !== null ? Number(application.latitude) : null,
+        longitude: application.longitude !== null ? Number(application.longitude) : null,
+        rejectionReason: application.rejectionReason,
+        reviewedById: application.reviewedById,
+        reviewedAt: application.reviewedAt,
+        menu: application.menus.map((item) => ({
+            id: item.id,
+            name: item.name,
+            description: item.description,
+            price: Number(item.price),
+            imageUrl: item.imageUrl,
+            category: item.category,
+        })),
+        applicant: application.applicant,
+        createdAt: application.createdAt,
+        updatedAt: application.updatedAt,
+    };
+};
+export const createApplication = async (userId, input) => {
+    const user = await prisma.user.findUnique({
+        where: {
+            id: userId,
+        },
+    });
+    if (!user) {
+        throw new AppError(404, "Không tìm thấy tài khoản");
+    }
+    if (user.role !== UserRole.Merchant) {
+        throw new AppError(403, "Chỉ tài khoản Merchant mới được gửi hồ sơ");
+    }
+    const activeApplication = await prisma.application.findFirst({
+        where: {
+            applicantUserId: userId,
+            status: {
+                in: [ApplicationStatus.Pending, ApplicationStatus.Accepted],
+            },
+        },
+    });
+    if (activeApplication) {
+        if (activeApplication.status === ApplicationStatus.Accepted) {
+            throw new AppError(409, "Tài khoản đã có hồ sơ được chấp thuận");
+        }
+        throw new AppError(409, "Bạn đang có một hồ sơ chờ xét duyệt");
+    }
+    const application = await prisma.application.create({
+        data: {
+            applicantUserId: userId,
+            type: ApplicationType.Merchant,
+            status: ApplicationStatus.Pending,
+            name: input.name,
+            description: input.description || null,
+            restaurantType: input.restaurantType,
+            mainDishType: input.mainDishType,
+            priceRange: input.priceRange,
+            email: input.email,
+            phone: input.phone,
+            logoUrl: input.logoUrl || null,
+            openingHours: input.openingHours,
+            address: input.address,
+            latitude: input.latitude !== null && input.latitude !== undefined
+                ? new Prisma.Decimal(input.latitude)
+                : null,
+            longitude: input.longitude !== null && input.longitude !== undefined
+                ? new Prisma.Decimal(input.longitude)
+                : null,
+            menus: {
+                create: input.menu.map((item) => ({
+                    name: item.name,
+                    description: item.description || null,
+                    price: new Prisma.Decimal(item.price),
+                    imageUrl: item.imageUrl || null,
+                    category: item.category,
+                })),
+            },
+        },
+        include: applicationInclude,
+    });
+    return mapApplication(application);
+};
+export const getMyApplications = async (userId) => {
+    const applications = await prisma.application.findMany({
+        where: {
+            applicantUserId: userId,
+        },
+        include: applicationInclude,
+        orderBy: {
+            createdAt: "desc",
+        },
+    });
+    return applications.map(mapApplication);
+};
+export const getApplicationById = async (applicationId, requestingUser) => {
+    const application = await prisma.application.findUnique({
+        where: {
+            id: applicationId,
+        },
+        include: applicationInclude,
+    });
+    if (!application) {
+        throw new AppError(404, "Không tìm thấy hồ sơ");
+    }
+    const isOwner = application.applicantUserId === requestingUser.userId;
+    const isStaffOrAdmin = ["Staff", "Admin"].includes(requestingUser.role);
+    if (!isOwner && !isStaffOrAdmin) {
+        throw new AppError(403, "Bạn không có quyền xem hồ sơ này");
+    }
+    return mapApplication(application);
+};
+export const updateApplication = async (applicationId, userId, input) => {
+    const existing = await prisma.application.findUnique({
+        where: {
+            id: applicationId,
+        },
+    });
+    if (!existing) {
+        throw new AppError(404, "Không tìm thấy hồ sơ");
+    }
+    if (existing.applicantUserId !== userId) {
+        throw new AppError(403, "Bạn không có quyền sửa hồ sơ này");
+    }
+    if (existing.status !== ApplicationStatus.Draft &&
+        existing.status !== ApplicationStatus.Rejected) {
+        throw new AppError(409, "Chỉ có thể sửa hồ sơ Draft hoặc Rejected");
+    }
+    const application = await prisma.$transaction(async (transaction) => {
+        await transaction.applicationMenu.deleteMany({
+            where: {
+                applicationId,
+            },
+        });
+        return transaction.application.update({
+            where: {
+                id: applicationId,
+            },
+            data: {
+                status: ApplicationStatus.Pending,
+                rejectionReason: null,
+                reviewedById: null,
+                reviewedAt: null,
+                name: input.name,
+                description: input.description || null,
+                restaurantType: input.restaurantType,
+                mainDishType: input.mainDishType,
+                priceRange: input.priceRange,
+                email: input.email,
+                phone: input.phone,
+                logoUrl: input.logoUrl || null,
+                openingHours: input.openingHours,
+                address: input.address,
+                latitude: input.latitude !== null && input.latitude !== undefined
+                    ? new Prisma.Decimal(input.latitude)
+                    : null,
+                longitude: input.longitude !== null && input.longitude !== undefined
+                    ? new Prisma.Decimal(input.longitude)
+                    : null,
+                menus: {
+                    create: input.menu.map((item) => ({
+                        name: item.name,
+                        description: item.description || null,
+                        price: new Prisma.Decimal(item.price),
+                        imageUrl: item.imageUrl || null,
+                        category: item.category,
+                    })),
+                },
+            },
+            include: applicationInclude,
+        });
+    });
+    return mapApplication(application);
+};
+export const getApplications = async (query) => {
+    const pageIndex = query.pageIndex || 1;
+    const pageSize = query.pageSize || 10;
+    const skip = (pageIndex - 1) * pageSize;
+    const where = {
+        status: query.status ? query.status : undefined,
+        OR: query.search
+            ? [
+                {
+                    name: {
+                        contains: query.search,
+                        mode: "insensitive",
+                    },
+                },
+                {
+                    email: {
+                        contains: query.search,
+                        mode: "insensitive",
+                    },
+                },
+                {
+                    phone: {
+                        contains: query.search,
+                    },
+                },
+                {
+                    applicant: {
+                        fullName: {
+                            contains: query.search,
+                            mode: "insensitive",
+                        },
+                    },
+                },
+            ]
+            : undefined,
+    };
+    const [applications, totalItems] = await prisma.$transaction([
+        prisma.application.findMany({
+            where,
+            include: applicationInclude,
+            orderBy: {
+                createdAt: "desc",
+            },
+            skip,
+            take: pageSize,
+        }),
+        prisma.application.count({
+            where,
+        }),
+    ]);
+    return {
+        items: applications.map(mapApplication),
+        totalItems,
+        pageIndex,
+        pageSize,
+        totalPages: Math.ceil(totalItems / pageSize),
+    };
+};
+export const reviewApplication = async (applicationId, reviewerUserId, input) => {
+    const application = await prisma.application.findUnique({
+        where: {
+            id: applicationId,
+        },
+        include: {
+            applicant: {
+                include: {
+                    merchant: true,
+                },
+            },
+            menus: true,
+        },
+    });
+    if (!application) {
+        throw new AppError(404, "Không tìm thấy hồ sơ");
+    }
+    if (application.status !== ApplicationStatus.Pending) {
+        throw new AppError(409, "Chỉ có thể duyệt hồ sơ đang ở trạng thái Pending");
+    }
+    if (input.status === "Rejected") {
+        const rejectedApplication = await prisma.application.update({
+            where: {
+                id: applicationId,
+            },
+            data: {
+                status: ApplicationStatus.Rejected,
+                rejectionReason: input.rejectionReason?.trim() || "Hồ sơ không đạt yêu cầu",
+                reviewedById: reviewerUserId,
+                reviewedAt: new Date(),
+            },
+            include: applicationInclude,
+        });
+        return mapApplication(rejectedApplication);
+    }
+    if (application.applicant.merchant) {
+        throw new AppError(409, "Tài khoản này đã có Merchant");
+    }
+    const acceptedApplication = await prisma.$transaction(async (transaction) => {
+        await transaction.merchant.create({
+            data: {
+                userId: application.applicantUserId,
+                name: application.name,
+                description: application.description,
+                restaurantType: application.restaurantType,
+                mainDishType: application.mainDishType,
+                priceRange: application.priceRange,
+                email: application.email,
+                phone: application.phone,
+                address: application.address,
+                openingHours: application.openingHours,
+                latitude: application.latitude,
+                longitude: application.longitude,
+                logoUrl: application.logoUrl,
+                status: "Active",
+            },
+        });
+        return transaction.application.update({
+            where: {
+                id: applicationId,
+            },
+            data: {
+                status: ApplicationStatus.Accepted,
+                rejectionReason: null,
+                reviewedById: reviewerUserId,
+                reviewedAt: new Date(),
+            },
+            include: applicationInclude,
+        });
+    });
+    return mapApplication(acceptedApplication);
+};

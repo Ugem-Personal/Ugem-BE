@@ -1,0 +1,625 @@
+import { NotificationType, OrderPaymentStatus, OrderStatus, OrderType, Prisma, } from "../../generated/prisma/client.js";
+import { prisma } from "../../config/prisma.js";
+import { AppError } from "../../common/errors/app-error.js";
+import { createReviewerCommission } from "../affiliate-links/affiliate-earning.service.js";
+import { createNotification } from "../notifications/notification.service.js";
+import { canMerchantTransitionOrder } from "./order-state-machine.js";
+const orderInclude = {
+    merchant: {
+        select: {
+            id: true,
+            name: true,
+            logoUrl: true,
+            address: true,
+            phone: true,
+        },
+    },
+    customer: {
+        include: {
+            user: {
+                select: {
+                    id: true,
+                    fullName: true,
+                    email: true,
+                    phoneNumber: true,
+                    avatarUrl: true,
+                },
+            },
+        },
+    },
+    details: {
+        include: {
+            toppings: true,
+        },
+    },
+    bill: true,
+};
+const mapOrder = (order) => {
+    const mappedFoods = order.details.map((detail) => {
+        const toppings = detail.toppings.map((topping) => ({
+            id: topping.id,
+            toppingId: topping.toppingId,
+            foodToppingId: topping.toppingId,
+            name: topping.toppingNameSnapshot,
+            toppingName: topping.toppingNameSnapshot,
+            price: Number(topping.priceSnapshot),
+        }));
+        return {
+            id: detail.id,
+            orderDetailId: detail.id,
+            orderId: order.id,
+            foodId: detail.foodId,
+            merchantId: order.merchantId,
+            merchantName: order.merchant?.name ?? null,
+            foodName: detail.foodNameSnapshot,
+            name: detail.foodNameSnapshot,
+            quantity: detail.quantity,
+            unitPrice: Number(detail.unitPrice),
+            price: Number(detail.unitPrice),
+            notes: detail.notes,
+            lineTotal: Number(detail.lineTotal),
+            totalPrice: Number(detail.lineTotal),
+            toppings,
+            foodToppings: toppings,
+        };
+    });
+    return {
+        id: order.id,
+        orderId: order.id,
+        customerId: order.customerId,
+        merchantId: order.merchantId,
+        campaignId: order.campaignId,
+        affiliateLinkId: order.affiliateLinkId,
+        reviewerCommission: Number(order.reviewerCommission),
+        name: order.name,
+        orderType: order.orderType,
+        paymentMethod: order.paymentMethod,
+        status: order.status,
+        paymentStatus: order.paymentStatus,
+        bill: order.bill
+            ? {
+                id: order.bill.id,
+                orderId: order.bill.orderId,
+                method: order.bill.method,
+                status: order.bill.status,
+                amount: Number(order.bill.amount),
+                evidenceUrl: order.bill.evidenceUrl,
+                transferContent: order.bill.transferContent,
+                sepayReference: order.bill.sepayReference,
+                requestedAt: order.bill.requestedAt,
+                merchantConfirmedAt: order.bill.merchantConfirmedAt,
+                customerConfirmedAt: order.bill.customerConfirmedAt,
+                rejectedAt: order.bill.rejectedAt,
+                rejectionReason: order.bill.rejectionReason,
+                createdAt: order.bill.createdAt,
+                updatedAt: order.bill.updatedAt,
+            }
+            : null,
+        notes: order.notes,
+        deliveryAddress: order.deliveryAddress,
+        subtotal: Number(order.subtotal),
+        discount: Number(order.discount),
+        finalPrice: Number(order.finalPrice),
+        rejectionReason: order.rejectionReason,
+        merchant: order.merchant,
+        customer: order.customer
+            ? {
+                id: order.customer.id,
+                userId: order.customer.user.id,
+                fullName: order.customer.user.fullName,
+                email: order.customer.user.email,
+                phoneNumber: order.customer.user.phoneNumber,
+                avatarUrl: order.customer.user.avatarUrl,
+            }
+            : null,
+        foods: mappedFoods,
+        orderedAt: order.orderedAt,
+        acceptedAt: order.acceptedAt,
+        rejectedAt: order.rejectedAt,
+        completedAt: order.completedAt,
+        createdAt: order.createdAt,
+        updatedAt: order.updatedAt,
+    };
+};
+export const createOrder = async (customerId, input) => {
+    const foodIds = [...new Set(input.foods.map((item) => item.foodId))];
+    const foods = await prisma.food.findMany({
+        where: {
+            id: {
+                in: foodIds,
+            },
+        },
+        include: {
+            toppings: true,
+            merchant: true,
+        },
+    });
+    if (foods.length !== foodIds.length) {
+        throw new AppError(400, "Một hoặc nhiều món ăn không tồn tại");
+    }
+    const unavailableFood = foods.find((food) => !food.isAvailable);
+    if (unavailableFood) {
+        throw new AppError(409, `Món ${unavailableFood.name} hiện không còn bán`);
+    }
+    const merchantIds = [...new Set(foods.map((food) => food.merchantId))];
+    if (merchantIds.length !== 1) {
+        throw new AppError(400, "Một order chỉ được chứa món của một Merchant");
+    }
+    const merchantId = merchantIds[0];
+    let affiliateLink = null;
+    if (input.affiliateLinkCode?.trim()) {
+        affiliateLink = await prisma.affiliateLink.findUnique({
+            where: {
+                linkCode: input.affiliateLinkCode.trim().toUpperCase(),
+            },
+            select: {
+                id: true,
+                reviewerId: true,
+                merchantId: true,
+                isActive: true,
+            },
+        });
+        if (!affiliateLink || !affiliateLink.isActive) {
+            throw new AppError(400, "Affiliate Link không hợp lệ");
+        }
+        if (affiliateLink.merchantId !== merchantId) {
+            throw new AppError(400, "Affiliate Link không thuộc Merchant của Order");
+        }
+        if (affiliateLink.reviewerId === customerId) {
+            throw new AppError(400, "Reviewer không được dùng link của chính mình");
+        }
+    }
+    if (!merchantId) {
+        throw new AppError(400, "Khong xac dinh duoc Merchant cho order");
+    }
+    const calculatedItems = input.foods.map((inputItem) => {
+        const food = foods.find((item) => item.id === inputItem.foodId);
+        if (!food) {
+            throw new AppError(400, "Không tìm thấy món ăn");
+        }
+        const uniqueToppingIds = [...new Set(inputItem.foodToppingIds ?? [])];
+        const selectedToppings = uniqueToppingIds.map((toppingId) => {
+            const topping = food.toppings.find((item) => item.id === toppingId);
+            if (!topping) {
+                throw new AppError(400, `Topping không thuộc món ${food.name}`);
+            }
+            if (!topping.isActive) {
+                throw new AppError(409, `Topping ${topping.name} đã ngừng bán`);
+            }
+            return topping;
+        });
+        const toppingPrice = selectedToppings.reduce((total, topping) => total + Number(topping.price), 0);
+        const unitPrice = Number(food.price) + toppingPrice;
+        const lineTotal = unitPrice * inputItem.quantity;
+        return {
+            food,
+            quantity: inputItem.quantity,
+            notes: inputItem.notes?.trim() || null,
+            selectedToppings,
+            unitPrice,
+            lineTotal,
+        };
+    });
+    const subtotal = calculatedItems.reduce((total, item) => total + item.lineTotal, 0);
+    let campaign = null;
+    let discount = 0;
+    if (input.campaignId) {
+        campaign = await prisma.campaign.findUnique({
+            where: {
+                id: input.campaignId,
+            },
+        });
+        if (!campaign) {
+            throw new AppError(404, "Không tìm thấy Campaign");
+        }
+        if (campaign.merchantId !== merchantId) {
+            throw new AppError(400, "Campaign không thuộc Merchant của Order");
+        }
+        const now = new Date();
+        if (!campaign.isActive) {
+            throw new AppError(409, "Campaign đã bị tắt");
+        }
+        if (now < campaign.startAt || now > campaign.endAt) {
+            throw new AppError(409, "Campaign chưa bắt đầu hoặc đã kết thúc");
+        }
+        if (campaign.usageLimit !== null &&
+            campaign.usedCount >= campaign.usageLimit) {
+            throw new AppError(409, "Campaign đã hết lượt sử dụng");
+        }
+        if (subtotal < Number(campaign.minimumOrderAmount)) {
+            throw new AppError(409, `Order phải đạt tối thiểu ${Number(campaign.minimumOrderAmount)}`);
+        }
+        const [customerCampaignUsage, priorCompletedOrders] = await Promise.all([
+            prisma.order.count({
+                where: {
+                    customerId,
+                    campaignId: campaign.id,
+                    status: { notIn: [OrderStatus.Rejected, OrderStatus.Cancelled] },
+                },
+            }),
+            campaign.isNewUserOnly
+                ? prisma.order.count({
+                    where: {
+                        customerId,
+                        status: OrderStatus.Completed,
+                    },
+                })
+                : Promise.resolve(0),
+        ]);
+        if (customerCampaignUsage >= campaign.maxUsagePerUser) {
+            throw new AppError(409, "Bạn đã dùng hết số lượt cho Campaign này");
+        }
+        if (campaign.isNewUserOnly && priorCompletedOrders > 0) {
+            throw new AppError(409, "Campaign này chỉ dành cho khách hàng mới");
+        }
+        if (campaign.discountType === "Percentage") {
+            discount = subtotal * (Number(campaign.discountValue) / 100);
+        }
+        else {
+            discount = Number(campaign.discountValue);
+        }
+        if (campaign.maximumDiscount !== null) {
+            discount = Math.min(discount, Number(campaign.maximumDiscount));
+        }
+        discount = Math.min(discount, subtotal);
+    }
+    const finalPrice = subtotal - discount;
+    const order = await prisma.$transaction(async (transaction) => {
+        if (campaign) {
+            const currentCampaign = await transaction.campaign.findUnique({
+                where: {
+                    id: campaign.id,
+                },
+            });
+            if (!currentCampaign) {
+                throw new AppError(404, "Campaign không tồn tại");
+            }
+            if (currentCampaign.usageLimit !== null &&
+                currentCampaign.usedCount >= currentCampaign.usageLimit) {
+                throw new AppError(409, "Campaign đã hết lượt sử dụng");
+            }
+            await transaction.campaign.update({
+                where: {
+                    id: campaign.id,
+                },
+                data: {
+                    usedCount: {
+                        increment: 1,
+                    },
+                },
+            });
+        }
+        return transaction.order.create({
+            data: {
+                customerId,
+                merchantId,
+                affiliateLinkId: affiliateLink?.id ?? null,
+                campaignId: campaign?.id ?? null,
+                name: input.name.trim(),
+                orderType: input.orderType === "Offline" ? OrderType.Offline : OrderType.Online,
+                paymentMethod: input.paymentMethod,
+                status: OrderStatus.Pending,
+                notes: input.notes?.trim() || null,
+                deliveryAddress: input.deliveryAddress?.trim() || null,
+                subtotal: new Prisma.Decimal(subtotal),
+                discount: new Prisma.Decimal(discount),
+                finalPrice: new Prisma.Decimal(finalPrice),
+                details: {
+                    create: calculatedItems.map((item) => ({
+                        foodId: item.food.id,
+                        foodNameSnapshot: item.food.name,
+                        quantity: item.quantity,
+                        unitPrice: new Prisma.Decimal(item.unitPrice),
+                        notes: item.notes,
+                        lineTotal: new Prisma.Decimal(item.lineTotal),
+                        toppings: {
+                            create: item.selectedToppings.map((topping) => ({
+                                toppingId: topping.id,
+                                toppingNameSnapshot: topping.name,
+                                priceSnapshot: topping.price,
+                            })),
+                        },
+                    })),
+                },
+            },
+            include: orderInclude,
+        });
+    });
+    const merchant = await prisma.merchant.findUnique({
+        where: {
+            id: order.merchantId,
+        },
+        select: {
+            userId: true,
+        },
+    });
+    if (merchant) {
+        await createNotification({
+            userId: merchant.userId,
+            type: NotificationType.Order,
+            title: "Bạn có đơn hàng mới",
+            message: `Bạn vừa nhận được một đơn hàng mới từ ${order.name}.`,
+            referenceId: order.id,
+            referenceType: "Order",
+        });
+    }
+    return mapOrder(order);
+};
+export const createMerchantOrder = async (merchantId, customerId, input) => {
+    const customer = await prisma.customer.findUnique({
+        where: {
+            id: customerId,
+        },
+        include: {
+            user: {
+                select: {
+                    isActive: true,
+                    role: true,
+                },
+            },
+        },
+    });
+    if (!customer || !customer.user.isActive) {
+        throw new AppError(404, "Không tìm thấy Customer");
+    }
+    if (!["Customer", "Reviewer"].includes(customer.user.role)) {
+        throw new AppError(400, "Tài khoản được chọn không phải Customer");
+    }
+    const foodIds = [...new Set(input.foods.map((item) => item.foodId))];
+    const foreignFood = await prisma.food.findFirst({
+        where: {
+            id: {
+                in: foodIds,
+            },
+            merchantId: {
+                not: merchantId,
+            },
+        },
+        select: {
+            id: true,
+        },
+    });
+    if (foreignFood) {
+        throw new AppError(403, "Merchant chỉ được tạo order bằng món của chính mình");
+    }
+    /*
+     * Hàm createOrder đã tự tính giá và kiểm tra món,
+     * topping, campaign và affiliate link.
+     */
+    return createOrder(customerId, input);
+};
+export const getMyOrders = async (customerId, query) => {
+    const pageIndex = query.pageIndex || 1;
+    const pageSize = query.pageSize || 10;
+    const where = {
+        customerId,
+        status: query.status ? query.status : undefined,
+    };
+    const [orders, totalItems] = await prisma.$transaction([
+        prisma.order.findMany({
+            where,
+            include: orderInclude,
+            orderBy: {
+                orderedAt: "desc",
+            },
+            skip: (pageIndex - 1) * pageSize,
+            take: pageSize,
+        }),
+        prisma.order.count({
+            where,
+        }),
+    ]);
+    return {
+        items: orders.map(mapOrder),
+        totalItems,
+        pageIndex,
+        pageSize,
+        totalPages: Math.ceil(totalItems / pageSize),
+    };
+};
+export const getMerchantOrders = async (merchantId, query) => {
+    const pageIndex = query.pageIndex || 1;
+    const pageSize = query.pageSize || 10;
+    const where = {
+        merchantId,
+        status: query.status ? query.status : undefined,
+    };
+    const [orders, totalItems] = await prisma.$transaction([
+        prisma.order.findMany({
+            where,
+            include: orderInclude,
+            orderBy: {
+                orderedAt: "desc",
+            },
+            skip: (pageIndex - 1) * pageSize,
+            take: pageSize,
+        }),
+        prisma.order.count({
+            where,
+        }),
+    ]);
+    return {
+        items: orders.map(mapOrder),
+        totalItems,
+        pageIndex,
+        pageSize,
+        totalPages: Math.ceil(totalItems / pageSize),
+    };
+};
+export const getOrderById = async (orderId, actor) => {
+    const order = await prisma.order.findUnique({
+        where: {
+            id: orderId,
+        },
+        include: orderInclude,
+    });
+    if (!order) {
+        throw new AppError(404, "Không tìm thấy Order");
+    }
+    const isCustomerOwner = Boolean(actor.customerId) && order.customerId === actor.customerId;
+    const isMerchantOwner = Boolean(actor.merchantId) && order.merchantId === actor.merchantId;
+    const isStaffOrAdmin = actor.role === "Staff" || actor.role === "Admin";
+    if (!isCustomerOwner && !isMerchantOwner && !isStaffOrAdmin) {
+        throw new AppError(403, "Bạn không có quyền xem Order này");
+    }
+    return mapOrder(order);
+};
+export const updateOrderStatus = async (merchantId, orderId, input) => {
+    const order = await prisma.order.findUnique({
+        where: {
+            id: orderId,
+        },
+    });
+    if (!order) {
+        throw new AppError(404, "Không tìm thấy order");
+    }
+    if (order.merchantId !== merchantId) {
+        throw new AppError(403, "Order không thuộc Merchant này");
+    }
+    const nextStatus = input.status;
+    if (!canMerchantTransitionOrder(order.status, nextStatus)) {
+        throw new AppError(409, `Không thể chuyển order từ ${order.status} sang ${nextStatus}`);
+    }
+    const updatedOrder = await prisma.order.update({
+        where: {
+            id: orderId,
+        },
+        data: {
+            status: nextStatus,
+            rejectionReason: nextStatus === OrderStatus.Rejected
+                ? input.rejectionReason?.trim() || "Merchant từ chối order"
+                : null,
+            acceptedAt: nextStatus === OrderStatus.Accepted ? new Date() : undefined,
+            rejectedAt: nextStatus === OrderStatus.Rejected ? new Date() : undefined,
+            completedAt: nextStatus === OrderStatus.Completed ? new Date() : undefined,
+        },
+        include: orderInclude,
+    });
+    const customer = await prisma.customer.findUnique({
+        where: {
+            id: updatedOrder.customerId,
+        },
+        select: {
+            userId: true,
+        },
+    });
+    if (customer) {
+        if (nextStatus === OrderStatus.Accepted) {
+            await createNotification({
+                userId: customer.userId,
+                type: NotificationType.Order,
+                title: "Đơn hàng đã được chấp nhận",
+                message: "Merchant đã chấp nhận đơn hàng của bạn.",
+                referenceId: updatedOrder.id,
+                referenceType: "Order",
+            });
+        }
+        if (nextStatus === OrderStatus.Rejected) {
+            await createNotification({
+                userId: customer.userId,
+                type: NotificationType.Order,
+                title: "Đơn hàng bị từ chối",
+                message: updatedOrder.rejectionReason
+                    ? `Merchant đã từ chối đơn hàng. Lý do: ${updatedOrder.rejectionReason}`
+                    : "Merchant đã từ chối đơn hàng của bạn.",
+                referenceId: updatedOrder.id,
+                referenceType: "Order",
+            });
+        }
+        if (nextStatus === OrderStatus.Completed) {
+            await createNotification({
+                userId: customer.userId,
+                type: NotificationType.Order,
+                title: "Đơn hàng đã hoàn thành",
+                message: "Đơn hàng của bạn đã được Merchant hoàn thành.",
+                referenceId: updatedOrder.id,
+                referenceType: "Order",
+            });
+        }
+    }
+    if (nextStatus === OrderStatus.Completed &&
+        updatedOrder.paymentStatus === "Paid" &&
+        updatedOrder.affiliateLinkId) {
+        await createReviewerCommission(updatedOrder.id);
+    }
+    const refreshedOrder = await prisma.order.findUniqueOrThrow({
+        where: {
+            id: updatedOrder.id,
+        },
+        include: orderInclude,
+    });
+    return mapOrder(refreshedOrder);
+};
+export const updateCustomerOrderStatus = async (customerId, orderId, input) => {
+    const order = await prisma.order.findUnique({
+        where: {
+            id: orderId,
+        },
+    });
+    if (!order) {
+        throw new AppError(404, "Không tìm thấy order");
+    }
+    if (order.customerId !== customerId) {
+        throw new AppError(403, "Order không thuộc Customer này");
+    }
+    if (order.status !== OrderStatus.Accepted) {
+        throw new AppError(409, `Không thể xác nhận order khi trạng thái hiện tại là ${order.status}`);
+    }
+    const nextStatus = input.status;
+    if (nextStatus !== OrderStatus.Completed &&
+        nextStatus !== OrderStatus.NotReceived) {
+        throw new AppError(400, "Customer chỉ được xác nhận Completed hoặc NotReceived");
+    }
+    const updatedOrder = await prisma.order.update({
+        where: {
+            id: orderId,
+        },
+        data: {
+            status: nextStatus,
+            completedAt: nextStatus === OrderStatus.Completed ? new Date() : undefined,
+        },
+        include: orderInclude,
+    });
+    const merchant = await prisma.merchant.findUnique({
+        where: {
+            id: updatedOrder.merchantId,
+        },
+        select: {
+            userId: true,
+        },
+    });
+    if (merchant) {
+        if (nextStatus === OrderStatus.Completed) {
+            await createNotification({
+                userId: merchant.userId,
+                type: NotificationType.Order,
+                title: "Khách hàng đã nhận đơn",
+                message: "Khách hàng đã xác nhận nhận được đơn hàng.",
+                referenceId: updatedOrder.id,
+                referenceType: "Order",
+            });
+        }
+        if (nextStatus === OrderStatus.NotReceived) {
+            await createNotification({
+                userId: merchant.userId,
+                type: NotificationType.Order,
+                title: "Khách hàng chưa nhận được đơn",
+                message: "Khách hàng báo chưa nhận được đơn hàng.",
+                referenceId: updatedOrder.id,
+                referenceType: "Order",
+            });
+        }
+    }
+    if (nextStatus === OrderStatus.Completed &&
+        updatedOrder.paymentStatus === OrderPaymentStatus.Paid &&
+        updatedOrder.affiliateLinkId) {
+        await createReviewerCommission(updatedOrder.id);
+    }
+    const refreshedOrder = await prisma.order.findUniqueOrThrow({
+        where: {
+            id: updatedOrder.id,
+        },
+        include: orderInclude,
+    });
+    return mapOrder(refreshedOrder);
+};

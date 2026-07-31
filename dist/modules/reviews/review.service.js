@@ -1,0 +1,337 @@
+import { Prisma, } from "../../generated/prisma/client.js";
+import { prisma } from "../../config/prisma.js";
+import { AppError } from "../../common/errors/app-error.js";
+const reviewInclude = {
+    customer: {
+        include: {
+            user: {
+                select: {
+                    id: true,
+                    fullName: true,
+                    avatarUrl: true,
+                },
+            },
+        },
+    },
+    merchant: {
+        select: {
+            id: true,
+            name: true,
+            logoUrl: true,
+        },
+    },
+    order: {
+        select: {
+            id: true,
+            orderedAt: true,
+            completedAt: true,
+        },
+    },
+    details: {
+        include: {
+            orderDetail: true,
+        },
+    },
+};
+const mapReview = (review) => {
+    const customerName = review.customer?.user?.fullName ?? null;
+    const customerAvatarUrl = review.customer?.user?.avatarUrl ?? null;
+    const reviewDetails = review.details.map((detail) => ({
+        id: detail.id,
+        reviewDetailId: detail.id,
+        orderDetailId: detail.orderDetailId,
+        rating: detail.rating,
+        content: detail.content,
+        detailContent: detail.content,
+        food: {
+            id: detail.orderDetail.foodId,
+            name: detail.orderDetail.foodNameSnapshot,
+        },
+        createdAt: detail.createdAt,
+    }));
+    return {
+        id: review.id,
+        reviewId: review.id,
+        customerId: review.customerId,
+        userId: review.customer?.user?.id ?? null,
+        merchantId: review.merchantId,
+        orderId: review.orderId,
+        rating: review.rating,
+        content: review.content,
+        imageUrl: review.imageUrl,
+        customerName,
+        customerAvatarUrl,
+        customer: review.customer
+            ? {
+                id: review.customer.id,
+                userId: review.customer.user.id,
+                fullName: review.customer.user.fullName,
+                avatarUrl: review.customer.user.avatarUrl,
+            }
+            : null,
+        merchant: review.merchant,
+        order: review.order,
+        details: reviewDetails,
+        reviewDetails,
+        createdAt: review.createdAt,
+        updatedAt: review.updatedAt,
+    };
+};
+const updateMerchantRating = async (transaction, merchantId) => {
+    const aggregate = await transaction.review.aggregate({
+        where: {
+            merchantId,
+        },
+        _avg: {
+            rating: true,
+        },
+        _count: {
+            rating: true,
+        },
+    });
+    await transaction.merchant.update({
+        where: {
+            id: merchantId,
+        },
+        data: {
+            rating: new Prisma.Decimal(aggregate._avg.rating ?? 0),
+            reviewCount: aggregate._count.rating,
+        },
+    });
+};
+export const createReview = async (customerId, input) => {
+    const order = await prisma.order.findUnique({
+        where: {
+            id: input.orderId,
+        },
+        include: {
+            details: true,
+        },
+    });
+    if (!order) {
+        throw new AppError(404, "Không tìm thấy Order");
+    }
+    if (order.customerId !== customerId) {
+        throw new AppError(403, "Order không thuộc Customer này");
+    }
+    if (input.merchantId && input.merchantId !== order.merchantId) {
+        throw new AppError(400, "Merchant ID không khớp với Order");
+    }
+    /*
+     * Nếu code hiện tại của m có kiểm tra trạng thái Order,
+     * Review đã tồn tại hoặc Order đã hoàn thành thì giữ các
+     * đoạn kiểm tra đó ở vị trí này.
+     */
+    const requestedDetails = input.details ?? [];
+    const orderDetailIds = new Set(order.details.map((detail) => detail.id));
+    for (const detail of requestedDetails) {
+        if (!orderDetailIds.has(detail.orderDetailId)) {
+            throw new AppError(400, "Có Order Detail không thuộc Order này");
+        }
+    }
+    const review = await prisma.$transaction(async (transaction) => {
+        const createdReview = await transaction.review.create({
+            data: {
+                customerId,
+                /*
+                 * Không lấy merchantId trực tiếp từ body.
+                 */
+                merchantId: order.merchantId,
+                orderId: order.id,
+                rating: input.rating,
+                content: input.content?.trim() || null,
+                imageUrl: input.imageUrl?.trim() || null,
+                details: {
+                    create: requestedDetails.map((detail) => ({
+                        orderDetailId: detail.orderDetailId,
+                        rating: detail.rating ?? input.rating,
+                        content: detail.content?.trim() || null,
+                    })),
+                },
+            },
+            include: reviewInclude,
+        });
+        await updateMerchantRating(transaction, order.merchantId);
+        return createdReview;
+    });
+    return mapReview(review);
+};
+export const getMerchantReviews = async (merchantId, query) => {
+    const pageIndex = query.pageIndex || 1;
+    const pageSize = query.pageSize || 10;
+    const merchant = await prisma.merchant.findUnique({
+        where: {
+            id: merchantId,
+        },
+    });
+    if (!merchant) {
+        throw new AppError(404, "Không tìm thấy Merchant");
+    }
+    const where = {
+        merchantId,
+    };
+    const [reviews, totalItems] = await prisma.$transaction([
+        prisma.review.findMany({
+            where,
+            include: reviewInclude,
+            orderBy: {
+                createdAt: "desc",
+            },
+            skip: (pageIndex - 1) * pageSize,
+            take: pageSize,
+        }),
+        prisma.review.count({
+            where,
+        }),
+    ]);
+    return {
+        items: reviews.map(mapReview),
+        totalItems,
+        pageIndex,
+        pageSize,
+        totalPages: Math.ceil(totalItems / pageSize),
+        averageRating: Number(merchant.rating),
+        reviewCount: merchant.reviewCount,
+    };
+};
+export const getMyReviews = async (customerId) => {
+    const reviews = await prisma.review.findMany({
+        where: {
+            customerId,
+        },
+        include: reviewInclude,
+        orderBy: {
+            createdAt: "desc",
+        },
+    });
+    return reviews.map(mapReview);
+};
+export const updateReview = async (customerId, reviewId, input) => {
+    const review = await prisma.review.findUnique({
+        where: {
+            id: reviewId,
+        },
+    });
+    if (!review) {
+        throw new AppError(404, "Không tìm thấy Review");
+    }
+    if (review.customerId !== customerId) {
+        throw new AppError(403, "Bạn không có quyền sửa Review này");
+    }
+    const requestedDetails = input.reviewDetails ?? [];
+    if (requestedDetails.length > 0) {
+        const detailIds = [
+            ...new Set(requestedDetails.map((detail) => detail.reviewDetailId)),
+        ];
+        if (detailIds.length !== requestedDetails.length) {
+            throw new AppError(400, "Review Detail bị trùng lặp");
+        }
+        const ownedDetailCount = await prisma.reviewDetail.count({
+            where: {
+                id: {
+                    in: detailIds,
+                },
+                reviewId,
+            },
+        });
+        if (ownedDetailCount !== detailIds.length) {
+            throw new AppError(400, "Có Review Detail không thuộc Review này");
+        }
+    }
+    const updated = await prisma.$transaction(async (transaction) => {
+        await transaction.review.update({
+            where: {
+                id: reviewId,
+            },
+            data: {
+                rating: input.rating,
+                content: input.content !== undefined
+                    ? input.content?.trim() || null
+                    : undefined,
+                imageUrl: input.imageUrl !== undefined
+                    ? input.imageUrl?.trim() || null
+                    : undefined,
+            },
+        });
+        for (const detail of requestedDetails) {
+            await transaction.reviewDetail.update({
+                where: {
+                    id: detail.reviewDetailId,
+                },
+                data: {
+                    rating: detail.rating,
+                    content: detail.detailContent !== undefined
+                        ? detail.detailContent?.trim() || null
+                        : undefined,
+                },
+            });
+        }
+        await updateMerchantRating(transaction, review.merchantId);
+        return transaction.review.findUniqueOrThrow({
+            where: {
+                id: reviewId,
+            },
+            include: reviewInclude,
+        });
+    });
+    return mapReview(updated);
+};
+export const deleteReview = async (customerId, reviewId) => {
+    const review = await prisma.review.findUnique({
+        where: {
+            id: reviewId,
+        },
+    });
+    if (!review) {
+        throw new AppError(404, "Không tìm thấy Review");
+    }
+    if (review.customerId !== customerId) {
+        throw new AppError(403, "Bạn không có quyền xóa Review này");
+    }
+    await prisma.$transaction(async (transaction) => {
+        await transaction.review.delete({
+            where: {
+                id: reviewId,
+            },
+        });
+        await updateMerchantRating(transaction, review.merchantId);
+    });
+    return {
+        reviewId,
+    };
+};
+export const getReviewDetails = async (reviewId) => {
+    const review = await prisma.review.findUnique({
+        where: {
+            id: reviewId,
+        },
+        select: {
+            id: true,
+            details: {
+                include: {
+                    orderDetail: true,
+                },
+                orderBy: {
+                    createdAt: "asc",
+                },
+            },
+        },
+    });
+    if (!review) {
+        throw new AppError(404, "Không tìm thấy Review");
+    }
+    return review.details.map((detail) => ({
+        id: detail.id,
+        reviewDetailId: detail.id,
+        reviewId,
+        orderDetailId: detail.orderDetailId,
+        rating: detail.rating,
+        content: detail.content,
+        detailContent: detail.content,
+        food: {
+            id: detail.orderDetail.foodId,
+            name: detail.orderDetail.foodNameSnapshot,
+        },
+        createdAt: detail.createdAt,
+    }));
+};

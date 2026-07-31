@@ -1,0 +1,47 @@
+import { Router } from "express";
+
+import { authenticate } from "../../common/middleware/auth.middleware.js";
+import { authorizeRoles } from "../../common/middleware/role.middleware.js";
+import { validate } from "../../common/middleware/validate.middleware.js";
+
+import {
+  createStaff,
+  deleteStaff,
+  getAdminDashboard,
+  getMerchantRevenueDetail,
+  getMerchantRevenues,
+  getStaffById,
+  getStaffList,
+} from "./admin.controller.js";
+
+import {
+  createStaffSchema,
+  merchantRevenueDetailSchema,
+  merchantRevenueListSchema,
+  staffIdSchema,
+} from "./admin.schema.js";
+
+export const adminRouter = Router();
+
+adminRouter.use(authenticate, authorizeRoles("Admin"));
+
+adminRouter.get("/dashboard", getAdminDashboard);
+
+adminRouter.get(
+  "/merchant-revenues",
+  validate(merchantRevenueListSchema),
+  getMerchantRevenues,
+);
+
+adminRouter.get(
+  "/merchant-revenues/:merchantId",
+  validate(merchantRevenueDetailSchema),
+  getMerchantRevenueDetail,
+);
+adminRouter.get("/staff", getStaffList);
+
+adminRouter.get("/staff/:id", validate(staffIdSchema), getStaffById);
+
+adminRouter.post("/staff", validate(createStaffSchema), createStaff);
+
+adminRouter.delete("/staff/:id", validate(staffIdSchema), deleteStaff);

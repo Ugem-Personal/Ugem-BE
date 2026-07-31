@@ -1,0 +1,93 @@
+import { Router } from "express";
+
+import { authenticate } from "../../../common/middleware/auth.middleware.js";
+import { authorizeRoles } from "../../../common/middleware/role.middleware.js";
+import { validate } from "../../../common/middleware/validate.middleware.js";
+
+import {
+  getCustomerDailySpending,
+  getCustomerDashboard,
+  getCustomerFavoriteMerchantsByYear,
+  getCustomerOrderGrowthByYear,
+  getCustomerOrderPerformanceByYear,
+  getCustomerPaymentStatisticsByYear,
+  getCustomerPeakHoursByYear,
+  getCustomerRecentOrders,
+  getCustomerSpendingByYear,
+  getCustomerWeekdayStatisticsByYear,
+} from "../controllers/customer-dashboard.controller.js";
+
+import {
+  customerDailySpendingSchema,
+  customerFavoriteMerchantsSchema,
+  customerOrderGrowthSchema,
+  customerOrderPerformanceSchema,
+  customerPaymentStatisticsSchema,
+  customerPeakHoursSchema,
+  customerRecentOrdersSchema,
+  customerSpendingSchema,
+  customerWeekdayStatisticsSchema,
+} from "../schemas/customer-dashboard.schema.js";
+
+export const customerDashboardRouter = Router();
+
+customerDashboardRouter.use(
+  authenticate,
+  authorizeRoles("Customer", "Reviewer"),
+);
+
+customerDashboardRouter.get("/", getCustomerDashboard);
+
+customerDashboardRouter.get(
+  "/recent-orders",
+  validate(customerRecentOrdersSchema),
+  getCustomerRecentOrders,
+);
+
+customerDashboardRouter.get(
+  "/spending",
+  validate(customerSpendingSchema),
+  getCustomerSpendingByYear,
+);
+
+customerDashboardRouter.get(
+  "/order-growth",
+  validate(customerOrderGrowthSchema),
+  getCustomerOrderGrowthByYear,
+);
+
+customerDashboardRouter.get(
+  "/payment-statistics",
+  validate(customerPaymentStatisticsSchema),
+  getCustomerPaymentStatisticsByYear,
+);
+
+customerDashboardRouter.get(
+  "/favorite-merchants",
+  validate(customerFavoriteMerchantsSchema),
+  getCustomerFavoriteMerchantsByYear,
+);
+
+customerDashboardRouter.get(
+  "/weekday-statistics",
+  validate(customerWeekdayStatisticsSchema),
+  getCustomerWeekdayStatisticsByYear,
+);
+
+customerDashboardRouter.get(
+  "/peak-hours",
+  validate(customerPeakHoursSchema),
+  getCustomerPeakHoursByYear,
+);
+
+customerDashboardRouter.get(
+  "/order-performance",
+  validate(customerOrderPerformanceSchema),
+  getCustomerOrderPerformanceByYear,
+);
+
+customerDashboardRouter.get(
+  "/daily-spending",
+  validate(customerDailySpendingSchema),
+  getCustomerDailySpending,
+);
