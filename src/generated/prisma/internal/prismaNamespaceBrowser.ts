@@ -76,7 +76,8 @@ export const ModelName = {
   ReviewerPointTransaction: 'ReviewerPointTransaction',
   Campaign: 'Campaign',
   CheckIn: 'CheckIn',
-  Notification: 'Notification'
+  Notification: 'Notification',
+  AuditLog: 'AuditLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -285,6 +286,9 @@ export const OrderScalarFieldEnum = {
   rejectionReason: 'rejectionReason',
   orderedAt: 'orderedAt',
   acceptedAt: 'acceptedAt',
+  preparingAt: 'preparingAt',
+  readyAt: 'readyAt',
+  deliveringAt: 'deliveringAt',
   rejectedAt: 'rejectedAt',
   completedAt: 'completedAt',
   createdAt: 'createdAt',
@@ -509,12 +513,36 @@ export const NotificationScalarFieldEnum = {
 export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
+export const AuditLogScalarFieldEnum = {
+  id: 'id',
+  actorUserId: 'actorUserId',
+  actorRole: 'actorRole',
+  action: 'action',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  metadata: 'metadata',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  createdAt: 'createdAt'
+} as const
+
+export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -531,4 +559,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

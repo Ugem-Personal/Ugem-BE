@@ -5,6 +5,8 @@ import { asyncHandler } from "../../common/utils/async-handler.js";
 import { sendSuccess } from "../../common/utils/api-response.js";
 
 import * as reviewerApplicationService from "./reviewer-application.service.js";
+import { createAuditLog } from "../audit/audit.service.js";
+import { getAuditActor } from "../audit/audit-context.js";
 
 const getCustomerId = (req: Request): string => {
   if (!req.user?.CustomerId) {
@@ -100,6 +102,20 @@ export const reviewReviewerApplication = asyncHandler(
         getUserId(req),
         req.body,
       );
+
+    await createAuditLog({
+      actor: getAuditActor(req),
+      action:
+        req.body.status === "Accepted"
+          ? "REVIEWER_APPLICATION_ACCEPTED"
+          : "REVIEWER_APPLICATION_REJECTED",
+      entityType: "ReviewerApplication",
+      entityId: application.id,
+      metadata: {
+        status: req.body.status,
+        rejectionReason: req.body.rejectionReason || null,
+      },
+    });
 
     return sendSuccess(res, {
       message:

@@ -57,14 +57,12 @@ const mapReview = (review: any) => {
   const customerAvatarUrl = review.customer?.user?.avatarUrl ?? null;
 
   const reviewDetails = review.details.map((detail: any) => ({
-    id: detail.id,
     reviewDetailId: detail.id,
     orderDetailId: detail.orderDetailId,
 
     rating: detail.rating,
 
     content: detail.content,
-    detailContent: detail.content,
 
     food: {
       id: detail.orderDetail.foodId,
@@ -75,7 +73,6 @@ const mapReview = (review: any) => {
   }));
 
   return {
-    id: review.id,
     reviewId: review.id,
 
     customerId: review.customerId,
@@ -108,7 +105,6 @@ const mapReview = (review: any) => {
     order: review.order,
 
     details: reviewDetails,
-    reviewDetails,
 
     createdAt: review.createdAt,
     updatedAt: review.updatedAt,
@@ -314,7 +310,7 @@ export const updateReview = async (
     throw new AppError(403, "Bạn không có quyền sửa Review này");
   }
 
-  const requestedDetails = input.reviewDetails ?? [];
+  const requestedDetails = input.details ?? [];
 
   if (requestedDetails.length > 0) {
     const detailIds = [
@@ -371,8 +367,8 @@ export const updateReview = async (
           rating: detail.rating,
 
           content:
-            detail.detailContent !== undefined
-              ? detail.detailContent?.trim() || null
+            detail.content !== undefined
+              ? detail.content?.trim() || null
               : undefined,
         },
       });
@@ -448,7 +444,6 @@ export const getReviewDetails = async (reviewId: string) => {
   }
 
   return review.details.map((detail) => ({
-    id: detail.id,
     reviewDetailId: detail.id,
     reviewId,
 
@@ -457,7 +452,6 @@ export const getReviewDetails = async (reviewId: string) => {
     rating: detail.rating,
 
     content: detail.content,
-    detailContent: detail.content,
 
     food: {
       id: detail.orderDetail.foodId,

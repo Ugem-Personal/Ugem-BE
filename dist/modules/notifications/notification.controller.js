@@ -1,6 +1,7 @@
 import { AppError } from "../../common/errors/app-error.js";
 import { asyncHandler } from "../../common/utils/async-handler.js";
 import { sendSuccess } from "../../common/utils/api-response.js";
+import { paginationMeta } from "../../common/utils/pagination.js";
 import * as notificationService from "./notification.service.js";
 const getUserId = (req) => {
     const userId = req.user?.UserId;
@@ -26,6 +27,7 @@ export const getMyNotifications = asyncHandler(async (req, res) => {
     return sendSuccess(res, {
         message: "Lấy danh sách Notification thành công",
         data: result.items,
+        meta: paginationMeta(result),
     });
 });
 export const getUnreadCount = asyncHandler(async (req, res) => {

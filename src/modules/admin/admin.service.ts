@@ -589,7 +589,11 @@ export const getMerchantRevenueDetail = async (
   ).length;
 
   const acceptedOrders = merchant.orders.filter(
-    (order) => order.status === OrderStatus.Accepted,
+    (order) =>
+      order.status === OrderStatus.Accepted ||
+      order.status === OrderStatus.Preparing ||
+      order.status === OrderStatus.Ready ||
+      order.status === OrderStatus.Delivering,
   ).length;
 
   const rejectedOrders = merchant.orders.filter(

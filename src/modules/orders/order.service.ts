@@ -18,7 +18,10 @@ import type {
 } from "./order.types.js";
 import { createReviewerCommission } from "../affiliate-links/affiliate-earning.service.js";
 import { createNotification } from "../notifications/notification.service.js";
-import { canMerchantTransitionOrder } from "./order-state-machine.js";
+import {
+  canCustomerConfirmOrder,
+  canMerchantTransitionOrder,
+} from "./order-state-machine.js";
 
 const orderInclude = {
   merchant: {
@@ -56,20 +59,12 @@ const orderInclude = {
 const mapOrder = (order: any) => {
   const mappedFoods = order.details.map((detail: any) => {
     const toppings = detail.toppings.map((topping: any) => ({
-      id: topping.id,
-
-      toppingId: topping.toppingId,
       foodToppingId: topping.toppingId,
-
       name: topping.toppingNameSnapshot,
-
-      toppingName: topping.toppingNameSnapshot,
-
       price: Number(topping.priceSnapshot),
     }));
 
     return {
-      id: detail.id,
       orderDetailId: detail.id,
       orderId: order.id,
 
@@ -77,29 +72,21 @@ const mapOrder = (order: any) => {
       merchantId: order.merchantId,
       merchantName: order.merchant?.name ?? null,
 
-      foodName: detail.foodNameSnapshot,
-
       name: detail.foodNameSnapshot,
 
       quantity: detail.quantity,
 
       unitPrice: Number(detail.unitPrice),
 
-      price: Number(detail.unitPrice),
-
       notes: detail.notes,
 
       lineTotal: Number(detail.lineTotal),
 
-      totalPrice: Number(detail.lineTotal),
-
       toppings,
-      foodToppings: toppings,
     };
   });
 
   return {
-    id: order.id,
     orderId: order.id,
 
     customerId: order.customerId,
@@ -181,6 +168,9 @@ const mapOrder = (order: any) => {
 
     orderedAt: order.orderedAt,
     acceptedAt: order.acceptedAt,
+    preparingAt: order.preparingAt,
+    readyAt: order.readyAt,
+    deliveringAt: order.deliveringAt,
     rejectedAt: order.rejectedAt,
     completedAt: order.completedAt,
 
@@ -408,39 +398,8 @@ export const createOrder = async (
 
   const finalPrice = subtotal - discount;
 
-  const order = await prisma.$transaction(async (transaction) => {
-    if (campaign) {
-      const currentCampaign = await transaction.campaign.findUnique({
-        where: {
-          id: campaign.id,
-        },
-      });
-
-      if (!currentCampaign) {
-        throw new AppError(404, "Campaign không tồn tại");
-      }
-
-      if (
-        currentCampaign.usageLimit !== null &&
-        currentCampaign.usedCount >= currentCampaign.usageLimit
-      ) {
-        throw new AppError(409, "Campaign đã hết lượt sử dụng");
-      }
-
-      await transaction.campaign.update({
-        where: {
-          id: campaign.id,
-        },
-
-        data: {
-          usedCount: {
-            increment: 1,
-          },
-        },
-      });
-    }
-
-    return transaction.order.create({
+  const createOrder = (client: Pick<typeof prisma, "order">) =>
+    client.order.create({
       data: {
         customerId,
         merchantId,
@@ -497,7 +456,41 @@ export const createOrder = async (
 
       include: orderInclude,
     });
-  });
+
+  const order = campaign
+    ? await prisma.$transaction(async (transaction) => {
+      const currentCampaign = await transaction.campaign.findUnique({
+        where: {
+          id: campaign.id,
+        },
+      });
+
+      if (!currentCampaign) {
+        throw new AppError(404, "Campaign không tồn tại");
+      }
+
+      if (
+        currentCampaign.usageLimit !== null &&
+        currentCampaign.usedCount >= currentCampaign.usageLimit
+      ) {
+        throw new AppError(409, "Campaign đã hết lượt sử dụng");
+      }
+
+      await transaction.campaign.update({
+        where: {
+          id: campaign.id,
+        },
+
+        data: {
+          usedCount: {
+            increment: 1,
+          },
+        },
+      });
+
+      return createOrder(transaction);
+    })
+    : await createOrder(prisma);
 
   const merchant = await prisma.merchant.findUnique({
     where: {
@@ -715,7 +708,7 @@ export const updateOrderStatus = async (
 
   const nextStatus = input.status as OrderStatus;
 
-  if (!canMerchantTransitionOrder(order.status, nextStatus)) {
+  if (!canMerchantTransitionOrder(order.status, nextStatus, order.orderType)) {
     throw new AppError(
       409,
       `Không thể chuyển order từ ${order.status} sang ${nextStatus}`,
@@ -736,6 +729,14 @@ export const updateOrderStatus = async (
           : null,
 
       acceptedAt: nextStatus === OrderStatus.Accepted ? new Date() : undefined,
+
+      preparingAt:
+        nextStatus === OrderStatus.Preparing ? new Date() : undefined,
+
+      readyAt: nextStatus === OrderStatus.Ready ? new Date() : undefined,
+
+      deliveringAt:
+        nextStatus === OrderStatus.Delivering ? new Date() : undefined,
 
       rejectedAt: nextStatus === OrderStatus.Rejected ? new Date() : undefined,
 
@@ -763,6 +764,42 @@ export const updateOrderStatus = async (
         type: NotificationType.Order,
         title: "Đơn hàng đã được chấp nhận",
         message: "Merchant đã chấp nhận đơn hàng của bạn.",
+        referenceId: updatedOrder.id,
+        referenceType: "Order",
+      });
+    }
+
+    if (nextStatus === OrderStatus.Preparing) {
+      await createNotification({
+        userId: customer.userId,
+        type: NotificationType.Order,
+        title: "Quán đang chuẩn bị đơn",
+        message: "Đơn hàng của bạn đã được chuyển sang bước chuẩn bị.",
+        referenceId: updatedOrder.id,
+        referenceType: "Order",
+      });
+    }
+
+    if (nextStatus === OrderStatus.Ready) {
+      await createNotification({
+        userId: customer.userId,
+        type: NotificationType.Order,
+        title: "Đơn hàng đã sẵn sàng",
+        message:
+          updatedOrder.orderType === OrderType.Offline
+            ? "Đơn của bạn đã sẵn sàng tại quán."
+            : "Đơn của bạn đã sẵn sàng để giao.",
+        referenceId: updatedOrder.id,
+        referenceType: "Order",
+      });
+    }
+
+    if (nextStatus === OrderStatus.Delivering) {
+      await createNotification({
+        userId: customer.userId,
+        type: NotificationType.Order,
+        title: "Đơn hàng đang được giao",
+        message: "Đơn hàng đang trên đường đến địa chỉ của bạn.",
         referenceId: updatedOrder.id,
         referenceType: "Order",
       });
@@ -830,7 +867,7 @@ export const updateCustomerOrderStatus = async (
     throw new AppError(403, "Order không thuộc Customer này");
   }
 
-  if (order.status !== OrderStatus.Accepted) {
+  if (!canCustomerConfirmOrder(order.status, order.orderType)) {
     throw new AppError(
       409,
       `Không thể xác nhận order khi trạng thái hiện tại là ${order.status}`,

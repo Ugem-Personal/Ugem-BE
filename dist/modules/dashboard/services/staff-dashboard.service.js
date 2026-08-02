@@ -484,6 +484,9 @@ export const getStaffOrderGrowthByYear = async (year) => {
                 month.pending += 1;
                 break;
             case OrderStatus.Accepted:
+            case OrderStatus.Preparing:
+            case OrderStatus.Ready:
+            case OrderStatus.Delivering:
                 month.accepted += 1;
                 break;
             case OrderStatus.Completed:
@@ -1066,6 +1069,9 @@ export const getStaffOrderPerformanceByYear = async (year) => {
                 month.pendingOrders += 1;
                 break;
             case OrderStatus.Accepted:
+            case OrderStatus.Preparing:
+            case OrderStatus.Ready:
+            case OrderStatus.Delivering:
                 month.acceptedOrders += 1;
                 break;
             case OrderStatus.Completed:

@@ -51,3 +51,13 @@ export const merchantRevenueDetailSchema = z.object({
     periodType: z.enum(["Day", "Week", "Month", "Year"]).default("Month"),
   }),
 });
+
+export const auditLogListSchema = z.object({
+  query: z.object({
+    search: z.string().trim().max(200).optional(),
+    action: z.string().trim().max(100).optional(),
+    entityType: z.string().trim().max(100).optional(),
+    pageIndex: positiveIntegerSchema.default(1),
+    pageSize: positiveIntegerSchema.max(100).default(20),
+  }),
+});

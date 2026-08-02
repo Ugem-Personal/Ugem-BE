@@ -8,6 +8,7 @@ import {
   createStaff,
   deleteStaff,
   getAdminDashboard,
+  getAdminAuditLogs,
   getMerchantRevenueDetail,
   getMerchantRevenues,
   getStaffById,
@@ -16,6 +17,7 @@ import {
 
 import {
   createStaffSchema,
+  auditLogListSchema,
   merchantRevenueDetailSchema,
   merchantRevenueListSchema,
   staffIdSchema,
@@ -26,6 +28,12 @@ export const adminRouter = Router();
 adminRouter.use(authenticate, authorizeRoles("Admin"));
 
 adminRouter.get("/dashboard", getAdminDashboard);
+
+adminRouter.get(
+  "/audit-logs",
+  validate(auditLogListSchema),
+  getAdminAuditLogs,
+);
 
 adminRouter.get(
   "/merchant-revenues",

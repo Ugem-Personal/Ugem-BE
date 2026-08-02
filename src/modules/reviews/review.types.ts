@@ -25,10 +25,10 @@ export interface UpdateReviewInput {
   content?: string | null;
   imageUrl?: string | null;
 
-  reviewDetails?: {
+  details?: {
     reviewDetailId: string;
     rating?: number;
-    detailContent?: string | null;
+    content?: string | null;
   }[];
 }
 

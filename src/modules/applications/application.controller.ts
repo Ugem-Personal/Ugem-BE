@@ -3,8 +3,11 @@ import type { Request, Response } from "express";
 import { AppError } from "../../common/errors/app-error.js";
 import { asyncHandler } from "../../common/utils/async-handler.js";
 import { sendSuccess } from "../../common/utils/api-response.js";
+import { paginationMeta } from "../../common/utils/pagination.js";
 
 import * as applicationService from "./application.service.js";
+import { createAuditLog } from "../audit/audit.service.js";
+import { getAuditActor } from "../audit/audit-context.js";
 
 const getCurrentUser = (req: Request) => {
   if (!req.user?.UserId) {
@@ -119,6 +122,7 @@ export const getApplications = asyncHandler(
        * FE hiện tại đọc data như Application[].
        */
       data: result.items,
+      meta: paginationMeta(result),
     });
   },
 );
@@ -133,6 +137,20 @@ export const reviewApplication = asyncHandler(
       currentUser.userId,
       req.body,
     );
+
+    await createAuditLog({
+      actor: getAuditActor(req),
+      action:
+        req.body.status === "Accepted"
+          ? "MERCHANT_APPLICATION_ACCEPTED"
+          : "MERCHANT_APPLICATION_REJECTED",
+      entityType: "Application",
+      entityId: applicationId,
+      metadata: {
+        status: req.body.status,
+        rejectionReason: req.body.rejectionReason || null,
+      },
+    });
 
     return sendSuccess(res, {
       message:

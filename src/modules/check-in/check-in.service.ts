@@ -73,6 +73,7 @@ export const generateCheckInQr = async (
 
   if (
     order.status !== OrderStatus.Accepted &&
+    order.status !== OrderStatus.Ready &&
     order.status !== OrderStatus.Completed
   ) {
     throw new AppError(409, "Order chưa ở trạng thái có thể tạo QR check-in");
@@ -144,6 +145,7 @@ export const verifyCheckIn = async (
 
   if (
     order.status !== OrderStatus.Accepted &&
+    order.status !== OrderStatus.Ready &&
     order.status !== OrderStatus.Completed
   ) {
     throw new AppError(409, "Order chưa ở trạng thái có thể check-in");

@@ -1,6 +1,7 @@
 import { AppError } from "../errors/app-error.js";
 import { sendError } from "../utils/api-response.js";
 import multer from "multer";
+import { logger } from "../utils/logger.js";
 export const notFoundHandler = (req, res) => {
     return sendError(res, {
         statusCode: 404,
@@ -18,35 +19,34 @@ export const errorHandler = (error, _req, res, _next) => {
     }
     if (error instanceof multer.MulterError) {
         if (error.code === "LIMIT_FILE_SIZE") {
-            return res.status(400).json({
-                success: false,
+            return sendError(res, {
+                statusCode: 400,
                 message: "Ảnh phải có dung lượng nhỏ hơn 5MB",
-                data: null,
                 errors: [
                     {
                         field: "file",
                         message: "Ảnh phải có dung lượng nhỏ hơn 5MB",
                     },
                 ],
-                traceId: res.locals.traceId,
-                timestampUtc: new Date().toISOString(),
             });
         }
-        return res.status(400).json({
-            success: false,
+        return sendError(res, {
+            statusCode: 400,
             message: "File tải lên không hợp lệ",
-            data: null,
             errors: [
                 {
                     field: "file",
                     message: error.message,
                 },
             ],
-            traceId: res.locals.traceId,
-            timestampUtc: new Date().toISOString(),
         });
     }
-    console.error(error);
+    logger.error("http.request.failed", {
+        traceId: res.locals.traceId ?? null,
+        method: _req.method,
+        path: _req.originalUrl.split("?")[0],
+        error,
+    });
     sendError(res, {
         statusCode: 500,
         message: "Internal Server Error",

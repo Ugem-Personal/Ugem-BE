@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import { AppError } from "../../common/errors/app-error.js";
 import { asyncHandler } from "../../common/utils/async-handler.js";
 import { sendSuccess } from "../../common/utils/api-response.js";
+import { paginationMeta } from "../../common/utils/pagination.js";
 
 import * as notificationService from "./notification.service.js";
 
@@ -45,6 +46,7 @@ export const getMyNotifications = asyncHandler(
     return sendSuccess(res, {
       message: "Lấy danh sách Notification thành công",
       data: result.items,
+      meta: paginationMeta(result),
     });
   },
 );

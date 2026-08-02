@@ -1,7 +1,10 @@
 import { AppError } from "../../common/errors/app-error.js";
 import { asyncHandler } from "../../common/utils/async-handler.js";
 import { sendSuccess } from "../../common/utils/api-response.js";
+import { paginationMeta } from "../../common/utils/pagination.js";
 import * as applicationService from "./application.service.js";
+import { createAuditLog } from "../audit/audit.service.js";
+import { getAuditActor } from "../audit/audit-context.js";
 const getCurrentUser = (req) => {
     if (!req.user?.UserId) {
         throw new AppError(401, "Không xác định được người dùng");
@@ -66,12 +69,25 @@ export const getApplications = asyncHandler(async (req, res) => {
          * FE hiện tại đọc data như Application[].
          */
         data: result.items,
+        meta: paginationMeta(result),
     });
 });
 export const reviewApplication = asyncHandler(async (req, res) => {
     const currentUser = getCurrentUser(req);
     const applicationId = getRouteId(req);
     const application = await applicationService.reviewApplication(applicationId, currentUser.userId, req.body);
+    await createAuditLog({
+        actor: getAuditActor(req),
+        action: req.body.status === "Accepted"
+            ? "MERCHANT_APPLICATION_ACCEPTED"
+            : "MERCHANT_APPLICATION_REJECTED",
+        entityType: "Application",
+        entityId: applicationId,
+        metadata: {
+            status: req.body.status,
+            rejectionReason: req.body.rejectionReason || null,
+        },
+    });
     return sendSuccess(res, {
         message: req.body.status === "Accepted"
             ? "Chấp thuận hồ sơ thành công"

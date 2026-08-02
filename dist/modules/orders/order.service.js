@@ -3,7 +3,7 @@ import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
 import { createReviewerCommission } from "../affiliate-links/affiliate-earning.service.js";
 import { createNotification } from "../notifications/notification.service.js";
-import { canMerchantTransitionOrder } from "./order-state-machine.js";
+import { canCustomerConfirmOrder, canMerchantTransitionOrder, } from "./order-state-machine.js";
 const orderInclude = {
     merchant: {
         select: {
@@ -37,34 +37,25 @@ const orderInclude = {
 const mapOrder = (order) => {
     const mappedFoods = order.details.map((detail) => {
         const toppings = detail.toppings.map((topping) => ({
-            id: topping.id,
-            toppingId: topping.toppingId,
             foodToppingId: topping.toppingId,
             name: topping.toppingNameSnapshot,
-            toppingName: topping.toppingNameSnapshot,
             price: Number(topping.priceSnapshot),
         }));
         return {
-            id: detail.id,
             orderDetailId: detail.id,
             orderId: order.id,
             foodId: detail.foodId,
             merchantId: order.merchantId,
             merchantName: order.merchant?.name ?? null,
-            foodName: detail.foodNameSnapshot,
             name: detail.foodNameSnapshot,
             quantity: detail.quantity,
             unitPrice: Number(detail.unitPrice),
-            price: Number(detail.unitPrice),
             notes: detail.notes,
             lineTotal: Number(detail.lineTotal),
-            totalPrice: Number(detail.lineTotal),
             toppings,
-            foodToppings: toppings,
         };
     });
     return {
-        id: order.id,
         orderId: order.id,
         customerId: order.customerId,
         merchantId: order.merchantId,
@@ -115,6 +106,9 @@ const mapOrder = (order) => {
         foods: mappedFoods,
         orderedAt: order.orderedAt,
         acceptedAt: order.acceptedAt,
+        preparingAt: order.preparingAt,
+        readyAt: order.readyAt,
+        deliveringAt: order.deliveringAt,
         rejectedAt: order.rejectedAt,
         completedAt: order.completedAt,
         createdAt: order.createdAt,
@@ -264,8 +258,43 @@ export const createOrder = async (customerId, input) => {
         discount = Math.min(discount, subtotal);
     }
     const finalPrice = subtotal - discount;
-    const order = await prisma.$transaction(async (transaction) => {
-        if (campaign) {
+    const createOrder = (client) => client.order.create({
+        data: {
+            customerId,
+            merchantId,
+            affiliateLinkId: affiliateLink?.id ?? null,
+            campaignId: campaign?.id ?? null,
+            name: input.name.trim(),
+            orderType: input.orderType === "Offline" ? OrderType.Offline : OrderType.Online,
+            paymentMethod: input.paymentMethod,
+            status: OrderStatus.Pending,
+            notes: input.notes?.trim() || null,
+            deliveryAddress: input.deliveryAddress?.trim() || null,
+            subtotal: new Prisma.Decimal(subtotal),
+            discount: new Prisma.Decimal(discount),
+            finalPrice: new Prisma.Decimal(finalPrice),
+            details: {
+                create: calculatedItems.map((item) => ({
+                    foodId: item.food.id,
+                    foodNameSnapshot: item.food.name,
+                    quantity: item.quantity,
+                    unitPrice: new Prisma.Decimal(item.unitPrice),
+                    notes: item.notes,
+                    lineTotal: new Prisma.Decimal(item.lineTotal),
+                    toppings: {
+                        create: item.selectedToppings.map((topping) => ({
+                            toppingId: topping.id,
+                            toppingNameSnapshot: topping.name,
+                            priceSnapshot: topping.price,
+                        })),
+                    },
+                })),
+            },
+        },
+        include: orderInclude,
+    });
+    const order = campaign
+        ? await prisma.$transaction(async (transaction) => {
             const currentCampaign = await transaction.campaign.findUnique({
                 where: {
                     id: campaign.id,
@@ -288,43 +317,9 @@ export const createOrder = async (customerId, input) => {
                     },
                 },
             });
-        }
-        return transaction.order.create({
-            data: {
-                customerId,
-                merchantId,
-                affiliateLinkId: affiliateLink?.id ?? null,
-                campaignId: campaign?.id ?? null,
-                name: input.name.trim(),
-                orderType: input.orderType === "Offline" ? OrderType.Offline : OrderType.Online,
-                paymentMethod: input.paymentMethod,
-                status: OrderStatus.Pending,
-                notes: input.notes?.trim() || null,
-                deliveryAddress: input.deliveryAddress?.trim() || null,
-                subtotal: new Prisma.Decimal(subtotal),
-                discount: new Prisma.Decimal(discount),
-                finalPrice: new Prisma.Decimal(finalPrice),
-                details: {
-                    create: calculatedItems.map((item) => ({
-                        foodId: item.food.id,
-                        foodNameSnapshot: item.food.name,
-                        quantity: item.quantity,
-                        unitPrice: new Prisma.Decimal(item.unitPrice),
-                        notes: item.notes,
-                        lineTotal: new Prisma.Decimal(item.lineTotal),
-                        toppings: {
-                            create: item.selectedToppings.map((topping) => ({
-                                toppingId: topping.id,
-                                toppingNameSnapshot: topping.name,
-                                priceSnapshot: topping.price,
-                            })),
-                        },
-                    })),
-                },
-            },
-            include: orderInclude,
-        });
-    });
+            return createOrder(transaction);
+        })
+        : await createOrder(prisma);
     const merchant = await prisma.merchant.findUnique({
         where: {
             id: order.merchantId,
@@ -477,7 +472,7 @@ export const updateOrderStatus = async (merchantId, orderId, input) => {
         throw new AppError(403, "Order không thuộc Merchant này");
     }
     const nextStatus = input.status;
-    if (!canMerchantTransitionOrder(order.status, nextStatus)) {
+    if (!canMerchantTransitionOrder(order.status, nextStatus, order.orderType)) {
         throw new AppError(409, `Không thể chuyển order từ ${order.status} sang ${nextStatus}`);
     }
     const updatedOrder = await prisma.order.update({
@@ -490,6 +485,9 @@ export const updateOrderStatus = async (merchantId, orderId, input) => {
                 ? input.rejectionReason?.trim() || "Merchant từ chối order"
                 : null,
             acceptedAt: nextStatus === OrderStatus.Accepted ? new Date() : undefined,
+            preparingAt: nextStatus === OrderStatus.Preparing ? new Date() : undefined,
+            readyAt: nextStatus === OrderStatus.Ready ? new Date() : undefined,
+            deliveringAt: nextStatus === OrderStatus.Delivering ? new Date() : undefined,
             rejectedAt: nextStatus === OrderStatus.Rejected ? new Date() : undefined,
             completedAt: nextStatus === OrderStatus.Completed ? new Date() : undefined,
         },
@@ -510,6 +508,38 @@ export const updateOrderStatus = async (merchantId, orderId, input) => {
                 type: NotificationType.Order,
                 title: "Đơn hàng đã được chấp nhận",
                 message: "Merchant đã chấp nhận đơn hàng của bạn.",
+                referenceId: updatedOrder.id,
+                referenceType: "Order",
+            });
+        }
+        if (nextStatus === OrderStatus.Preparing) {
+            await createNotification({
+                userId: customer.userId,
+                type: NotificationType.Order,
+                title: "Quán đang chuẩn bị đơn",
+                message: "Đơn hàng của bạn đã được chuyển sang bước chuẩn bị.",
+                referenceId: updatedOrder.id,
+                referenceType: "Order",
+            });
+        }
+        if (nextStatus === OrderStatus.Ready) {
+            await createNotification({
+                userId: customer.userId,
+                type: NotificationType.Order,
+                title: "Đơn hàng đã sẵn sàng",
+                message: updatedOrder.orderType === OrderType.Offline
+                    ? "Đơn của bạn đã sẵn sàng tại quán."
+                    : "Đơn của bạn đã sẵn sàng để giao.",
+                referenceId: updatedOrder.id,
+                referenceType: "Order",
+            });
+        }
+        if (nextStatus === OrderStatus.Delivering) {
+            await createNotification({
+                userId: customer.userId,
+                type: NotificationType.Order,
+                title: "Đơn hàng đang được giao",
+                message: "Đơn hàng đang trên đường đến địa chỉ của bạn.",
                 referenceId: updatedOrder.id,
                 referenceType: "Order",
             });
@@ -562,7 +592,7 @@ export const updateCustomerOrderStatus = async (customerId, orderId, input) => {
     if (order.customerId !== customerId) {
         throw new AppError(403, "Order không thuộc Customer này");
     }
-    if (order.status !== OrderStatus.Accepted) {
+    if (!canCustomerConfirmOrder(order.status, order.orderType)) {
         throw new AppError(409, `Không thể xác nhận order khi trạng thái hiện tại là ${order.status}`);
     }
     const nextStatus = input.status;

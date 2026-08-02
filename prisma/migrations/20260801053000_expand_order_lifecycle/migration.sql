@@ -1,0 +1,8 @@
+ALTER TYPE "OrderStatus" ADD VALUE IF NOT EXISTS 'Preparing';
+ALTER TYPE "OrderStatus" ADD VALUE IF NOT EXISTS 'Ready';
+ALTER TYPE "OrderStatus" ADD VALUE IF NOT EXISTS 'Delivering';
+
+ALTER TABLE "orders"
+ADD COLUMN "preparingAt" TIMESTAMP(3),
+ADD COLUMN "readyAt" TIMESTAMP(3),
+ADD COLUMN "deliveringAt" TIMESTAMP(3);
