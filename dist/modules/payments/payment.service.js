@@ -4,6 +4,12 @@ import { env } from "../../config/env.js";
 import { AppError } from "../../common/errors/app-error.js";
 import { createReviewerCommission } from "../affiliate-links/affiliate-earning.service.js";
 import { createNotification } from "../notifications/notification.service.js";
+const activeOrderStatuses = new Set([
+    OrderStatus.Accepted,
+    OrderStatus.Preparing,
+    OrderStatus.Ready,
+    OrderStatus.Delivering,
+]);
 const notifyPaymentSuccess = async (orderId) => {
     const order = await prisma.order.findUnique({
         where: {
@@ -155,7 +161,7 @@ export const requestCashConfirmation = async (customerId, orderId) => {
     if (order.paymentMethod !== PaymentMethod.Cash) {
         throw new AppError(400, "Order này không sử dụng phương thức tiền mặt");
     }
-    if (order.status !== OrderStatus.Accepted) {
+    if (!activeOrderStatuses.has(order.status)) {
         throw new AppError(409, "Chỉ Order đã được chấp nhận mới có thể yêu cầu xác nhận tiền mặt");
     }
     if (order.paymentStatus === OrderPaymentStatus.Paid) {
@@ -217,7 +223,7 @@ export const confirmCashPayment = async (merchantId, orderId) => {
     if (order.paymentMethod !== PaymentMethod.Cash) {
         throw new AppError(400, "Order này không sử dụng phương thức tiền mặt");
     }
-    if (order.status !== OrderStatus.Accepted) {
+    if (!activeOrderStatuses.has(order.status)) {
         throw new AppError(409, "Order chưa ở trạng thái có thể xác nhận thanh toán");
     }
     if (order.paymentStatus === OrderPaymentStatus.Paid) {
@@ -275,7 +281,7 @@ export const submitBill = async (merchantId, input) => {
     if (order.merchantId !== merchantId) {
         throw new AppError(403, "Order không thuộc Merchant này");
     }
-    if (order.status !== OrderStatus.Accepted &&
+    if (!activeOrderStatuses.has(order.status) &&
         order.status !== OrderStatus.Completed) {
         throw new AppError(409, "Order chưa được chấp nhận");
     }
@@ -557,7 +563,7 @@ export const processSepayWebhook = async (input) => {
     if (Math.abs(amount - Number(order.finalPrice)) > 0.01) {
         throw new AppError(409, "Số tiền chuyển khoản không khớp");
     }
-    const bill = await prisma.$transaction(async (transaction) => {
+    await prisma.$transaction(async (transaction) => {
         await transaction.order.update({
             where: {
                 id: orderId,
@@ -566,7 +572,7 @@ export const processSepayWebhook = async (input) => {
                 paymentStatus: OrderPaymentStatus.Paid,
             },
         });
-        const updatedBill = await transaction.bill.update({
+        await transaction.bill.update({
             where: {
                 orderId,
             },
@@ -579,9 +585,11 @@ export const processSepayWebhook = async (input) => {
                 rejectedAt: null,
                 rejectionReason: null,
             },
-            include: billInclude,
         });
-        return updatedBill;
+    });
+    const bill = await prisma.bill.findUniqueOrThrow({
+        where: { orderId },
+        include: billInclude,
     });
     await notifyPaymentSuccess(bill.orderId);
     if (bill.order.status === OrderStatus.Completed) {

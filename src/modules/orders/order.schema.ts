@@ -79,7 +79,13 @@ export const updateOrderStatusSchema = z.object({
 
   body: z
     .object({
-      status: z.enum(["Accepted", "Rejected"]),
+      status: z.enum([
+        "Accepted",
+        "Preparing",
+        "Ready",
+        "Delivering",
+        "Rejected",
+      ]),
 
       rejectionReason: z
         .union([z.string().trim().max(1000), z.literal(""), z.null()])
@@ -102,6 +108,9 @@ export const orderListSchema = z.object({
       .enum([
         "Pending",
         "Accepted",
+        "Preparing",
+        "Ready",
+        "Delivering",
         "Rejected",
         "Completed",
         "NotReceived",
@@ -156,7 +165,15 @@ export const updateOrderStatusByRoleSchema = z.object({
 
   body: z
     .object({
-      status: z.enum(["Accepted", "Rejected", "Completed", "NotReceived"]),
+      status: z.enum([
+        "Accepted",
+        "Preparing",
+        "Ready",
+        "Delivering",
+        "Rejected",
+        "Completed",
+        "NotReceived",
+      ]),
 
       rejectionReason: z
         .union([z.string().trim().max(1000), z.literal(""), z.null()])

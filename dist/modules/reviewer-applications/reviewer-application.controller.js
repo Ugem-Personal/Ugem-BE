@@ -2,6 +2,8 @@ import { AppError } from "../../common/errors/app-error.js";
 import { asyncHandler } from "../../common/utils/async-handler.js";
 import { sendSuccess } from "../../common/utils/api-response.js";
 import * as reviewerApplicationService from "./reviewer-application.service.js";
+import { createAuditLog } from "../audit/audit.service.js";
+import { getAuditActor } from "../audit/audit-context.js";
 const getCustomerId = (req) => {
     if (!req.user?.CustomerId) {
         throw new AppError(403, "Tài khoản không có CustomerId");
@@ -54,6 +56,18 @@ export const getReviewerApplications = asyncHandler(async (req, res) => {
 });
 export const reviewReviewerApplication = asyncHandler(async (req, res) => {
     const application = await reviewerApplicationService.reviewReviewerApplication(getRouteParam(req.params.id, "id"), getUserId(req), req.body);
+    await createAuditLog({
+        actor: getAuditActor(req),
+        action: req.body.status === "Accepted"
+            ? "REVIEWER_APPLICATION_ACCEPTED"
+            : "REVIEWER_APPLICATION_REJECTED",
+        entityType: "ReviewerApplication",
+        entityId: application.id,
+        metadata: {
+            status: req.body.status,
+            rejectionReason: req.body.rejectionReason || null,
+        },
+    });
     return sendSuccess(res, {
         message: req.body.status === "Accepted"
             ? "Chấp thuận Reviewer thành công"

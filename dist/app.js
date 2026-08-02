@@ -1,11 +1,11 @@
-import crypto from "node:crypto";
 import cors from "cors";
 import express from "express";
 import helmet from "helmet";
-import morgan from "morgan";
 import { env } from "./config/env.js";
 import { errorHandler, notFoundHandler, } from "./common/middleware/error.middleware.js";
 import { apiRateLimiter } from "./common/middleware/rate-limit.middleware.js";
+import { requestObservability } from "./common/middleware/request-observability.middleware.js";
+import { getLiveness, getReadiness, } from "./modules/health/health.controller.js";
 import { authRouter } from "./modules/auth/auth.routes.js";
 import { userRouter } from "./modules/users/user.routes.js";
 import { applicationRouter } from "./modules/applications/application.routes.js";
@@ -30,6 +30,7 @@ export const app = express();
 if (env.NODE_ENV === "production") {
     app.set("trust proxy", 1);
 }
+app.use(requestObservability);
 app.use(helmet());
 app.use(cors({
     origin: env.FRONTEND_URL,
@@ -37,24 +38,10 @@ app.use(cors({
 }));
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
-app.use(morgan(env.NODE_ENV === "production" ? "combined" : "dev"));
-app.use((_req, res, next) => {
-    res.locals.traceId = crypto.randomUUID();
-    next();
-});
+app.get("/api/v1/health/live", getLiveness);
+app.get("/api/v1/health/ready", getReadiness);
+app.get("/api/v1/health", getReadiness);
 app.use("/api", apiRateLimiter);
-app.get("/api/v1/health", (_req, res) => {
-    res.status(200).json({
-        success: true,
-        message: "UGem API is running",
-        data: {
-            status: "UP",
-        },
-        errors: null,
-        traceId: res.locals.traceId,
-        timestampUtc: new Date().toISOString(),
-    });
-});
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/customers", customerRouter);

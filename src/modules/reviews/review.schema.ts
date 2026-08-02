@@ -27,20 +27,12 @@ const reviewDetailSchema = z
     content: z
       .union([z.string().trim().max(1000), z.literal(""), z.null()])
       .optional(),
-
-    /*
-     * FE đang gửi tên này.
-     */
-    detailContent: z
-      .union([z.string().trim().max(1000), z.literal(""), z.null()])
-      .optional(),
   })
   .transform((detail) => ({
     orderDetailId: detail.orderDetailId,
     rating: detail.rating,
 
-    content:
-      detail.content !== undefined ? detail.content : detail.detailContent,
+    content: detail.content,
   }));
 
 const updateReviewBodySchema = z
@@ -57,14 +49,14 @@ const updateReviewBodySchema = z
       .union([z.string().trim().url(), z.literal(""), z.null()])
       .optional(),
 
-    reviewDetails: z
+    details: z
       .array(
         z.object({
           reviewDetailId: z.string().uuid("Review Detail ID không hợp lệ"),
 
           rating: z.coerce.number().int().min(1).max(5).optional(),
 
-          detailContent: z
+          content: z
             .union([z.string().trim().max(1000), z.literal(""), z.null()])
             .optional(),
         }),
@@ -77,7 +69,7 @@ const updateReviewBodySchema = z
       body.rating !== undefined ||
       body.content !== undefined ||
       body.imageUrl !== undefined ||
-      body.reviewDetails !== undefined,
+      body.details !== undefined,
     {
       message: "Phải cung cấp ít nhất một trường để cập nhật",
     },
@@ -119,11 +111,6 @@ export const createReviewSchema = z.object({
         .optional(),
 
       details: z.array(reviewDetailSchema).max(100).optional(),
-
-      /*
-       * FE gửi tên này.
-       */
-      reviewDetails: z.array(reviewDetailSchema).max(100).optional(),
     })
     .transform((body) => ({
       orderId: body.orderId,
@@ -132,7 +119,7 @@ export const createReviewSchema = z.object({
       content: body.content,
       imageUrl: body.imageUrl,
 
-      details: body.details ?? body.reviewDetails ?? [],
+      details: body.details ?? [],
     })),
 });
 

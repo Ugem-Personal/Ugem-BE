@@ -36,7 +36,14 @@ export const getCustomerDashboard = async (customerId) => {
         prisma.order.count({
             where: {
                 customerId,
-                status: OrderStatus.Accepted,
+                status: {
+                    in: [
+                        OrderStatus.Accepted,
+                        OrderStatus.Preparing,
+                        OrderStatus.Ready,
+                        OrderStatus.Delivering,
+                    ],
+                },
             },
         }),
         prisma.order.count({
@@ -376,6 +383,9 @@ export const getCustomerOrderGrowthByYear = async (customerId, year) => {
                 month.pending += 1;
                 break;
             case OrderStatus.Accepted:
+            case OrderStatus.Preparing:
+            case OrderStatus.Ready:
+            case OrderStatus.Delivering:
                 month.accepted += 1;
                 break;
             case OrderStatus.Completed:
@@ -1084,6 +1094,9 @@ export const getCustomerOrderPerformanceByYear = async (customerId, year) => {
                 month.pendingOrders += 1;
                 break;
             case OrderStatus.Accepted:
+            case OrderStatus.Preparing:
+            case OrderStatus.Ready:
+            case OrderStatus.Delivering:
                 month.acceptedOrders += 1;
                 break;
             case OrderStatus.Completed:
@@ -1253,6 +1266,9 @@ export const getCustomerDailySpending = async (customerId, startDateValue, endDa
                 day.pendingOrders += 1;
                 break;
             case OrderStatus.Accepted:
+            case OrderStatus.Preparing:
+            case OrderStatus.Ready:
+            case OrderStatus.Delivering:
                 day.acceptedOrders += 1;
                 break;
             case OrderStatus.Completed:

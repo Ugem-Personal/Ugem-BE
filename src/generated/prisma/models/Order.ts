@@ -60,6 +60,9 @@ export type OrderMinAggregateOutputType = {
   rejectionReason: string | null
   orderedAt: Date | null
   acceptedAt: Date | null
+  preparingAt: Date | null
+  readyAt: Date | null
+  deliveringAt: Date | null
   rejectedAt: Date | null
   completedAt: Date | null
   createdAt: Date | null
@@ -86,6 +89,9 @@ export type OrderMaxAggregateOutputType = {
   rejectionReason: string | null
   orderedAt: Date | null
   acceptedAt: Date | null
+  preparingAt: Date | null
+  readyAt: Date | null
+  deliveringAt: Date | null
   rejectedAt: Date | null
   completedAt: Date | null
   createdAt: Date | null
@@ -112,6 +118,9 @@ export type OrderCountAggregateOutputType = {
   rejectionReason: number
   orderedAt: number
   acceptedAt: number
+  preparingAt: number
+  readyAt: number
+  deliveringAt: number
   rejectedAt: number
   completedAt: number
   createdAt: number
@@ -154,6 +163,9 @@ export type OrderMinAggregateInputType = {
   rejectionReason?: true
   orderedAt?: true
   acceptedAt?: true
+  preparingAt?: true
+  readyAt?: true
+  deliveringAt?: true
   rejectedAt?: true
   completedAt?: true
   createdAt?: true
@@ -180,6 +192,9 @@ export type OrderMaxAggregateInputType = {
   rejectionReason?: true
   orderedAt?: true
   acceptedAt?: true
+  preparingAt?: true
+  readyAt?: true
+  deliveringAt?: true
   rejectedAt?: true
   completedAt?: true
   createdAt?: true
@@ -206,6 +221,9 @@ export type OrderCountAggregateInputType = {
   rejectionReason?: true
   orderedAt?: true
   acceptedAt?: true
+  preparingAt?: true
+  readyAt?: true
+  deliveringAt?: true
   rejectedAt?: true
   completedAt?: true
   createdAt?: true
@@ -319,6 +337,9 @@ export type OrderGroupByOutputType = {
   rejectionReason: string | null
   orderedAt: Date
   acceptedAt: Date | null
+  preparingAt: Date | null
+  readyAt: Date | null
+  deliveringAt: Date | null
   rejectedAt: Date | null
   completedAt: Date | null
   createdAt: Date
@@ -368,6 +389,9 @@ export type OrderWhereInput = {
   rejectionReason?: Prisma.StringNullableFilter<"Order"> | string | null
   orderedAt?: Prisma.DateTimeFilter<"Order"> | Date | string
   acceptedAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
+  preparingAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
+  readyAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
+  deliveringAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
   rejectedAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Order"> | Date | string
@@ -403,6 +427,9 @@ export type OrderOrderByWithRelationInput = {
   rejectionReason?: Prisma.SortOrderInput | Prisma.SortOrder
   orderedAt?: Prisma.SortOrder
   acceptedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  preparingAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  readyAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deliveringAt?: Prisma.SortOrderInput | Prisma.SortOrder
   rejectedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -441,6 +468,9 @@ export type OrderWhereUniqueInput = Prisma.AtLeast<{
   rejectionReason?: Prisma.StringNullableFilter<"Order"> | string | null
   orderedAt?: Prisma.DateTimeFilter<"Order"> | Date | string
   acceptedAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
+  preparingAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
+  readyAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
+  deliveringAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
   rejectedAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Order"> | Date | string
@@ -476,6 +506,9 @@ export type OrderOrderByWithAggregationInput = {
   rejectionReason?: Prisma.SortOrderInput | Prisma.SortOrder
   orderedAt?: Prisma.SortOrder
   acceptedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  preparingAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  readyAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deliveringAt?: Prisma.SortOrderInput | Prisma.SortOrder
   rejectedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -510,6 +543,9 @@ export type OrderScalarWhereWithAggregatesInput = {
   rejectionReason?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
   orderedAt?: Prisma.DateTimeWithAggregatesFilter<"Order"> | Date | string
   acceptedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
+  preparingAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
+  readyAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
+  deliveringAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
   rejectedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Order"> | Date | string
@@ -532,6 +568,9 @@ export type OrderCreateInput = {
   rejectionReason?: string | null
   orderedAt?: Date | string
   acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
   rejectedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -567,6 +606,9 @@ export type OrderUncheckedCreateInput = {
   rejectionReason?: string | null
   orderedAt?: Date | string
   acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
   rejectedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -594,6 +636,9 @@ export type OrderUpdateInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -629,6 +674,9 @@ export type OrderUncheckedUpdateInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -660,6 +708,9 @@ export type OrderCreateManyInput = {
   rejectionReason?: string | null
   orderedAt?: Date | string
   acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
   rejectedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -682,6 +733,9 @@ export type OrderUpdateManyMutationInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -708,6 +762,9 @@ export type OrderUncheckedUpdateManyInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -744,6 +801,9 @@ export type OrderCountOrderByAggregateInput = {
   rejectionReason?: Prisma.SortOrder
   orderedAt?: Prisma.SortOrder
   acceptedAt?: Prisma.SortOrder
+  preparingAt?: Prisma.SortOrder
+  readyAt?: Prisma.SortOrder
+  deliveringAt?: Prisma.SortOrder
   rejectedAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -777,6 +837,9 @@ export type OrderMaxOrderByAggregateInput = {
   rejectionReason?: Prisma.SortOrder
   orderedAt?: Prisma.SortOrder
   acceptedAt?: Prisma.SortOrder
+  preparingAt?: Prisma.SortOrder
+  readyAt?: Prisma.SortOrder
+  deliveringAt?: Prisma.SortOrder
   rejectedAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -803,6 +866,9 @@ export type OrderMinOrderByAggregateInput = {
   rejectionReason?: Prisma.SortOrder
   orderedAt?: Prisma.SortOrder
   acceptedAt?: Prisma.SortOrder
+  preparingAt?: Prisma.SortOrder
+  readyAt?: Prisma.SortOrder
+  deliveringAt?: Prisma.SortOrder
   rejectedAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -1091,6 +1157,9 @@ export type OrderCreateWithoutCustomerInput = {
   rejectionReason?: string | null
   orderedAt?: Date | string
   acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
   rejectedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1124,6 +1193,9 @@ export type OrderUncheckedCreateWithoutCustomerInput = {
   rejectionReason?: string | null
   orderedAt?: Date | string
   acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
   rejectedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1184,6 +1256,9 @@ export type OrderScalarWhereInput = {
   rejectionReason?: Prisma.StringNullableFilter<"Order"> | string | null
   orderedAt?: Prisma.DateTimeFilter<"Order"> | Date | string
   acceptedAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
+  preparingAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
+  readyAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
+  deliveringAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
   rejectedAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Order"> | Date | string
@@ -1206,6 +1281,9 @@ export type OrderCreateWithoutMerchantInput = {
   rejectionReason?: string | null
   orderedAt?: Date | string
   acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
   rejectedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1239,6 +1317,9 @@ export type OrderUncheckedCreateWithoutMerchantInput = {
   rejectionReason?: string | null
   orderedAt?: Date | string
   acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
   rejectedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1292,6 +1373,9 @@ export type OrderCreateWithoutDetailsInput = {
   rejectionReason?: string | null
   orderedAt?: Date | string
   acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
   rejectedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1326,6 +1410,9 @@ export type OrderUncheckedCreateWithoutDetailsInput = {
   rejectionReason?: string | null
   orderedAt?: Date | string
   acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
   rejectedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1368,6 +1455,9 @@ export type OrderUpdateWithoutDetailsInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1402,6 +1492,9 @@ export type OrderUncheckedUpdateWithoutDetailsInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1428,6 +1521,9 @@ export type OrderCreateWithoutBillInput = {
   rejectionReason?: string | null
   orderedAt?: Date | string
   acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
   rejectedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1462,6 +1558,9 @@ export type OrderUncheckedCreateWithoutBillInput = {
   rejectionReason?: string | null
   orderedAt?: Date | string
   acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
   rejectedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1504,6 +1603,9 @@ export type OrderUpdateWithoutBillInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1538,6 +1640,9 @@ export type OrderUncheckedUpdateWithoutBillInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1564,6 +1669,9 @@ export type OrderCreateWithoutReviewInput = {
   rejectionReason?: string | null
   orderedAt?: Date | string
   acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
   rejectedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1598,6 +1706,9 @@ export type OrderUncheckedCreateWithoutReviewInput = {
   rejectionReason?: string | null
   orderedAt?: Date | string
   acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
   rejectedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1640,6 +1751,9 @@ export type OrderUpdateWithoutReviewInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1674,6 +1788,9 @@ export type OrderUncheckedUpdateWithoutReviewInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1700,6 +1817,9 @@ export type OrderCreateWithoutAffiliateLinkInput = {
   rejectionReason?: string | null
   orderedAt?: Date | string
   acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
   rejectedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1733,6 +1853,9 @@ export type OrderUncheckedCreateWithoutAffiliateLinkInput = {
   rejectionReason?: string | null
   orderedAt?: Date | string
   acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
   rejectedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1786,6 +1909,9 @@ export type OrderCreateWithoutEarningTransactionInput = {
   rejectionReason?: string | null
   orderedAt?: Date | string
   acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
   rejectedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1820,6 +1946,9 @@ export type OrderUncheckedCreateWithoutEarningTransactionInput = {
   rejectionReason?: string | null
   orderedAt?: Date | string
   acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
   rejectedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1862,6 +1991,9 @@ export type OrderUpdateWithoutEarningTransactionInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1896,6 +2028,9 @@ export type OrderUncheckedUpdateWithoutEarningTransactionInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1922,6 +2057,9 @@ export type OrderCreateWithoutCampaignInput = {
   rejectionReason?: string | null
   orderedAt?: Date | string
   acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
   rejectedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1955,6 +2093,9 @@ export type OrderUncheckedCreateWithoutCampaignInput = {
   rejectionReason?: string | null
   orderedAt?: Date | string
   acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
   rejectedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -2008,6 +2149,9 @@ export type OrderCreateWithoutCheckInInput = {
   rejectionReason?: string | null
   orderedAt?: Date | string
   acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
   rejectedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -2042,6 +2186,9 @@ export type OrderUncheckedCreateWithoutCheckInInput = {
   rejectionReason?: string | null
   orderedAt?: Date | string
   acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
   rejectedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -2084,6 +2231,9 @@ export type OrderUpdateWithoutCheckInInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2118,6 +2268,9 @@ export type OrderUncheckedUpdateWithoutCheckInInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2147,6 +2300,9 @@ export type OrderCreateManyCustomerInput = {
   rejectionReason?: string | null
   orderedAt?: Date | string
   acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
   rejectedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -2169,6 +2325,9 @@ export type OrderUpdateWithoutCustomerInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2202,6 +2361,9 @@ export type OrderUncheckedUpdateWithoutCustomerInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2232,6 +2394,9 @@ export type OrderUncheckedUpdateManyWithoutCustomerInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2257,6 +2422,9 @@ export type OrderCreateManyMerchantInput = {
   rejectionReason?: string | null
   orderedAt?: Date | string
   acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
   rejectedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -2279,6 +2447,9 @@ export type OrderUpdateWithoutMerchantInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2312,6 +2483,9 @@ export type OrderUncheckedUpdateWithoutMerchantInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2342,6 +2516,9 @@ export type OrderUncheckedUpdateManyWithoutMerchantInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2367,6 +2544,9 @@ export type OrderCreateManyAffiliateLinkInput = {
   rejectionReason?: string | null
   orderedAt?: Date | string
   acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
   rejectedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -2389,6 +2569,9 @@ export type OrderUpdateWithoutAffiliateLinkInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2422,6 +2605,9 @@ export type OrderUncheckedUpdateWithoutAffiliateLinkInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2452,6 +2638,9 @@ export type OrderUncheckedUpdateManyWithoutAffiliateLinkInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2477,6 +2666,9 @@ export type OrderCreateManyCampaignInput = {
   rejectionReason?: string | null
   orderedAt?: Date | string
   acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
   rejectedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -2499,6 +2691,9 @@ export type OrderUpdateWithoutCampaignInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2532,6 +2727,9 @@ export type OrderUncheckedUpdateWithoutCampaignInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2562,6 +2760,9 @@ export type OrderUncheckedUpdateManyWithoutCampaignInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2619,6 +2820,9 @@ export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   rejectionReason?: boolean
   orderedAt?: boolean
   acceptedAt?: boolean
+  preparingAt?: boolean
+  readyAt?: boolean
+  deliveringAt?: boolean
   rejectedAt?: boolean
   completedAt?: boolean
   createdAt?: boolean
@@ -2655,6 +2859,9 @@ export type OrderSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   rejectionReason?: boolean
   orderedAt?: boolean
   acceptedAt?: boolean
+  preparingAt?: boolean
+  readyAt?: boolean
+  deliveringAt?: boolean
   rejectedAt?: boolean
   completedAt?: boolean
   createdAt?: boolean
@@ -2685,6 +2892,9 @@ export type OrderSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   rejectionReason?: boolean
   orderedAt?: boolean
   acceptedAt?: boolean
+  preparingAt?: boolean
+  readyAt?: boolean
+  deliveringAt?: boolean
   rejectedAt?: boolean
   completedAt?: boolean
   createdAt?: boolean
@@ -2715,13 +2925,16 @@ export type OrderSelectScalar = {
   rejectionReason?: boolean
   orderedAt?: boolean
   acceptedAt?: boolean
+  preparingAt?: boolean
+  readyAt?: boolean
+  deliveringAt?: boolean
   rejectedAt?: boolean
   completedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type OrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "customerId" | "merchantId" | "affiliateLinkId" | "campaignId" | "name" | "orderType" | "paymentMethod" | "status" | "paymentStatus" | "notes" | "deliveryAddress" | "subtotal" | "discount" | "finalPrice" | "reviewerCommission" | "rejectionReason" | "orderedAt" | "acceptedAt" | "rejectedAt" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
+export type OrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "customerId" | "merchantId" | "affiliateLinkId" | "campaignId" | "name" | "orderType" | "paymentMethod" | "status" | "paymentStatus" | "notes" | "deliveryAddress" | "subtotal" | "discount" | "finalPrice" | "reviewerCommission" | "rejectionReason" | "orderedAt" | "acceptedAt" | "preparingAt" | "readyAt" | "deliveringAt" | "rejectedAt" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
 export type OrderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
@@ -2780,6 +2993,9 @@ export type $OrderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     rejectionReason: string | null
     orderedAt: Date
     acceptedAt: Date | null
+    preparingAt: Date | null
+    readyAt: Date | null
+    deliveringAt: Date | null
     rejectedAt: Date | null
     completedAt: Date | null
     createdAt: Date
@@ -3235,6 +3451,9 @@ export interface OrderFieldRefs {
   readonly rejectionReason: Prisma.FieldRef<"Order", 'String'>
   readonly orderedAt: Prisma.FieldRef<"Order", 'DateTime'>
   readonly acceptedAt: Prisma.FieldRef<"Order", 'DateTime'>
+  readonly preparingAt: Prisma.FieldRef<"Order", 'DateTime'>
+  readonly readyAt: Prisma.FieldRef<"Order", 'DateTime'>
+  readonly deliveringAt: Prisma.FieldRef<"Order", 'DateTime'>
   readonly rejectedAt: Prisma.FieldRef<"Order", 'DateTime'>
   readonly completedAt: Prisma.FieldRef<"Order", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Order", 'DateTime'>

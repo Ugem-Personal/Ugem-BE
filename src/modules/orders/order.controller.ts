@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import { AppError } from "../../common/errors/app-error.js";
 import { asyncHandler } from "../../common/utils/async-handler.js";
 import { sendSuccess } from "../../common/utils/api-response.js";
+import { paginationMeta } from "../../common/utils/pagination.js";
 
 import * as orderService from "./order.service.js";
 
@@ -63,6 +64,7 @@ export const getMyOrders = asyncHandler(async (req: Request, res: Response) => {
   return sendSuccess(res, {
     message: "Lấy danh sách order thành công",
     data: result.items,
+    meta: paginationMeta(result),
   });
 });
 
@@ -98,6 +100,7 @@ export const getMerchantOrders = asyncHandler(
     return sendSuccess(res, {
       message: "Lấy danh sách order Merchant thành công",
       data: result.items,
+      meta: paginationMeta(result),
     });
   },
 );

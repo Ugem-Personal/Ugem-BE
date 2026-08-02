@@ -41,6 +41,9 @@ export const PaymentMethod = {
 export const OrderStatus = {
     Pending: 'Pending',
     Accepted: 'Accepted',
+    Preparing: 'Preparing',
+    Ready: 'Ready',
+    Delivering: 'Delivering',
     Rejected: 'Rejected',
     Completed: 'Completed',
     NotReceived: 'NotReceived',

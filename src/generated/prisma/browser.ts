@@ -147,3 +147,8 @@ export type CheckIn = Prisma.CheckInModel
  * 
  */
 export type Notification = Prisma.NotificationModel
+/**
+ * Model AuditLog
+ * 
+ */
+export type AuditLog = Prisma.AuditLogModel

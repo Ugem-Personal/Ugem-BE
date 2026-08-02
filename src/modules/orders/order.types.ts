@@ -26,7 +26,12 @@ export interface CreateOrderInput {
 }
 
 export interface UpdateOrderStatusInput {
-  status: "Accepted" | "Rejected" | "Completed" | "NotReceived" | "Cancelled";
+  status:
+    | "Accepted"
+    | "Preparing"
+    | "Ready"
+    | "Delivering"
+    | "Rejected";
 
   rejectionReason?: string | null;
 }

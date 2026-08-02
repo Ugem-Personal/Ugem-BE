@@ -21,6 +21,13 @@ import type {
 import { createReviewerCommission } from "../affiliate-links/affiliate-earning.service.js";
 import { createNotification } from "../notifications/notification.service.js";
 
+const activeOrderStatuses = new Set<OrderStatus>([
+  OrderStatus.Accepted,
+  OrderStatus.Preparing,
+  OrderStatus.Ready,
+  OrderStatus.Delivering,
+]);
+
 const notifyPaymentSuccess = async (orderId: string) => {
   const order = await prisma.order.findUnique({
     where: {
@@ -206,7 +213,7 @@ export const requestCashConfirmation = async (
     throw new AppError(400, "Order này không sử dụng phương thức tiền mặt");
   }
 
-  if (order.status !== OrderStatus.Accepted) {
+  if (!activeOrderStatuses.has(order.status)) {
     throw new AppError(
       409,
       "Chỉ Order đã được chấp nhận mới có thể yêu cầu xác nhận tiền mặt",
@@ -294,7 +301,7 @@ export const confirmCashPayment = async (
     throw new AppError(400, "Order này không sử dụng phương thức tiền mặt");
   }
 
-  if (order.status !== OrderStatus.Accepted) {
+  if (!activeOrderStatuses.has(order.status)) {
     throw new AppError(
       409,
       "Order chưa ở trạng thái có thể xác nhận thanh toán",
@@ -375,7 +382,7 @@ export const submitBill = async (
   }
 
   if (
-    order.status !== OrderStatus.Accepted &&
+    !activeOrderStatuses.has(order.status) &&
     order.status !== OrderStatus.Completed
   ) {
     throw new AppError(409, "Order chưa được chấp nhận");
@@ -773,7 +780,7 @@ export const processSepayWebhook = async (input: SepayWebhookInput) => {
     throw new AppError(409, "Số tiền chuyển khoản không khớp");
   }
 
-  const bill = await prisma.$transaction(async (transaction) => {
+  await prisma.$transaction(async (transaction) => {
     await transaction.order.update({
       where: {
         id: orderId,
@@ -784,7 +791,7 @@ export const processSepayWebhook = async (input: SepayWebhookInput) => {
       },
     });
 
-    const updatedBill = await transaction.bill.update({
+    await transaction.bill.update({
       where: {
         orderId,
       },
@@ -798,11 +805,12 @@ export const processSepayWebhook = async (input: SepayWebhookInput) => {
         rejectedAt: null,
         rejectionReason: null,
       },
-
-      include: billInclude,
     });
+  });
 
-    return updatedBill;
+  const bill = await prisma.bill.findUniqueOrThrow({
+    where: { orderId },
+    include: billInclude,
   });
 
   await notifyPaymentSuccess(bill.orderId);

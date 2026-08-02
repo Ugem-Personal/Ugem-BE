@@ -37,12 +37,10 @@ const mapReview = (review) => {
     const customerName = review.customer?.user?.fullName ?? null;
     const customerAvatarUrl = review.customer?.user?.avatarUrl ?? null;
     const reviewDetails = review.details.map((detail) => ({
-        id: detail.id,
         reviewDetailId: detail.id,
         orderDetailId: detail.orderDetailId,
         rating: detail.rating,
         content: detail.content,
-        detailContent: detail.content,
         food: {
             id: detail.orderDetail.foodId,
             name: detail.orderDetail.foodNameSnapshot,
@@ -50,7 +48,6 @@ const mapReview = (review) => {
         createdAt: detail.createdAt,
     }));
     return {
-        id: review.id,
         reviewId: review.id,
         customerId: review.customerId,
         userId: review.customer?.user?.id ?? null,
@@ -72,7 +69,6 @@ const mapReview = (review) => {
         merchant: review.merchant,
         order: review.order,
         details: reviewDetails,
-        reviewDetails,
         createdAt: review.createdAt,
         updatedAt: review.updatedAt,
     };
@@ -218,7 +214,7 @@ export const updateReview = async (customerId, reviewId, input) => {
     if (review.customerId !== customerId) {
         throw new AppError(403, "Bạn không có quyền sửa Review này");
     }
-    const requestedDetails = input.reviewDetails ?? [];
+    const requestedDetails = input.details ?? [];
     if (requestedDetails.length > 0) {
         const detailIds = [
             ...new Set(requestedDetails.map((detail) => detail.reviewDetailId)),
@@ -260,8 +256,8 @@ export const updateReview = async (customerId, reviewId, input) => {
                 },
                 data: {
                     rating: detail.rating,
-                    content: detail.detailContent !== undefined
-                        ? detail.detailContent?.trim() || null
+                    content: detail.content !== undefined
+                        ? detail.content?.trim() || null
                         : undefined,
                 },
             });
@@ -321,13 +317,11 @@ export const getReviewDetails = async (reviewId) => {
         throw new AppError(404, "Không tìm thấy Review");
     }
     return review.details.map((detail) => ({
-        id: detail.id,
         reviewDetailId: detail.id,
         reviewId,
         orderDetailId: detail.orderDetailId,
         rating: detail.rating,
         content: detail.content,
-        detailContent: detail.content,
         food: {
             id: detail.orderDetail.foodId,
             name: detail.orderDetail.foodNameSnapshot,

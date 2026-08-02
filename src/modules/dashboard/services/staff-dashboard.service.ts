@@ -673,6 +673,9 @@ export const getStaffOrderGrowthByYear = async (year: number) => {
         break;
 
       case OrderStatus.Accepted:
+      case OrderStatus.Preparing:
+      case OrderStatus.Ready:
+      case OrderStatus.Delivering:
         month.accepted += 1;
         break;
 
@@ -1458,6 +1461,9 @@ export const getStaffOrderPerformanceByYear = async (year: number) => {
         break;
 
       case OrderStatus.Accepted:
+      case OrderStatus.Preparing:
+      case OrderStatus.Ready:
+      case OrderStatus.Delivering:
         month!.acceptedOrders += 1;
         break;
 

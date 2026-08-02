@@ -48,6 +48,7 @@ export const generateCheckInQr = async (merchantId, orderId) => {
         throw new AppError(400, "Chỉ order Offline mới sử dụng QR check-in");
     }
     if (order.status !== OrderStatus.Accepted &&
+        order.status !== OrderStatus.Ready &&
         order.status !== OrderStatus.Completed) {
         throw new AppError(409, "Order chưa ở trạng thái có thể tạo QR check-in");
     }
@@ -97,6 +98,7 @@ export const verifyCheckIn = async (customerId, orderId, checkInToken) => {
         throw new AppError(409, "Order chưa được thanh toán");
     }
     if (order.status !== OrderStatus.Accepted &&
+        order.status !== OrderStatus.Ready &&
         order.status !== OrderStatus.Completed) {
         throw new AppError(409, "Order chưa ở trạng thái có thể check-in");
     }

@@ -1,6 +1,7 @@
 import { AppError } from "../../common/errors/app-error.js";
 import { asyncHandler } from "../../common/utils/async-handler.js";
 import { sendSuccess } from "../../common/utils/api-response.js";
+import { paginationMeta } from "../../common/utils/pagination.js";
 import * as reviewService from "./review.service.js";
 const getCustomerId = (req) => {
     const customerId = req.user?.CustomerId;
@@ -31,7 +32,8 @@ export const getMerchantReviews = asyncHandler(async (req, res) => {
     });
     return sendSuccess(res, {
         message: "Lấy danh sách Review thành công",
-        data: result,
+        data: result.items,
+        meta: paginationMeta(result),
     });
 });
 export const getMyReviews = asyncHandler(async (req, res) => {
@@ -66,6 +68,7 @@ export const getMerchantReviewsByQuery = asyncHandler(async (req, res) => {
          * FE hiện đọc data như Review[].
          */
         data: result.items,
+        meta: paginationMeta(result),
     });
 });
 export const getReviewDetailsByQuery = asyncHandler(async (req, res) => {

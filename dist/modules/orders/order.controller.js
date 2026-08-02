@@ -1,6 +1,7 @@
 import { AppError } from "../../common/errors/app-error.js";
 import { asyncHandler } from "../../common/utils/async-handler.js";
 import { sendSuccess } from "../../common/utils/api-response.js";
+import { paginationMeta } from "../../common/utils/pagination.js";
 import * as orderService from "./order.service.js";
 const getCustomerId = (req) => {
     const customerId = req.user?.CustomerId;
@@ -41,6 +42,7 @@ export const getMyOrders = asyncHandler(async (req, res) => {
     return sendSuccess(res, {
         message: "Lấy danh sách order thành công",
         data: result.items,
+        meta: paginationMeta(result),
     });
 });
 export const createMerchantOrder = asyncHandler(async (req, res) => {
@@ -60,6 +62,7 @@ export const getMerchantOrders = asyncHandler(async (req, res) => {
     return sendSuccess(res, {
         message: "Lấy danh sách order Merchant thành công",
         data: result.items,
+        meta: paginationMeta(result),
     });
 });
 export const getOrderById = asyncHandler(async (req, res) => {

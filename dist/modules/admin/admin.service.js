@@ -377,7 +377,10 @@ export const getMerchantRevenueDetail = async (merchantId, periodType) => {
         order.paymentStatus === OrderPaymentStatus.Paid);
     const financial = calculateFinancialSummary(completedPaidOrders);
     const pendingOrders = merchant.orders.filter((order) => order.status === OrderStatus.Pending).length;
-    const acceptedOrders = merchant.orders.filter((order) => order.status === OrderStatus.Accepted).length;
+    const acceptedOrders = merchant.orders.filter((order) => order.status === OrderStatus.Accepted ||
+        order.status === OrderStatus.Preparing ||
+        order.status === OrderStatus.Ready ||
+        order.status === OrderStatus.Delivering).length;
     const rejectedOrders = merchant.orders.filter((order) => order.status === OrderStatus.Rejected).length;
     const completedOrders = completedPaidOrders.length;
     const cancelledOrders = merchant.orders.filter((order) => order.status === OrderStatus.Cancelled ||

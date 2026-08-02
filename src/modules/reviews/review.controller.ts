@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import { AppError } from "../../common/errors/app-error.js";
 import { asyncHandler } from "../../common/utils/async-handler.js";
 import { sendSuccess } from "../../common/utils/api-response.js";
+import { paginationMeta } from "../../common/utils/pagination.js";
 
 import * as reviewService from "./review.service.js";
 
@@ -54,7 +55,8 @@ export const getMerchantReviews = asyncHandler(
 
     return sendSuccess(res, {
       message: "Lấy danh sách Review thành công",
-      data: result,
+      data: result.items,
+      meta: paginationMeta(result),
     });
   },
 );
@@ -117,6 +119,7 @@ export const getMerchantReviewsByQuery = asyncHandler(
        * FE hiện đọc data như Review[].
        */
       data: result.items,
+      meta: paginationMeta(result),
     });
   },
 );

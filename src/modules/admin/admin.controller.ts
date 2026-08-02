@@ -6,6 +6,8 @@ import { sendSuccess } from "../../common/utils/api-response.js";
 
 import * as adminService from "./admin.service.js";
 import { RevenuePeriodType } from "./admin.types.js";
+import { createAuditLog, getAuditLogs } from "../audit/audit.service.js";
+import { getAuditActor } from "../audit/audit-context.js";
 
 const getRouteId = (req: Request): string => {
   const id = req.params.id;
@@ -52,6 +54,14 @@ export const getStaffById = asyncHandler(
 export const createStaff = asyncHandler(async (req: Request, res: Response) => {
   const staff = await adminService.createStaff(req.body);
 
+  await createAuditLog({
+    actor: getAuditActor(req),
+    action: "STAFF_CREATED",
+    entityType: "User",
+    entityId: staff.id,
+    metadata: { email: staff.email, fullName: staff.fullName },
+  });
+
   return sendSuccess(res, {
     statusCode: 201,
     message: "Tạo tài khoản Staff thành công",
@@ -60,7 +70,15 @@ export const createStaff = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const deleteStaff = asyncHandler(async (req: Request, res: Response) => {
-  await adminService.deactivateStaff(getRouteId(req));
+  const staffId = getRouteId(req);
+  await adminService.deactivateStaff(staffId);
+
+  await createAuditLog({
+    actor: getAuditActor(req),
+    action: "STAFF_DEACTIVATED",
+    entityType: "User",
+    entityId: staffId,
+  });
 
   return sendSuccess(res, {
     message: "Khóa tài khoản Staff thành công",
@@ -75,6 +93,26 @@ export const getAdminDashboard = asyncHandler(
     return sendSuccess(res, {
       message: "Lấy Dashboard Admin thành công",
       data: dashboard,
+    });
+  },
+);
+
+export const getAdminAuditLogs = asyncHandler(
+  async (req: Request, res: Response) => {
+    const result = await getAuditLogs({
+      search: typeof req.query.search === "string" ? req.query.search : undefined,
+      action: typeof req.query.action === "string" ? req.query.action : undefined,
+      entityType:
+        typeof req.query.entityType === "string"
+          ? req.query.entityType
+          : undefined,
+      pageIndex: Number(req.query.pageIndex),
+      pageSize: Number(req.query.pageSize),
+    });
+
+    return sendSuccess(res, {
+      message: "Lấy nhật ký hệ thống thành công",
+      data: result,
     });
   },
 );
