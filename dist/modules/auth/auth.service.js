@@ -351,11 +351,8 @@ export const forgotPassword = async (input) => {
         await sendPasswordResetCode(user.email, user.fullName, resetCode);
     }
     catch (error) {
-        logger.warn("SMTP email dispatch failed or timed out. Password reset code generated:", {
-            email: user.email,
-            resetCode,
-            error: error instanceof Error ? error.message : error,
-        });
+        logger.error("Gửi email đặt lại mật khẩu thất bại:", error);
+        throw new AppError(500, `Không thể gửi email đặt lại mật khẩu: ${error?.message || "Lỗi kết nối SMTP"}`);
     }
     return null;
 };
