@@ -153,6 +153,12 @@ export const createReview = async (
 
     include: {
       details: true,
+      merchant: {
+        select: {
+          userId: true,
+          name: true,
+        },
+      },
     },
   });
 
@@ -219,6 +225,15 @@ export const createReview = async (
     await updateMerchantRating(transaction, order.merchantId);
 
     return createdReview;
+  });
+
+  await createNotification({
+    userId: order.merchant.userId,
+    type: NotificationType.Review,
+    title: "Quán vừa nhận được đánh giá mới",
+    message: `Khách hàng đã đánh giá ${order.merchant.name} ${review.rating}/5 sao.`,
+    referenceId: review.id,
+    referenceType: "Review",
   });
 
   return mapReview(review);
@@ -299,6 +314,14 @@ export const updateReview = async (
   const review = await prisma.review.findUnique({
     where: {
       id: reviewId,
+    },
+    include: {
+      merchant: {
+        select: {
+          userId: true,
+          name: true,
+        },
+      },
     },
   });
 
@@ -383,6 +406,15 @@ export const updateReview = async (
 
       include: reviewInclude,
     });
+  });
+
+  await createNotification({
+    userId: review.merchant.userId,
+    type: NotificationType.Review,
+    title: "Khách hàng đã cập nhật đánh giá",
+    message: `Một đánh giá về ${review.merchant.name} vừa được cập nhật thành ${updated.rating}/5 sao.`,
+    referenceId: updated.id,
+    referenceType: "Review",
   });
 
   return mapReview(updated);

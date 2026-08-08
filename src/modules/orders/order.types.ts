@@ -11,6 +11,8 @@ export interface CreateOrderInput {
 
   notes?: string | null;
   deliveryAddress?: string | null;
+  deliveryLatitude?: number | null;
+  deliveryLongitude?: number | null;
   orderType: "Online" | "Offline";
 
   /*

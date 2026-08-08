@@ -14,7 +14,10 @@ import type {
   ReviewReviewerApplicationInput,
   UpdateReviewerApplicationInput,
 } from "./reviewer-application.types.js";
-import { createNotification } from "../notifications/notification.service.js";
+import {
+  createNotification,
+  notifyActiveUsersByRoles,
+} from "../notifications/notification.service.js";
 
 const applicationInclude = {
   customer: {
@@ -128,6 +131,14 @@ export const createReviewerApplication = async (
     },
 
     include: applicationInclude,
+  });
+
+  await notifyActiveUsersByRoles([UserRole.Staff, UserRole.Admin], {
+    type: NotificationType.Application,
+    title: "Có đơn đăng ký Reviewer mới",
+    message: `${customer.user.fullName} vừa gửi đơn đăng ký Reviewer.`,
+    referenceId: application.id,
+    referenceType: "ReviewerApplication",
   });
 
   return mapApplication(application);

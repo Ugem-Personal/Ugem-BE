@@ -59,6 +59,33 @@ export const createNotification = async (input) => {
     });
     return mapNotification(notification);
 };
+export const createNotifications = async (inputs) => {
+    if (inputs.length === 0)
+        return { count: 0 };
+    return prisma.notification.createMany({
+        data: inputs.map((input) => ({
+            userId: input.userId,
+            type: input.type,
+            title: input.title,
+            message: input.message,
+            referenceId: input.referenceId ?? null,
+            referenceType: input.referenceType ?? null,
+        })),
+    });
+};
+export const notifyActiveUsersByRoles = async (roles, notification) => {
+    const recipients = await prisma.user.findMany({
+        where: {
+            role: { in: roles },
+            isActive: true,
+        },
+        select: { id: true },
+    });
+    return createNotifications(recipients.map((recipient) => ({
+        ...notification,
+        userId: recipient.id,
+    })));
+};
 export const getMyNotifications = async (userId, query) => {
     const pageIndex = query.pageIndex || 1;
     const pageSize = query.pageSize || 10;

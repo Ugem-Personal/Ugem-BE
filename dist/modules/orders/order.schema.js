@@ -30,6 +30,8 @@ export const createOrderSchema = z.object({
         deliveryAddress: z
             .union([z.string().trim().max(500), z.literal(""), z.null()])
             .optional(),
+        deliveryLatitude: z.coerce.number().min(-90).max(90).nullable().optional(),
+        deliveryLongitude: z.coerce.number().min(-180).max(180).nullable().optional(),
         orderType: z.enum(["Online", "Offline"]),
         finalPrice: z.coerce.number().nonnegative().optional(),
         affiliateLinkCode: z
@@ -53,6 +55,14 @@ export const createOrderSchema = z.object({
                 code: z.ZodIssueCode.custom,
                 path: ["deliveryAddress"],
                 message: "Order Online phải có địa chỉ giao hàng",
+            });
+        }
+        if (body.orderType === "Online" &&
+            (body.deliveryLatitude == null || body.deliveryLongitude == null)) {
+            context.addIssue({
+                code: z.ZodIssueCode.custom,
+                path: ["deliveryLatitude"],
+                message: "Order Online phải có vị trí giao hàng trên bản đồ",
             });
         }
     }),

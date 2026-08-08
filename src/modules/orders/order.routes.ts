@@ -2,7 +2,10 @@ import { Router } from "express";
 
 import { authenticate } from "../../common/middleware/auth.middleware.js";
 import { authorizeRoles } from "../../common/middleware/role.middleware.js";
-import { requireApprovedMerchant } from "../../common/middleware/merchant.middleware.js";
+import {
+  hydrateApprovedMerchant,
+  requireApprovedMerchant,
+} from "../../common/middleware/merchant.middleware.js";
 import { validate } from "../../common/middleware/validate.middleware.js";
 
 import {
@@ -137,6 +140,7 @@ orderRouter.post(
 
 orderRouter.patch(
   "/:id/status",
+  hydrateApprovedMerchant,
   authorizeRoles("Merchant", "Customer", "Reviewer"),
   validate(updateOrderStatusByRoleSchema),
   updateOrderStatusByRole,
@@ -155,4 +159,9 @@ orderRouter.patch(
   validate(cashOrderIdSchema),
   confirmCashPayment,
 );
-orderRouter.get("/:id", validate(orderIdSchema), getOrderById);
+orderRouter.get(
+  "/:id",
+  hydrateApprovedMerchant,
+  validate(orderIdSchema),
+  getOrderById,
+);
