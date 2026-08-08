@@ -95,30 +95,25 @@ export const sendPasswordResetCode = async (recipientEmail, recipientName, reset
         .trim()
         .replace(/^["']|["']$/g, "");
     if (brevoApiKey) {
-        try {
-            const response = await fetch("https://api.brevo.com/v3/smtp/email", {
-                method: "POST",
-                headers: {
-                    "api-key": brevoApiKey,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    sender: { name: "UGem Platform", email: env.SMTP_USER.trim() },
-                    to: [{ email: recipientEmail, name: recipientName }],
-                    subject,
-                    textContent,
-                    htmlContent,
-                }),
-            });
-            if (response.ok) {
-                return;
-            }
+        const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+            method: "POST",
+            headers: {
+                "api-key": brevoApiKey,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                sender: { name: "UGem Platform", email: env.SMTP_USER.trim() || "manhcuong6524@gmail.com" },
+                to: [{ email: recipientEmail, name: recipientName }],
+                subject,
+                textContent,
+                htmlContent,
+            }),
+        });
+        if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            console.warn(`Brevo HTTP API attempt failed (${response.status}):`, errorData);
+            throw new Error(`Brevo HTTP API failed (${response.status}): ${JSON.stringify(errorData)}`);
         }
-        catch (err) {
-            console.warn("Brevo HTTP API fetch exception:", err);
-        }
+        return;
     }
     const resendApiKey = (env.RESEND_API_KEY || process.env.RESEND_API_KEY || "")
         .trim()
