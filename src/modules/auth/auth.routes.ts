@@ -16,6 +16,7 @@ import {
   refreshToken,
   register,
   resetPassword,
+  verifyResetCode,
 } from "./auth.controller.js";
 
 import {
@@ -25,6 +26,7 @@ import {
   refreshTokenSchema,
   registerSchema,
   resetPasswordSchema,
+  verifyResetCodeSchema,
 } from "./auth.schema.js";
 import { getRefreshTokenCookie } from "./auth-cookie.js";
 
@@ -82,6 +84,13 @@ authRouter.post(
   passwordResetRateLimiter,
   validate(forgotPasswordSchema),
   forgotPassword,
+);
+
+authRouter.post(
+  "/verify-reset-code",
+  passwordResetRateLimiter,
+  validate(verifyResetCodeSchema),
+  verifyResetCode,
 );
 
 authRouter.post(
