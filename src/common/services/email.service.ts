@@ -112,7 +112,7 @@ export const sendPasswordResetCode = async (
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: env.SMTP_FROM || "UGem <onboarding@resend.dev>",
+        from: "UGem Platform <onboarding@resend.dev>",
         to: [recipientEmail],
         subject,
         text: textContent,
