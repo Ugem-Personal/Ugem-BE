@@ -102,40 +102,47 @@ export const sendPasswordResetCode = async (
     </div>
   `;
 
-  const brevoApiKey = env.BREVO_API_KEY || process.env.BREVO_API_KEY;
+  const brevoApiKey = (env.BREVO_API_KEY || process.env.BREVO_API_KEY || "")
+    .trim()
+    .replace(/^["']|["']$/g, "");
 
   if (brevoApiKey) {
-    const response = await fetch("https://api.brevo.com/v3/smtp/email", {
-      method: "POST",
-      headers: {
-        "api-key": brevoApiKey.trim(),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        sender: { name: "UGem Platform", email: env.SMTP_USER.trim() },
-        to: [{ email: recipientEmail, name: recipientName }],
-        subject,
-        textContent,
-        htmlContent,
-      }),
-    });
+    try {
+      const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+        method: "POST",
+        headers: {
+          "api-key": brevoApiKey,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sender: { name: "UGem Platform", email: env.SMTP_USER.trim() },
+          to: [{ email: recipientEmail, name: recipientName }],
+          subject,
+          textContent,
+          htmlContent,
+        }),
+      });
 
-    if (!response.ok) {
+      if (response.ok) {
+        return;
+      }
+
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(
-        `Brevo HTTP API failed (${response.status}): ${JSON.stringify(errorData)}`,
-      );
+      console.warn(`Brevo HTTP API attempt failed (${response.status}):`, errorData);
+    } catch (err) {
+      console.warn("Brevo HTTP API fetch exception:", err);
     }
-    return;
   }
 
-  const resendApiKey = env.RESEND_API_KEY || process.env.RESEND_API_KEY;
+  const resendApiKey = (env.RESEND_API_KEY || process.env.RESEND_API_KEY || "")
+    .trim()
+    .replace(/^["']|["']$/g, "");
 
   if (resendApiKey) {
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${resendApiKey.trim()}`,
+        Authorization: `Bearer ${resendApiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
