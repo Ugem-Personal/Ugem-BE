@@ -37,7 +37,7 @@ import { mediaRouter } from "./modules/media/media.routes.js";
 export const app = express();
 
 if (env.NODE_ENV === "production") {
-  app.set("trust proxy", 1);
+  app.set("trust proxy", true);
 }
 
 app.use(requestObservability);
