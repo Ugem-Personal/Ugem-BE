@@ -9,13 +9,17 @@ export const notFoundHandler = (req, res) => {
     });
 };
 export const errorHandler = (error, _req, res, _next) => {
-    if (error instanceof AppError) {
-        sendError(res, {
-            statusCode: error.statusCode,
-            message: error.message,
-            errors: error.errors,
+    const errObj = error;
+    const isAppErr = error instanceof AppError ||
+        errObj?.isAppError === true ||
+        errObj?.name === "AppError" ||
+        (typeof errObj?.statusCode === "number" && errObj?.statusCode >= 400 && errObj?.statusCode < 500);
+    if (isAppErr) {
+        return sendError(res, {
+            statusCode: errObj?.statusCode || 400,
+            message: errObj?.message || "Đã xảy ra lỗi",
+            errors: errObj?.errors,
         });
-        return;
     }
     if (error instanceof multer.MulterError) {
         if (error.code === "LIMIT_FILE_SIZE") {

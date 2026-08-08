@@ -13,7 +13,7 @@ export const checkDatabaseReadiness = async () => {
         await Promise.race([
             prisma.$queryRaw `SELECT 1`,
             new Promise((_, reject) => {
-                timeout = setTimeout(() => reject(new Error("Database health check timed out")), 2000);
+                timeout = setTimeout(() => reject(new Error("Database health check timed out")), 8000);
             }),
         ]);
         return { ready: true, database: "UP" };
