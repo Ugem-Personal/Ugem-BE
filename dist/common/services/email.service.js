@@ -1,12 +1,15 @@
 import nodemailer from "nodemailer";
 import { env } from "../../config/env.js";
+const isGmail = env.SMTP_HOST.includes("gmail");
+const smtpPort = isGmail ? 465 : env.SMTP_PORT;
+const smtpSecure = isGmail ? true : env.SMTP_SECURE;
 const transporter = nodemailer.createTransport({
     host: env.SMTP_HOST,
-    port: env.SMTP_PORT,
-    secure: env.SMTP_SECURE,
-    connectionTimeout: 5000,
-    greetingTimeout: 5000,
-    socketTimeout: 5000,
+    port: smtpPort,
+    secure: smtpSecure,
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 10000,
     auth: {
         user: env.SMTP_USER,
         pass: env.SMTP_PASSWORD,
