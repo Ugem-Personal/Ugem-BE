@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import { UserRole } from "../../generated/prisma/enums.js";
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
-import { generateAccessToken, generateRefreshToken, verifyRefreshToken, } from "../../common/utils/jwt.js";
+import { generateAccessToken, generateRefreshToken, } from "../../common/utils/jwt.js";
 import { OAuth2Client } from "google-auth-library";
 import { env } from "../../config/env.js";
 import { sendPasswordResetCode } from "../../common/services/email.service.js";
@@ -61,6 +61,17 @@ export const register = async (input) => {
     });
     if (existingUser) {
         throw new AppError(409, "Email đã được sử dụng");
+    }
+    if (input.phoneNumber?.trim()) {
+        const normalizedPhone = input.phoneNumber.trim();
+        const existingPhone = await prisma.user.findFirst({
+            where: {
+                phoneNumber: normalizedPhone,
+            },
+        });
+        if (existingPhone) {
+            throw new AppError(409, "Số điện thoại này đã được đăng ký bởi một tài khoản khác");
+        }
     }
     const passwordHash = await bcrypt.hash(input.password, SALT_ROUNDS);
     const role = input.role === "Merchant" ? UserRole.Merchant : UserRole.Customer;
@@ -144,13 +155,6 @@ export const login = async (input) => {
     };
 };
 export const refreshAccessToken = async (input) => {
-    let payload;
-    try {
-        payload = verifyRefreshToken(input.refreshToken);
-    }
-    catch {
-        throw new AppError(401, "Refresh token không hợp lệ hoặc đã hết hạn");
-    }
     const tokenHash = hashRefreshToken(input.refreshToken);
     const storedToken = await prisma.refreshToken.findUnique({
         where: {

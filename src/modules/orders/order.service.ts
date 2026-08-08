@@ -743,6 +743,13 @@ export const updateOrderStatus = async (
     data: {
       status: nextStatus,
 
+      paymentStatus:
+        nextStatus === OrderStatus.Completed &&
+        (order.paymentMethod === PaymentMethod.COD ||
+          order.paymentMethod === PaymentMethod.Cash)
+          ? OrderPaymentStatus.Paid
+          : undefined,
+
       rejectionReason:
         nextStatus === OrderStatus.Rejected
           ? input.rejectionReason?.trim() || "Merchant từ chối order"
@@ -913,6 +920,13 @@ export const updateCustomerOrderStatus = async (
 
     data: {
       status: nextStatus,
+
+      paymentStatus:
+        nextStatus === OrderStatus.Completed &&
+        (order.paymentMethod === PaymentMethod.COD ||
+          order.paymentMethod === PaymentMethod.Cash)
+          ? OrderPaymentStatus.Paid
+          : undefined,
 
       completedAt:
         nextStatus === OrderStatus.Completed ? new Date() : undefined,

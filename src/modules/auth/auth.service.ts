@@ -94,9 +94,7 @@ const createAndStoreTokens = async (payload: JwtPayload) => {
   await prisma.refreshToken.create({
     data: {
       userId: payload.UserId,
-
       tokenHash: hashRefreshToken(result.refreshToken),
-
       expiresAt: result.refreshTokenExpiresAtUtc,
     },
   });
@@ -115,6 +113,22 @@ export const register = async (input: RegisterInput) => {
 
   if (existingUser) {
     throw new AppError(409, "Email đã được sử dụng");
+  }
+
+  if (input.phoneNumber?.trim()) {
+    const normalizedPhone = input.phoneNumber.trim();
+    const existingPhone = await prisma.user.findFirst({
+      where: {
+        phoneNumber: normalizedPhone,
+      },
+    });
+
+    if (existingPhone) {
+      throw new AppError(
+        409,
+        "Số điện thoại này đã được đăng ký bởi một tài khoản khác",
+      );
+    }
   }
 
   const passwordHash = await bcrypt.hash(input.password, SALT_ROUNDS);
@@ -218,14 +232,6 @@ export const login = async (input: LoginInput) => {
 };
 
 export const refreshAccessToken = async (input: RefreshTokenInput) => {
-  let payload: JwtPayload;
-
-  try {
-    payload = verifyRefreshToken(input.refreshToken);
-  } catch {
-    throw new AppError(401, "Refresh token không hợp lệ hoặc đã hết hạn");
-  }
-
   const tokenHash = hashRefreshToken(input.refreshToken);
 
   const storedToken = await prisma.refreshToken.findUnique({

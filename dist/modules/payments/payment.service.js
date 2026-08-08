@@ -519,15 +519,32 @@ export const rejectBill = async (customerId, input) => {
     });
     return mapBill(rejectedBill);
 };
-const extractOrderId = (content) => {
+const extractOrderId = async (content) => {
     if (!content) {
         return null;
     }
     const uuidMatch = content.match(/[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i);
-    return uuidMatch?.[0] ?? null;
+    if (uuidMatch?.[0]) {
+        return uuidMatch[0];
+    }
+    const hex8Match = content.match(/[0-9a-f]{8}/i);
+    if (hex8Match?.[0]) {
+        const matchedOrder = await prisma.order.findFirst({
+            where: {
+                id: {
+                    startsWith: hex8Match[0].toLowerCase(),
+                },
+            },
+            select: { id: true },
+        });
+        if (matchedOrder) {
+            return matchedOrder.id;
+        }
+    }
+    return null;
 };
 export const processSepayWebhook = async (input) => {
-    const orderId = input.orderId ?? extractOrderId(input.content);
+    const orderId = input.orderId ?? (await extractOrderId(input.content));
     if (!orderId) {
         throw new AppError(400, "Không xác định được Order ID từ giao dịch");
     }
