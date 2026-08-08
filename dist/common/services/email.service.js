@@ -2,8 +2,8 @@ import dnsPromises from "node:dns/promises";
 import nodemailer from "nodemailer";
 import { env } from "../../config/env.js";
 const isGmail = env.SMTP_HOST.includes("gmail");
-const smtpPort = isGmail ? 465 : env.SMTP_PORT;
-const smtpSecure = isGmail ? true : env.SMTP_SECURE;
+const smtpPort = isGmail ? 587 : env.SMTP_PORT;
+const smtpSecure = isGmail ? false : env.SMTP_SECURE;
 const getTransporter = async () => {
     const hostName = env.SMTP_HOST.trim();
     let resolvedHost = hostName;
