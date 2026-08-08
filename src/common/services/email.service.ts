@@ -33,7 +33,7 @@ export const sendPasswordResetCode = async (
     text: [
       `Xin chào ${recipientName},`,
       "",
-      `Mã xác nhận đặt lại mật khẩu của bạn là: ${resetCode}`,
+      `Mã để bạn đặt lại mật khẩu là: ${resetCode}`,
       "",
       "Mã này có hiệu lực trong 10 phút.",
       "Không cung cấp mã này cho bất kỳ ai.",
@@ -57,7 +57,7 @@ export const sendPasswordResetCode = async (
 
         <p>Xin chào <strong>${recipientName}</strong>,</p>
 
-        <p>Mã xác nhận đặt lại mật khẩu của bạn là:</p>
+        <p>Mã để bạn đặt lại mật khẩu là:</p>
 
         <div
           style="
