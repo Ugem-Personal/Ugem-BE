@@ -42,6 +42,7 @@ export type ApplicationMenuMinAggregateOutputType = {
   price: runtime.Decimal | null
   imageUrl: string | null
   category: string | null
+  cuisine: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -54,6 +55,7 @@ export type ApplicationMenuMaxAggregateOutputType = {
   price: runtime.Decimal | null
   imageUrl: string | null
   category: string | null
+  cuisine: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -66,6 +68,7 @@ export type ApplicationMenuCountAggregateOutputType = {
   price: number
   imageUrl: number
   category: number
+  cuisine: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -88,6 +91,7 @@ export type ApplicationMenuMinAggregateInputType = {
   price?: true
   imageUrl?: true
   category?: true
+  cuisine?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -100,6 +104,7 @@ export type ApplicationMenuMaxAggregateInputType = {
   price?: true
   imageUrl?: true
   category?: true
+  cuisine?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -112,6 +117,7 @@ export type ApplicationMenuCountAggregateInputType = {
   price?: true
   imageUrl?: true
   category?: true
+  cuisine?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -211,6 +217,7 @@ export type ApplicationMenuGroupByOutputType = {
   price: runtime.Decimal
   imageUrl: string | null
   category: string
+  cuisine: string | null
   createdAt: Date
   updatedAt: Date
   _count: ApplicationMenuCountAggregateOutputType | null
@@ -246,6 +253,7 @@ export type ApplicationMenuWhereInput = {
   price?: Prisma.DecimalFilter<"ApplicationMenu"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.StringNullableFilter<"ApplicationMenu"> | string | null
   category?: Prisma.StringFilter<"ApplicationMenu"> | string
+  cuisine?: Prisma.StringNullableFilter<"ApplicationMenu"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ApplicationMenu"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ApplicationMenu"> | Date | string
   application?: Prisma.XOR<Prisma.ApplicationScalarRelationFilter, Prisma.ApplicationWhereInput>
@@ -259,6 +267,7 @@ export type ApplicationMenuOrderByWithRelationInput = {
   price?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   category?: Prisma.SortOrder
+  cuisine?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   application?: Prisma.ApplicationOrderByWithRelationInput
@@ -275,6 +284,7 @@ export type ApplicationMenuWhereUniqueInput = Prisma.AtLeast<{
   price?: Prisma.DecimalFilter<"ApplicationMenu"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.StringNullableFilter<"ApplicationMenu"> | string | null
   category?: Prisma.StringFilter<"ApplicationMenu"> | string
+  cuisine?: Prisma.StringNullableFilter<"ApplicationMenu"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ApplicationMenu"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ApplicationMenu"> | Date | string
   application?: Prisma.XOR<Prisma.ApplicationScalarRelationFilter, Prisma.ApplicationWhereInput>
@@ -288,6 +298,7 @@ export type ApplicationMenuOrderByWithAggregationInput = {
   price?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   category?: Prisma.SortOrder
+  cuisine?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ApplicationMenuCountOrderByAggregateInput
@@ -308,6 +319,7 @@ export type ApplicationMenuScalarWhereWithAggregatesInput = {
   price?: Prisma.DecimalWithAggregatesFilter<"ApplicationMenu"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.StringNullableWithAggregatesFilter<"ApplicationMenu"> | string | null
   category?: Prisma.StringWithAggregatesFilter<"ApplicationMenu"> | string
+  cuisine?: Prisma.StringNullableWithAggregatesFilter<"ApplicationMenu"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ApplicationMenu"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ApplicationMenu"> | Date | string
 }
@@ -319,6 +331,7 @@ export type ApplicationMenuCreateInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: string | null
   category: string
+  cuisine?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   application: Prisma.ApplicationCreateNestedOneWithoutMenusInput
@@ -332,6 +345,7 @@ export type ApplicationMenuUncheckedCreateInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: string | null
   category: string
+  cuisine?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -343,6 +357,7 @@ export type ApplicationMenuUpdateInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
+  cuisine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   application?: Prisma.ApplicationUpdateOneRequiredWithoutMenusNestedInput
@@ -356,6 +371,7 @@ export type ApplicationMenuUncheckedUpdateInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
+  cuisine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -368,6 +384,7 @@ export type ApplicationMenuCreateManyInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: string | null
   category: string
+  cuisine?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -379,6 +396,7 @@ export type ApplicationMenuUpdateManyMutationInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
+  cuisine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -391,6 +409,7 @@ export type ApplicationMenuUncheckedUpdateManyInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
+  cuisine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -413,6 +432,7 @@ export type ApplicationMenuCountOrderByAggregateInput = {
   price?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   category?: Prisma.SortOrder
+  cuisine?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -429,6 +449,7 @@ export type ApplicationMenuMaxOrderByAggregateInput = {
   price?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   category?: Prisma.SortOrder
+  cuisine?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -441,6 +462,7 @@ export type ApplicationMenuMinOrderByAggregateInput = {
   price?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   category?: Prisma.SortOrder
+  cuisine?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -506,6 +528,7 @@ export type ApplicationMenuCreateWithoutApplicationInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: string | null
   category: string
+  cuisine?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -517,6 +540,7 @@ export type ApplicationMenuUncheckedCreateWithoutApplicationInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: string | null
   category: string
+  cuisine?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -558,6 +582,7 @@ export type ApplicationMenuScalarWhereInput = {
   price?: Prisma.DecimalFilter<"ApplicationMenu"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.StringNullableFilter<"ApplicationMenu"> | string | null
   category?: Prisma.StringFilter<"ApplicationMenu"> | string
+  cuisine?: Prisma.StringNullableFilter<"ApplicationMenu"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ApplicationMenu"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ApplicationMenu"> | Date | string
 }
@@ -569,6 +594,7 @@ export type ApplicationMenuCreateManyApplicationInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: string | null
   category: string
+  cuisine?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -580,6 +606,7 @@ export type ApplicationMenuUpdateWithoutApplicationInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
+  cuisine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -591,6 +618,7 @@ export type ApplicationMenuUncheckedUpdateWithoutApplicationInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
+  cuisine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -602,6 +630,7 @@ export type ApplicationMenuUncheckedUpdateManyWithoutApplicationInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
+  cuisine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -616,6 +645,7 @@ export type ApplicationMenuSelect<ExtArgs extends runtime.Types.Extensions.Inter
   price?: boolean
   imageUrl?: boolean
   category?: boolean
+  cuisine?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   application?: boolean | Prisma.ApplicationDefaultArgs<ExtArgs>
@@ -629,6 +659,7 @@ export type ApplicationMenuSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   price?: boolean
   imageUrl?: boolean
   category?: boolean
+  cuisine?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   application?: boolean | Prisma.ApplicationDefaultArgs<ExtArgs>
@@ -642,6 +673,7 @@ export type ApplicationMenuSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   price?: boolean
   imageUrl?: boolean
   category?: boolean
+  cuisine?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   application?: boolean | Prisma.ApplicationDefaultArgs<ExtArgs>
@@ -655,11 +687,12 @@ export type ApplicationMenuSelectScalar = {
   price?: boolean
   imageUrl?: boolean
   category?: boolean
+  cuisine?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ApplicationMenuOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "applicationId" | "name" | "description" | "price" | "imageUrl" | "category" | "createdAt" | "updatedAt", ExtArgs["result"]["applicationMenu"]>
+export type ApplicationMenuOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "applicationId" | "name" | "description" | "price" | "imageUrl" | "category" | "cuisine" | "createdAt" | "updatedAt", ExtArgs["result"]["applicationMenu"]>
 export type ApplicationMenuInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   application?: boolean | Prisma.ApplicationDefaultArgs<ExtArgs>
 }
@@ -683,6 +716,7 @@ export type $ApplicationMenuPayload<ExtArgs extends runtime.Types.Extensions.Int
     price: runtime.Decimal
     imageUrl: string | null
     category: string
+    cuisine: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["applicationMenu"]>
@@ -1116,6 +1150,7 @@ export interface ApplicationMenuFieldRefs {
   readonly price: Prisma.FieldRef<"ApplicationMenu", 'Decimal'>
   readonly imageUrl: Prisma.FieldRef<"ApplicationMenu", 'String'>
   readonly category: Prisma.FieldRef<"ApplicationMenu", 'String'>
+  readonly cuisine: Prisma.FieldRef<"ApplicationMenu", 'String'>
   readonly createdAt: Prisma.FieldRef<"ApplicationMenu", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"ApplicationMenu", 'DateTime'>
 }

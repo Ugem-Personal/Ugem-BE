@@ -1,6 +1,7 @@
 import { ApplicationStatus, ApplicationType, Prisma, UserRole, } from "../../generated/prisma/client.js";
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
+import { importApplicationMenusAsFoods } from "./application-menu-import.js";
 const applicationInclude = {
     menus: {
         orderBy: {
@@ -46,6 +47,7 @@ const mapApplication = (application) => {
             price: Number(item.price),
             imageUrl: item.imageUrl,
             category: item.category,
+            cuisine: item.cuisine,
         })),
         applicant: application.applicant,
         createdAt: application.createdAt,
@@ -106,6 +108,7 @@ export const createApplication = async (userId, input) => {
                     price: new Prisma.Decimal(item.price),
                     imageUrl: item.imageUrl || null,
                     category: item.category,
+                    cuisine: item.cuisine || null,
                 })),
             },
         },
@@ -196,6 +199,7 @@ export const updateApplication = async (applicationId, userId, input) => {
                         price: new Prisma.Decimal(item.price),
                         imageUrl: item.imageUrl || null,
                         category: item.category,
+                        cuisine: item.cuisine || null,
                     })),
                 },
             },
@@ -301,7 +305,7 @@ export const reviewApplication = async (applicationId, reviewerUserId, input) =>
         throw new AppError(409, "Tài khoản này đã có Merchant");
     }
     const acceptedApplication = await prisma.$transaction(async (transaction) => {
-        await transaction.merchant.create({
+        const merchant = await transaction.merchant.create({
             data: {
                 userId: application.applicantUserId,
                 name: application.name,
@@ -319,6 +323,7 @@ export const reviewApplication = async (applicationId, reviewerUserId, input) =>
                 status: "Active",
             },
         });
+        await importApplicationMenusAsFoods(transaction, merchant.id, application.menus);
         return transaction.application.update({
             where: {
                 id: applicationId,

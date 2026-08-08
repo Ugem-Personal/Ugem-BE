@@ -2,7 +2,7 @@ import "dotenv/config";
 import bcrypt from "bcrypt";
 import { prisma } from "../config/prisma.js";
 import { CampaignDiscountType, MerchantStatus, Prisma, UserRole, } from "../generated/prisma/client.js";
-const DEFAULT_PASSWORD = "UGemUat123!";
+const DEFAULT_PASSWORD = "UGemUat12345!";
 const password = process.env.UAT_SEED_PASSWORD || DEFAULT_PASSWORD;
 const validatePassword = () => {
     if (password.length < 12 ||
@@ -64,6 +64,7 @@ const ensureFood = async (input) => {
             data: {
                 description: input.description,
                 price: new Prisma.Decimal(input.price),
+                imageUrl: input.imageUrl || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80",
                 isAvailable: true,
             },
         })
@@ -73,6 +74,7 @@ const ensureFood = async (input) => {
                 name: input.name,
                 description: input.description,
                 price: new Prisma.Decimal(input.price),
+                imageUrl: input.imageUrl || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80",
                 isAvailable: true,
             },
         });
@@ -165,11 +167,19 @@ const run = async () => {
             },
         });
     }
+    // Update existing merchants without images to have real Unsplash image URLs
+    await prisma.merchant.updateMany({
+        where: { OR: [{ logoUrl: null }, { logoUrl: "" }] },
+        data: {
+            logoUrl: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop&q=80",
+        },
+    });
     const merchant = await prisma.merchant.upsert({
         where: { userId: merchantUser.id },
         update: {
             name: "Bếp Nhà UAT",
             description: "Merchant mẫu phục vụ kiểm thử chấp nhận người dùng.",
+            logoUrl: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop&q=80",
             status: MerchantStatus.Active,
             latitude: new Prisma.Decimal("10.7768890"),
             longitude: new Prisma.Decimal("106.7008060"),
@@ -185,6 +195,7 @@ const run = async () => {
             phone: "0900000005",
             address: "1 Nguyễn Huệ, Quận 1, TP.HCM",
             openingHours: "07:00-22:00",
+            logoUrl: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop&q=80",
             latitude: new Prisma.Decimal("10.7768890"),
             longitude: new Prisma.Decimal("106.7008060"),
             status: MerchantStatus.Active,
@@ -197,10 +208,18 @@ const run = async () => {
         name: "Cơm tấm UAT",
         description: "Món mẫu để kiểm tra giỏ hàng và vòng đời đơn hàng.",
         price: 65000,
+        imageUrl: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80",
         toppings: [
             { name: "Trứng ốp la UAT", price: 12000 },
             { name: "Bì thêm UAT", price: 15000 },
         ],
+    });
+    // Update existing foods without images
+    await prisma.food.updateMany({
+        where: { OR: [{ imageUrl: null }, { imageUrl: "" }] },
+        data: {
+            imageUrl: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80",
+        },
     });
     await prisma.campaign.upsert({
         where: { code: "UAT10" },

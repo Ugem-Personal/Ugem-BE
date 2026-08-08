@@ -14,6 +14,7 @@ import type {
   ReviewApplicationInput,
   UpdateApplicationInput,
 } from "./application.types.js";
+import { importApplicationMenusAsFoods } from "./application-menu-import.js";
 
 const applicationInclude = {
   menus: {
@@ -68,6 +69,7 @@ const mapApplication = (application: any) => {
       price: Number(item.price),
       imageUrl: item.imageUrl,
       category: item.category,
+      cuisine: item.cuisine,
     })),
 
     applicant: application.applicant,
@@ -146,6 +148,7 @@ export const createApplication = async (
           price: new Prisma.Decimal(item.price),
           imageUrl: item.imageUrl || null,
           category: item.category,
+          cuisine: item.cuisine || null,
         })),
       },
     },
@@ -270,6 +273,7 @@ export const updateApplication = async (
             price: new Prisma.Decimal(item.price),
             imageUrl: item.imageUrl || null,
             category: item.category,
+            cuisine: item.cuisine || null,
           })),
         },
       },
@@ -399,7 +403,7 @@ export const reviewApplication = async (
   }
 
   const acceptedApplication = await prisma.$transaction(async (transaction) => {
-    await transaction.merchant.create({
+    const merchant = await transaction.merchant.create({
       data: {
         userId: application.applicantUserId,
 
@@ -430,6 +434,12 @@ export const reviewApplication = async (
         status: "Active",
       },
     });
+
+    await importApplicationMenusAsFoods(
+      transaction,
+      merchant.id,
+      application.menus,
+    );
 
     return transaction.application.update({
       where: {

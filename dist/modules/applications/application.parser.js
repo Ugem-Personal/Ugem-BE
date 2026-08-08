@@ -15,7 +15,7 @@ const toOptionalNumber = (value) => {
 export const parseApplicationFormData = (body) => {
     const menuMap = new Map();
     for (const [key, value] of Object.entries(body)) {
-        const match = key.match(/^Menu\[(\d+)]\.(Name|Description|Price|ImageUrl|Category)$/i);
+        const match = key.match(/^Menu\[(\d+)]\.(Name|Description|Price|ImageUrl|Category|Cuisine)$/i);
         if (!match) {
             continue;
         }
@@ -37,6 +37,9 @@ export const parseApplicationFormData = (body) => {
                 break;
             case "category":
                 menuItem.category = toStringValue(value);
+                break;
+            case "cuisine":
+                menuItem.cuisine = toStringValue(value) || null;
                 break;
         }
         menuMap.set(index, menuItem);
