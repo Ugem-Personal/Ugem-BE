@@ -21,7 +21,7 @@ export const checkDatabaseReadiness = async () => {
       new Promise<never>((_, reject) => {
         timeout = setTimeout(
           () => reject(new Error("Database health check timed out")),
-          2000,
+          8000,
         );
       }),
     ]);
