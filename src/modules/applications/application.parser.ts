@@ -32,7 +32,7 @@ export const parseApplicationFormData = (
 
   for (const [key, value] of Object.entries(body)) {
     const match = key.match(
-      /^Menu\[(\d+)]\.(Name|Description|Price|ImageUrl|Category)$/i,
+      /^Menu\[(\d+)]\.(Name|Description|Price|ImageUrl|Category|Cuisine)$/i,
     );
 
     if (!match) {
@@ -63,6 +63,10 @@ export const parseApplicationFormData = (
 
       case "category":
         menuItem.category = toStringValue(value);
+        break;
+
+      case "cuisine":
+        menuItem.cuisine = toStringValue(value) || null;
         break;
     }
 

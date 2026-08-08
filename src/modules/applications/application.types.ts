@@ -4,6 +4,7 @@ export interface ApplicationMenuInput {
   price: number;
   imageUrl?: string | null;
   category: string;
+  cuisine?: string | null;
 }
 
 export interface CreateApplicationInput {

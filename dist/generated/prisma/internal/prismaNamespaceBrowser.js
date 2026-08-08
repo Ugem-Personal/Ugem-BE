@@ -143,6 +143,7 @@ export const ApplicationMenuScalarFieldEnum = {
     price: 'price',
     imageUrl: 'imageUrl',
     category: 'category',
+    cuisine: 'cuisine',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };
@@ -182,6 +183,7 @@ export const FoodScalarFieldEnum = {
     merchantId: 'merchantId',
     name: 'name',
     description: 'description',
+    cuisine: 'cuisine',
     price: 'price',
     imageUrl: 'imageUrl',
     isAvailable: 'isAvailable',

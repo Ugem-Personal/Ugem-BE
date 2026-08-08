@@ -35,6 +35,7 @@ const mapFood = (food: any) => ({
 
   name: food.name,
   description: food.description,
+  cuisine: food.cuisine,
   price: Number(food.price),
   imageUrl: food.imageUrl,
   isAvailable: food.isAvailable,
@@ -111,6 +112,7 @@ export const createFood = async (
       merchantId,
       name: input.name.trim(),
       description: input.description?.trim() || null,
+      cuisine: input.cuisine?.trim() || null,
       price: new Prisma.Decimal(input.price),
       imageUrl: input.imageUrl?.trim() || null,
       isAvailable: input.isAvailable ?? true,
@@ -232,6 +234,11 @@ export const updateFood = async (
         description:
           input.description !== undefined
             ? input.description?.trim() || null
+            : undefined,
+
+        cuisine:
+          input.cuisine !== undefined
+            ? input.cuisine?.trim() || null
             : undefined,
 
         price:

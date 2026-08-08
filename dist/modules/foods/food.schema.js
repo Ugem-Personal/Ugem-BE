@@ -18,6 +18,9 @@ export const createFoodSchema = z.object({
         description: z
             .union([z.string().trim().max(2000), z.literal(""), z.null()])
             .optional(),
+        cuisine: z
+            .union([z.string().trim().max(100), z.literal(""), z.null()])
+            .optional(),
         price: z.coerce
             .number()
             .positive("Giá món ăn phải lớn hơn 0")
@@ -44,6 +47,9 @@ export const updateFoodSchema = z.object({
         name: z.string().trim().min(1).max(150).optional(),
         description: z
             .union([z.string().trim().max(2000), z.literal(""), z.null()])
+            .optional(),
+        cuisine: z
+            .union([z.string().trim().max(100), z.literal(""), z.null()])
             .optional(),
         price: z.coerce.number().positive().optional(),
         imageUrl: z

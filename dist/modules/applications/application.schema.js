@@ -16,8 +16,11 @@ const menuItemSchema = z.object({
     category: z
         .string()
         .trim()
-        .min(1, "Danh mục món ăn không được để trống")
+        .min(1, "Loại món không được để trống")
         .max(100),
+    cuisine: z
+        .union([z.string().trim().max(100), z.literal(""), z.null()])
+        .optional(),
 });
 export const applicationBodySchema = z.object({
     name: z.string().trim().min(2, "Tên quán phải có ít nhất 2 ký tự").max(200),

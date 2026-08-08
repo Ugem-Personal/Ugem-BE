@@ -11,6 +11,7 @@
     "test:watch": "vitest",
     "admin:create": "tsx src/scripts/create-admin.ts",
     "seed:uat": "tsx src/scripts/seed-uat.ts",
+    "backfill:application-foods": "tsx src/scripts/backfill-application-foods.ts",
     "db:backup": "node scripts/backup-database.mjs",
     "db:restore-drill": "tsx scripts/restore-drill.mjs",
     "start": "node dist/server.js",
