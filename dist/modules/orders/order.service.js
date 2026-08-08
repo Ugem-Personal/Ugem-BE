@@ -1,4 +1,4 @@
-import { NotificationType, OrderPaymentStatus, OrderStatus, OrderType, Prisma, } from "../../generated/prisma/client.js";
+import { NotificationType, OrderPaymentStatus, OrderStatus, OrderType, PaymentMethod, Prisma, } from "../../generated/prisma/client.js";
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
 import { createReviewerCommission } from "../affiliate-links/affiliate-earning.service.js";
@@ -495,6 +495,11 @@ export const updateOrderStatus = async (merchantId, orderId, input) => {
         },
         data: {
             status: nextStatus,
+            paymentStatus: nextStatus === OrderStatus.Completed &&
+                (order.paymentMethod === PaymentMethod.COD ||
+                    order.paymentMethod === PaymentMethod.Cash)
+                ? OrderPaymentStatus.Paid
+                : undefined,
             rejectionReason: nextStatus === OrderStatus.Rejected
                 ? input.rejectionReason?.trim() || "Merchant từ chối order"
                 : null,
@@ -620,6 +625,11 @@ export const updateCustomerOrderStatus = async (customerId, orderId, input) => {
         },
         data: {
             status: nextStatus,
+            paymentStatus: nextStatus === OrderStatus.Completed &&
+                (order.paymentMethod === PaymentMethod.COD ||
+                    order.paymentMethod === PaymentMethod.Cash)
+                ? OrderPaymentStatus.Paid
+                : undefined,
             completedAt: nextStatus === OrderStatus.Completed ? new Date() : undefined,
         },
         include: orderInclude,
