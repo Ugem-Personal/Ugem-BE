@@ -8,14 +8,16 @@ const getTransporter = async () => {
     const hostName = env.SMTP_HOST.trim();
     let resolvedHost = hostName;
     try {
-        const ipv4Addresses = await dnsPromises.resolve4(hostName);
-        const firstIp = ipv4Addresses[0];
-        if (firstIp) {
-            resolvedHost = firstIp;
+        const res = await dnsPromises.lookup(hostName, { family: 4 });
+        if (res && res.address) {
+            resolvedHost = res.address;
         }
     }
     catch (err) {
-        console.warn("Dns resolve4 warning:", err);
+        console.warn("Dns lookup family 4 warning:", err);
+        if (isGmail) {
+            resolvedHost = "74.125.130.108";
+        }
     }
     return nodemailer.createTransport({
         host: resolvedHost,
