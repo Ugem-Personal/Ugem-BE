@@ -27,8 +27,8 @@ export const checkDatabaseReadiness = async () => {
     ]);
 
     return { ready: true, database: "UP" as const };
-  } catch {
-    return { ready: false, database: "DOWN" as const };
+  } catch (err: any) {
+    return { ready: false, database: (err?.message || err?.code || "DOWN") as any };
   } finally {
     if (timeout) clearTimeout(timeout);
   }

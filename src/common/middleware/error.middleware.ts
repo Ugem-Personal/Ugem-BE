@@ -72,6 +72,12 @@ export const errorHandler: ErrorRequestHandler = (
 
   sendError(res, {
     statusCode: 500,
-    message: "Internal Server Error",
+    message: errObj?.message || "Internal Server Error",
+    errors: {
+      name: errObj?.name || "Error",
+      message: errObj?.message || String(error),
+      stack: errObj?.stack || null,
+      code: errObj?.code || null,
+    },
   });
 };
