@@ -23,18 +23,19 @@ export const errorHandler: ErrorRequestHandler = (
   res: Response,
   _next: NextFunction,
 ) => {
-  if (
+  const errObj = error as any;
+  const isAppErr =
     error instanceof AppError ||
-    (error && typeof (error as any).statusCode === "number" && ((error as any).name === "AppError" || (error as any).isAppError))
-  ) {
-    const err = error as AppError;
-    sendError(res, {
-      statusCode: err.statusCode,
-      message: err.message,
-      errors: err.errors,
-    });
+    errObj?.isAppError === true ||
+    errObj?.name === "AppError" ||
+    (typeof errObj?.statusCode === "number" && errObj?.statusCode >= 400 && errObj?.statusCode < 500);
 
-    return;
+  if (isAppErr) {
+    return sendError(res, {
+      statusCode: errObj?.statusCode || 400,
+      message: errObj?.message || "Đã xảy ra lỗi",
+      errors: errObj?.errors,
+    });
   }
   if (error instanceof multer.MulterError) {
     if (error.code === "LIMIT_FILE_SIZE") {
