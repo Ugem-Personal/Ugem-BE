@@ -7,7 +7,7 @@ const smtpPort = isGmail ? 465 : env.SMTP_PORT;
 const smtpSecure = isGmail ? true : env.SMTP_SECURE;
 
 const transporter = nodemailer.createTransport({
-  host: env.SMTP_HOST,
+  host: env.SMTP_HOST.trim(),
   port: smtpPort,
   secure: smtpSecure,
 
@@ -15,8 +15,8 @@ const transporter = nodemailer.createTransport({
   greetingTimeout: 10000,
   socketTimeout: 10000,
   auth: {
-    user: env.SMTP_USER,
-    pass: env.SMTP_PASSWORD,
+    user: env.SMTP_USER.trim(),
+    pass: env.SMTP_PASSWORD.replace(/\s+/g, ""),
   },
 });
 
