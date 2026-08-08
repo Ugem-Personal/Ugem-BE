@@ -10,6 +10,7 @@ const transporter = nodemailer.createTransport({
   host: env.SMTP_HOST.trim(),
   port: smtpPort,
   secure: smtpSecure,
+  family: 4,
 
   connectionTimeout: 10000,
   greetingTimeout: 10000,
@@ -18,7 +19,7 @@ const transporter = nodemailer.createTransport({
     user: env.SMTP_USER.trim(),
     pass: env.SMTP_PASSWORD.replace(/\s+/g, ""),
   },
-});
+} as any);
 
 export const sendPasswordResetCode = async (
   recipientEmail: string,
