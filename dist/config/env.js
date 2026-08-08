@@ -22,6 +22,7 @@ const envSchema = z.object({
     SMTP_PASSWORD: z.string().min(1),
     SMTP_FROM: z.string().min(1),
     RESEND_API_KEY: z.string().optional(),
+    BREVO_API_KEY: z.string().optional(),
     PLATFORM_FEE_PERCENT: z.coerce.number().min(0).max(100).default(10),
     CLOUDINARY_CLOUD_NAME: z.string().min(1),
     CLOUDINARY_API_KEY: z.string().min(1),
