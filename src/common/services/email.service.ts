@@ -1,3 +1,4 @@
+import dns from "node:dns";
 import nodemailer from "nodemailer";
 
 import { env } from "../../config/env.js";
@@ -6,11 +7,19 @@ const isGmail = env.SMTP_HOST.includes("gmail");
 const smtpPort = isGmail ? 465 : env.SMTP_PORT;
 const smtpSecure = isGmail ? true : env.SMTP_SECURE;
 
+const customLookup = (hostname: string, options: any, callback: any) => {
+  if (typeof options === "function") {
+    callback = options;
+    options = {};
+  }
+  return dns.lookup(hostname, { ...options, family: 4 }, callback);
+};
+
 const transporter = nodemailer.createTransport({
   host: env.SMTP_HOST.trim(),
   port: smtpPort,
   secure: smtpSecure,
-  family: 4,
+  lookup: customLookup,
 
   connectionTimeout: 10000,
   greetingTimeout: 10000,
