@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { validate } from "../../common/middleware/validate.middleware.js";
 import { authRateLimiter, passwordResetRateLimiter, refreshTokenRateLimiter, registrationRateLimiter, } from "../../common/middleware/rate-limit.middleware.js";
-import { forgotPassword, googleLogin, login, logout, refreshToken, register, resetPassword, } from "./auth.controller.js";
-import { forgotPasswordSchema, googleLoginSchema, loginSchema, refreshTokenSchema, registerSchema, resetPasswordSchema, } from "./auth.schema.js";
+import { forgotPassword, googleLogin, login, logout, refreshToken, register, resetPassword, verifyResetCode, } from "./auth.controller.js";
+import { forgotPasswordSchema, googleLoginSchema, loginSchema, refreshTokenSchema, registerSchema, resetPasswordSchema, verifyResetCodeSchema, } from "./auth.schema.js";
 import { getRefreshTokenCookie } from "./auth-cookie.js";
 export const authRouter = Router();
 const hydrateRefreshToken = (req, _res, next) => {
@@ -19,4 +19,5 @@ authRouter.post("/google-login", authRateLimiter, validate(googleLoginSchema), g
 authRouter.post("/refresh-token", refreshTokenRateLimiter, hydrateRefreshToken, validate(refreshTokenSchema), refreshToken);
 authRouter.post("/logout", refreshTokenRateLimiter, hydrateRefreshToken, validate(refreshTokenSchema), logout);
 authRouter.post("/forgot-password", passwordResetRateLimiter, validate(forgotPasswordSchema), forgotPassword);
+authRouter.post("/verify-reset-code", passwordResetRateLimiter, validate(verifyResetCodeSchema), verifyResetCode);
 authRouter.post("/reset-password", passwordResetRateLimiter, validate(resetPasswordSchema), resetPassword);

@@ -507,7 +507,7 @@ const getPasswordResetExpiresAt = (): Date => {
   return expiresAt;
 };
 
-export const resetPassword = async (input: ResetPasswordInput) => {
+export const verifyResetCode = async (input: { email: string; token: string }) => {
   const normalizedEmail = input.email.trim().toLowerCase();
   const tokenHash = hashPasswordResetToken(input.token.trim());
 
@@ -515,7 +515,6 @@ export const resetPassword = async (input: ResetPasswordInput) => {
     where: {
       email: normalizedEmail,
     },
-
     select: {
       id: true,
       isActive: true,
@@ -532,27 +531,56 @@ export const resetPassword = async (input: ResetPasswordInput) => {
       tokenHash,
       usedAt: null,
     },
-
     orderBy: {
       createdAt: "desc",
     },
   });
 
   if (!passwordResetToken) {
-    throw new AppError(400, "Email hoặc mã xác nhận không hợp lệ");
+    throw new AppError(400, "Mã xác nhận không chính xác");
   }
 
   if (passwordResetToken.expiresAt < new Date()) {
-    await prisma.passwordResetToken.update({
-      where: {
-        id: passwordResetToken.id,
-      },
+    throw new AppError(400, "Mã xác nhận đã hết hạn");
+  }
 
-      data: {
-        usedAt: new Date(),
-      },
-    });
+  return true;
+};
 
+export const resetPassword = async (input: ResetPasswordInput) => {
+  const normalizedEmail = input.email.trim().toLowerCase();
+  const tokenHash = hashPasswordResetToken(input.token.trim());
+
+  const user = await prisma.user.findUnique({
+    where: {
+      email: normalizedEmail,
+    },
+    select: {
+      id: true,
+      isActive: true,
+    },
+  });
+
+  if (!user || !user.isActive) {
+    throw new AppError(400, "Email hoặc mã xác nhận không hợp lệ");
+  }
+
+  const passwordResetToken = await prisma.passwordResetToken.findFirst({
+    where: {
+      userId: user.id,
+      tokenHash,
+      usedAt: null,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  if (!passwordResetToken) {
+    throw new AppError(400, "Mã xác nhận không chính xác");
+  }
+
+  if (passwordResetToken.expiresAt < new Date()) {
     throw new AppError(400, "Mã xác nhận đã hết hạn");
   }
 
@@ -563,7 +591,6 @@ export const resetPassword = async (input: ResetPasswordInput) => {
       where: {
         id: user.id,
       },
-
       data: {
         passwordHash,
       },
@@ -573,35 +600,26 @@ export const resetPassword = async (input: ResetPasswordInput) => {
       where: {
         id: passwordResetToken.id,
       },
-
       data: {
         usedAt: new Date(),
       },
     }),
 
-    /*
-     * Thu hồi toàn bộ refresh token sau khi đổi mật khẩu.
-     */
     prisma.refreshToken.updateMany({
       where: {
         userId: user.id,
         revokedAt: null,
       },
-
       data: {
         revokedAt: new Date(),
       },
     }),
 
-    /*
-     * Vô hiệu hóa các mã reset còn lại.
-     */
     prisma.passwordResetToken.updateMany({
       where: {
         userId: user.id,
         usedAt: null,
       },
-
       data: {
         usedAt: new Date(),
       },

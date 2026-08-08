@@ -102,3 +102,18 @@ export const resetPasswordSchema = z.object({
       path: ["confirmNewPassword"],
     }),
 });
+
+export const verifyResetCodeSchema = z.object({
+  body: z.object({
+    email: z
+      .string()
+      .trim()
+      .email("Email không hợp lệ")
+      .transform((value) => value.toLowerCase()),
+
+    token: z
+      .string()
+      .trim()
+      .regex(/^\d{6}$/, "Mã xác nhận phải gồm 6 chữ số"),
+  }),
+});

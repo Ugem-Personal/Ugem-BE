@@ -55,6 +55,13 @@ export const forgotPassword = asyncHandler(async (req, res) => {
         data: null,
     });
 });
+export const verifyResetCode = asyncHandler(async (req, res) => {
+    await authService.verifyResetCode(req.body);
+    return sendSuccess(res, {
+        message: "Mã xác nhận hợp lệ",
+        data: null,
+    });
+});
 export const resetPassword = asyncHandler(async (req, res) => {
     await authService.resetPassword(req.body);
     return sendSuccess(res, {
