@@ -23,11 +23,15 @@ export const errorHandler: ErrorRequestHandler = (
   res: Response,
   _next: NextFunction,
 ) => {
-  if (error instanceof AppError) {
+  if (
+    error instanceof AppError ||
+    (error && typeof (error as any).statusCode === "number" && ((error as any).name === "AppError" || (error as any).isAppError))
+  ) {
+    const err = error as AppError;
     sendError(res, {
-      statusCode: error.statusCode,
-      message: error.message,
-      errors: error.errors,
+      statusCode: err.statusCode,
+      message: err.message,
+      errors: err.errors,
     });
 
     return;
