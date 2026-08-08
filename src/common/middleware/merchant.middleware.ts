@@ -3,7 +3,7 @@ import type { NextFunction, Request, Response } from "express";
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../errors/app-error.js";
 
-export const requireApprovedMerchant = async (
+export const hydrateApprovedMerchant = async (
   req: Request,
   _res: Response,
   next: NextFunction,
@@ -12,9 +12,7 @@ export const requireApprovedMerchant = async (
     return next(new AppError(401, "Bạn chưa đăng nhập"));
   }
 
-  if (req.user.Role !== "Merchant") {
-    return next(new AppError(403, "Chức năng chỉ dành cho Merchant"));
-  }
+  if (req.user.Role !== "Merchant") return next();
 
   if (req.user.MerchantId) {
     return next();
@@ -43,4 +41,20 @@ export const requireApprovedMerchant = async (
   } catch (error) {
     return next(error);
   }
+};
+
+export const requireApprovedMerchant = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  if (!req.user) {
+    return next(new AppError(401, "Bạn chưa đăng nhập"));
+  }
+
+  if (req.user.Role !== "Merchant") {
+    return next(new AppError(403, "Chức năng chỉ dành cho Merchant"));
+  }
+
+  return hydrateApprovedMerchant(req, res, next);
 };

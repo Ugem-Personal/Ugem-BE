@@ -12,10 +12,12 @@ import type {
 } from "./admin.types.js";
 import {
   ApplicationStatus,
+  NotificationType,
   OrderPaymentStatus,
   OrderStatus,
   ReviewerApplicationStatus,
 } from "../../generated/prisma/client.js";
+import { createNotification } from "../notifications/notification.service.js";
 
 import { env } from "../../config/env.js";
 const SALT_ROUNDS = 12;
@@ -271,6 +273,15 @@ export const createStaff = async (input: CreateStaffInput) => {
     select: staffSelect,
   });
 
+  await createNotification({
+    userId: staff.id,
+    type: NotificationType.System,
+    title: "Tài khoản Staff đã được tạo",
+    message: "Tài khoản Staff của bạn đã được kích hoạt. Bạn có thể bắt đầu xử lý hồ sơ.",
+    referenceType: "Staff",
+    referenceId: staff.id,
+  });
+
   return mapStaff(staff);
 };
 
@@ -320,6 +331,15 @@ export const deactivateStaff = async (staffId: string) => {
       },
     }),
   ]);
+
+  await createNotification({
+    userId: staff.id,
+    type: NotificationType.System,
+    title: "Tài khoản Staff đã bị vô hiệu hóa",
+    message: "Tài khoản Staff của bạn đã bị Admin vô hiệu hóa.",
+    referenceType: "Staff",
+    referenceId: staff.id,
+  });
 
   return null;
 };

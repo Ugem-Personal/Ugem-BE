@@ -1,6 +1,7 @@
 import {
   CampaignDiscountType,
   MerchantStatus,
+  NotificationType,
   Prisma,
 } from "../../generated/prisma/client.js";
 
@@ -12,6 +13,7 @@ import type {
   UpdateCampaignInput,
 } from "./campaign.types.js";
 import { randomUUID } from "node:crypto";
+import { createNotifications } from "../notifications/notification.service.js";
 
 const campaignInclude = {
   merchant: {
@@ -21,6 +23,33 @@ const campaignInclude = {
       logoUrl: true,
     },
   },
+};
+
+const notifyWishlistedCustomers = async (
+  merchantId: string,
+  campaignName: string,
+) => {
+  const followers = await prisma.wishlist.findMany({
+    where: { merchantId },
+    select: {
+      customer: {
+        select: {
+          userId: true,
+        },
+      },
+    },
+  });
+
+  await createNotifications(
+    followers.map((follower) => ({
+      userId: follower.customer.userId,
+      type: NotificationType.System,
+      title: "Quán yêu thích có ưu đãi mới",
+      message: `Campaign ${campaignName} vừa được mở. Hãy xem ưu đãi tại quán.`,
+      referenceId: merchantId,
+      referenceType: "Merchant",
+    })),
+  );
 };
 
 const mapCampaign = (campaign: any) => {
@@ -164,6 +193,10 @@ export const createCampaign = async (
 
     include: campaignInclude,
   });
+
+  if (campaign.isActive) {
+    await notifyWishlistedCustomers(merchantId, campaign.name);
+  }
 
   return mapCampaign(campaign);
 };
@@ -326,6 +359,10 @@ export const updateCampaign = async (
     include: campaignInclude,
   });
 
+  if (input.isActive === true && !campaign.isActive) {
+    await notifyWishlistedCustomers(merchantId, updated.name);
+  }
+
   return mapCampaign(updated);
 };
 
@@ -359,6 +396,10 @@ export const updateCampaignStatus = async (
 
     include: campaignInclude,
   });
+
+  if (isActive && !campaign.isActive) {
+    await notifyWishlistedCustomers(merchantId, updated.name);
+  }
 
   return mapCampaign(updated);
 };

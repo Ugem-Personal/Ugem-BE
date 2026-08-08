@@ -1,9 +1,13 @@
-import { NotificationType, Prisma } from "../../generated/prisma/client.js";
+import {
+  NotificationType,
+  Prisma,
+  UserRole,
+} from "../../generated/prisma/client.js";
 
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
 
-interface CreateNotificationInput {
+export interface CreateNotificationInput {
   userId: string;
   type: NotificationType;
   title: string;
@@ -106,6 +110,43 @@ export const createNotification = async (input: CreateNotificationInput) => {
   });
 
   return mapNotification(notification);
+};
+
+export const createNotifications = async (
+  inputs: CreateNotificationInput[],
+) => {
+  if (inputs.length === 0) return { count: 0 };
+
+  return prisma.notification.createMany({
+    data: inputs.map((input) => ({
+      userId: input.userId,
+      type: input.type,
+      title: input.title,
+      message: input.message,
+      referenceId: input.referenceId ?? null,
+      referenceType: input.referenceType ?? null,
+    })),
+  });
+};
+
+export const notifyActiveUsersByRoles = async (
+  roles: UserRole[],
+  notification: Omit<CreateNotificationInput, "userId">,
+) => {
+  const recipients = await prisma.user.findMany({
+    where: {
+      role: { in: roles },
+      isActive: true,
+    },
+    select: { id: true },
+  });
+
+  return createNotifications(
+    recipients.map((recipient) => ({
+      ...notification,
+      userId: recipient.id,
+    })),
+  );
 };
 
 export const getMyNotifications = async (

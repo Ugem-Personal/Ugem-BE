@@ -1,12 +1,11 @@
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../errors/app-error.js";
-export const requireApprovedMerchant = async (req, _res, next) => {
+export const hydrateApprovedMerchant = async (req, _res, next) => {
     if (!req.user) {
         return next(new AppError(401, "Bạn chưa đăng nhập"));
     }
-    if (req.user.Role !== "Merchant") {
-        return next(new AppError(403, "Chức năng chỉ dành cho Merchant"));
-    }
+    if (req.user.Role !== "Merchant")
+        return next();
     if (req.user.MerchantId) {
         return next();
     }
@@ -31,4 +30,13 @@ export const requireApprovedMerchant = async (req, _res, next) => {
     catch (error) {
         return next(error);
     }
+};
+export const requireApprovedMerchant = async (req, res, next) => {
+    if (!req.user) {
+        return next(new AppError(401, "Bạn chưa đăng nhập"));
+    }
+    if (req.user.Role !== "Merchant") {
+        return next(new AppError(403, "Chức năng chỉ dành cho Merchant"));
+    }
+    return hydrateApprovedMerchant(req, res, next);
 };

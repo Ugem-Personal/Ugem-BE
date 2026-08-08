@@ -1,7 +1,7 @@
 import { ReviewerApplicationStatus, UserRole, NotificationType, } from "../../generated/prisma/client.js";
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
-import { createNotification } from "../notifications/notification.service.js";
+import { createNotification, notifyActiveUsersByRoles, } from "../notifications/notification.service.js";
 const applicationInclude = {
     customer: {
         include: {
@@ -90,6 +90,13 @@ export const createReviewerApplication = async (customerId, input) => {
             otherSocialUrl: input.otherSocialUrl?.trim() || null,
         },
         include: applicationInclude,
+    });
+    await notifyActiveUsersByRoles([UserRole.Staff, UserRole.Admin], {
+        type: NotificationType.Application,
+        title: "Có đơn đăng ký Reviewer mới",
+        message: `${customer.user.fullName} vừa gửi đơn đăng ký Reviewer.`,
+        referenceId: application.id,
+        referenceType: "ReviewerApplication",
     });
     return mapApplication(application);
 };

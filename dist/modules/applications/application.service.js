@@ -1,7 +1,8 @@
-import { ApplicationStatus, ApplicationType, Prisma, UserRole, } from "../../generated/prisma/client.js";
+import { ApplicationStatus, ApplicationType, NotificationType, Prisma, UserRole, } from "../../generated/prisma/client.js";
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
 import { importApplicationMenusAsFoods } from "./application-menu-import.js";
+import { createNotification, notifyActiveUsersByRoles, } from "../notifications/notification.service.js";
 const applicationInclude = {
     menus: {
         orderBy: {
@@ -114,6 +115,13 @@ export const createApplication = async (userId, input) => {
         },
         include: applicationInclude,
     });
+    await notifyActiveUsersByRoles([UserRole.Staff, UserRole.Admin], {
+        type: NotificationType.Application,
+        title: "Có hồ sơ Merchant mới chờ duyệt",
+        message: `${application.name} vừa gửi hồ sơ đăng ký quán.`,
+        referenceId: application.id,
+        referenceType: "Application",
+    });
     return mapApplication(application);
 };
 export const getMyApplications = async (userId) => {
@@ -205,6 +213,13 @@ export const updateApplication = async (applicationId, userId, input) => {
             },
             include: applicationInclude,
         });
+    });
+    await notifyActiveUsersByRoles([UserRole.Staff, UserRole.Admin], {
+        type: NotificationType.Application,
+        title: "Hồ sơ Merchant đã được gửi lại",
+        message: `${application.name} đã bổ sung và gửi lại hồ sơ để xét duyệt.`,
+        referenceId: application.id,
+        referenceType: "Application",
     });
     return mapApplication(application);
 };
@@ -299,6 +314,14 @@ export const reviewApplication = async (applicationId, reviewerUserId, input) =>
             },
             include: applicationInclude,
         });
+        await createNotification({
+            userId: application.applicantUserId,
+            type: NotificationType.Application,
+            title: "Hồ sơ đăng ký quán bị từ chối",
+            message: `Hồ sơ ${application.name} bị từ chối. Lý do: ${rejectedApplication.rejectionReason}`,
+            referenceId: rejectedApplication.id,
+            referenceType: "Application",
+        });
         return mapApplication(rejectedApplication);
     }
     if (application.applicant.merchant) {
@@ -336,6 +359,14 @@ export const reviewApplication = async (applicationId, reviewerUserId, input) =>
             },
             include: applicationInclude,
         });
+    });
+    await createNotification({
+        userId: application.applicantUserId,
+        type: NotificationType.Application,
+        title: "Hồ sơ đăng ký quán đã được duyệt",
+        message: `Chúc mừng! Hồ sơ ${application.name} đã được duyệt và quán đã được kích hoạt.`,
+        referenceId: acceptedApplication.id,
+        referenceType: "Application",
     });
     return mapApplication(acceptedApplication);
 };

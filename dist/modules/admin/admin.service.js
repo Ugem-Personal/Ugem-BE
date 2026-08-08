@@ -2,7 +2,8 @@ import bcrypt from "bcrypt";
 import { UserRole } from "../../generated/prisma/enums.js";
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
-import { ApplicationStatus, OrderPaymentStatus, OrderStatus, ReviewerApplicationStatus, } from "../../generated/prisma/client.js";
+import { ApplicationStatus, NotificationType, OrderPaymentStatus, OrderStatus, ReviewerApplicationStatus, } from "../../generated/prisma/client.js";
+import { createNotification } from "../notifications/notification.service.js";
 import { env } from "../../config/env.js";
 const SALT_ROUNDS = 12;
 const staffSelect = {
@@ -160,6 +161,14 @@ export const createStaff = async (input) => {
         },
         select: staffSelect,
     });
+    await createNotification({
+        userId: staff.id,
+        type: NotificationType.System,
+        title: "Tài khoản Staff đã được tạo",
+        message: "Tài khoản Staff của bạn đã được kích hoạt. Bạn có thể bắt đầu xử lý hồ sơ.",
+        referenceType: "Staff",
+        referenceId: staff.id,
+    });
     return mapStaff(staff);
 };
 export const deactivateStaff = async (staffId) => {
@@ -201,6 +210,14 @@ export const deactivateStaff = async (staffId) => {
             },
         }),
     ]);
+    await createNotification({
+        userId: staff.id,
+        type: NotificationType.System,
+        title: "Tài khoản Staff đã bị vô hiệu hóa",
+        message: "Tài khoản Staff của bạn đã bị Admin vô hiệu hóa.",
+        referenceType: "Staff",
+        referenceId: staff.id,
+    });
     return null;
 };
 export const getAdminDashboard = async () => {

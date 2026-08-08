@@ -354,6 +354,8 @@ model Order {
 
   notes           String?
   deliveryAddress String?
+  deliveryLatitude  Decimal? @db.Decimal(10, 7)
+  deliveryLongitude Decimal? @db.Decimal(10, 7)
 
   subtotal           Decimal @db.Decimal(12, 2)
   discount           Decimal @default(0) @db.Decimal(12, 2)

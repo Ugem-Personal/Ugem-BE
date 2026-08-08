@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { authenticate } from "../../common/middleware/auth.middleware.js";
 import { authorizeRoles } from "../../common/middleware/role.middleware.js";
-import { requireApprovedMerchant } from "../../common/middleware/merchant.middleware.js";
+import { hydrateApprovedMerchant, requireApprovedMerchant, } from "../../common/middleware/merchant.middleware.js";
 import { validate } from "../../common/middleware/validate.middleware.js";
 import { acceptMerchantOrder, createMerchantOrder, createOrder, getMerchantOrders, getMyOrders, getOrderById, rejectMerchantOrder, updateOrderStatusByRole, } from "./order.controller.js";
 import { createMerchantOrderSchema, createOrderSchema, orderIdParamSchema, orderIdSchema, orderListSchema, rejectMerchantOrderSchema, updateOrderStatusByRoleSchema, } from "./order.schema.js";
@@ -23,7 +23,7 @@ orderRouter.post("/bill/reject", authorizeRoles("Customer", "Reviewer"), validat
 orderRouter.post("/merchant", requireApprovedMerchant, validate(createMerchantOrderSchema), createMerchantOrder);
 orderRouter.post("/reject", requireApprovedMerchant, validate(rejectMerchantOrderSchema), rejectMerchantOrder);
 orderRouter.post("/:orderId/accept", requireApprovedMerchant, validate(orderIdParamSchema), acceptMerchantOrder);
-orderRouter.patch("/:id/status", authorizeRoles("Merchant", "Customer", "Reviewer"), validate(updateOrderStatusByRoleSchema), updateOrderStatusByRole);
+orderRouter.patch("/:id/status", hydrateApprovedMerchant, authorizeRoles("Merchant", "Customer", "Reviewer"), validate(updateOrderStatusByRoleSchema), updateOrderStatusByRole);
 orderRouter.patch("/:orderId/cash/request", authorizeRoles("Customer", "Reviewer"), validate(cashOrderIdSchema), requestCashConfirmation);
 orderRouter.patch("/:orderId/cash/confirm", requireApprovedMerchant, validate(cashOrderIdSchema), confirmCashPayment);
-orderRouter.get("/:id", validate(orderIdSchema), getOrderById);
+orderRouter.get("/:id", hydrateApprovedMerchant, validate(orderIdSchema), getOrderById);

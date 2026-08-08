@@ -1,6 +1,7 @@
-import { Prisma, } from "../../generated/prisma/client.js";
+import { NotificationType, Prisma, } from "../../generated/prisma/client.js";
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
+import { createNotification } from "../notifications/notification.service.js";
 const reviewInclude = {
     customer: {
         include: {
@@ -102,6 +103,12 @@ export const createReview = async (customerId, input) => {
         },
         include: {
             details: true,
+            merchant: {
+                select: {
+                    userId: true,
+                    name: true,
+                },
+            },
         },
     });
     if (!order) {
@@ -149,6 +156,14 @@ export const createReview = async (customerId, input) => {
         });
         await updateMerchantRating(transaction, order.merchantId);
         return createdReview;
+    });
+    await createNotification({
+        userId: order.merchant.userId,
+        type: NotificationType.Review,
+        title: "Quán vừa nhận được đánh giá mới",
+        message: `Khách hàng đã đánh giá ${order.merchant.name} ${review.rating}/5 sao.`,
+        referenceId: review.id,
+        referenceType: "Review",
     });
     return mapReview(review);
 };
@@ -206,6 +221,14 @@ export const updateReview = async (customerId, reviewId, input) => {
     const review = await prisma.review.findUnique({
         where: {
             id: reviewId,
+        },
+        include: {
+            merchant: {
+                select: {
+                    userId: true,
+                    name: true,
+                },
+            },
         },
     });
     if (!review) {
@@ -269,6 +292,14 @@ export const updateReview = async (customerId, reviewId, input) => {
             },
             include: reviewInclude,
         });
+    });
+    await createNotification({
+        userId: review.merchant.userId,
+        type: NotificationType.Review,
+        title: "Khách hàng đã cập nhật đánh giá",
+        message: `Một đánh giá về ${review.merchant.name} vừa được cập nhật thành ${updated.rating}/5 sao.`,
+        referenceId: updated.id,
+        referenceType: "Review",
     });
     return mapReview(updated);
 };

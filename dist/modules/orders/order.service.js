@@ -30,6 +30,11 @@ const orderInclude = {
     details: {
         include: {
             toppings: true,
+            food: {
+                select: {
+                    imageUrl: true,
+                },
+            },
         },
     },
     bill: true,
@@ -48,6 +53,7 @@ const mapOrder = (order) => {
             merchantId: order.merchantId,
             merchantName: order.merchant?.name ?? null,
             name: detail.foodNameSnapshot,
+            imageUrl: detail.food?.imageUrl ?? null,
             quantity: detail.quantity,
             unitPrice: Number(detail.unitPrice),
             notes: detail.notes,
@@ -88,6 +94,8 @@ const mapOrder = (order) => {
             : null,
         notes: order.notes,
         deliveryAddress: order.deliveryAddress,
+        deliveryLatitude: order.deliveryLatitude !== null ? Number(order.deliveryLatitude) : null,
+        deliveryLongitude: order.deliveryLongitude !== null ? Number(order.deliveryLongitude) : null,
         subtotal: Number(order.subtotal),
         discount: Number(order.discount),
         finalPrice: Number(order.finalPrice),
@@ -270,6 +278,12 @@ export const createOrder = async (customerId, input) => {
             status: OrderStatus.Pending,
             notes: input.notes?.trim() || null,
             deliveryAddress: input.deliveryAddress?.trim() || null,
+            deliveryLatitude: input.deliveryLatitude != null
+                ? new Prisma.Decimal(input.deliveryLatitude)
+                : null,
+            deliveryLongitude: input.deliveryLongitude != null
+                ? new Prisma.Decimal(input.deliveryLongitude)
+                : null,
             subtotal: new Prisma.Decimal(subtotal),
             discount: new Prisma.Decimal(discount),
             finalPrice: new Prisma.Decimal(finalPrice),

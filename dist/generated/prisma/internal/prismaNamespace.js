@@ -245,6 +245,8 @@ export const OrderScalarFieldEnum = {
     paymentStatus: 'paymentStatus',
     notes: 'notes',
     deliveryAddress: 'deliveryAddress',
+    deliveryLatitude: 'deliveryLatitude',
+    deliveryLongitude: 'deliveryLongitude',
     subtotal: 'subtotal',
     discount: 'discount',
     finalPrice: 'finalPrice',
