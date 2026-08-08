@@ -1,4 +1,4 @@
-import dns from "node:dns";
+import dnsPromises from "node:dns/promises";
 import nodemailer from "nodemailer";
 
 import { env } from "../../config/env.js";
@@ -7,34 +7,45 @@ const isGmail = env.SMTP_HOST.includes("gmail");
 const smtpPort = isGmail ? 465 : env.SMTP_PORT;
 const smtpSecure = isGmail ? true : env.SMTP_SECURE;
 
-const customLookup = (hostname: string, options: any, callback: any) => {
-  if (typeof options === "function") {
-    callback = options;
-    options = {};
+const getTransporter = async () => {
+  const hostName = env.SMTP_HOST.trim();
+  let resolvedHost = hostName;
+
+  try {
+    const ipv4Addresses = await dnsPromises.resolve4(hostName);
+    const firstIp = ipv4Addresses[0];
+    if (firstIp) {
+      resolvedHost = firstIp;
+    }
+  } catch (err) {
+    console.warn("Dns resolve4 warning:", err);
   }
-  return dns.lookup(hostname, { ...options, family: 4 }, callback);
+
+  return nodemailer.createTransport({
+    host: resolvedHost,
+    port: smtpPort,
+    secure: smtpSecure,
+    tls: {
+      servername: hostName,
+      rejectUnauthorized: false,
+    },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 10000,
+    auth: {
+      user: env.SMTP_USER.trim(),
+      pass: env.SMTP_PASSWORD.replace(/\s+/g, ""),
+    },
+  } as any);
 };
-
-const transporter = nodemailer.createTransport({
-  host: env.SMTP_HOST.trim(),
-  port: smtpPort,
-  secure: smtpSecure,
-  lookup: customLookup,
-
-  connectionTimeout: 10000,
-  greetingTimeout: 10000,
-  socketTimeout: 10000,
-  auth: {
-    user: env.SMTP_USER.trim(),
-    pass: env.SMTP_PASSWORD.replace(/\s+/g, ""),
-  },
-} as any);
 
 export const sendPasswordResetCode = async (
   recipientEmail: string,
   recipientName: string,
   resetCode: string,
 ) => {
+  const transporter = await getTransporter();
+
   await transporter.sendMail({
     from: env.SMTP_FROM,
     to: recipientEmail,
