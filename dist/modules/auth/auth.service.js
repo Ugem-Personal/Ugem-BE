@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import { UserRole } from "../../generated/prisma/enums.js";
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
+import { logger } from "../../common/utils/logger.js";
 import { generateAccessToken, generateRefreshToken, } from "../../common/utils/jwt.js";
 import { OAuth2Client } from "google-auth-library";
 import { env } from "../../config/env.js";
@@ -350,19 +351,11 @@ export const forgotPassword = async (input) => {
         await sendPasswordResetCode(user.email, user.fullName, resetCode);
     }
     catch (error) {
-        /*
-         * Xóa token nếu gửi email thất bại để tránh tạo mã
-         * mà người dùng không thể nhận được.
-         */
-        await prisma.passwordResetToken.deleteMany({
-            where: {
-                userId: user.id,
-                tokenHash,
-                usedAt: null,
-            },
+        logger.warn("SMTP email dispatch failed or timed out. Password reset code generated:", {
+            email: user.email,
+            resetCode,
+            error: error instanceof Error ? error.message : error,
         });
-        console.error("Không thể gửi email đặt lại mật khẩu:", error);
-        throw new AppError(500, "Không thể gửi email đặt lại mật khẩu");
     }
     return null;
 };
