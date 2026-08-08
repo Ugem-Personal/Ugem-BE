@@ -5,13 +5,14 @@ const createLimiter = (windowMs, limit, message) => rateLimit({
     limit,
     standardHeaders: "draft-7",
     legacyHeaders: false,
+    validate: { trustProxy: false },
     handler: (_req, res) => sendError(res, {
         statusCode: 429,
         message,
         errors: [
             {
                 code: "RATE_LIMITED",
-                message: "Vui long thu lai sau it phut.",
+                message,
             },
         ],
     }),
