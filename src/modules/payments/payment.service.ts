@@ -91,6 +91,12 @@ const billInclude = {
           },
         },
       },
+
+      details: {
+        include: {
+          toppings: true,
+        },
+      },
     },
   },
 };
