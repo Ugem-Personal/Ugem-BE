@@ -66,6 +66,11 @@ const billInclude = {
                     },
                 },
             },
+            details: {
+                include: {
+                    toppings: true,
+                },
+            },
         },
     },
 };
@@ -227,29 +232,29 @@ export const confirmCashPayment = async (merchantId, orderId) => {
     if (order.merchantId !== merchantId) {
         throw new AppError(403, "Order không thuộc Merchant này");
     }
-    if (order.paymentMethod !== PaymentMethod.Cash) {
-        throw new AppError(400, "Order này không sử dụng phương thức tiền mặt");
-    }
     if (!activeOrderStatuses.has(order.status)) {
         throw new AppError(409, "Order chưa ở trạng thái có thể xác nhận thanh toán");
     }
     if (order.paymentStatus === OrderPaymentStatus.Paid) {
         throw new AppError(409, "Order đã được thanh toán");
     }
-    if (!order.bill) {
-        throw new AppError(409, "Customer chưa gửi yêu cầu xác nhận tiền mặt");
-    }
-    if (order.bill.status !== BillStatus.Requested) {
-        throw new AppError(409, "Hóa đơn chưa ở trạng thái chờ Merchant xác nhận");
-    }
     const result = await prisma.$transaction(async (transaction) => {
-        const updatedBill = await transaction.bill.update({
+        const updatedBill = await transaction.bill.upsert({
             where: {
                 orderId: order.id,
             },
-            data: {
+            create: {
+                orderId: order.id,
+                method: order.paymentMethod,
+                amount: order.finalPrice,
                 status: BillStatus.Confirmed,
                 merchantConfirmedAt: new Date(),
+                customerConfirmedAt: new Date(),
+            },
+            update: {
+                status: BillStatus.Confirmed,
+                merchantConfirmedAt: new Date(),
+                customerConfirmedAt: new Date(),
             },
             include: billInclude,
         });
