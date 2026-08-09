@@ -119,20 +119,27 @@ const mapBill = (bill) => ({
     createdAt: bill.createdAt,
     updatedAt: bill.updatedAt,
 });
-const findBill = async (input) => {
-    const bill = input.billId
-        ? await prisma.bill.findUnique({
+const findBillOptional = async (input) => {
+    if (input.billId) {
+        return prisma.bill.findUnique({
             where: {
                 id: input.billId,
             },
             include: billInclude,
-        })
-        : await prisma.bill.findUnique({
+        });
+    }
+    if (input.orderId) {
+        return prisma.bill.findUnique({
             where: {
                 orderId: input.orderId,
             },
             include: billInclude,
         });
+    }
+    return null;
+};
+const findBill = async (input) => {
+    const bill = await findBillOptional(input);
     if (!bill) {
         throw new AppError(404, "Không tìm thấy hóa đơn");
     }
@@ -494,17 +501,90 @@ export const getCustomerBills = async (customerId, orderId) => {
     return bills.map(mapBill);
 };
 export const confirmBill = async (customerId, input) => {
-    const bill = await findBill(input);
-    if (bill.order.customerId !== customerId) {
-        throw new AppError(403, "Hóa đơn không thuộc Customer này");
+    const existingBill = await findBillOptional(input);
+    if (!existingBill) {
+        const orderId = input.orderId;
+        if (!orderId) {
+            throw new AppError(404, "Không tìm thấy hóa đơn");
+        }
+        const order = await prisma.order.findUnique({
+            where: { id: orderId },
+            include: {
+                merchant: {
+                    select: {
+                        id: true,
+                        userId: true,
+                        name: true,
+                        logoUrl: true,
+                        phone: true,
+                        address: true,
+                    },
+                },
+                customer: {
+                    include: {
+                        user: {
+                            select: {
+                                id: true,
+                                fullName: true,
+                                email: true,
+                                phoneNumber: true,
+                            },
+                        },
+                    },
+                },
+            },
+        });
+        if (!order) {
+            throw new AppError(404, "Không tìm thấy đơn hàng");
+        }
+        if (order.customerId !== customerId) {
+            throw new AppError(403, "Đơn hàng không thuộc Customer này");
+        }
+        const confirmedBill = await prisma.$transaction(async (transaction) => {
+            await transaction.order.update({
+                where: { id: order.id },
+                data: { paymentStatus: OrderPaymentStatus.Paid },
+            });
+            return await transaction.bill.upsert({
+                where: { orderId: order.id },
+                create: {
+                    orderId: order.id,
+                    method: order.paymentMethod,
+                    amount: order.finalPrice,
+                    status: BillStatus.Confirmed,
+                    merchantConfirmedAt: new Date(),
+                    customerConfirmedAt: new Date(),
+                },
+                update: {
+                    status: BillStatus.Confirmed,
+                    customerConfirmedAt: new Date(),
+                    rejectedAt: null,
+                    rejectionReason: null,
+                },
+                include: billInclude,
+            });
+        });
+        await notifyPaymentSuccess(confirmedBill.orderId);
+        await createNotification({
+            userId: confirmedBill.order.merchant.userId,
+            type: NotificationType.Payment,
+            title: "Customer đã xác nhận hóa đơn",
+            message: "Customer đã xác nhận hóa đơn và thanh toán đơn hàng thành công.",
+            referenceId: confirmedBill.orderId,
+            referenceType: "Order",
+        });
+        if (confirmedBill.order.status === OrderStatus.Completed) {
+            await createReviewerCommission(confirmedBill.orderId);
+        }
+        return mapBill(confirmedBill);
     }
-    if (bill.status !== BillStatus.PendingCustomerConfirmation) {
-        throw new AppError(409, "Hóa đơn không ở trạng thái chờ Customer xác nhận");
+    if (existingBill.order.customerId !== customerId) {
+        throw new AppError(403, "Hóa đơn không thuộc Customer này");
     }
     const confirmedBill = await prisma.$transaction(async (transaction) => {
         await transaction.order.update({
             where: {
-                id: bill.orderId,
+                id: existingBill.orderId,
             },
             data: {
                 paymentStatus: OrderPaymentStatus.Paid,
@@ -512,7 +592,7 @@ export const confirmBill = async (customerId, input) => {
         });
         const updatedBill = await transaction.bill.update({
             where: {
-                id: bill.id,
+                id: existingBill.id,
             },
             data: {
                 status: BillStatus.Confirmed,
@@ -539,17 +619,75 @@ export const confirmBill = async (customerId, input) => {
     return mapBill(confirmedBill);
 };
 export const rejectBill = async (customerId, input) => {
-    const bill = await findBill(input);
-    if (bill.order.customerId !== customerId) {
-        throw new AppError(403, "Hóa đơn không thuộc Customer này");
+    const existingBill = await findBillOptional(input);
+    if (!existingBill) {
+        const orderId = input.orderId;
+        if (!orderId) {
+            throw new AppError(404, "Không tìm thấy hóa đơn");
+        }
+        const order = await prisma.order.findUnique({
+            where: { id: orderId },
+            include: {
+                merchant: {
+                    select: {
+                        id: true,
+                        userId: true,
+                        name: true,
+                        logoUrl: true,
+                        phone: true,
+                        address: true,
+                    },
+                },
+            },
+        });
+        if (!order) {
+            throw new AppError(404, "Không tìm thấy đơn hàng");
+        }
+        if (order.customerId !== customerId) {
+            throw new AppError(403, "Đơn hàng không thuộc Customer này");
+        }
+        const rejectedBill = await prisma.$transaction(async (transaction) => {
+            const upsertedBill = await transaction.bill.upsert({
+                where: { orderId: order.id },
+                create: {
+                    orderId: order.id,
+                    method: order.paymentMethod,
+                    amount: order.finalPrice,
+                    status: BillStatus.Rejected,
+                    rejectedAt: new Date(),
+                    rejectionReason: input.rejectionReason.trim(),
+                },
+                update: {
+                    status: BillStatus.Rejected,
+                    rejectedAt: new Date(),
+                    rejectionReason: input.rejectionReason.trim(),
+                    customerConfirmedAt: null,
+                },
+                include: billInclude,
+            });
+            await transaction.order.update({
+                where: { id: order.id },
+                data: { paymentStatus: OrderPaymentStatus.Rejected },
+            });
+            return upsertedBill;
+        });
+        await createNotification({
+            userId: rejectedBill.order.merchant.userId,
+            type: NotificationType.Payment,
+            title: "Customer đã từ chối hóa đơn",
+            message: `Customer đã từ chối hóa đơn. Lý do: ${rejectedBill.rejectionReason ?? "Không cung cấp lý do"}`,
+            referenceId: rejectedBill.orderId,
+            referenceType: "Order",
+        });
+        return mapBill(rejectedBill);
     }
-    if (bill.status !== BillStatus.PendingCustomerConfirmation) {
-        throw new AppError(409, "Hóa đơn không ở trạng thái chờ Customer xác nhận");
+    if (existingBill.order.customerId !== customerId) {
+        throw new AppError(403, "Hóa đơn không thuộc Customer này");
     }
     const rejectedBill = await prisma.$transaction(async (transaction) => {
         const updatedBill = await transaction.bill.update({
             where: {
-                id: bill.id,
+                id: existingBill.id,
             },
             data: {
                 status: BillStatus.Rejected,
@@ -561,7 +699,7 @@ export const rejectBill = async (customerId, input) => {
         });
         await transaction.order.update({
             where: {
-                id: bill.orderId,
+                id: existingBill.orderId,
             },
             data: {
                 paymentStatus: OrderPaymentStatus.Rejected,
