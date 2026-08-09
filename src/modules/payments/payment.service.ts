@@ -575,11 +575,78 @@ export const getCustomerBills = async (
       include: billInclude,
     });
 
-    if (!bill || bill.order.customerId !== customerId) {
-      throw new AppError(404, "Không tìm thấy hóa đơn");
+    if (bill) {
+      if (bill.order.customerId !== customerId) {
+        throw new AppError(403, "Hóa đơn không thuộc Customer này");
+      }
+
+      return mapBill(bill);
     }
 
-    return mapBill(bill);
+    const order = await prisma.order.findUnique({
+      where: {
+        id: orderId,
+      },
+
+      include: {
+        merchant: {
+          select: {
+            id: true,
+            userId: true,
+            name: true,
+            logoUrl: true,
+            phone: true,
+            address: true,
+          },
+        },
+
+        customer: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                fullName: true,
+                email: true,
+                phoneNumber: true,
+              },
+            },
+          },
+        },
+
+        details: {
+          include: {
+            toppings: true,
+          },
+        },
+      },
+    });
+
+    if (!order) {
+      throw new AppError(404, "Không tìm thấy đơn hàng");
+    }
+
+    if (order.customerId !== customerId) {
+      throw new AppError(403, "Đơn hàng không thuộc Customer này");
+    }
+
+    return mapBill({
+      id: order.id,
+      orderId: order.id,
+      method: order.paymentMethod,
+      status: BillStatus.PendingCustomerConfirmation,
+      amount: order.finalPrice,
+      evidenceUrl: null,
+      transferContent: `UGEM-${order.id}`,
+      sepayReference: null,
+      requestedAt: order.createdAt,
+      merchantConfirmedAt: null,
+      customerConfirmedAt: null,
+      rejectedAt: null,
+      rejectionReason: null,
+      order,
+      createdAt: order.createdAt,
+      updatedAt: order.updatedAt,
+    });
   }
 
   const bills = await prisma.bill.findMany({
