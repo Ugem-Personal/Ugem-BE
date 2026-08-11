@@ -571,12 +571,11 @@ export const confirmBill = async (customerId, input) => {
                 include: billInclude,
             });
         });
-        await notifyPaymentSuccess(confirmedBill.orderId);
         await createNotification({
             userId: confirmedBill.order.merchant.userId,
             type: NotificationType.Payment,
             title: "Customer đã xác nhận hóa đơn",
-            message: "Customer đã xác nhận hóa đơn và thanh toán đơn hàng thành công.",
+            message: "Customer đã xác nhận thông tin hóa đơn.",
             referenceId: confirmedBill.orderId,
             referenceType: "Order",
         });
@@ -613,12 +612,11 @@ export const confirmBill = async (customerId, input) => {
         });
         return updatedBill;
     });
-    await notifyPaymentSuccess(confirmedBill.orderId);
     await createNotification({
         userId: confirmedBill.order.merchant.userId,
         type: NotificationType.Payment,
         title: "Customer đã xác nhận hóa đơn",
-        message: "Customer đã xác nhận hóa đơn và thanh toán đơn hàng thành công.",
+        message: "Customer đã xác nhận thông tin hóa đơn.",
         referenceId: confirmedBill.orderId,
         referenceType: "Order",
     });
