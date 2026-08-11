@@ -1,4 +1,4 @@
-import { BillStatus, NotificationType, OrderPaymentStatus, OrderStatus, PaymentMethod, } from "../../generated/prisma/client.js";
+import { BillStatus, NotificationType, OrderPaymentStatus, OrderStatus, OrderType, PaymentMethod, } from "../../generated/prisma/client.js";
 import { prisma } from "../../config/prisma.js";
 import { env } from "../../config/env.js";
 import { AppError } from "../../common/errors/app-error.js";
@@ -790,6 +790,7 @@ export const processSepayWebhook = async (input) => {
     if (Math.abs(amount - Number(order.finalPrice)) > 0.01) {
         throw new AppError(409, "Số tiền chuyển khoản không khớp");
     }
+    const isOffline = order.orderType === OrderType.Offline;
     await prisma.$transaction(async (transaction) => {
         await transaction.order.update({
             where: {
@@ -797,24 +798,50 @@ export const processSepayWebhook = async (input) => {
             },
             data: {
                 paymentStatus: OrderPaymentStatus.Paid,
-                status: OrderStatus.Completed,
-                completedAt: new Date(),
+                status: isOffline
+                    ? OrderStatus.Completed
+                    : order.status === OrderStatus.Pending
+                        ? OrderStatus.Accepted
+                        : order.status,
+                acceptedAt: !isOffline && order.status === OrderStatus.Pending
+                    ? new Date()
+                    : order.acceptedAt,
+                completedAt: isOffline ? new Date() : order.completedAt,
             },
         });
-        await transaction.bill.update({
-            where: {
-                orderId,
-            },
-            data: {
-                status: BillStatus.Confirmed,
-                sepayReference: reference,
-                transferContent: input.content?.trim() || null,
-                merchantConfirmedAt: new Date(),
-                customerConfirmedAt: new Date(),
-                rejectedAt: null,
-                rejectionReason: null,
-            },
+        const existingBill = await transaction.bill.findUnique({
+            where: { orderId },
         });
+        if (existingBill) {
+            await transaction.bill.update({
+                where: {
+                    orderId,
+                },
+                data: {
+                    status: BillStatus.Confirmed,
+                    sepayReference: reference,
+                    transferContent: input.content?.trim() || null,
+                    merchantConfirmedAt: new Date(),
+                    customerConfirmedAt: new Date(),
+                    rejectedAt: null,
+                    rejectionReason: null,
+                },
+            });
+        }
+        else {
+            await transaction.bill.create({
+                data: {
+                    orderId,
+                    method: order.paymentMethod,
+                    amount: order.finalPrice,
+                    status: BillStatus.Confirmed,
+                    sepayReference: reference,
+                    transferContent: input.content?.trim() || null,
+                    merchantConfirmedAt: new Date(),
+                    customerConfirmedAt: new Date(),
+                },
+            });
+        }
     });
     const bill = await prisma.bill.findUniqueOrThrow({
         where: { orderId },
