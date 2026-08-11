@@ -402,7 +402,11 @@ export const getMyOrders = async (customerId, query) => {
     const pageSize = query.pageSize || 10;
     const where = {
         customerId,
-        status: query.status ? query.status : undefined,
+        status: query.status === "Cancelled" || query.status === "Rejected"
+            ? { in: [OrderStatus.Cancelled, OrderStatus.Rejected] }
+            : query.status
+                ? query.status
+                : undefined,
     };
     const [orders, totalItems] = await prisma.$transaction([
         prisma.order.findMany({
