@@ -727,10 +727,12 @@ export const confirmBill = async (
     }
 
     const confirmedBill = await prisma.$transaction(async (transaction) => {
-      await transaction.order.update({
-        where: { id: order.id },
-        data: { paymentStatus: OrderPaymentStatus.Paid },
-      });
+      if (order.paymentMethod === PaymentMethod.Cash) {
+        await transaction.order.update({
+          where: { id: order.id },
+          data: { paymentStatus: OrderPaymentStatus.Paid },
+        });
+      }
 
       return await transaction.bill.upsert({
         where: { orderId: order.id },
@@ -775,15 +777,17 @@ export const confirmBill = async (
   }
 
   const confirmedBill = await prisma.$transaction(async (transaction) => {
-    await transaction.order.update({
-      where: {
-        id: existingBill.orderId,
-      },
+    if (existingBill.order.paymentMethod === PaymentMethod.Cash) {
+      await transaction.order.update({
+        where: {
+          id: existingBill.orderId,
+        },
 
-      data: {
-        paymentStatus: OrderPaymentStatus.Paid,
-      },
-    });
+        data: {
+          paymentStatus: OrderPaymentStatus.Paid,
+        },
+      });
+    }
 
     const updatedBill = await transaction.bill.update({
       where: {

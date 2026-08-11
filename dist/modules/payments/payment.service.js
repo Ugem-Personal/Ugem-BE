@@ -546,10 +546,12 @@ export const confirmBill = async (customerId, input) => {
             throw new AppError(403, "Đơn hàng không thuộc Customer này");
         }
         const confirmedBill = await prisma.$transaction(async (transaction) => {
-            await transaction.order.update({
-                where: { id: order.id },
-                data: { paymentStatus: OrderPaymentStatus.Paid },
-            });
+            if (order.paymentMethod === PaymentMethod.Cash) {
+                await transaction.order.update({
+                    where: { id: order.id },
+                    data: { paymentStatus: OrderPaymentStatus.Paid },
+                });
+            }
             return await transaction.bill.upsert({
                 where: { orderId: order.id },
                 create: {
@@ -587,14 +589,16 @@ export const confirmBill = async (customerId, input) => {
         throw new AppError(403, "Hóa đơn không thuộc Customer này");
     }
     const confirmedBill = await prisma.$transaction(async (transaction) => {
-        await transaction.order.update({
-            where: {
-                id: existingBill.orderId,
-            },
-            data: {
-                paymentStatus: OrderPaymentStatus.Paid,
-            },
-        });
+        if (existingBill.order.paymentMethod === PaymentMethod.Cash) {
+            await transaction.order.update({
+                where: {
+                    id: existingBill.orderId,
+                },
+                data: {
+                    paymentStatus: OrderPaymentStatus.Paid,
+                },
+            });
+        }
         const updatedBill = await transaction.bill.update({
             where: {
                 id: existingBill.id,
