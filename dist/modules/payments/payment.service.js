@@ -264,10 +264,13 @@ export const confirmCashPayment = async (merchantId, orderId) => {
             },
             data: {
                 paymentStatus: OrderPaymentStatus.Paid,
+                status: OrderStatus.Completed,
+                completedAt: new Date(),
             },
         });
         return updatedBill;
     });
+    await createReviewerCommission(order.id).catch(() => null);
     await createNotification({
         userId: order.customer.userId,
         type: NotificationType.Payment,
@@ -549,7 +552,9 @@ export const confirmBill = async (customerId, input) => {
             if (order.paymentMethod === PaymentMethod.Cash) {
                 await transaction.order.update({
                     where: { id: order.id },
-                    data: { paymentStatus: OrderPaymentStatus.Paid },
+                    data: {
+                        paymentStatus: OrderPaymentStatus.Paid,
+                    },
                 });
             }
             return await transaction.bill.upsert({
@@ -792,6 +797,8 @@ export const processSepayWebhook = async (input) => {
             },
             data: {
                 paymentStatus: OrderPaymentStatus.Paid,
+                status: OrderStatus.Completed,
+                completedAt: new Date(),
             },
         });
         await transaction.bill.update({

@@ -736,13 +736,7 @@ export const confirmBill = async (
           where: { id: order.id },
           data: {
             paymentStatus: OrderPaymentStatus.Paid,
-            status: OrderStatus.BillConfirmed,
           },
-        });
-      } else if (order.status !== OrderStatus.Completed) {
-        await transaction.order.update({
-          where: { id: order.id },
-          data: { status: OrderStatus.BillConfirmed },
         });
       }
 
@@ -795,17 +789,6 @@ export const confirmBill = async (
 
         data: {
           paymentStatus: OrderPaymentStatus.Paid,
-          status: OrderStatus.BillConfirmed,
-        },
-      });
-    } else if (existingBill.order.status !== OrderStatus.Completed) {
-      await transaction.order.update({
-        where: {
-          id: existingBill.orderId,
-        },
-
-        data: {
-          status: OrderStatus.BillConfirmed,
         },
       });
     }
