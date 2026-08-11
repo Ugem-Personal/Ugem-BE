@@ -353,11 +353,15 @@ export const confirmCashPayment = async (
 
       data: {
         paymentStatus: OrderPaymentStatus.Paid,
+        status: OrderStatus.Completed,
+        completedAt: new Date(),
       },
     });
 
     return updatedBill;
   });
+
+  await createReviewerCommission(order.id).catch(() => null);
 
   await createNotification({
     userId: order.customer.userId,
@@ -1055,6 +1059,8 @@ export const processSepayWebhook = async (input: SepayWebhookInput) => {
 
       data: {
         paymentStatus: OrderPaymentStatus.Paid,
+        status: OrderStatus.Completed,
+        completedAt: new Date(),
       },
     });
 
