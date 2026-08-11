@@ -756,15 +756,15 @@ const extractOrderId = async (content) => {
 export const processSepayWebhook = async (input) => {
     const orderId = input.orderId ?? (await extractOrderId(input.content));
     if (!orderId) {
-        throw new AppError(400, "Không xác định được Order ID từ giao dịch");
+        return null;
     }
     const reference = input.referenceCode?.trim();
     if (!reference) {
-        throw new AppError(400, "Giao dịch thiếu referenceCode");
+        return null;
     }
     const amount = input.transferAmount ?? input.amount;
     if (!amount) {
-        throw new AppError(400, "Giao dịch thiếu số tiền");
+        return null;
     }
     const existingReference = await prisma.bill.findUnique({
         where: {
