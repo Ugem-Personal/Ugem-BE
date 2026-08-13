@@ -69,6 +69,15 @@ const notifyPaymentSuccess = async (orderId: string) => {
 const billInclude = {
   order: {
     include: {
+      checkIn: {
+        select: {
+          id: true,
+          status: true,
+          checkedInAt: true,
+          verifiedAt: true,
+        },
+      },
+
       merchant: {
         select: {
           id: true,
@@ -126,6 +135,8 @@ const mapBill = (bill: any) => ({
   bankAccount: env.BANK_ACCOUNT_NUMBER,
 
   paymentMethod: bill.order?.paymentMethod ?? bill.method,
+  orderType: bill.order?.orderType,
+  checkInStatus: bill.order?.checkIn?.status ?? null,
   finalPrice: bill.order ? Number(bill.order.finalPrice) : Number(bill.amount),
   items:
     bill.order?.details?.map((detail: any) => ({
@@ -222,6 +233,18 @@ export const requestCashConfirmation = async (
 
   if (order.customerId !== customerId) {
     throw new AppError(403, "Order không thuộc Customer này");
+  }
+
+  if (order.orderType === OrderType.Offline) {
+    const checkIn = await prisma.checkIn.findUnique({
+      where: { orderId: order.id },
+    });
+    if (!checkIn || checkIn.status !== "Verified") {
+      throw new AppError(
+        400,
+        "Bạn cần check-in thành công tại quán trước khi thanh toán tiền mặt",
+      );
+    }
   }
 
   if (order.paymentMethod !== PaymentMethod.Cash) {
@@ -729,6 +752,18 @@ export const confirmBill = async (
 
     if (order.customerId !== customerId) {
       throw new AppError(403, "Đơn hàng không thuộc Customer này");
+    }
+
+    if (order.orderType === OrderType.Offline) {
+      const checkIn = await prisma.checkIn.findUnique({
+        where: { orderId: order.id },
+      });
+      if (!checkIn || checkIn.status !== "Verified") {
+        throw new AppError(
+          400,
+          "Bạn cần check-in thành công tại quán trước khi thanh toán",
+        );
+      }
     }
 
     const confirmedBill = await prisma.$transaction(async (transaction) => {

@@ -175,10 +175,6 @@ export const verifyCheckIn = async (
     throw new AppError(400, "Order này không phải order Offline");
   }
 
-  if (order.paymentStatus !== OrderPaymentStatus.Paid) {
-    throw new AppError(409, "Order chưa được thanh toán");
-  }
-
   if (
     order.status !== OrderStatus.Accepted &&
     order.status !== OrderStatus.Ready &&
