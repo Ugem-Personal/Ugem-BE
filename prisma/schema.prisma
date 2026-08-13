@@ -97,6 +97,12 @@ enum CheckInStatus {
   Expired
 }
 
+enum RebalancingStatus {
+  Running
+  Completed
+  Failed
+}
+
 model User {
   id           String   @id @default(uuid())
   email        String   @unique
@@ -248,6 +254,11 @@ model Merchant {
   reviewCount Int     @default(0)
   totalViews  Int     @default(0)
 
+  strengthIndex      Decimal   @default(0) @db.Decimal(10, 4)
+  underratedScore    Decimal   @default(0) @db.Decimal(10, 4)
+  recommendationRank Int?
+  lastRebalancedAt   DateTime?
+
   status         MerchantStatus  @default(Active)
   foods          Food[]
   orders         Order[]
@@ -264,6 +275,8 @@ model Merchant {
 
   @@index([status])
   @@index([name])
+  @@index([recommendationRank])
+  @@index([underratedScore])
   @@map("merchants")
 }
 
@@ -766,3 +779,20 @@ model AuditLog {
   @@index([createdAt])
   @@map("audit_logs")
 }
+
+model RebalancingRun {
+  id                  String            @id @default(uuid())
+  status              RebalancingStatus @default(Running)
+  merchantCount       Int               @default(0)
+  increasedVisibility Int               @default(0)
+  decreasedVisibility Int               @default(0)
+  unchangedVisibility Int               @default(0)
+  startedAt           DateTime          @default(now())
+  completedAt         DateTime?
+  errorMessage        String?
+
+  @@index([startedAt])
+  @@index([status])
+  @@map("rebalancing_runs")
+}
+

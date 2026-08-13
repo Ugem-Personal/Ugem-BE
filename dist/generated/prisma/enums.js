@@ -84,3 +84,8 @@ export const CheckInStatus = {
     Rejected: 'Rejected',
     Expired: 'Expired'
 };
+export const RebalancingStatus = {
+    Running: 'Running',
+    Completed: 'Completed',
+    Failed: 'Failed'
+};

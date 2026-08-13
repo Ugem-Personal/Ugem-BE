@@ -20,3 +20,12 @@ staffDashboardRouter.get("/peak-hours", validate(staffPeakHoursSchema), getStaff
 staffDashboardRouter.get("/weekday-statistics", validate(staffWeekdayStatisticsSchema), getStaffWeekdayStatisticsByYear);
 staffDashboardRouter.get("/order-performance", validate(staffOrderPerformanceSchema), getStaffOrderPerformanceByYear);
 staffDashboardRouter.get("/daily-revenue", validate(staffDailyRevenueSchema), getStaffDailyRevenue);
+staffDashboardRouter.get("/rebalancing", async (_req, res) => {
+    const { getRebalancingStatus } = await import("../../rebalancing/rebalancing.service.js");
+    const data = await getRebalancingStatus();
+    return res.json({
+        success: true,
+        message: "Lấy dữ liệu rebalancing dashboard thành công",
+        data,
+    });
+});

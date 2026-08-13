@@ -136,3 +136,12 @@ export const CheckInStatus = {
 } as const
 
 export type CheckInStatus = (typeof CheckInStatus)[keyof typeof CheckInStatus]
+
+
+export const RebalancingStatus = {
+  Running: 'Running',
+  Completed: 'Completed',
+  Failed: 'Failed'
+} as const
+
+export type RebalancingStatus = (typeof RebalancingStatus)[keyof typeof RebalancingStatus]

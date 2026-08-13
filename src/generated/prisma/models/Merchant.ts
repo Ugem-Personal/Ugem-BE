@@ -32,6 +32,9 @@ export type MerchantAvgAggregateOutputType = {
   rating: runtime.Decimal | null
   reviewCount: number | null
   totalViews: number | null
+  strengthIndex: runtime.Decimal | null
+  underratedScore: runtime.Decimal | null
+  recommendationRank: number | null
 }
 
 export type MerchantSumAggregateOutputType = {
@@ -40,6 +43,9 @@ export type MerchantSumAggregateOutputType = {
   rating: runtime.Decimal | null
   reviewCount: number | null
   totalViews: number | null
+  strengthIndex: runtime.Decimal | null
+  underratedScore: runtime.Decimal | null
+  recommendationRank: number | null
 }
 
 export type MerchantMinAggregateOutputType = {
@@ -60,6 +66,10 @@ export type MerchantMinAggregateOutputType = {
   rating: runtime.Decimal | null
   reviewCount: number | null
   totalViews: number | null
+  strengthIndex: runtime.Decimal | null
+  underratedScore: runtime.Decimal | null
+  recommendationRank: number | null
+  lastRebalancedAt: Date | null
   status: $Enums.MerchantStatus | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -83,6 +93,10 @@ export type MerchantMaxAggregateOutputType = {
   rating: runtime.Decimal | null
   reviewCount: number | null
   totalViews: number | null
+  strengthIndex: runtime.Decimal | null
+  underratedScore: runtime.Decimal | null
+  recommendationRank: number | null
+  lastRebalancedAt: Date | null
   status: $Enums.MerchantStatus | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -106,6 +120,10 @@ export type MerchantCountAggregateOutputType = {
   rating: number
   reviewCount: number
   totalViews: number
+  strengthIndex: number
+  underratedScore: number
+  recommendationRank: number
+  lastRebalancedAt: number
   status: number
   createdAt: number
   updatedAt: number
@@ -119,6 +137,9 @@ export type MerchantAvgAggregateInputType = {
   rating?: true
   reviewCount?: true
   totalViews?: true
+  strengthIndex?: true
+  underratedScore?: true
+  recommendationRank?: true
 }
 
 export type MerchantSumAggregateInputType = {
@@ -127,6 +148,9 @@ export type MerchantSumAggregateInputType = {
   rating?: true
   reviewCount?: true
   totalViews?: true
+  strengthIndex?: true
+  underratedScore?: true
+  recommendationRank?: true
 }
 
 export type MerchantMinAggregateInputType = {
@@ -147,6 +171,10 @@ export type MerchantMinAggregateInputType = {
   rating?: true
   reviewCount?: true
   totalViews?: true
+  strengthIndex?: true
+  underratedScore?: true
+  recommendationRank?: true
+  lastRebalancedAt?: true
   status?: true
   createdAt?: true
   updatedAt?: true
@@ -170,6 +198,10 @@ export type MerchantMaxAggregateInputType = {
   rating?: true
   reviewCount?: true
   totalViews?: true
+  strengthIndex?: true
+  underratedScore?: true
+  recommendationRank?: true
+  lastRebalancedAt?: true
   status?: true
   createdAt?: true
   updatedAt?: true
@@ -193,6 +225,10 @@ export type MerchantCountAggregateInputType = {
   rating?: true
   reviewCount?: true
   totalViews?: true
+  strengthIndex?: true
+  underratedScore?: true
+  recommendationRank?: true
+  lastRebalancedAt?: true
   status?: true
   createdAt?: true
   updatedAt?: true
@@ -303,6 +339,10 @@ export type MerchantGroupByOutputType = {
   rating: runtime.Decimal
   reviewCount: number
   totalViews: number
+  strengthIndex: runtime.Decimal
+  underratedScore: runtime.Decimal
+  recommendationRank: number | null
+  lastRebalancedAt: Date | null
   status: $Enums.MerchantStatus
   createdAt: Date
   updatedAt: Date
@@ -349,6 +389,10 @@ export type MerchantWhereInput = {
   rating?: Prisma.DecimalFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFilter<"Merchant"> | number
   totalViews?: Prisma.IntFilter<"Merchant"> | number
+  strengthIndex?: Prisma.DecimalFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.IntNullableFilter<"Merchant"> | number | null
+  lastRebalancedAt?: Prisma.DateTimeNullableFilter<"Merchant"> | Date | string | null
   status?: Prisma.EnumMerchantStatusFilter<"Merchant"> | $Enums.MerchantStatus
   createdAt?: Prisma.DateTimeFilter<"Merchant"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Merchant"> | Date | string
@@ -380,6 +424,10 @@ export type MerchantOrderByWithRelationInput = {
   rating?: Prisma.SortOrder
   reviewCount?: Prisma.SortOrder
   totalViews?: Prisma.SortOrder
+  strengthIndex?: Prisma.SortOrder
+  underratedScore?: Prisma.SortOrder
+  recommendationRank?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastRebalancedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -414,6 +462,10 @@ export type MerchantWhereUniqueInput = Prisma.AtLeast<{
   rating?: Prisma.DecimalFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFilter<"Merchant"> | number
   totalViews?: Prisma.IntFilter<"Merchant"> | number
+  strengthIndex?: Prisma.DecimalFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.IntNullableFilter<"Merchant"> | number | null
+  lastRebalancedAt?: Prisma.DateTimeNullableFilter<"Merchant"> | Date | string | null
   status?: Prisma.EnumMerchantStatusFilter<"Merchant"> | $Enums.MerchantStatus
   createdAt?: Prisma.DateTimeFilter<"Merchant"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Merchant"> | Date | string
@@ -445,6 +497,10 @@ export type MerchantOrderByWithAggregationInput = {
   rating?: Prisma.SortOrder
   reviewCount?: Prisma.SortOrder
   totalViews?: Prisma.SortOrder
+  strengthIndex?: Prisma.SortOrder
+  underratedScore?: Prisma.SortOrder
+  recommendationRank?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastRebalancedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -476,6 +532,10 @@ export type MerchantScalarWhereWithAggregatesInput = {
   rating?: Prisma.DecimalWithAggregatesFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntWithAggregatesFilter<"Merchant"> | number
   totalViews?: Prisma.IntWithAggregatesFilter<"Merchant"> | number
+  strengthIndex?: Prisma.DecimalWithAggregatesFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalWithAggregatesFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.IntNullableWithAggregatesFilter<"Merchant"> | number | null
+  lastRebalancedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Merchant"> | Date | string | null
   status?: Prisma.EnumMerchantStatusWithAggregatesFilter<"Merchant"> | $Enums.MerchantStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Merchant"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Merchant"> | Date | string
@@ -498,6 +558,10 @@ export type MerchantCreateInput = {
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
+  strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: number | null
+  lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -529,6 +593,10 @@ export type MerchantUncheckedCreateInput = {
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
+  strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: number | null
+  lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -558,6 +626,10 @@ export type MerchantUpdateInput = {
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
+  strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -589,6 +661,10 @@ export type MerchantUncheckedUpdateInput = {
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
+  strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -619,6 +695,10 @@ export type MerchantCreateManyInput = {
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
+  strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: number | null
+  lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -641,6 +721,10 @@ export type MerchantUpdateManyMutationInput = {
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
+  strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -664,6 +748,10 @@ export type MerchantUncheckedUpdateManyInput = {
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
+  strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -692,6 +780,10 @@ export type MerchantCountOrderByAggregateInput = {
   rating?: Prisma.SortOrder
   reviewCount?: Prisma.SortOrder
   totalViews?: Prisma.SortOrder
+  strengthIndex?: Prisma.SortOrder
+  underratedScore?: Prisma.SortOrder
+  recommendationRank?: Prisma.SortOrder
+  lastRebalancedAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -703,6 +795,9 @@ export type MerchantAvgOrderByAggregateInput = {
   rating?: Prisma.SortOrder
   reviewCount?: Prisma.SortOrder
   totalViews?: Prisma.SortOrder
+  strengthIndex?: Prisma.SortOrder
+  underratedScore?: Prisma.SortOrder
+  recommendationRank?: Prisma.SortOrder
 }
 
 export type MerchantMaxOrderByAggregateInput = {
@@ -723,6 +818,10 @@ export type MerchantMaxOrderByAggregateInput = {
   rating?: Prisma.SortOrder
   reviewCount?: Prisma.SortOrder
   totalViews?: Prisma.SortOrder
+  strengthIndex?: Prisma.SortOrder
+  underratedScore?: Prisma.SortOrder
+  recommendationRank?: Prisma.SortOrder
+  lastRebalancedAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -746,6 +845,10 @@ export type MerchantMinOrderByAggregateInput = {
   rating?: Prisma.SortOrder
   reviewCount?: Prisma.SortOrder
   totalViews?: Prisma.SortOrder
+  strengthIndex?: Prisma.SortOrder
+  underratedScore?: Prisma.SortOrder
+  recommendationRank?: Prisma.SortOrder
+  lastRebalancedAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -757,6 +860,9 @@ export type MerchantSumOrderByAggregateInput = {
   rating?: Prisma.SortOrder
   reviewCount?: Prisma.SortOrder
   totalViews?: Prisma.SortOrder
+  strengthIndex?: Prisma.SortOrder
+  underratedScore?: Prisma.SortOrder
+  recommendationRank?: Prisma.SortOrder
 }
 
 export type MerchantScalarRelationFilter = {
@@ -794,6 +900,14 @@ export type MerchantUncheckedUpdateOneWithoutUserNestedInput = {
   delete?: Prisma.MerchantWhereInput | boolean
   connect?: Prisma.MerchantWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.MerchantUpdateToOneWithWhereWithoutUserInput, Prisma.MerchantUpdateWithoutUserInput>, Prisma.MerchantUncheckedUpdateWithoutUserInput>
+}
+
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type EnumMerchantStatusFieldUpdateOperationsInput = {
@@ -915,6 +1029,10 @@ export type MerchantCreateWithoutUserInput = {
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
+  strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: number | null
+  lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -944,6 +1062,10 @@ export type MerchantUncheckedCreateWithoutUserInput = {
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
+  strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: number | null
+  lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -989,6 +1111,10 @@ export type MerchantUpdateWithoutUserInput = {
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
+  strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1018,6 +1144,10 @@ export type MerchantUncheckedUpdateWithoutUserInput = {
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
+  strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1047,6 +1177,10 @@ export type MerchantCreateWithoutFoodsInput = {
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
+  strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: number | null
+  lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1077,6 +1211,10 @@ export type MerchantUncheckedCreateWithoutFoodsInput = {
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
+  strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: number | null
+  lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1121,6 +1259,10 @@ export type MerchantUpdateWithoutFoodsInput = {
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
+  strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1151,6 +1293,10 @@ export type MerchantUncheckedUpdateWithoutFoodsInput = {
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
+  strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1179,6 +1325,10 @@ export type MerchantCreateWithoutOrdersInput = {
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
+  strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: number | null
+  lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1209,6 +1359,10 @@ export type MerchantUncheckedCreateWithoutOrdersInput = {
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
+  strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: number | null
+  lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1253,6 +1407,10 @@ export type MerchantUpdateWithoutOrdersInput = {
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
+  strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1283,6 +1441,10 @@ export type MerchantUncheckedUpdateWithoutOrdersInput = {
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
+  strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1311,6 +1473,10 @@ export type MerchantCreateWithoutWishlistsInput = {
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
+  strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: number | null
+  lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1341,6 +1507,10 @@ export type MerchantUncheckedCreateWithoutWishlistsInput = {
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
+  strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: number | null
+  lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1385,6 +1555,10 @@ export type MerchantUpdateWithoutWishlistsInput = {
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
+  strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1415,6 +1589,10 @@ export type MerchantUncheckedUpdateWithoutWishlistsInput = {
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
+  strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1443,6 +1621,10 @@ export type MerchantCreateWithoutReviewsInput = {
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
+  strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: number | null
+  lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1473,6 +1655,10 @@ export type MerchantUncheckedCreateWithoutReviewsInput = {
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
+  strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: number | null
+  lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1517,6 +1703,10 @@ export type MerchantUpdateWithoutReviewsInput = {
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
+  strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1547,6 +1737,10 @@ export type MerchantUncheckedUpdateWithoutReviewsInput = {
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
+  strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1575,6 +1769,10 @@ export type MerchantCreateWithoutAffiliateLinksInput = {
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
+  strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: number | null
+  lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1605,6 +1803,10 @@ export type MerchantUncheckedCreateWithoutAffiliateLinksInput = {
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
+  strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: number | null
+  lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1649,6 +1851,10 @@ export type MerchantUpdateWithoutAffiliateLinksInput = {
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
+  strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1679,6 +1885,10 @@ export type MerchantUncheckedUpdateWithoutAffiliateLinksInput = {
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
+  strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1707,6 +1917,10 @@ export type MerchantCreateWithoutCampaignsInput = {
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
+  strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: number | null
+  lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1737,6 +1951,10 @@ export type MerchantUncheckedCreateWithoutCampaignsInput = {
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
+  strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: number | null
+  lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1781,6 +1999,10 @@ export type MerchantUpdateWithoutCampaignsInput = {
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
+  strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1811,6 +2033,10 @@ export type MerchantUncheckedUpdateWithoutCampaignsInput = {
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
+  strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1839,6 +2065,10 @@ export type MerchantCreateWithoutCheckInsInput = {
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
+  strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: number | null
+  lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1869,6 +2099,10 @@ export type MerchantUncheckedCreateWithoutCheckInsInput = {
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
+  strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: number | null
+  lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1913,6 +2147,10 @@ export type MerchantUpdateWithoutCheckInsInput = {
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
+  strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1943,6 +2181,10 @@ export type MerchantUncheckedUpdateWithoutCheckInsInput = {
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
+  strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2057,6 +2299,10 @@ export type MerchantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   rating?: boolean
   reviewCount?: boolean
   totalViews?: boolean
+  strengthIndex?: boolean
+  underratedScore?: boolean
+  recommendationRank?: boolean
+  lastRebalancedAt?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -2089,6 +2335,10 @@ export type MerchantSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   rating?: boolean
   reviewCount?: boolean
   totalViews?: boolean
+  strengthIndex?: boolean
+  underratedScore?: boolean
+  recommendationRank?: boolean
+  lastRebalancedAt?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -2113,6 +2363,10 @@ export type MerchantSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   rating?: boolean
   reviewCount?: boolean
   totalViews?: boolean
+  strengthIndex?: boolean
+  underratedScore?: boolean
+  recommendationRank?: boolean
+  lastRebalancedAt?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -2137,12 +2391,16 @@ export type MerchantSelectScalar = {
   rating?: boolean
   reviewCount?: boolean
   totalViews?: boolean
+  strengthIndex?: boolean
+  underratedScore?: boolean
+  recommendationRank?: boolean
+  lastRebalancedAt?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type MerchantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "description" | "restaurantType" | "mainDishType" | "priceRange" | "email" | "phone" | "address" | "openingHours" | "latitude" | "longitude" | "logoUrl" | "rating" | "reviewCount" | "totalViews" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["merchant"]>
+export type MerchantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "description" | "restaurantType" | "mainDishType" | "priceRange" | "email" | "phone" | "address" | "openingHours" | "latitude" | "longitude" | "logoUrl" | "rating" | "reviewCount" | "totalViews" | "strengthIndex" | "underratedScore" | "recommendationRank" | "lastRebalancedAt" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["merchant"]>
 export type MerchantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   foods?: boolean | Prisma.Merchant$foodsArgs<ExtArgs>
   orders?: boolean | Prisma.Merchant$ordersArgs<ExtArgs>
@@ -2191,6 +2449,10 @@ export type $MerchantPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     rating: runtime.Decimal
     reviewCount: number
     totalViews: number
+    strengthIndex: runtime.Decimal
+    underratedScore: runtime.Decimal
+    recommendationRank: number | null
+    lastRebalancedAt: Date | null
     status: $Enums.MerchantStatus
     createdAt: Date
     updatedAt: Date
@@ -2642,6 +2904,10 @@ export interface MerchantFieldRefs {
   readonly rating: Prisma.FieldRef<"Merchant", 'Decimal'>
   readonly reviewCount: Prisma.FieldRef<"Merchant", 'Int'>
   readonly totalViews: Prisma.FieldRef<"Merchant", 'Int'>
+  readonly strengthIndex: Prisma.FieldRef<"Merchant", 'Decimal'>
+  readonly underratedScore: Prisma.FieldRef<"Merchant", 'Decimal'>
+  readonly recommendationRank: Prisma.FieldRef<"Merchant", 'Int'>
+  readonly lastRebalancedAt: Prisma.FieldRef<"Merchant", 'DateTime'>
   readonly status: Prisma.FieldRef<"Merchant", 'MerchantStatus'>
   readonly createdAt: Prisma.FieldRef<"Merchant", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Merchant", 'DateTime'>

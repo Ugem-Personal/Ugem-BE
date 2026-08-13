@@ -93,7 +93,8 @@ export const ModelName = {
     Campaign: 'Campaign',
     CheckIn: 'CheckIn',
     Notification: 'Notification',
-    AuditLog: 'AuditLog'
+    AuditLog: 'AuditLog',
+    RebalancingRun: 'RebalancingRun'
 };
 /**
  * Enums
@@ -193,6 +194,10 @@ export const MerchantScalarFieldEnum = {
     rating: 'rating',
     reviewCount: 'reviewCount',
     totalViews: 'totalViews',
+    strengthIndex: 'strengthIndex',
+    underratedScore: 'underratedScore',
+    recommendationRank: 'recommendationRank',
+    lastRebalancedAt: 'lastRebalancedAt',
     status: 'status',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -437,6 +442,17 @@ export const AuditLogScalarFieldEnum = {
     ipAddress: 'ipAddress',
     userAgent: 'userAgent',
     createdAt: 'createdAt'
+};
+export const RebalancingRunScalarFieldEnum = {
+    id: 'id',
+    status: 'status',
+    merchantCount: 'merchantCount',
+    increasedVisibility: 'increasedVisibility',
+    decreasedVisibility: 'decreasedVisibility',
+    unchangedVisibility: 'unchangedVisibility',
+    startedAt: 'startedAt',
+    completedAt: 'completedAt',
+    errorMessage: 'errorMessage'
 };
 export const SortOrder = {
     asc: 'asc',

@@ -33,7 +33,16 @@ const mapMerchant = (merchant, customerLat, customerLng) => {
             new Date(c.endAt) >= now &&
             (c.usageLimit == null || c.usedCount < c.usageLimit))
         : false;
-    const underratedScore = calculateUnderratedScore(rating, merchant.reviewCount, merchant.totalViews);
+    const dbUnderratedScore = merchant.underratedScore
+        ? Number(merchant.underratedScore)
+        : 0;
+    const underratedScore = dbUnderratedScore > 0
+        ? dbUnderratedScore
+        : calculateUnderratedScore(rating, merchant.reviewCount, merchant.totalViews);
+    const strengthIndex = merchant.strengthIndex
+        ? Number(merchant.strengthIndex)
+        : 0;
+    const recommendationRank = merchant.recommendationRank ?? null;
     const campaignScore = hasActiveCampaign ? 100 : 0;
     const distanceScore = distance !== null ? Math.max(0, 100 - distance * 5) : 100;
     const ratingScore = (rating / 5) * 100;
@@ -59,7 +68,9 @@ const mapMerchant = (merchant, customerLat, customerLng) => {
         longitude: merchantLng,
         logoUrl: merchant.logoUrl,
         rating,
+        strengthIndex,
         underratedScore,
+        recommendationRank,
         distance,
         hasActiveCampaign,
         recommendationScore,

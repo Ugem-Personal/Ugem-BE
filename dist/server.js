@@ -3,11 +3,13 @@ import { env } from "./config/env.js";
 import { prisma } from "./config/prisma.js";
 import { logger } from "./common/utils/logger.js";
 import { setShuttingDown } from "./modules/health/health.service.js";
+import { startRebalancingJob } from "./jobs/rebalancing.job.js";
 const SHUTDOWN_TIMEOUT_MS = 10_000;
 const startServer = async () => {
     try {
         await prisma.$connect();
         logger.info("database.connected");
+        startRebalancingJob();
         const server = app.listen(env.PORT, () => {
             logger.info("server.started", {
                 port: env.PORT,

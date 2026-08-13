@@ -33,6 +33,7 @@ import { checkInRouter } from "./modules/check-in/check-in.routes.js";
 import { adminRouter } from "./modules/admin/admin.routes.js";
 import { staffRouter } from "./modules/staff/staff.routes.js";
 import { mediaRouter } from "./modules/media/media.routes.js";
+import { rebalancingRouter } from "./modules/rebalancing/rebalancing.routes.js";
 
 export const app = express();
 
@@ -86,6 +87,7 @@ app.use("/api/v1/affiliate-links", affiliateLinkRouter);
 app.use("/api/v1/campaigns", campaignRouter);
 app.use("/api/v1/notifications", notificationRouter);
 app.use("/api/v1/dashboard", dashboardRouter);
+app.use("/api/v1/rebalancing", rebalancingRouter);
 app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/media", mediaRouter);
 app.use(notFoundHandler);

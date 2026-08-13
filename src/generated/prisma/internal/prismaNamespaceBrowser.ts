@@ -77,7 +77,8 @@ export const ModelName = {
   Campaign: 'Campaign',
   CheckIn: 'CheckIn',
   Notification: 'Notification',
-  AuditLog: 'AuditLog'
+  AuditLog: 'AuditLog',
+  RebalancingRun: 'RebalancingRun'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -209,6 +210,10 @@ export const MerchantScalarFieldEnum = {
   rating: 'rating',
   reviewCount: 'reviewCount',
   totalViews: 'totalViews',
+  strengthIndex: 'strengthIndex',
+  underratedScore: 'underratedScore',
+  recommendationRank: 'recommendationRank',
+  lastRebalancedAt: 'lastRebalancedAt',
   status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -536,6 +541,21 @@ export const AuditLogScalarFieldEnum = {
 } as const
 
 export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
+
+
+export const RebalancingRunScalarFieldEnum = {
+  id: 'id',
+  status: 'status',
+  merchantCount: 'merchantCount',
+  increasedVisibility: 'increasedVisibility',
+  decreasedVisibility: 'decreasedVisibility',
+  unchangedVisibility: 'unchangedVisibility',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  errorMessage: 'errorMessage'
+} as const
+
+export type RebalancingRunScalarFieldEnum = (typeof RebalancingRunScalarFieldEnum)[keyof typeof RebalancingRunScalarFieldEnum]
 
 
 export const SortOrder = {

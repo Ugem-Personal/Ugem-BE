@@ -475,14 +475,6 @@ export type ReviewDetailUncheckedUpdateManyWithoutReviewNestedInput = {
   deleteMany?: Prisma.ReviewDetailScalarWhereInput | Prisma.ReviewDetailScalarWhereInput[]
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type ReviewDetailCreateWithoutOrderDetailInput = {
   id?: string
   rating?: number | null

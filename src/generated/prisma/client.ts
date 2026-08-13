@@ -176,3 +176,8 @@ export type Notification = Prisma.NotificationModel
  * 
  */
 export type AuditLog = Prisma.AuditLogModel
+/**
+ * Model RebalancingRun
+ * 
+ */
+export type RebalancingRun = Prisma.RebalancingRunModel

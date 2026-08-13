@@ -423,7 +423,8 @@ export const ModelName = {
   Campaign: 'Campaign',
   CheckIn: 'CheckIn',
   Notification: 'Notification',
-  AuditLog: 'AuditLog'
+  AuditLog: 'AuditLog',
+  RebalancingRun: 'RebalancingRun'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -439,7 +440,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "customer" | "refreshToken" | "passwordResetToken" | "application" | "applicationMenu" | "merchant" | "category" | "food" | "foodCategory" | "foodTopping" | "order" | "orderDetail" | "orderDetailTopping" | "bill" | "wishlist" | "review" | "reviewDetail" | "reviewerApplication" | "affiliateLink" | "affiliateClick" | "reviewerEarningTransaction" | "reviewerPointTransaction" | "campaign" | "checkIn" | "notification" | "auditLog"
+    modelProps: "user" | "customer" | "refreshToken" | "passwordResetToken" | "application" | "applicationMenu" | "merchant" | "category" | "food" | "foodCategory" | "foodTopping" | "order" | "orderDetail" | "orderDetailTopping" | "bill" | "wishlist" | "review" | "reviewDetail" | "reviewerApplication" | "affiliateLink" | "affiliateClick" | "reviewerEarningTransaction" | "reviewerPointTransaction" | "campaign" | "checkIn" | "notification" | "auditLog" | "rebalancingRun"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2441,6 +2442,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    RebalancingRun: {
+      payload: Prisma.$RebalancingRunPayload<ExtArgs>
+      fields: Prisma.RebalancingRunFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RebalancingRunFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RebalancingRunPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RebalancingRunFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RebalancingRunPayload>
+        }
+        findFirst: {
+          args: Prisma.RebalancingRunFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RebalancingRunPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RebalancingRunFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RebalancingRunPayload>
+        }
+        findMany: {
+          args: Prisma.RebalancingRunFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RebalancingRunPayload>[]
+        }
+        create: {
+          args: Prisma.RebalancingRunCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RebalancingRunPayload>
+        }
+        createMany: {
+          args: Prisma.RebalancingRunCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RebalancingRunCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RebalancingRunPayload>[]
+        }
+        delete: {
+          args: Prisma.RebalancingRunDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RebalancingRunPayload>
+        }
+        update: {
+          args: Prisma.RebalancingRunUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RebalancingRunPayload>
+        }
+        deleteMany: {
+          args: Prisma.RebalancingRunDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RebalancingRunUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RebalancingRunUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RebalancingRunPayload>[]
+        }
+        upsert: {
+          args: Prisma.RebalancingRunUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RebalancingRunPayload>
+        }
+        aggregate: {
+          args: Prisma.RebalancingRunAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRebalancingRun>
+        }
+        groupBy: {
+          args: Prisma.RebalancingRunGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RebalancingRunGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RebalancingRunCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RebalancingRunCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2593,6 +2668,10 @@ export const MerchantScalarFieldEnum = {
   rating: 'rating',
   reviewCount: 'reviewCount',
   totalViews: 'totalViews',
+  strengthIndex: 'strengthIndex',
+  underratedScore: 'underratedScore',
+  recommendationRank: 'recommendationRank',
+  lastRebalancedAt: 'lastRebalancedAt',
   status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -2922,6 +3001,21 @@ export const AuditLogScalarFieldEnum = {
 export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
 
 
+export const RebalancingRunScalarFieldEnum = {
+  id: 'id',
+  status: 'status',
+  merchantCount: 'merchantCount',
+  increasedVisibility: 'increasedVisibility',
+  decreasedVisibility: 'decreasedVisibility',
+  unchangedVisibility: 'unchangedVisibility',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  errorMessage: 'errorMessage'
+} as const
+
+export type RebalancingRunScalarFieldEnum = (typeof RebalancingRunScalarFieldEnum)[keyof typeof RebalancingRunScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -3229,6 +3323,20 @@ export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 
 
 /**
+ * Reference to a field of type 'RebalancingStatus'
+ */
+export type EnumRebalancingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RebalancingStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'RebalancingStatus[]'
+ */
+export type ListEnumRebalancingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RebalancingStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -3419,6 +3527,7 @@ export type GlobalOmitConfig = {
   checkIn?: Prisma.CheckInOmit
   notification?: Prisma.NotificationOmit
   auditLog?: Prisma.AuditLogOmit
+  rebalancingRun?: Prisma.RebalancingRunOmit
 }
 
 /* Types for Logging */

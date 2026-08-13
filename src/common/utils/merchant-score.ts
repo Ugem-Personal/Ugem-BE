@@ -45,3 +45,17 @@ export const calculateUnderratedScore = (
 
   return Number(normalizedRating.toFixed(2));
 };
+
+export const calculateNormalizedUnderratedScore = (
+  strengthIndex: number,
+  maxStrengthIndex: number,
+  rating: number,
+): number => {
+  const normalizedSI =
+    maxStrengthIndex > 0 ? strengthIndex / maxStrengthIndex : 0;
+
+  const quality = Math.max(0, Math.min(rating / 5, 1));
+
+  // High rating + low SI = high underrated score (store quality vs traffic)
+  return Number((quality * (1 - normalizedSI)).toFixed(4));
+};
