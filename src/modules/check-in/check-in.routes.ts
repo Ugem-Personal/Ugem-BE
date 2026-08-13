@@ -8,6 +8,8 @@ import { validate } from "../../common/middleware/validate.middleware.js";
 import {
   generateCheckInQr,
   getCurrentCheckIns,
+  getMerchantCheckInHistory,
+  getMerchantCheckInStatistics,
   verifyCheckIn,
 } from "./check-in.controller.js";
 
@@ -39,4 +41,18 @@ checkInRouter.get(
   authenticate,
   authorizeRoles("Customer", "Reviewer"),
   getCurrentCheckIns,
+);
+
+checkInRouter.get(
+  "/merchant/statistics",
+  authenticate,
+  requireApprovedMerchant,
+  getMerchantCheckInStatistics,
+);
+
+checkInRouter.get(
+  "/merchant/history",
+  authenticate,
+  requireApprovedMerchant,
+  getMerchantCheckInHistory,
 );

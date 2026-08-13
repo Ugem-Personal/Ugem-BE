@@ -20,8 +20,20 @@ export type CheckInModel = runtime.Types.Result.DefaultSelection<Prisma.$CheckIn
 
 export type AggregateCheckIn = {
   _count: CheckInCountAggregateOutputType | null
+  _avg: CheckInAvgAggregateOutputType | null
+  _sum: CheckInSumAggregateOutputType | null
   _min: CheckInMinAggregateOutputType | null
   _max: CheckInMaxAggregateOutputType | null
+}
+
+export type CheckInAvgAggregateOutputType = {
+  latitude: runtime.Decimal | null
+  longitude: runtime.Decimal | null
+}
+
+export type CheckInSumAggregateOutputType = {
+  latitude: runtime.Decimal | null
+  longitude: runtime.Decimal | null
 }
 
 export type CheckInMinAggregateOutputType = {
@@ -31,7 +43,12 @@ export type CheckInMinAggregateOutputType = {
   merchantId: string | null
   qrToken: string | null
   generatedAt: Date | null
+  expiresAt: Date | null
   checkedInAt: Date | null
+  verifiedAt: Date | null
+  latitude: runtime.Decimal | null
+  longitude: runtime.Decimal | null
+  status: $Enums.CheckInStatus | null
 }
 
 export type CheckInMaxAggregateOutputType = {
@@ -41,7 +58,12 @@ export type CheckInMaxAggregateOutputType = {
   merchantId: string | null
   qrToken: string | null
   generatedAt: Date | null
+  expiresAt: Date | null
   checkedInAt: Date | null
+  verifiedAt: Date | null
+  latitude: runtime.Decimal | null
+  longitude: runtime.Decimal | null
+  status: $Enums.CheckInStatus | null
 }
 
 export type CheckInCountAggregateOutputType = {
@@ -51,10 +73,25 @@ export type CheckInCountAggregateOutputType = {
   merchantId: number
   qrToken: number
   generatedAt: number
+  expiresAt: number
   checkedInAt: number
+  verifiedAt: number
+  latitude: number
+  longitude: number
+  status: number
   _all: number
 }
 
+
+export type CheckInAvgAggregateInputType = {
+  latitude?: true
+  longitude?: true
+}
+
+export type CheckInSumAggregateInputType = {
+  latitude?: true
+  longitude?: true
+}
 
 export type CheckInMinAggregateInputType = {
   id?: true
@@ -63,7 +100,12 @@ export type CheckInMinAggregateInputType = {
   merchantId?: true
   qrToken?: true
   generatedAt?: true
+  expiresAt?: true
   checkedInAt?: true
+  verifiedAt?: true
+  latitude?: true
+  longitude?: true
+  status?: true
 }
 
 export type CheckInMaxAggregateInputType = {
@@ -73,7 +115,12 @@ export type CheckInMaxAggregateInputType = {
   merchantId?: true
   qrToken?: true
   generatedAt?: true
+  expiresAt?: true
   checkedInAt?: true
+  verifiedAt?: true
+  latitude?: true
+  longitude?: true
+  status?: true
 }
 
 export type CheckInCountAggregateInputType = {
@@ -83,7 +130,12 @@ export type CheckInCountAggregateInputType = {
   merchantId?: true
   qrToken?: true
   generatedAt?: true
+  expiresAt?: true
   checkedInAt?: true
+  verifiedAt?: true
+  latitude?: true
+  longitude?: true
+  status?: true
   _all?: true
 }
 
@@ -125,6 +177,18 @@ export type CheckInAggregateArgs<ExtArgs extends runtime.Types.Extensions.Intern
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: CheckInAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: CheckInSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: CheckInMinAggregateInputType
@@ -155,6 +219,8 @@ export type CheckInGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   _count?: CheckInCountAggregateInputType | true
+  _avg?: CheckInAvgAggregateInputType
+  _sum?: CheckInSumAggregateInputType
   _min?: CheckInMinAggregateInputType
   _max?: CheckInMaxAggregateInputType
 }
@@ -166,8 +232,15 @@ export type CheckInGroupByOutputType = {
   merchantId: string
   qrToken: string
   generatedAt: Date
+  expiresAt: Date | null
   checkedInAt: Date | null
+  verifiedAt: Date | null
+  latitude: runtime.Decimal | null
+  longitude: runtime.Decimal | null
+  status: $Enums.CheckInStatus
   _count: CheckInCountAggregateOutputType | null
+  _avg: CheckInAvgAggregateOutputType | null
+  _sum: CheckInSumAggregateOutputType | null
   _min: CheckInMinAggregateOutputType | null
   _max: CheckInMaxAggregateOutputType | null
 }
@@ -197,7 +270,12 @@ export type CheckInWhereInput = {
   merchantId?: Prisma.StringFilter<"CheckIn"> | string
   qrToken?: Prisma.StringFilter<"CheckIn"> | string
   generatedAt?: Prisma.DateTimeFilter<"CheckIn"> | Date | string
+  expiresAt?: Prisma.DateTimeNullableFilter<"CheckIn"> | Date | string | null
   checkedInAt?: Prisma.DateTimeNullableFilter<"CheckIn"> | Date | string | null
+  verifiedAt?: Prisma.DateTimeNullableFilter<"CheckIn"> | Date | string | null
+  latitude?: Prisma.DecimalNullableFilter<"CheckIn"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.DecimalNullableFilter<"CheckIn"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFilter<"CheckIn"> | $Enums.CheckInStatus
   order?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>
   customer?: Prisma.XOR<Prisma.CustomerScalarRelationFilter, Prisma.CustomerWhereInput>
   merchant?: Prisma.XOR<Prisma.MerchantScalarRelationFilter, Prisma.MerchantWhereInput>
@@ -210,7 +288,12 @@ export type CheckInOrderByWithRelationInput = {
   merchantId?: Prisma.SortOrder
   qrToken?: Prisma.SortOrder
   generatedAt?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   checkedInAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  verifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
   order?: Prisma.OrderOrderByWithRelationInput
   customer?: Prisma.CustomerOrderByWithRelationInput
   merchant?: Prisma.MerchantOrderByWithRelationInput
@@ -226,7 +309,12 @@ export type CheckInWhereUniqueInput = Prisma.AtLeast<{
   customerId?: Prisma.StringFilter<"CheckIn"> | string
   merchantId?: Prisma.StringFilter<"CheckIn"> | string
   generatedAt?: Prisma.DateTimeFilter<"CheckIn"> | Date | string
+  expiresAt?: Prisma.DateTimeNullableFilter<"CheckIn"> | Date | string | null
   checkedInAt?: Prisma.DateTimeNullableFilter<"CheckIn"> | Date | string | null
+  verifiedAt?: Prisma.DateTimeNullableFilter<"CheckIn"> | Date | string | null
+  latitude?: Prisma.DecimalNullableFilter<"CheckIn"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.DecimalNullableFilter<"CheckIn"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFilter<"CheckIn"> | $Enums.CheckInStatus
   order?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>
   customer?: Prisma.XOR<Prisma.CustomerScalarRelationFilter, Prisma.CustomerWhereInput>
   merchant?: Prisma.XOR<Prisma.MerchantScalarRelationFilter, Prisma.MerchantWhereInput>
@@ -239,10 +327,17 @@ export type CheckInOrderByWithAggregationInput = {
   merchantId?: Prisma.SortOrder
   qrToken?: Prisma.SortOrder
   generatedAt?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   checkedInAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  verifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
   _count?: Prisma.CheckInCountOrderByAggregateInput
+  _avg?: Prisma.CheckInAvgOrderByAggregateInput
   _max?: Prisma.CheckInMaxOrderByAggregateInput
   _min?: Prisma.CheckInMinOrderByAggregateInput
+  _sum?: Prisma.CheckInSumOrderByAggregateInput
 }
 
 export type CheckInScalarWhereWithAggregatesInput = {
@@ -255,14 +350,24 @@ export type CheckInScalarWhereWithAggregatesInput = {
   merchantId?: Prisma.StringWithAggregatesFilter<"CheckIn"> | string
   qrToken?: Prisma.StringWithAggregatesFilter<"CheckIn"> | string
   generatedAt?: Prisma.DateTimeWithAggregatesFilter<"CheckIn"> | Date | string
+  expiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CheckIn"> | Date | string | null
   checkedInAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CheckIn"> | Date | string | null
+  verifiedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CheckIn"> | Date | string | null
+  latitude?: Prisma.DecimalNullableWithAggregatesFilter<"CheckIn"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.DecimalNullableWithAggregatesFilter<"CheckIn"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusWithAggregatesFilter<"CheckIn"> | $Enums.CheckInStatus
 }
 
 export type CheckInCreateInput = {
   id?: string
   qrToken: string
   generatedAt?: Date | string
+  expiresAt?: Date | string | null
   checkedInAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: $Enums.CheckInStatus
   order: Prisma.OrderCreateNestedOneWithoutCheckInInput
   customer: Prisma.CustomerCreateNestedOneWithoutCheckInsInput
   merchant: Prisma.MerchantCreateNestedOneWithoutCheckInsInput
@@ -275,14 +380,24 @@ export type CheckInUncheckedCreateInput = {
   merchantId: string
   qrToken: string
   generatedAt?: Date | string
+  expiresAt?: Date | string | null
   checkedInAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: $Enums.CheckInStatus
 }
 
 export type CheckInUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   qrToken?: Prisma.StringFieldUpdateOperationsInput | string
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
   order?: Prisma.OrderUpdateOneRequiredWithoutCheckInNestedInput
   customer?: Prisma.CustomerUpdateOneRequiredWithoutCheckInsNestedInput
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutCheckInsNestedInput
@@ -295,7 +410,12 @@ export type CheckInUncheckedUpdateInput = {
   merchantId?: Prisma.StringFieldUpdateOperationsInput | string
   qrToken?: Prisma.StringFieldUpdateOperationsInput | string
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
 }
 
 export type CheckInCreateManyInput = {
@@ -305,14 +425,24 @@ export type CheckInCreateManyInput = {
   merchantId: string
   qrToken: string
   generatedAt?: Date | string
+  expiresAt?: Date | string | null
   checkedInAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: $Enums.CheckInStatus
 }
 
 export type CheckInUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   qrToken?: Prisma.StringFieldUpdateOperationsInput | string
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
 }
 
 export type CheckInUncheckedUpdateManyInput = {
@@ -322,7 +452,12 @@ export type CheckInUncheckedUpdateManyInput = {
   merchantId?: Prisma.StringFieldUpdateOperationsInput | string
   qrToken?: Prisma.StringFieldUpdateOperationsInput | string
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
 }
 
 export type CheckInListRelationFilter = {
@@ -347,7 +482,17 @@ export type CheckInCountOrderByAggregateInput = {
   merchantId?: Prisma.SortOrder
   qrToken?: Prisma.SortOrder
   generatedAt?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
   checkedInAt?: Prisma.SortOrder
+  verifiedAt?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+}
+
+export type CheckInAvgOrderByAggregateInput = {
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
 }
 
 export type CheckInMaxOrderByAggregateInput = {
@@ -357,7 +502,12 @@ export type CheckInMaxOrderByAggregateInput = {
   merchantId?: Prisma.SortOrder
   qrToken?: Prisma.SortOrder
   generatedAt?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
   checkedInAt?: Prisma.SortOrder
+  verifiedAt?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  status?: Prisma.SortOrder
 }
 
 export type CheckInMinOrderByAggregateInput = {
@@ -367,7 +517,17 @@ export type CheckInMinOrderByAggregateInput = {
   merchantId?: Prisma.SortOrder
   qrToken?: Prisma.SortOrder
   generatedAt?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
   checkedInAt?: Prisma.SortOrder
+  verifiedAt?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+}
+
+export type CheckInSumOrderByAggregateInput = {
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
 }
 
 export type CheckInCreateNestedManyWithoutCustomerInput = {
@@ -486,11 +646,20 @@ export type CheckInUncheckedUpdateOneWithoutOrderNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CheckInUpdateToOneWithWhereWithoutOrderInput, Prisma.CheckInUpdateWithoutOrderInput>, Prisma.CheckInUncheckedUpdateWithoutOrderInput>
 }
 
+export type EnumCheckInStatusFieldUpdateOperationsInput = {
+  set?: $Enums.CheckInStatus
+}
+
 export type CheckInCreateWithoutCustomerInput = {
   id?: string
   qrToken: string
   generatedAt?: Date | string
+  expiresAt?: Date | string | null
   checkedInAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: $Enums.CheckInStatus
   order: Prisma.OrderCreateNestedOneWithoutCheckInInput
   merchant: Prisma.MerchantCreateNestedOneWithoutCheckInsInput
 }
@@ -501,7 +670,12 @@ export type CheckInUncheckedCreateWithoutCustomerInput = {
   merchantId: string
   qrToken: string
   generatedAt?: Date | string
+  expiresAt?: Date | string | null
   checkedInAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: $Enums.CheckInStatus
 }
 
 export type CheckInCreateOrConnectWithoutCustomerInput = {
@@ -540,14 +714,24 @@ export type CheckInScalarWhereInput = {
   merchantId?: Prisma.StringFilter<"CheckIn"> | string
   qrToken?: Prisma.StringFilter<"CheckIn"> | string
   generatedAt?: Prisma.DateTimeFilter<"CheckIn"> | Date | string
+  expiresAt?: Prisma.DateTimeNullableFilter<"CheckIn"> | Date | string | null
   checkedInAt?: Prisma.DateTimeNullableFilter<"CheckIn"> | Date | string | null
+  verifiedAt?: Prisma.DateTimeNullableFilter<"CheckIn"> | Date | string | null
+  latitude?: Prisma.DecimalNullableFilter<"CheckIn"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.DecimalNullableFilter<"CheckIn"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFilter<"CheckIn"> | $Enums.CheckInStatus
 }
 
 export type CheckInCreateWithoutMerchantInput = {
   id?: string
   qrToken: string
   generatedAt?: Date | string
+  expiresAt?: Date | string | null
   checkedInAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: $Enums.CheckInStatus
   order: Prisma.OrderCreateNestedOneWithoutCheckInInput
   customer: Prisma.CustomerCreateNestedOneWithoutCheckInsInput
 }
@@ -558,7 +742,12 @@ export type CheckInUncheckedCreateWithoutMerchantInput = {
   customerId: string
   qrToken: string
   generatedAt?: Date | string
+  expiresAt?: Date | string | null
   checkedInAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: $Enums.CheckInStatus
 }
 
 export type CheckInCreateOrConnectWithoutMerchantInput = {
@@ -591,7 +780,12 @@ export type CheckInCreateWithoutOrderInput = {
   id?: string
   qrToken: string
   generatedAt?: Date | string
+  expiresAt?: Date | string | null
   checkedInAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: $Enums.CheckInStatus
   customer: Prisma.CustomerCreateNestedOneWithoutCheckInsInput
   merchant: Prisma.MerchantCreateNestedOneWithoutCheckInsInput
 }
@@ -602,7 +796,12 @@ export type CheckInUncheckedCreateWithoutOrderInput = {
   merchantId: string
   qrToken: string
   generatedAt?: Date | string
+  expiresAt?: Date | string | null
   checkedInAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: $Enums.CheckInStatus
 }
 
 export type CheckInCreateOrConnectWithoutOrderInput = {
@@ -625,7 +824,12 @@ export type CheckInUpdateWithoutOrderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   qrToken?: Prisma.StringFieldUpdateOperationsInput | string
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
   customer?: Prisma.CustomerUpdateOneRequiredWithoutCheckInsNestedInput
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutCheckInsNestedInput
 }
@@ -636,7 +840,12 @@ export type CheckInUncheckedUpdateWithoutOrderInput = {
   merchantId?: Prisma.StringFieldUpdateOperationsInput | string
   qrToken?: Prisma.StringFieldUpdateOperationsInput | string
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
 }
 
 export type CheckInCreateManyCustomerInput = {
@@ -645,14 +854,24 @@ export type CheckInCreateManyCustomerInput = {
   merchantId: string
   qrToken: string
   generatedAt?: Date | string
+  expiresAt?: Date | string | null
   checkedInAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: $Enums.CheckInStatus
 }
 
 export type CheckInUpdateWithoutCustomerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   qrToken?: Prisma.StringFieldUpdateOperationsInput | string
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
   order?: Prisma.OrderUpdateOneRequiredWithoutCheckInNestedInput
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutCheckInsNestedInput
 }
@@ -663,7 +882,12 @@ export type CheckInUncheckedUpdateWithoutCustomerInput = {
   merchantId?: Prisma.StringFieldUpdateOperationsInput | string
   qrToken?: Prisma.StringFieldUpdateOperationsInput | string
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
 }
 
 export type CheckInUncheckedUpdateManyWithoutCustomerInput = {
@@ -672,7 +896,12 @@ export type CheckInUncheckedUpdateManyWithoutCustomerInput = {
   merchantId?: Prisma.StringFieldUpdateOperationsInput | string
   qrToken?: Prisma.StringFieldUpdateOperationsInput | string
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
 }
 
 export type CheckInCreateManyMerchantInput = {
@@ -681,14 +910,24 @@ export type CheckInCreateManyMerchantInput = {
   customerId: string
   qrToken: string
   generatedAt?: Date | string
+  expiresAt?: Date | string | null
   checkedInAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: $Enums.CheckInStatus
 }
 
 export type CheckInUpdateWithoutMerchantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   qrToken?: Prisma.StringFieldUpdateOperationsInput | string
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
   order?: Prisma.OrderUpdateOneRequiredWithoutCheckInNestedInput
   customer?: Prisma.CustomerUpdateOneRequiredWithoutCheckInsNestedInput
 }
@@ -699,7 +938,12 @@ export type CheckInUncheckedUpdateWithoutMerchantInput = {
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
   qrToken?: Prisma.StringFieldUpdateOperationsInput | string
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
 }
 
 export type CheckInUncheckedUpdateManyWithoutMerchantInput = {
@@ -708,7 +952,12 @@ export type CheckInUncheckedUpdateManyWithoutMerchantInput = {
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
   qrToken?: Prisma.StringFieldUpdateOperationsInput | string
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
 }
 
 
@@ -720,7 +969,12 @@ export type CheckInSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   merchantId?: boolean
   qrToken?: boolean
   generatedAt?: boolean
+  expiresAt?: boolean
   checkedInAt?: boolean
+  verifiedAt?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  status?: boolean
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
@@ -733,7 +987,12 @@ export type CheckInSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   merchantId?: boolean
   qrToken?: boolean
   generatedAt?: boolean
+  expiresAt?: boolean
   checkedInAt?: boolean
+  verifiedAt?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  status?: boolean
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
@@ -746,7 +1005,12 @@ export type CheckInSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   merchantId?: boolean
   qrToken?: boolean
   generatedAt?: boolean
+  expiresAt?: boolean
   checkedInAt?: boolean
+  verifiedAt?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  status?: boolean
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
@@ -759,10 +1023,15 @@ export type CheckInSelectScalar = {
   merchantId?: boolean
   qrToken?: boolean
   generatedAt?: boolean
+  expiresAt?: boolean
   checkedInAt?: boolean
+  verifiedAt?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  status?: boolean
 }
 
-export type CheckInOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderId" | "customerId" | "merchantId" | "qrToken" | "generatedAt" | "checkedInAt", ExtArgs["result"]["checkIn"]>
+export type CheckInOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderId" | "customerId" | "merchantId" | "qrToken" | "generatedAt" | "expiresAt" | "checkedInAt" | "verifiedAt" | "latitude" | "longitude" | "status", ExtArgs["result"]["checkIn"]>
 export type CheckInInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
@@ -793,7 +1062,12 @@ export type $CheckInPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     merchantId: string
     qrToken: string
     generatedAt: Date
+    expiresAt: Date | null
     checkedInAt: Date | null
+    verifiedAt: Date | null
+    latitude: runtime.Decimal | null
+    longitude: runtime.Decimal | null
+    status: $Enums.CheckInStatus
   }, ExtArgs["result"]["checkIn"]>
   composites: {}
 }
@@ -1226,7 +1500,12 @@ export interface CheckInFieldRefs {
   readonly merchantId: Prisma.FieldRef<"CheckIn", 'String'>
   readonly qrToken: Prisma.FieldRef<"CheckIn", 'String'>
   readonly generatedAt: Prisma.FieldRef<"CheckIn", 'DateTime'>
+  readonly expiresAt: Prisma.FieldRef<"CheckIn", 'DateTime'>
   readonly checkedInAt: Prisma.FieldRef<"CheckIn", 'DateTime'>
+  readonly verifiedAt: Prisma.FieldRef<"CheckIn", 'DateTime'>
+  readonly latitude: Prisma.FieldRef<"CheckIn", 'Decimal'>
+  readonly longitude: Prisma.FieldRef<"CheckIn", 'Decimal'>
+  readonly status: Prisma.FieldRef<"CheckIn", 'CheckInStatus'>
 }
     
 

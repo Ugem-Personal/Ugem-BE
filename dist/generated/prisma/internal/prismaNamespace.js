@@ -407,7 +407,12 @@ export const CheckInScalarFieldEnum = {
     merchantId: 'merchantId',
     qrToken: 'qrToken',
     generatedAt: 'generatedAt',
-    checkedInAt: 'checkedInAt'
+    expiresAt: 'expiresAt',
+    checkedInAt: 'checkedInAt',
+    verifiedAt: 'verifiedAt',
+    latitude: 'latitude',
+    longitude: 'longitude',
+    status: 'status'
 };
 export const NotificationScalarFieldEnum = {
     id: 'id',

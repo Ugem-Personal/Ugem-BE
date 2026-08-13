@@ -126,3 +126,13 @@ export const NotificationType = {
 } as const
 
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
+
+
+export const CheckInStatus = {
+  Pending: 'Pending',
+  Verified: 'Verified',
+  Rejected: 'Rejected',
+  Expired: 'Expired'
+} as const
+
+export type CheckInStatus = (typeof CheckInStatus)[keyof typeof CheckInStatus]

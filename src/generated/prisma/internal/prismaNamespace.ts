@@ -2879,7 +2879,12 @@ export const CheckInScalarFieldEnum = {
   merchantId: 'merchantId',
   qrToken: 'qrToken',
   generatedAt: 'generatedAt',
-  checkedInAt: 'checkedInAt'
+  expiresAt: 'expiresAt',
+  checkedInAt: 'checkedInAt',
+  verifiedAt: 'verifiedAt',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  status: 'status'
 } as const
 
 export type CheckInScalarFieldEnum = (typeof CheckInScalarFieldEnum)[keyof typeof CheckInScalarFieldEnum]
@@ -3178,6 +3183,20 @@ export type EnumCampaignDiscountTypeFieldRefInput<$PrismaModel> = FieldRefInputT
  * Reference to a field of type 'CampaignDiscountType[]'
  */
 export type ListEnumCampaignDiscountTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CampaignDiscountType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'CheckInStatus'
+ */
+export type EnumCheckInStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CheckInStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'CheckInStatus[]'
+ */
+export type ListEnumCheckInStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CheckInStatus[]'>
     
 
 

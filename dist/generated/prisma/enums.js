@@ -78,3 +78,9 @@ export const NotificationType = {
     Affiliate: 'Affiliate',
     System: 'System'
 };
+export const CheckInStatus = {
+    Pending: 'Pending',
+    Verified: 'Verified',
+    Rejected: 'Rejected',
+    Expired: 'Expired'
+};

@@ -1,9 +1,22 @@
 import QRCode from "qrcode";
 import { createHash, randomBytes } from "node:crypto";
-import { OrderPaymentStatus, OrderStatus, OrderType, } from "../../generated/prisma/client.js";
+import { CheckInStatus, NotificationType, OrderPaymentStatus, OrderStatus, OrderType, } from "../../generated/prisma/client.js";
 import { prisma } from "../../config/prisma.js";
 import { env } from "../../config/env.js";
 import { AppError } from "../../common/errors/app-error.js";
+import { createNotification } from "../notifications/notification.service.js";
+const toRadians = (value) => (value * Math.PI) / 180;
+const calculateDistanceMeters = (lat1, lon1, lat2, lon2) => {
+    const earthRadius = 6371000; // Earth radius in meters
+    const dLat = toRadians(lat2 - lat1);
+    const dLon = toRadians(lon2 - lon1);
+    const a = Math.sin(dLat / 2) ** 2 +
+        Math.cos(toRadians(lat1)) *
+            Math.cos(toRadians(lat2)) *
+            Math.sin(dLon / 2) ** 2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return earthRadius * c;
+};
 const getOrderForCheckIn = async (orderId) => {
     const order = await prisma.order.findUnique({
         where: {
@@ -21,6 +34,8 @@ const getOrderForCheckIn = async (orderId) => {
                     id: true,
                     name: true,
                     logoUrl: true,
+                    latitude: true,
+                    longitude: true,
                 },
             },
             customer: {
@@ -63,6 +78,8 @@ export const generateCheckInQr = async (merchantId, orderId) => {
         throw new AppError(409, "Order này đã được check-in");
     }
     const qrToken = randomBytes(32).toString("base64url");
+    const generatedAt = new Date();
+    const expiresAt = new Date(generatedAt.getTime() + 15 * 60 * 1000); // QR code active for 15 mins
     await prisma.checkIn.upsert({
         where: { orderId: order.id },
         create: {
@@ -70,10 +87,13 @@ export const generateCheckInQr = async (merchantId, orderId) => {
             customerId: order.customerId,
             merchantId: order.merchantId,
             qrToken: hashQrToken(qrToken),
+            generatedAt,
+            expiresAt,
         },
         update: {
             qrToken: hashQrToken(qrToken),
-            generatedAt: new Date(),
+            generatedAt,
+            expiresAt,
         },
     });
     const checkInUrl = `${env.FRONTEND_URL.replace(/\/$/, "")}` +
@@ -86,7 +106,7 @@ export const generateCheckInQr = async (merchantId, orderId) => {
         errorCorrectionLevel: "M",
     });
 };
-export const verifyCheckIn = async (customerId, orderId, checkInToken) => {
+export const verifyCheckIn = async (customerId, orderId, checkInToken, latitude, longitude) => {
     const order = await getOrderForCheckIn(orderId);
     if (order.customerId !== customerId) {
         throw new AppError(403, "Order không thuộc Customer này");
@@ -102,6 +122,34 @@ export const verifyCheckIn = async (customerId, orderId, checkInToken) => {
         order.status !== OrderStatus.Completed) {
         throw new AppError(409, "Order chưa ở trạng thái có thể check-in");
     }
+    const merchantLatitude = Number(order.merchant.latitude);
+    const merchantLongitude = Number(order.merchant.longitude);
+    if (!Number.isFinite(merchantLatitude) ||
+        !Number.isFinite(merchantLongitude)) {
+        throw new AppError(409, "Quán chưa thiết lập vị trí check-in");
+    }
+    const distanceMeters = calculateDistanceMeters(latitude, longitude, merchantLatitude, merchantLongitude);
+    const MAX_CHECK_IN_DISTANCE_METERS = 100;
+    if (distanceMeters > MAX_CHECK_IN_DISTANCE_METERS) {
+        // Log abnormal check-in attempt
+        await prisma.auditLog.create({
+            data: {
+                actorUserId: order.customer.userId,
+                action: "CHECKIN_GEOFENCE_FAILED",
+                entityType: "CheckIn",
+                entityId: order.id,
+                metadata: {
+                    customerLatitude: latitude,
+                    customerLongitude: longitude,
+                    merchantLatitude,
+                    merchantLongitude,
+                    distanceMeters,
+                    maxAllowedMeters: MAX_CHECK_IN_DISTANCE_METERS,
+                },
+            },
+        }).catch(() => null);
+        throw new AppError(400, "Bạn đang ở ngoài phạm vi check-in của quán");
+    }
     const checkedInAt = new Date();
     const updated = await prisma.checkIn.updateMany({
         where: {
@@ -109,24 +157,45 @@ export const verifyCheckIn = async (customerId, orderId, checkInToken) => {
             customerId,
             qrToken: hashQrToken(checkInToken),
             checkedInAt: null,
+            expiresAt: {
+                gt: checkedInAt,
+            },
         },
-        data: { checkedInAt },
+        data: {
+            checkedInAt,
+            verifiedAt: checkedInAt,
+            latitude,
+            longitude,
+            status: CheckInStatus.Verified,
+        },
     });
     if (updated.count === 0) {
         const existing = await prisma.checkIn.findUnique({
             where: { orderId: order.id },
-            select: { checkedInAt: true },
+            select: { checkedInAt: true, expiresAt: true },
         });
         if (existing?.checkedInAt) {
             throw new AppError(409, "Mã QR này đã được sử dụng");
         }
+        if (existing?.expiresAt && existing.expiresAt <= checkedInAt) {
+            throw new AppError(400, "Mã QR check-in đã hết hiệu lực");
+        }
         throw new AppError(400, "Mã QR check-in không hợp lệ hoặc đã hết hiệu lực");
     }
+    await createNotification({
+        userId: order.customer.userId,
+        type: NotificationType.System,
+        title: "Check-in thành công",
+        message: `Bạn đã check-in thành công tại ${order.merchant.name}.`,
+        referenceId: order.id,
+        referenceType: "CheckIn",
+    });
     return {
         orderId: order.id,
         merchant: order.merchant,
         checkedInAt,
-        status: "CheckedIn",
+        distanceMeters,
+        status: "Verified",
     };
 };
 export const getCurrentCheckIns = async (customerId) => {
@@ -139,6 +208,8 @@ export const getCurrentCheckIns = async (customerId) => {
             id: true,
             orderId: true,
             checkedInAt: true,
+            verifiedAt: true,
+            status: true,
             merchant: {
                 select: {
                     id: true,
@@ -162,5 +233,88 @@ export const getCurrentCheckIns = async (customerId) => {
         merchant: checkIn.merchant,
         amount: Number(checkIn.order.finalPrice),
         checkedInAt: checkIn.checkedInAt,
+        verifiedAt: checkIn.verifiedAt,
+        status: checkIn.status,
+    }));
+};
+export const getMerchantCheckInStatistics = async (merchantId) => {
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+    const [total, verified, today] = await prisma.$transaction([
+        prisma.checkIn.count({
+            where: { merchantId },
+        }),
+        prisma.checkIn.count({
+            where: {
+                merchantId,
+                status: CheckInStatus.Verified,
+            },
+        }),
+        prisma.checkIn.count({
+            where: {
+                merchantId,
+                status: CheckInStatus.Verified,
+                checkedInAt: {
+                    gte: startOfToday,
+                },
+            },
+        }),
+    ]);
+    return {
+        totalCheckIns: total,
+        verifiedVisits: verified,
+        todayCheckIns: today,
+    };
+};
+export const getMerchantCheckInHistory = async (merchantId) => {
+    const checkIns = await prisma.checkIn.findMany({
+        where: { merchantId },
+        select: {
+            id: true,
+            orderId: true,
+            generatedAt: true,
+            checkedInAt: true,
+            verifiedAt: true,
+            latitude: true,
+            longitude: true,
+            status: true,
+            customer: {
+                select: {
+                    id: true,
+                    user: {
+                        select: {
+                            fullName: true,
+                            phoneNumber: true,
+                            avatarUrl: true,
+                        },
+                    },
+                },
+            },
+            order: {
+                select: {
+                    finalPrice: true,
+                    orderType: true,
+                },
+            },
+        },
+        orderBy: {
+            generatedAt: "desc",
+        },
+        take: 100,
+    });
+    return checkIns.map((item) => ({
+        id: item.id,
+        orderId: item.orderId,
+        customerName: item.customer.user.fullName,
+        customerPhone: item.customer.user.phoneNumber,
+        customerAvatar: item.customer.user.avatarUrl,
+        amount: Number(item.order.finalPrice),
+        orderType: item.order.orderType,
+        generatedAt: item.generatedAt,
+        checkedInAt: item.checkedInAt,
+        verifiedAt: item.verifiedAt,
+        status: item.status,
+        latitude: item.latitude ? Number(item.latitude) : null,
+        longitude: item.longitude ? Number(item.longitude) : null,
     }));
 };

@@ -9,5 +9,7 @@ export const verifyCheckInSchema = z.object({
     body: z.object({
         orderId: orderIdSchema,
         checkInToken: z.string().min(32).max(500),
+        latitude: z.number().min(-90).max(90),
+        longitude: z.number().min(-180).max(180),
     }),
 });

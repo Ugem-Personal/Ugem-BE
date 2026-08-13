@@ -51,6 +51,8 @@ export const verifyCheckIn = asyncHandler(
       getCustomerId(req),
       req.body.orderId,
       req.body.checkInToken,
+      req.body.latitude,
+      req.body.longitude,
     );
 
     return sendSuccess(res, {
@@ -69,6 +71,32 @@ export const getCurrentCheckIns = asyncHandler(
     return sendSuccess(res, {
       message: "Lấy lịch sử check-in thành công",
       data: checkIns,
+    });
+  },
+);
+
+export const getMerchantCheckInStatistics = asyncHandler(
+  async (req: Request, res: Response) => {
+    const stats = await checkInService.getMerchantCheckInStatistics(
+      getMerchantId(req),
+    );
+
+    return sendSuccess(res, {
+      message: "Lấy thống kê check-in nhà hàng thành công",
+      data: stats,
+    });
+  },
+);
+
+export const getMerchantCheckInHistory = asyncHandler(
+  async (req: Request, res: Response) => {
+    const history = await checkInService.getMerchantCheckInHistory(
+      getMerchantId(req),
+    );
+
+    return sendSuccess(res, {
+      message: "Lấy lịch sử check-in nhà hàng thành công",
+      data: history,
     });
   },
 );

@@ -1,4 +1,5 @@
 import {
+  CheckInStatus,
   NotificationType,
   OrderPaymentStatus,
   OrderStatus,
@@ -153,6 +154,12 @@ export const createReview = async (
 
     include: {
       details: true,
+      checkIn: {
+        select: {
+          checkedInAt: true,
+          status: true,
+        },
+      },
       merchant: {
         select: {
           userId: true,
@@ -174,11 +181,19 @@ export const createReview = async (
     throw new AppError(400, "Merchant ID không khớp với Order");
   }
 
-  /*
-   * Nếu code hiện tại của m có kiểm tra trạng thái Order,
-   * Review đã tồn tại hoặc Order đã hoàn thành thì giữ các
-   * đoạn kiểm tra đó ở vị trí này.
-   */
+  if (!order.checkIn?.checkedInAt || order.checkIn.status !== CheckInStatus.Verified) {
+    throw new AppError(403, "Bạn cần check-in tại quán trước khi đánh giá");
+  }
+
+  const existingReview = await prisma.review.findUnique({
+    where: {
+      orderId: order.id,
+    },
+  });
+
+  if (existingReview) {
+    throw new AppError(409, "Order này đã được đánh giá");
+  }
 
   const requestedDetails = input.details ?? [];
 

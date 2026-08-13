@@ -90,6 +90,13 @@ enum NotificationType {
   System
 }
 
+enum CheckInStatus {
+  Pending
+  Verified
+  Rejected
+  Expired
+}
+
 model User {
   id           String   @id @default(uuid())
   email        String   @unique
@@ -696,8 +703,13 @@ model CheckIn {
   merchantId String
   qrToken    String @unique
 
-  generatedAt DateTime  @default(now())
+  generatedAt DateTime       @default(now())
+  expiresAt   DateTime?
   checkedInAt DateTime?
+  verifiedAt  DateTime?
+  latitude    Decimal?       @db.Decimal(10, 7)
+  longitude   Decimal?       @db.Decimal(10, 7)
+  status      CheckInStatus  @default(Pending)
 
   order    Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
   customer Customer @relation(fields: [customerId], references: [id], onDelete: Restrict)
@@ -706,6 +718,7 @@ model CheckIn {
   @@index([customerId])
   @@index([merchantId])
   @@index([checkedInAt])
+  @@index([status])
   @@map("check_ins")
 }
 
