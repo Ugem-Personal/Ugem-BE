@@ -73,6 +73,7 @@ export const ModelName = {
   AffiliateLink: 'AffiliateLink',
   AffiliateClick: 'AffiliateClick',
   ReviewerEarningTransaction: 'ReviewerEarningTransaction',
+  AffiliateTransaction: 'AffiliateTransaction',
   ReviewerPointTransaction: 'ReviewerPointTransaction',
   Campaign: 'Campaign',
   CheckIn: 'CheckIn',
@@ -452,6 +453,19 @@ export const ReviewerEarningTransactionScalarFieldEnum = {
 } as const
 
 export type ReviewerEarningTransactionScalarFieldEnum = (typeof ReviewerEarningTransactionScalarFieldEnum)[keyof typeof ReviewerEarningTransactionScalarFieldEnum]
+
+
+export const AffiliateTransactionScalarFieldEnum = {
+  id: 'id',
+  affiliateLinkId: 'affiliateLinkId',
+  orderId: 'orderId',
+  status: 'status',
+  commission: 'commission',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AffiliateTransactionScalarFieldEnum = (typeof AffiliateTransactionScalarFieldEnum)[keyof typeof AffiliateTransactionScalarFieldEnum]
 
 
 export const ReviewerPointTransactionScalarFieldEnum = {

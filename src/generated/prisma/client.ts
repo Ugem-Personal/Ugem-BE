@@ -152,6 +152,11 @@ export type AffiliateClick = Prisma.AffiliateClickModel
  */
 export type ReviewerEarningTransaction = Prisma.ReviewerEarningTransactionModel
 /**
+ * Model AffiliateTransaction
+ * 
+ */
+export type AffiliateTransaction = Prisma.AffiliateTransactionModel
+/**
  * Model ReviewerPointTransaction
  * 
  */

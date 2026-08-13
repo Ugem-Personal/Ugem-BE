@@ -3,7 +3,7 @@ import { MerchantStatus, UserRole } from "../../generated/prisma/client.js";
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
 import { env } from "../../config/env.js";
-import { REVIEWER_COMMISSION_RATE } from "./affiliate-earning.service.js";
+import { getReviewerCommissionRate } from "../../common/utils/reviewer-rank.js";
 const affiliateLinkInclude = {
     merchant: {
         select: {
@@ -321,7 +321,7 @@ export const getReviewerEarnings = async (reviewerId, query) => {
         ? Number(allTransactionSummary[allTransactionSummary.length - 1]
             .earningsAfter)
         : 0;
-    const commissionRate = REVIEWER_COMMISSION_RATE * 100;
+    const commissionRate = getReviewerCommissionRate(reviewer.reviewerRank) * 100;
     const points = reviewer.reviewerPoints;
     const rank = reviewer.reviewerRank;
     const recentTransactions = transactions.map((transaction) => ({

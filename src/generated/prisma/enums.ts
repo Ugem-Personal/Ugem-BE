@@ -145,3 +145,13 @@ export const RebalancingStatus = {
 } as const
 
 export type RebalancingStatus = (typeof RebalancingStatus)[keyof typeof RebalancingStatus]
+
+
+export const AffiliateTransactionStatus = {
+  Pending: 'Pending',
+  Failed: 'Failed',
+  Success: 'Success',
+  Commissioned: 'Commissioned'
+} as const
+
+export type AffiliateTransactionStatus = (typeof AffiliateTransactionStatus)[keyof typeof AffiliateTransactionStatus]

@@ -1,10 +1,8 @@
-import { NotificationType, OrderPaymentStatus, OrderStatus, Prisma, } from "../../generated/prisma/client.js";
+import { AffiliateTransactionStatus, NotificationType, OrderPaymentStatus, OrderStatus, Prisma, } from "../../generated/prisma/client.js";
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
 import { createNotification } from "../notifications/notification.service.js";
-import { calculateReviewerRank } from "../../common/utils/reviewer-rank.js";
-const REVIEWER_COMMISSION_PERCENT = 5;
-export const REVIEWER_COMMISSION_RATE = 0.05;
+import { calculateReviewerRank, getReviewerCommissionRate, } from "../../common/utils/reviewer-rank.js";
 export const createReviewerCommission = async (orderId) => {
     const order = await prisma.order.findUnique({
         where: {
@@ -16,6 +14,7 @@ export const createReviewerCommission = async (orderId) => {
                     reviewer: {
                         select: {
                             userId: true,
+                            reviewerRank: true,
                         },
                     },
                 },
@@ -38,7 +37,10 @@ export const createReviewerCommission = async (orderId) => {
     if (order.paymentStatus !== OrderPaymentStatus.Paid) {
         throw new AppError(409, "Order chưa thanh toán");
     }
-    const commission = Number(order.finalPrice) * (REVIEWER_COMMISSION_PERCENT / 100);
+    const currentRank = order.affiliateLink.reviewer.reviewerRank;
+    const commissionRate = getReviewerCommissionRate(currentRank);
+    const commissionPercent = Math.round(commissionRate * 100);
+    const commission = Number(order.finalPrice) * commissionRate;
     const earningTransaction = await prisma.$transaction(async (transaction) => {
         const currentAggregate = await transaction.reviewerEarningTransaction.aggregate({
             where: {
@@ -71,16 +73,29 @@ export const createReviewerCommission = async (orderId) => {
                 },
             },
         });
+        await transaction.affiliateTransaction.upsert({
+            where: { orderId: order.id },
+            create: {
+                affiliateLinkId: order.affiliateLink.id,
+                orderId: order.id,
+                status: AffiliateTransactionStatus.Commissioned,
+                commission: new Prisma.Decimal(commission),
+            },
+            update: {
+                status: AffiliateTransactionStatus.Commissioned,
+                commission: new Prisma.Decimal(commission),
+            },
+        });
         const successfulOrderAggregate = await transaction.affiliateLink.aggregate({
             where: { reviewerId: order.affiliateLink.reviewerId },
             _sum: { successfulOrders: true },
         });
-        const rank = calculateReviewerRank(Number(successfulOrderAggregate._sum.successfulOrders ?? 0));
+        const nextRank = calculateReviewerRank(Number(successfulOrderAggregate._sum.successfulOrders ?? 0));
         const reviewer = await transaction.customer.update({
             where: { id: order.affiliateLink.reviewerId },
             data: {
                 reviewerPoints: { increment: 100 },
-                reviewerRank: rank,
+                reviewerRank: nextRank,
             },
             select: { reviewerPoints: true },
         });
@@ -101,7 +116,7 @@ export const createReviewerCommission = async (orderId) => {
                 amount: new Prisma.Decimal(commission),
                 earningsAfter: new Prisma.Decimal(earningsAfter),
                 type: "Commission",
-                reason: `Hoa hồng ${REVIEWER_COMMISSION_PERCENT}% từ Order ${order.id}`,
+                reason: `Hoa hồng ${commissionPercent}% từ Order ${order.id}`,
             },
         });
     });
@@ -109,7 +124,7 @@ export const createReviewerCommission = async (orderId) => {
         userId: order.affiliateLink.reviewer.userId,
         type: NotificationType.Affiliate,
         title: "Bạn vừa nhận được hoa hồng",
-        message: `Bạn đã nhận được ${commission.toLocaleString("vi-VN")} VNĐ hoa hồng từ một đơn hàng thành công.`,
+        message: `Bạn đã nhận được ${commission.toLocaleString("vi-VN")} VNĐ hoa hồng (${commissionPercent}% hạng ${currentRank || "Bronze"}) từ một đơn hàng thành công.`,
         referenceId: earningTransaction.id,
         referenceType: "ReviewerEarningTransaction",
     });

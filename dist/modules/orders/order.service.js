@@ -352,6 +352,15 @@ export const createOrder = async (customerId, input) => {
             referenceType: "Order",
         });
     }
+    if (affiliateLink) {
+        await prisma.affiliateTransaction.create({
+            data: {
+                affiliateLinkId: affiliateLink.id,
+                orderId: order.id,
+                status: "Pending",
+            },
+        }).catch(() => null);
+    }
     return mapOrder(order);
 };
 export const createMerchantOrder = async (merchantId, customerId, input) => {
@@ -594,6 +603,13 @@ export const updateOrderStatus = async (merchantId, orderId, input) => {
         updatedOrder.paymentStatus === "Paid" &&
         updatedOrder.affiliateLinkId) {
         await createReviewerCommission(updatedOrder.id);
+    }
+    else if ((nextStatus === OrderStatus.Rejected || nextStatus === OrderStatus.Cancelled) &&
+        updatedOrder.affiliateLinkId) {
+        await prisma.affiliateTransaction.updateMany({
+            where: { orderId: updatedOrder.id },
+            data: { status: "Failed" },
+        }).catch(() => null);
     }
     const refreshedOrder = await prisma.order.findUniqueOrThrow({
         where: {

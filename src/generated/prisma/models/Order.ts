@@ -425,6 +425,7 @@ export type OrderWhereInput = {
   affiliateLink?: Prisma.XOR<Prisma.AffiliateLinkNullableScalarRelationFilter, Prisma.AffiliateLinkWhereInput> | null
   campaign?: Prisma.XOR<Prisma.CampaignNullableScalarRelationFilter, Prisma.CampaignWhereInput> | null
   earningTransaction?: Prisma.XOR<Prisma.ReviewerEarningTransactionNullableScalarRelationFilter, Prisma.ReviewerEarningTransactionWhereInput> | null
+  affiliateTransaction?: Prisma.XOR<Prisma.AffiliateTransactionNullableScalarRelationFilter, Prisma.AffiliateTransactionWhereInput> | null
   details?: Prisma.OrderDetailListRelationFilter
   bill?: Prisma.XOR<Prisma.BillNullableScalarRelationFilter, Prisma.BillWhereInput> | null
   review?: Prisma.XOR<Prisma.ReviewNullableScalarRelationFilter, Prisma.ReviewWhereInput> | null
@@ -465,6 +466,7 @@ export type OrderOrderByWithRelationInput = {
   affiliateLink?: Prisma.AffiliateLinkOrderByWithRelationInput
   campaign?: Prisma.CampaignOrderByWithRelationInput
   earningTransaction?: Prisma.ReviewerEarningTransactionOrderByWithRelationInput
+  affiliateTransaction?: Prisma.AffiliateTransactionOrderByWithRelationInput
   details?: Prisma.OrderDetailOrderByRelationAggregateInput
   bill?: Prisma.BillOrderByWithRelationInput
   review?: Prisma.ReviewOrderByWithRelationInput
@@ -508,6 +510,7 @@ export type OrderWhereUniqueInput = Prisma.AtLeast<{
   affiliateLink?: Prisma.XOR<Prisma.AffiliateLinkNullableScalarRelationFilter, Prisma.AffiliateLinkWhereInput> | null
   campaign?: Prisma.XOR<Prisma.CampaignNullableScalarRelationFilter, Prisma.CampaignWhereInput> | null
   earningTransaction?: Prisma.XOR<Prisma.ReviewerEarningTransactionNullableScalarRelationFilter, Prisma.ReviewerEarningTransactionWhereInput> | null
+  affiliateTransaction?: Prisma.XOR<Prisma.AffiliateTransactionNullableScalarRelationFilter, Prisma.AffiliateTransactionWhereInput> | null
   details?: Prisma.OrderDetailListRelationFilter
   bill?: Prisma.XOR<Prisma.BillNullableScalarRelationFilter, Prisma.BillWhereInput> | null
   review?: Prisma.XOR<Prisma.ReviewNullableScalarRelationFilter, Prisma.ReviewWhereInput> | null
@@ -614,6 +617,7 @@ export type OrderCreateInput = {
   affiliateLink?: Prisma.AffiliateLinkCreateNestedOneWithoutOrdersInput
   campaign?: Prisma.CampaignCreateNestedOneWithoutOrdersInput
   earningTransaction?: Prisma.ReviewerEarningTransactionCreateNestedOneWithoutOrderInput
+  affiliateTransaction?: Prisma.AffiliateTransactionCreateNestedOneWithoutOrderInput
   details?: Prisma.OrderDetailCreateNestedManyWithoutOrderInput
   bill?: Prisma.BillCreateNestedOneWithoutOrderInput
   review?: Prisma.ReviewCreateNestedOneWithoutOrderInput
@@ -650,6 +654,7 @@ export type OrderUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedOneWithoutOrderInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedCreateNestedOneWithoutOrderInput
   details?: Prisma.OrderDetailUncheckedCreateNestedManyWithoutOrderInput
   bill?: Prisma.BillUncheckedCreateNestedOneWithoutOrderInput
   review?: Prisma.ReviewUncheckedCreateNestedOneWithoutOrderInput
@@ -686,6 +691,7 @@ export type OrderUpdateInput = {
   affiliateLink?: Prisma.AffiliateLinkUpdateOneWithoutOrdersNestedInput
   campaign?: Prisma.CampaignUpdateOneWithoutOrdersNestedInput
   earningTransaction?: Prisma.ReviewerEarningTransactionUpdateOneWithoutOrderNestedInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUpdateOneWithoutOrderNestedInput
   details?: Prisma.OrderDetailUpdateManyWithoutOrderNestedInput
   bill?: Prisma.BillUpdateOneWithoutOrderNestedInput
   review?: Prisma.ReviewUpdateOneWithoutOrderNestedInput
@@ -722,6 +728,7 @@ export type OrderUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedUpdateOneWithoutOrderNestedInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedUpdateOneWithoutOrderNestedInput
   details?: Prisma.OrderDetailUncheckedUpdateManyWithoutOrderNestedInput
   bill?: Prisma.BillUncheckedUpdateOneWithoutOrderNestedInput
   review?: Prisma.ReviewUncheckedUpdateOneWithoutOrderNestedInput
@@ -1141,6 +1148,20 @@ export type OrderUpdateOneRequiredWithoutEarningTransactionNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.OrderUpdateToOneWithWhereWithoutEarningTransactionInput, Prisma.OrderUpdateWithoutEarningTransactionInput>, Prisma.OrderUncheckedUpdateWithoutEarningTransactionInput>
 }
 
+export type OrderCreateNestedOneWithoutAffiliateTransactionInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutAffiliateTransactionInput, Prisma.OrderUncheckedCreateWithoutAffiliateTransactionInput>
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutAffiliateTransactionInput
+  connect?: Prisma.OrderWhereUniqueInput
+}
+
+export type OrderUpdateOneRequiredWithoutAffiliateTransactionNestedInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutAffiliateTransactionInput, Prisma.OrderUncheckedCreateWithoutAffiliateTransactionInput>
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutAffiliateTransactionInput
+  upsert?: Prisma.OrderUpsertWithoutAffiliateTransactionInput
+  connect?: Prisma.OrderWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrderUpdateToOneWithWhereWithoutAffiliateTransactionInput, Prisma.OrderUpdateWithoutAffiliateTransactionInput>, Prisma.OrderUncheckedUpdateWithoutAffiliateTransactionInput>
+}
+
 export type OrderCreateNestedManyWithoutCampaignInput = {
   create?: Prisma.XOR<Prisma.OrderCreateWithoutCampaignInput, Prisma.OrderUncheckedCreateWithoutCampaignInput> | Prisma.OrderCreateWithoutCampaignInput[] | Prisma.OrderUncheckedCreateWithoutCampaignInput[]
   connectOrCreate?: Prisma.OrderCreateOrConnectWithoutCampaignInput | Prisma.OrderCreateOrConnectWithoutCampaignInput[]
@@ -1226,6 +1247,7 @@ export type OrderCreateWithoutCustomerInput = {
   affiliateLink?: Prisma.AffiliateLinkCreateNestedOneWithoutOrdersInput
   campaign?: Prisma.CampaignCreateNestedOneWithoutOrdersInput
   earningTransaction?: Prisma.ReviewerEarningTransactionCreateNestedOneWithoutOrderInput
+  affiliateTransaction?: Prisma.AffiliateTransactionCreateNestedOneWithoutOrderInput
   details?: Prisma.OrderDetailCreateNestedManyWithoutOrderInput
   bill?: Prisma.BillCreateNestedOneWithoutOrderInput
   review?: Prisma.ReviewCreateNestedOneWithoutOrderInput
@@ -1261,6 +1283,7 @@ export type OrderUncheckedCreateWithoutCustomerInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedOneWithoutOrderInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedCreateNestedOneWithoutOrderInput
   details?: Prisma.OrderDetailUncheckedCreateNestedManyWithoutOrderInput
   bill?: Prisma.BillUncheckedCreateNestedOneWithoutOrderInput
   review?: Prisma.ReviewUncheckedCreateNestedOneWithoutOrderInput
@@ -1356,6 +1379,7 @@ export type OrderCreateWithoutMerchantInput = {
   affiliateLink?: Prisma.AffiliateLinkCreateNestedOneWithoutOrdersInput
   campaign?: Prisma.CampaignCreateNestedOneWithoutOrdersInput
   earningTransaction?: Prisma.ReviewerEarningTransactionCreateNestedOneWithoutOrderInput
+  affiliateTransaction?: Prisma.AffiliateTransactionCreateNestedOneWithoutOrderInput
   details?: Prisma.OrderDetailCreateNestedManyWithoutOrderInput
   bill?: Prisma.BillCreateNestedOneWithoutOrderInput
   review?: Prisma.ReviewCreateNestedOneWithoutOrderInput
@@ -1391,6 +1415,7 @@ export type OrderUncheckedCreateWithoutMerchantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedOneWithoutOrderInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedCreateNestedOneWithoutOrderInput
   details?: Prisma.OrderDetailUncheckedCreateNestedManyWithoutOrderInput
   bill?: Prisma.BillUncheckedCreateNestedOneWithoutOrderInput
   review?: Prisma.ReviewUncheckedCreateNestedOneWithoutOrderInput
@@ -1453,6 +1478,7 @@ export type OrderCreateWithoutDetailsInput = {
   affiliateLink?: Prisma.AffiliateLinkCreateNestedOneWithoutOrdersInput
   campaign?: Prisma.CampaignCreateNestedOneWithoutOrdersInput
   earningTransaction?: Prisma.ReviewerEarningTransactionCreateNestedOneWithoutOrderInput
+  affiliateTransaction?: Prisma.AffiliateTransactionCreateNestedOneWithoutOrderInput
   bill?: Prisma.BillCreateNestedOneWithoutOrderInput
   review?: Prisma.ReviewCreateNestedOneWithoutOrderInput
   checkIn?: Prisma.CheckInCreateNestedOneWithoutOrderInput
@@ -1488,6 +1514,7 @@ export type OrderUncheckedCreateWithoutDetailsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedOneWithoutOrderInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedCreateNestedOneWithoutOrderInput
   bill?: Prisma.BillUncheckedCreateNestedOneWithoutOrderInput
   review?: Prisma.ReviewUncheckedCreateNestedOneWithoutOrderInput
   checkIn?: Prisma.CheckInUncheckedCreateNestedOneWithoutOrderInput
@@ -1539,6 +1566,7 @@ export type OrderUpdateWithoutDetailsInput = {
   affiliateLink?: Prisma.AffiliateLinkUpdateOneWithoutOrdersNestedInput
   campaign?: Prisma.CampaignUpdateOneWithoutOrdersNestedInput
   earningTransaction?: Prisma.ReviewerEarningTransactionUpdateOneWithoutOrderNestedInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUpdateOneWithoutOrderNestedInput
   bill?: Prisma.BillUpdateOneWithoutOrderNestedInput
   review?: Prisma.ReviewUpdateOneWithoutOrderNestedInput
   checkIn?: Prisma.CheckInUpdateOneWithoutOrderNestedInput
@@ -1574,6 +1602,7 @@ export type OrderUncheckedUpdateWithoutDetailsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedUpdateOneWithoutOrderNestedInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedUpdateOneWithoutOrderNestedInput
   bill?: Prisma.BillUncheckedUpdateOneWithoutOrderNestedInput
   review?: Prisma.ReviewUncheckedUpdateOneWithoutOrderNestedInput
   checkIn?: Prisma.CheckInUncheckedUpdateOneWithoutOrderNestedInput
@@ -1609,6 +1638,7 @@ export type OrderCreateWithoutBillInput = {
   affiliateLink?: Prisma.AffiliateLinkCreateNestedOneWithoutOrdersInput
   campaign?: Prisma.CampaignCreateNestedOneWithoutOrdersInput
   earningTransaction?: Prisma.ReviewerEarningTransactionCreateNestedOneWithoutOrderInput
+  affiliateTransaction?: Prisma.AffiliateTransactionCreateNestedOneWithoutOrderInput
   details?: Prisma.OrderDetailCreateNestedManyWithoutOrderInput
   review?: Prisma.ReviewCreateNestedOneWithoutOrderInput
   checkIn?: Prisma.CheckInCreateNestedOneWithoutOrderInput
@@ -1644,6 +1674,7 @@ export type OrderUncheckedCreateWithoutBillInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedOneWithoutOrderInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedCreateNestedOneWithoutOrderInput
   details?: Prisma.OrderDetailUncheckedCreateNestedManyWithoutOrderInput
   review?: Prisma.ReviewUncheckedCreateNestedOneWithoutOrderInput
   checkIn?: Prisma.CheckInUncheckedCreateNestedOneWithoutOrderInput
@@ -1695,6 +1726,7 @@ export type OrderUpdateWithoutBillInput = {
   affiliateLink?: Prisma.AffiliateLinkUpdateOneWithoutOrdersNestedInput
   campaign?: Prisma.CampaignUpdateOneWithoutOrdersNestedInput
   earningTransaction?: Prisma.ReviewerEarningTransactionUpdateOneWithoutOrderNestedInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUpdateOneWithoutOrderNestedInput
   details?: Prisma.OrderDetailUpdateManyWithoutOrderNestedInput
   review?: Prisma.ReviewUpdateOneWithoutOrderNestedInput
   checkIn?: Prisma.CheckInUpdateOneWithoutOrderNestedInput
@@ -1730,6 +1762,7 @@ export type OrderUncheckedUpdateWithoutBillInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedUpdateOneWithoutOrderNestedInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedUpdateOneWithoutOrderNestedInput
   details?: Prisma.OrderDetailUncheckedUpdateManyWithoutOrderNestedInput
   review?: Prisma.ReviewUncheckedUpdateOneWithoutOrderNestedInput
   checkIn?: Prisma.CheckInUncheckedUpdateOneWithoutOrderNestedInput
@@ -1765,6 +1798,7 @@ export type OrderCreateWithoutReviewInput = {
   affiliateLink?: Prisma.AffiliateLinkCreateNestedOneWithoutOrdersInput
   campaign?: Prisma.CampaignCreateNestedOneWithoutOrdersInput
   earningTransaction?: Prisma.ReviewerEarningTransactionCreateNestedOneWithoutOrderInput
+  affiliateTransaction?: Prisma.AffiliateTransactionCreateNestedOneWithoutOrderInput
   details?: Prisma.OrderDetailCreateNestedManyWithoutOrderInput
   bill?: Prisma.BillCreateNestedOneWithoutOrderInput
   checkIn?: Prisma.CheckInCreateNestedOneWithoutOrderInput
@@ -1800,6 +1834,7 @@ export type OrderUncheckedCreateWithoutReviewInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedOneWithoutOrderInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedCreateNestedOneWithoutOrderInput
   details?: Prisma.OrderDetailUncheckedCreateNestedManyWithoutOrderInput
   bill?: Prisma.BillUncheckedCreateNestedOneWithoutOrderInput
   checkIn?: Prisma.CheckInUncheckedCreateNestedOneWithoutOrderInput
@@ -1851,6 +1886,7 @@ export type OrderUpdateWithoutReviewInput = {
   affiliateLink?: Prisma.AffiliateLinkUpdateOneWithoutOrdersNestedInput
   campaign?: Prisma.CampaignUpdateOneWithoutOrdersNestedInput
   earningTransaction?: Prisma.ReviewerEarningTransactionUpdateOneWithoutOrderNestedInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUpdateOneWithoutOrderNestedInput
   details?: Prisma.OrderDetailUpdateManyWithoutOrderNestedInput
   bill?: Prisma.BillUpdateOneWithoutOrderNestedInput
   checkIn?: Prisma.CheckInUpdateOneWithoutOrderNestedInput
@@ -1886,6 +1922,7 @@ export type OrderUncheckedUpdateWithoutReviewInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedUpdateOneWithoutOrderNestedInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedUpdateOneWithoutOrderNestedInput
   details?: Prisma.OrderDetailUncheckedUpdateManyWithoutOrderNestedInput
   bill?: Prisma.BillUncheckedUpdateOneWithoutOrderNestedInput
   checkIn?: Prisma.CheckInUncheckedUpdateOneWithoutOrderNestedInput
@@ -1920,6 +1957,7 @@ export type OrderCreateWithoutAffiliateLinkInput = {
   merchant: Prisma.MerchantCreateNestedOneWithoutOrdersInput
   campaign?: Prisma.CampaignCreateNestedOneWithoutOrdersInput
   earningTransaction?: Prisma.ReviewerEarningTransactionCreateNestedOneWithoutOrderInput
+  affiliateTransaction?: Prisma.AffiliateTransactionCreateNestedOneWithoutOrderInput
   details?: Prisma.OrderDetailCreateNestedManyWithoutOrderInput
   bill?: Prisma.BillCreateNestedOneWithoutOrderInput
   review?: Prisma.ReviewCreateNestedOneWithoutOrderInput
@@ -1955,6 +1993,7 @@ export type OrderUncheckedCreateWithoutAffiliateLinkInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedOneWithoutOrderInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedCreateNestedOneWithoutOrderInput
   details?: Prisma.OrderDetailUncheckedCreateNestedManyWithoutOrderInput
   bill?: Prisma.BillUncheckedCreateNestedOneWithoutOrderInput
   review?: Prisma.ReviewUncheckedCreateNestedOneWithoutOrderInput
@@ -2016,6 +2055,7 @@ export type OrderCreateWithoutEarningTransactionInput = {
   merchant: Prisma.MerchantCreateNestedOneWithoutOrdersInput
   affiliateLink?: Prisma.AffiliateLinkCreateNestedOneWithoutOrdersInput
   campaign?: Prisma.CampaignCreateNestedOneWithoutOrdersInput
+  affiliateTransaction?: Prisma.AffiliateTransactionCreateNestedOneWithoutOrderInput
   details?: Prisma.OrderDetailCreateNestedManyWithoutOrderInput
   bill?: Prisma.BillCreateNestedOneWithoutOrderInput
   review?: Prisma.ReviewCreateNestedOneWithoutOrderInput
@@ -2051,6 +2091,7 @@ export type OrderUncheckedCreateWithoutEarningTransactionInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedCreateNestedOneWithoutOrderInput
   details?: Prisma.OrderDetailUncheckedCreateNestedManyWithoutOrderInput
   bill?: Prisma.BillUncheckedCreateNestedOneWithoutOrderInput
   review?: Prisma.ReviewUncheckedCreateNestedOneWithoutOrderInput
@@ -2102,6 +2143,7 @@ export type OrderUpdateWithoutEarningTransactionInput = {
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutOrdersNestedInput
   affiliateLink?: Prisma.AffiliateLinkUpdateOneWithoutOrdersNestedInput
   campaign?: Prisma.CampaignUpdateOneWithoutOrdersNestedInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUpdateOneWithoutOrderNestedInput
   details?: Prisma.OrderDetailUpdateManyWithoutOrderNestedInput
   bill?: Prisma.BillUpdateOneWithoutOrderNestedInput
   review?: Prisma.ReviewUpdateOneWithoutOrderNestedInput
@@ -2137,6 +2179,167 @@ export type OrderUncheckedUpdateWithoutEarningTransactionInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedUpdateOneWithoutOrderNestedInput
+  details?: Prisma.OrderDetailUncheckedUpdateManyWithoutOrderNestedInput
+  bill?: Prisma.BillUncheckedUpdateOneWithoutOrderNestedInput
+  review?: Prisma.ReviewUncheckedUpdateOneWithoutOrderNestedInput
+  checkIn?: Prisma.CheckInUncheckedUpdateOneWithoutOrderNestedInput
+}
+
+export type OrderCreateWithoutAffiliateTransactionInput = {
+  id?: string
+  name: string
+  orderType: $Enums.OrderType
+  paymentMethod: $Enums.PaymentMethod
+  status?: $Enums.OrderStatus
+  paymentStatus?: $Enums.OrderPaymentStatus
+  notes?: string | null
+  deliveryAddress?: string | null
+  deliveryLatitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  deliveryLongitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  subtotal: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  reviewerCommission?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  rejectionReason?: string | null
+  orderedAt?: Date | string
+  acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
+  rejectedAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  customer: Prisma.CustomerCreateNestedOneWithoutOrdersInput
+  merchant: Prisma.MerchantCreateNestedOneWithoutOrdersInput
+  affiliateLink?: Prisma.AffiliateLinkCreateNestedOneWithoutOrdersInput
+  campaign?: Prisma.CampaignCreateNestedOneWithoutOrdersInput
+  earningTransaction?: Prisma.ReviewerEarningTransactionCreateNestedOneWithoutOrderInput
+  details?: Prisma.OrderDetailCreateNestedManyWithoutOrderInput
+  bill?: Prisma.BillCreateNestedOneWithoutOrderInput
+  review?: Prisma.ReviewCreateNestedOneWithoutOrderInput
+  checkIn?: Prisma.CheckInCreateNestedOneWithoutOrderInput
+}
+
+export type OrderUncheckedCreateWithoutAffiliateTransactionInput = {
+  id?: string
+  customerId: string
+  merchantId: string
+  affiliateLinkId?: string | null
+  campaignId?: string | null
+  name: string
+  orderType: $Enums.OrderType
+  paymentMethod: $Enums.PaymentMethod
+  status?: $Enums.OrderStatus
+  paymentStatus?: $Enums.OrderPaymentStatus
+  notes?: string | null
+  deliveryAddress?: string | null
+  deliveryLatitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  deliveryLongitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  subtotal: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  reviewerCommission?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  rejectionReason?: string | null
+  orderedAt?: Date | string
+  acceptedAt?: Date | string | null
+  preparingAt?: Date | string | null
+  readyAt?: Date | string | null
+  deliveringAt?: Date | string | null
+  rejectedAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedOneWithoutOrderInput
+  details?: Prisma.OrderDetailUncheckedCreateNestedManyWithoutOrderInput
+  bill?: Prisma.BillUncheckedCreateNestedOneWithoutOrderInput
+  review?: Prisma.ReviewUncheckedCreateNestedOneWithoutOrderInput
+  checkIn?: Prisma.CheckInUncheckedCreateNestedOneWithoutOrderInput
+}
+
+export type OrderCreateOrConnectWithoutAffiliateTransactionInput = {
+  where: Prisma.OrderWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrderCreateWithoutAffiliateTransactionInput, Prisma.OrderUncheckedCreateWithoutAffiliateTransactionInput>
+}
+
+export type OrderUpsertWithoutAffiliateTransactionInput = {
+  update: Prisma.XOR<Prisma.OrderUpdateWithoutAffiliateTransactionInput, Prisma.OrderUncheckedUpdateWithoutAffiliateTransactionInput>
+  create: Prisma.XOR<Prisma.OrderCreateWithoutAffiliateTransactionInput, Prisma.OrderUncheckedCreateWithoutAffiliateTransactionInput>
+  where?: Prisma.OrderWhereInput
+}
+
+export type OrderUpdateToOneWithWhereWithoutAffiliateTransactionInput = {
+  where?: Prisma.OrderWhereInput
+  data: Prisma.XOR<Prisma.OrderUpdateWithoutAffiliateTransactionInput, Prisma.OrderUncheckedUpdateWithoutAffiliateTransactionInput>
+}
+
+export type OrderUpdateWithoutAffiliateTransactionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  orderType?: Prisma.EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
+  paymentMethod?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+  paymentStatus?: Prisma.EnumOrderPaymentStatusFieldUpdateOperationsInput | $Enums.OrderPaymentStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryLatitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  deliveryLongitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  reviewerCommission?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  customer?: Prisma.CustomerUpdateOneRequiredWithoutOrdersNestedInput
+  merchant?: Prisma.MerchantUpdateOneRequiredWithoutOrdersNestedInput
+  affiliateLink?: Prisma.AffiliateLinkUpdateOneWithoutOrdersNestedInput
+  campaign?: Prisma.CampaignUpdateOneWithoutOrdersNestedInput
+  earningTransaction?: Prisma.ReviewerEarningTransactionUpdateOneWithoutOrderNestedInput
+  details?: Prisma.OrderDetailUpdateManyWithoutOrderNestedInput
+  bill?: Prisma.BillUpdateOneWithoutOrderNestedInput
+  review?: Prisma.ReviewUpdateOneWithoutOrderNestedInput
+  checkIn?: Prisma.CheckInUpdateOneWithoutOrderNestedInput
+}
+
+export type OrderUncheckedUpdateWithoutAffiliateTransactionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  customerId?: Prisma.StringFieldUpdateOperationsInput | string
+  merchantId?: Prisma.StringFieldUpdateOperationsInput | string
+  affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  campaignId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  orderType?: Prisma.EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
+  paymentMethod?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+  paymentStatus?: Prisma.EnumOrderPaymentStatusFieldUpdateOperationsInput | $Enums.OrderPaymentStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryLatitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  deliveryLongitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  reviewerCommission?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  preparingAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readyAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveringAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedUpdateOneWithoutOrderNestedInput
   details?: Prisma.OrderDetailUncheckedUpdateManyWithoutOrderNestedInput
   bill?: Prisma.BillUncheckedUpdateOneWithoutOrderNestedInput
   review?: Prisma.ReviewUncheckedUpdateOneWithoutOrderNestedInput
@@ -2172,6 +2375,7 @@ export type OrderCreateWithoutCampaignInput = {
   merchant: Prisma.MerchantCreateNestedOneWithoutOrdersInput
   affiliateLink?: Prisma.AffiliateLinkCreateNestedOneWithoutOrdersInput
   earningTransaction?: Prisma.ReviewerEarningTransactionCreateNestedOneWithoutOrderInput
+  affiliateTransaction?: Prisma.AffiliateTransactionCreateNestedOneWithoutOrderInput
   details?: Prisma.OrderDetailCreateNestedManyWithoutOrderInput
   bill?: Prisma.BillCreateNestedOneWithoutOrderInput
   review?: Prisma.ReviewCreateNestedOneWithoutOrderInput
@@ -2207,6 +2411,7 @@ export type OrderUncheckedCreateWithoutCampaignInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedOneWithoutOrderInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedCreateNestedOneWithoutOrderInput
   details?: Prisma.OrderDetailUncheckedCreateNestedManyWithoutOrderInput
   bill?: Prisma.BillUncheckedCreateNestedOneWithoutOrderInput
   review?: Prisma.ReviewUncheckedCreateNestedOneWithoutOrderInput
@@ -2269,6 +2474,7 @@ export type OrderCreateWithoutCheckInInput = {
   affiliateLink?: Prisma.AffiliateLinkCreateNestedOneWithoutOrdersInput
   campaign?: Prisma.CampaignCreateNestedOneWithoutOrdersInput
   earningTransaction?: Prisma.ReviewerEarningTransactionCreateNestedOneWithoutOrderInput
+  affiliateTransaction?: Prisma.AffiliateTransactionCreateNestedOneWithoutOrderInput
   details?: Prisma.OrderDetailCreateNestedManyWithoutOrderInput
   bill?: Prisma.BillCreateNestedOneWithoutOrderInput
   review?: Prisma.ReviewCreateNestedOneWithoutOrderInput
@@ -2304,6 +2510,7 @@ export type OrderUncheckedCreateWithoutCheckInInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedOneWithoutOrderInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedCreateNestedOneWithoutOrderInput
   details?: Prisma.OrderDetailUncheckedCreateNestedManyWithoutOrderInput
   bill?: Prisma.BillUncheckedCreateNestedOneWithoutOrderInput
   review?: Prisma.ReviewUncheckedCreateNestedOneWithoutOrderInput
@@ -2355,6 +2562,7 @@ export type OrderUpdateWithoutCheckInInput = {
   affiliateLink?: Prisma.AffiliateLinkUpdateOneWithoutOrdersNestedInput
   campaign?: Prisma.CampaignUpdateOneWithoutOrdersNestedInput
   earningTransaction?: Prisma.ReviewerEarningTransactionUpdateOneWithoutOrderNestedInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUpdateOneWithoutOrderNestedInput
   details?: Prisma.OrderDetailUpdateManyWithoutOrderNestedInput
   bill?: Prisma.BillUpdateOneWithoutOrderNestedInput
   review?: Prisma.ReviewUpdateOneWithoutOrderNestedInput
@@ -2390,6 +2598,7 @@ export type OrderUncheckedUpdateWithoutCheckInInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedUpdateOneWithoutOrderNestedInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedUpdateOneWithoutOrderNestedInput
   details?: Prisma.OrderDetailUncheckedUpdateManyWithoutOrderNestedInput
   bill?: Prisma.BillUncheckedUpdateOneWithoutOrderNestedInput
   review?: Prisma.ReviewUncheckedUpdateOneWithoutOrderNestedInput
@@ -2454,6 +2663,7 @@ export type OrderUpdateWithoutCustomerInput = {
   affiliateLink?: Prisma.AffiliateLinkUpdateOneWithoutOrdersNestedInput
   campaign?: Prisma.CampaignUpdateOneWithoutOrdersNestedInput
   earningTransaction?: Prisma.ReviewerEarningTransactionUpdateOneWithoutOrderNestedInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUpdateOneWithoutOrderNestedInput
   details?: Prisma.OrderDetailUpdateManyWithoutOrderNestedInput
   bill?: Prisma.BillUpdateOneWithoutOrderNestedInput
   review?: Prisma.ReviewUpdateOneWithoutOrderNestedInput
@@ -2489,6 +2699,7 @@ export type OrderUncheckedUpdateWithoutCustomerInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedUpdateOneWithoutOrderNestedInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedUpdateOneWithoutOrderNestedInput
   details?: Prisma.OrderDetailUncheckedUpdateManyWithoutOrderNestedInput
   bill?: Prisma.BillUncheckedUpdateOneWithoutOrderNestedInput
   review?: Prisma.ReviewUncheckedUpdateOneWithoutOrderNestedInput
@@ -2584,6 +2795,7 @@ export type OrderUpdateWithoutMerchantInput = {
   affiliateLink?: Prisma.AffiliateLinkUpdateOneWithoutOrdersNestedInput
   campaign?: Prisma.CampaignUpdateOneWithoutOrdersNestedInput
   earningTransaction?: Prisma.ReviewerEarningTransactionUpdateOneWithoutOrderNestedInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUpdateOneWithoutOrderNestedInput
   details?: Prisma.OrderDetailUpdateManyWithoutOrderNestedInput
   bill?: Prisma.BillUpdateOneWithoutOrderNestedInput
   review?: Prisma.ReviewUpdateOneWithoutOrderNestedInput
@@ -2619,6 +2831,7 @@ export type OrderUncheckedUpdateWithoutMerchantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedUpdateOneWithoutOrderNestedInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedUpdateOneWithoutOrderNestedInput
   details?: Prisma.OrderDetailUncheckedUpdateManyWithoutOrderNestedInput
   bill?: Prisma.BillUncheckedUpdateOneWithoutOrderNestedInput
   review?: Prisma.ReviewUncheckedUpdateOneWithoutOrderNestedInput
@@ -2714,6 +2927,7 @@ export type OrderUpdateWithoutAffiliateLinkInput = {
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutOrdersNestedInput
   campaign?: Prisma.CampaignUpdateOneWithoutOrdersNestedInput
   earningTransaction?: Prisma.ReviewerEarningTransactionUpdateOneWithoutOrderNestedInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUpdateOneWithoutOrderNestedInput
   details?: Prisma.OrderDetailUpdateManyWithoutOrderNestedInput
   bill?: Prisma.BillUpdateOneWithoutOrderNestedInput
   review?: Prisma.ReviewUpdateOneWithoutOrderNestedInput
@@ -2749,6 +2963,7 @@ export type OrderUncheckedUpdateWithoutAffiliateLinkInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedUpdateOneWithoutOrderNestedInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedUpdateOneWithoutOrderNestedInput
   details?: Prisma.OrderDetailUncheckedUpdateManyWithoutOrderNestedInput
   bill?: Prisma.BillUncheckedUpdateOneWithoutOrderNestedInput
   review?: Prisma.ReviewUncheckedUpdateOneWithoutOrderNestedInput
@@ -2844,6 +3059,7 @@ export type OrderUpdateWithoutCampaignInput = {
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutOrdersNestedInput
   affiliateLink?: Prisma.AffiliateLinkUpdateOneWithoutOrdersNestedInput
   earningTransaction?: Prisma.ReviewerEarningTransactionUpdateOneWithoutOrderNestedInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUpdateOneWithoutOrderNestedInput
   details?: Prisma.OrderDetailUpdateManyWithoutOrderNestedInput
   bill?: Prisma.BillUpdateOneWithoutOrderNestedInput
   review?: Prisma.ReviewUpdateOneWithoutOrderNestedInput
@@ -2879,6 +3095,7 @@ export type OrderUncheckedUpdateWithoutCampaignInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedUpdateOneWithoutOrderNestedInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedUpdateOneWithoutOrderNestedInput
   details?: Prisma.OrderDetailUncheckedUpdateManyWithoutOrderNestedInput
   bill?: Prisma.BillUncheckedUpdateOneWithoutOrderNestedInput
   review?: Prisma.ReviewUncheckedUpdateOneWithoutOrderNestedInput
@@ -2980,6 +3197,7 @@ export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   affiliateLink?: boolean | Prisma.Order$affiliateLinkArgs<ExtArgs>
   campaign?: boolean | Prisma.Order$campaignArgs<ExtArgs>
   earningTransaction?: boolean | Prisma.Order$earningTransactionArgs<ExtArgs>
+  affiliateTransaction?: boolean | Prisma.Order$affiliateTransactionArgs<ExtArgs>
   details?: boolean | Prisma.Order$detailsArgs<ExtArgs>
   bill?: boolean | Prisma.Order$billArgs<ExtArgs>
   review?: boolean | Prisma.Order$reviewArgs<ExtArgs>
@@ -3095,6 +3313,7 @@ export type OrderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   affiliateLink?: boolean | Prisma.Order$affiliateLinkArgs<ExtArgs>
   campaign?: boolean | Prisma.Order$campaignArgs<ExtArgs>
   earningTransaction?: boolean | Prisma.Order$earningTransactionArgs<ExtArgs>
+  affiliateTransaction?: boolean | Prisma.Order$affiliateTransactionArgs<ExtArgs>
   details?: boolean | Prisma.Order$detailsArgs<ExtArgs>
   bill?: boolean | Prisma.Order$billArgs<ExtArgs>
   review?: boolean | Prisma.Order$reviewArgs<ExtArgs>
@@ -3122,6 +3341,7 @@ export type $OrderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     affiliateLink: Prisma.$AffiliateLinkPayload<ExtArgs> | null
     campaign: Prisma.$CampaignPayload<ExtArgs> | null
     earningTransaction: Prisma.$ReviewerEarningTransactionPayload<ExtArgs> | null
+    affiliateTransaction: Prisma.$AffiliateTransactionPayload<ExtArgs> | null
     details: Prisma.$OrderDetailPayload<ExtArgs>[]
     bill: Prisma.$BillPayload<ExtArgs> | null
     review: Prisma.$ReviewPayload<ExtArgs> | null
@@ -3555,6 +3775,7 @@ export interface Prisma__OrderClient<T, Null = never, ExtArgs extends runtime.Ty
   affiliateLink<T extends Prisma.Order$affiliateLinkArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$affiliateLinkArgs<ExtArgs>>): Prisma.Prisma__AffiliateLinkClient<runtime.Types.Result.GetResult<Prisma.$AffiliateLinkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   campaign<T extends Prisma.Order$campaignArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$campaignArgs<ExtArgs>>): Prisma.Prisma__CampaignClient<runtime.Types.Result.GetResult<Prisma.$CampaignPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   earningTransaction<T extends Prisma.Order$earningTransactionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$earningTransactionArgs<ExtArgs>>): Prisma.Prisma__ReviewerEarningTransactionClient<runtime.Types.Result.GetResult<Prisma.$ReviewerEarningTransactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  affiliateTransaction<T extends Prisma.Order$affiliateTransactionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$affiliateTransactionArgs<ExtArgs>>): Prisma.Prisma__AffiliateTransactionClient<runtime.Types.Result.GetResult<Prisma.$AffiliateTransactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   details<T extends Prisma.Order$detailsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$detailsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderDetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   bill<T extends Prisma.Order$billArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$billArgs<ExtArgs>>): Prisma.Prisma__BillClient<runtime.Types.Result.GetResult<Prisma.$BillPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   review<T extends Prisma.Order$reviewArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$reviewArgs<ExtArgs>>): Prisma.Prisma__ReviewClient<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -4071,6 +4292,25 @@ export type Order$earningTransactionArgs<ExtArgs extends runtime.Types.Extension
    */
   include?: Prisma.ReviewerEarningTransactionInclude<ExtArgs> | null
   where?: Prisma.ReviewerEarningTransactionWhereInput
+}
+
+/**
+ * Order.affiliateTransaction
+ */
+export type Order$affiliateTransactionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AffiliateTransaction
+   */
+  select?: Prisma.AffiliateTransactionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AffiliateTransaction
+   */
+  omit?: Prisma.AffiliateTransactionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AffiliateTransactionInclude<ExtArgs> | null
+  where?: Prisma.AffiliateTransactionWhereInput
 }
 
 /**

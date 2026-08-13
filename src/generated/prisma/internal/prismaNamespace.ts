@@ -419,6 +419,7 @@ export const ModelName = {
   AffiliateLink: 'AffiliateLink',
   AffiliateClick: 'AffiliateClick',
   ReviewerEarningTransaction: 'ReviewerEarningTransaction',
+  AffiliateTransaction: 'AffiliateTransaction',
   ReviewerPointTransaction: 'ReviewerPointTransaction',
   Campaign: 'Campaign',
   CheckIn: 'CheckIn',
@@ -440,7 +441,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "customer" | "refreshToken" | "passwordResetToken" | "application" | "applicationMenu" | "merchant" | "category" | "food" | "foodCategory" | "foodTopping" | "order" | "orderDetail" | "orderDetailTopping" | "bill" | "wishlist" | "review" | "reviewDetail" | "reviewerApplication" | "affiliateLink" | "affiliateClick" | "reviewerEarningTransaction" | "reviewerPointTransaction" | "campaign" | "checkIn" | "notification" | "auditLog" | "rebalancingRun"
+    modelProps: "user" | "customer" | "refreshToken" | "passwordResetToken" | "application" | "applicationMenu" | "merchant" | "category" | "food" | "foodCategory" | "foodTopping" | "order" | "orderDetail" | "orderDetailTopping" | "bill" | "wishlist" | "review" | "reviewDetail" | "reviewerApplication" | "affiliateLink" | "affiliateClick" | "reviewerEarningTransaction" | "affiliateTransaction" | "reviewerPointTransaction" | "campaign" | "checkIn" | "notification" | "auditLog" | "rebalancingRun"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2072,6 +2073,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AffiliateTransaction: {
+      payload: Prisma.$AffiliateTransactionPayload<ExtArgs>
+      fields: Prisma.AffiliateTransactionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AffiliateTransactionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AffiliateTransactionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AffiliateTransactionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AffiliateTransactionPayload>
+        }
+        findFirst: {
+          args: Prisma.AffiliateTransactionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AffiliateTransactionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AffiliateTransactionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AffiliateTransactionPayload>
+        }
+        findMany: {
+          args: Prisma.AffiliateTransactionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AffiliateTransactionPayload>[]
+        }
+        create: {
+          args: Prisma.AffiliateTransactionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AffiliateTransactionPayload>
+        }
+        createMany: {
+          args: Prisma.AffiliateTransactionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AffiliateTransactionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AffiliateTransactionPayload>[]
+        }
+        delete: {
+          args: Prisma.AffiliateTransactionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AffiliateTransactionPayload>
+        }
+        update: {
+          args: Prisma.AffiliateTransactionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AffiliateTransactionPayload>
+        }
+        deleteMany: {
+          args: Prisma.AffiliateTransactionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AffiliateTransactionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AffiliateTransactionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AffiliateTransactionPayload>[]
+        }
+        upsert: {
+          args: Prisma.AffiliateTransactionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AffiliateTransactionPayload>
+        }
+        aggregate: {
+          args: Prisma.AffiliateTransactionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAffiliateTransaction>
+        }
+        groupBy: {
+          args: Prisma.AffiliateTransactionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AffiliateTransactionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AffiliateTransactionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AffiliateTransactionCountAggregateOutputType> | number
+        }
+      }
+    }
     ReviewerPointTransaction: {
       payload: Prisma.$ReviewerPointTransactionPayload<ExtArgs>
       fields: Prisma.ReviewerPointTransactionFieldRefs
@@ -2912,6 +2987,19 @@ export const ReviewerEarningTransactionScalarFieldEnum = {
 export type ReviewerEarningTransactionScalarFieldEnum = (typeof ReviewerEarningTransactionScalarFieldEnum)[keyof typeof ReviewerEarningTransactionScalarFieldEnum]
 
 
+export const AffiliateTransactionScalarFieldEnum = {
+  id: 'id',
+  affiliateLinkId: 'affiliateLinkId',
+  orderId: 'orderId',
+  status: 'status',
+  commission: 'commission',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AffiliateTransactionScalarFieldEnum = (typeof AffiliateTransactionScalarFieldEnum)[keyof typeof AffiliateTransactionScalarFieldEnum]
+
+
 export const ReviewerPointTransactionScalarFieldEnum = {
   id: 'id',
   reviewerId: 'reviewerId',
@@ -3267,6 +3355,20 @@ export type ListEnumReviewerApplicationStatusFieldRefInput<$PrismaModel> = Field
 
 
 /**
+ * Reference to a field of type 'AffiliateTransactionStatus'
+ */
+export type EnumAffiliateTransactionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AffiliateTransactionStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'AffiliateTransactionStatus[]'
+ */
+export type ListEnumAffiliateTransactionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AffiliateTransactionStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'CampaignDiscountType'
  */
 export type EnumCampaignDiscountTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CampaignDiscountType'>
@@ -3522,6 +3624,7 @@ export type GlobalOmitConfig = {
   affiliateLink?: Prisma.AffiliateLinkOmit
   affiliateClick?: Prisma.AffiliateClickOmit
   reviewerEarningTransaction?: Prisma.ReviewerEarningTransactionOmit
+  affiliateTransaction?: Prisma.AffiliateTransactionOmit
   reviewerPointTransaction?: Prisma.ReviewerPointTransactionOmit
   campaign?: Prisma.CampaignOmit
   checkIn?: Prisma.CheckInOmit

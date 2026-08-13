@@ -89,3 +89,9 @@ export const RebalancingStatus = {
     Completed: 'Completed',
     Failed: 'Failed'
 };
+export const AffiliateTransactionStatus = {
+    Pending: 'Pending',
+    Failed: 'Failed',
+    Success: 'Success',
+    Commissioned: 'Commissioned'
+};

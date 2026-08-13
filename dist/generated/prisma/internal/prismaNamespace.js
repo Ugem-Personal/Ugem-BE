@@ -89,6 +89,7 @@ export const ModelName = {
     AffiliateLink: 'AffiliateLink',
     AffiliateClick: 'AffiliateClick',
     ReviewerEarningTransaction: 'ReviewerEarningTransaction',
+    AffiliateTransaction: 'AffiliateTransaction',
     ReviewerPointTransaction: 'ReviewerPointTransaction',
     Campaign: 'Campaign',
     CheckIn: 'CheckIn',
@@ -373,6 +374,15 @@ export const ReviewerEarningTransactionScalarFieldEnum = {
     type: 'type',
     reason: 'reason',
     createdAt: 'createdAt'
+};
+export const AffiliateTransactionScalarFieldEnum = {
+    id: 'id',
+    affiliateLinkId: 'affiliateLinkId',
+    orderId: 'orderId',
+    status: 'status',
+    commission: 'commission',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
 };
 export const ReviewerPointTransactionScalarFieldEnum = {
     id: 'id',

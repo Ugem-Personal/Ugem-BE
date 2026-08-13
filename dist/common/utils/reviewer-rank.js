@@ -9,3 +9,18 @@ export const calculateReviewerRank = (successfulOrders) => {
         return "Silver";
     return "Bronze";
 };
+export const getReviewerCommissionRate = (rank) => {
+    switch (rank) {
+        case "Diamond":
+            return 0.10;
+        case "Platinum":
+            return 0.08;
+        case "Gold":
+            return 0.07;
+        case "Silver":
+            return 0.06;
+        case "Bronze":
+        default:
+            return 0.05;
+    }
+};

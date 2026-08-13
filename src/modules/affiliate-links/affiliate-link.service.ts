@@ -12,7 +12,7 @@ import type {
 } from "./affiliate-link.types.js";
 
 import { env } from "../../config/env.js";
-import { REVIEWER_COMMISSION_RATE } from "./affiliate-earning.service.js";
+import { getReviewerCommissionRate } from "../../common/utils/reviewer-rank.js";
 
 const affiliateLinkInclude = {
   merchant: {
@@ -429,7 +429,8 @@ export const getReviewerEarnings = async (
         )
       : 0;
 
-  const commissionRate = REVIEWER_COMMISSION_RATE * 100;
+  const commissionRate =
+    getReviewerCommissionRate(reviewer.reviewerRank) * 100;
 
   const points = reviewer.reviewerPoints;
 
