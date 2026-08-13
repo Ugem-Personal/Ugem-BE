@@ -1,4 +1,5 @@
 import {
+  AffiliateTransactionStatus,
   NotificationType,
   OrderPaymentStatus,
   OrderStatus,
@@ -874,17 +875,33 @@ export const updateOrderStatus = async (
 
   if (
     nextStatus === OrderStatus.Completed &&
-    updatedOrder.paymentStatus === "Paid" &&
+    updatedOrder.paymentStatus === OrderPaymentStatus.Paid &&
     updatedOrder.affiliateLinkId
   ) {
+    await prisma.affiliateTransaction.updateMany({
+      where: {
+        orderId: updatedOrder.id,
+        status: AffiliateTransactionStatus.Pending,
+      },
+      data: { status: AffiliateTransactionStatus.Success },
+    }).catch(() => null);
+
     await createReviewerCommission(updatedOrder.id);
   } else if (
     (nextStatus === OrderStatus.Rejected || nextStatus === OrderStatus.Cancelled) &&
     updatedOrder.affiliateLinkId
   ) {
     await prisma.affiliateTransaction.updateMany({
-      where: { orderId: updatedOrder.id },
-      data: { status: "Failed" },
+      where: {
+        orderId: updatedOrder.id,
+        status: {
+          in: [
+            AffiliateTransactionStatus.Pending,
+            AffiliateTransactionStatus.Success,
+          ],
+        },
+      },
+      data: { status: AffiliateTransactionStatus.Failed },
     }).catch(() => null);
   }
 
@@ -997,6 +1014,14 @@ export const updateCustomerOrderStatus = async (
     updatedOrder.paymentStatus === OrderPaymentStatus.Paid &&
     updatedOrder.affiliateLinkId
   ) {
+    await prisma.affiliateTransaction.updateMany({
+      where: {
+        orderId: updatedOrder.id,
+        status: AffiliateTransactionStatus.Pending,
+      },
+      data: { status: AffiliateTransactionStatus.Success },
+    }).catch(() => null);
+
     await createReviewerCommission(updatedOrder.id);
   }
 

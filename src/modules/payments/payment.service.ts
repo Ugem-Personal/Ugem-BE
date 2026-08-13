@@ -1,4 +1,5 @@
 import {
+  AffiliateTransactionStatus,
   BillStatus,
   NotificationType,
   OrderPaymentStatus,
@@ -21,6 +22,38 @@ import type {
 
 import { createReviewerCommission } from "../affiliate-links/affiliate-earning.service.js";
 import { createNotification } from "../notifications/notification.service.js";
+
+export const markAffiliatePaymentStatus = async (
+  orderId: string,
+  isSuccess: boolean,
+) => {
+  if (isSuccess) {
+    await prisma.affiliateTransaction.updateMany({
+      where: {
+        orderId,
+        status: AffiliateTransactionStatus.Pending,
+      },
+      data: {
+        status: AffiliateTransactionStatus.Success,
+      },
+    }).catch(() => null);
+  } else {
+    await prisma.affiliateTransaction.updateMany({
+      where: {
+        orderId,
+        status: {
+          in: [
+            AffiliateTransactionStatus.Pending,
+            AffiliateTransactionStatus.Success,
+          ],
+        },
+      },
+      data: {
+        status: AffiliateTransactionStatus.Failed,
+      },
+    }).catch(() => null);
+  }
+};
 
 const activeOrderStatuses = new Set<OrderStatus>([
   OrderStatus.Accepted,
@@ -385,6 +418,7 @@ export const confirmCashPayment = async (
     return updatedBill;
   });
 
+  await markAffiliatePaymentStatus(order.id, true);
   await createReviewerCommission(order.id).catch(() => null);
 
   await createNotification({
@@ -805,6 +839,8 @@ export const confirmBill = async (
       referenceType: "Order",
     });
 
+    await markAffiliatePaymentStatus(confirmedBill.orderId, true);
+
     if (confirmedBill.order.status === OrderStatus.Completed) {
       await createReviewerCommission(confirmedBill.orderId);
     }
@@ -855,6 +891,8 @@ export const confirmBill = async (
     referenceId: confirmedBill.orderId,
     referenceType: "Order",
   });
+
+  await markAffiliatePaymentStatus(confirmedBill.orderId, true);
 
   if (confirmedBill.order.status === OrderStatus.Completed) {
     await createReviewerCommission(confirmedBill.orderId);
@@ -938,6 +976,8 @@ export const rejectBill = async (
       referenceType: "Order",
     });
 
+    await markAffiliatePaymentStatus(rejectedBill.orderId, false);
+
     return mapBill(rejectedBill);
   }
 
@@ -984,6 +1024,8 @@ export const rejectBill = async (
     referenceId: rejectedBill.orderId,
     referenceType: "Order",
   });
+
+  await markAffiliatePaymentStatus(rejectedBill.orderId, false);
 
   return mapBill(rejectedBill);
 };
@@ -1135,6 +1177,8 @@ export const processSepayWebhook = async (input: SepayWebhookInput) => {
   });
 
   await notifyPaymentSuccess(bill.orderId);
+
+  await markAffiliatePaymentStatus(bill.orderId, true);
 
   if (bill.order.status === OrderStatus.Completed) {
     await createReviewerCommission(bill.orderId);

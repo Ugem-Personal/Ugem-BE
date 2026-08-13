@@ -1,4 +1,4 @@
-import { NotificationType, OrderPaymentStatus, OrderStatus, OrderType, PaymentMethod, Prisma, } from "../../generated/prisma/client.js";
+import { AffiliateTransactionStatus, NotificationType, OrderPaymentStatus, OrderStatus, OrderType, PaymentMethod, Prisma, } from "../../generated/prisma/client.js";
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
 import { createReviewerCommission } from "../affiliate-links/affiliate-earning.service.js";
@@ -600,15 +600,30 @@ export const updateOrderStatus = async (merchantId, orderId, input) => {
         }
     }
     if (nextStatus === OrderStatus.Completed &&
-        updatedOrder.paymentStatus === "Paid" &&
+        updatedOrder.paymentStatus === OrderPaymentStatus.Paid &&
         updatedOrder.affiliateLinkId) {
+        await prisma.affiliateTransaction.updateMany({
+            where: {
+                orderId: updatedOrder.id,
+                status: AffiliateTransactionStatus.Pending,
+            },
+            data: { status: AffiliateTransactionStatus.Success },
+        }).catch(() => null);
         await createReviewerCommission(updatedOrder.id);
     }
     else if ((nextStatus === OrderStatus.Rejected || nextStatus === OrderStatus.Cancelled) &&
         updatedOrder.affiliateLinkId) {
         await prisma.affiliateTransaction.updateMany({
-            where: { orderId: updatedOrder.id },
-            data: { status: "Failed" },
+            where: {
+                orderId: updatedOrder.id,
+                status: {
+                    in: [
+                        AffiliateTransactionStatus.Pending,
+                        AffiliateTransactionStatus.Success,
+                    ],
+                },
+            },
+            data: { status: AffiliateTransactionStatus.Failed },
         }).catch(() => null);
     }
     const refreshedOrder = await prisma.order.findUniqueOrThrow({
@@ -687,6 +702,13 @@ export const updateCustomerOrderStatus = async (customerId, orderId, input) => {
     if (nextStatus === OrderStatus.Completed &&
         updatedOrder.paymentStatus === OrderPaymentStatus.Paid &&
         updatedOrder.affiliateLinkId) {
+        await prisma.affiliateTransaction.updateMany({
+            where: {
+                orderId: updatedOrder.id,
+                status: AffiliateTransactionStatus.Pending,
+            },
+            data: { status: AffiliateTransactionStatus.Success },
+        }).catch(() => null);
         await createReviewerCommission(updatedOrder.id);
     }
     const refreshedOrder = await prisma.order.findUniqueOrThrow({
