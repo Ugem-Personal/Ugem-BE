@@ -403,6 +403,7 @@ export type MerchantWhereInput = {
   affiliateLinks?: Prisma.AffiliateLinkListRelationFilter
   campaigns?: Prisma.CampaignListRelationFilter
   checkIns?: Prisma.CheckInListRelationFilter
+  bookings?: Prisma.BookingListRelationFilter
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
@@ -438,6 +439,7 @@ export type MerchantOrderByWithRelationInput = {
   affiliateLinks?: Prisma.AffiliateLinkOrderByRelationAggregateInput
   campaigns?: Prisma.CampaignOrderByRelationAggregateInput
   checkIns?: Prisma.CheckInOrderByRelationAggregateInput
+  bookings?: Prisma.BookingOrderByRelationAggregateInput
   user?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -476,6 +478,7 @@ export type MerchantWhereUniqueInput = Prisma.AtLeast<{
   affiliateLinks?: Prisma.AffiliateLinkListRelationFilter
   campaigns?: Prisma.CampaignListRelationFilter
   checkIns?: Prisma.CheckInListRelationFilter
+  bookings?: Prisma.BookingListRelationFilter
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "userId">
 
@@ -572,6 +575,7 @@ export type MerchantCreateInput = {
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutMerchantInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutMerchantInput
   user: Prisma.UserCreateNestedOneWithoutMerchantInput
 }
 
@@ -607,6 +611,7 @@ export type MerchantUncheckedCreateInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutMerchantInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantUpdateInput = {
@@ -640,6 +645,7 @@ export type MerchantUpdateInput = {
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutMerchantNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutMerchantNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
 }
 
@@ -675,6 +681,7 @@ export type MerchantUncheckedUpdateInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUncheckedUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutMerchantNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantCreateManyInput = {
@@ -1012,6 +1019,20 @@ export type MerchantUpdateOneRequiredWithoutCheckInsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MerchantUpdateToOneWithWhereWithoutCheckInsInput, Prisma.MerchantUpdateWithoutCheckInsInput>, Prisma.MerchantUncheckedUpdateWithoutCheckInsInput>
 }
 
+export type MerchantCreateNestedOneWithoutBookingsInput = {
+  create?: Prisma.XOR<Prisma.MerchantCreateWithoutBookingsInput, Prisma.MerchantUncheckedCreateWithoutBookingsInput>
+  connectOrCreate?: Prisma.MerchantCreateOrConnectWithoutBookingsInput
+  connect?: Prisma.MerchantWhereUniqueInput
+}
+
+export type MerchantUpdateOneRequiredWithoutBookingsNestedInput = {
+  create?: Prisma.XOR<Prisma.MerchantCreateWithoutBookingsInput, Prisma.MerchantUncheckedCreateWithoutBookingsInput>
+  connectOrCreate?: Prisma.MerchantCreateOrConnectWithoutBookingsInput
+  upsert?: Prisma.MerchantUpsertWithoutBookingsInput
+  connect?: Prisma.MerchantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MerchantUpdateToOneWithWhereWithoutBookingsInput, Prisma.MerchantUpdateWithoutBookingsInput>, Prisma.MerchantUncheckedUpdateWithoutBookingsInput>
+}
+
 export type MerchantCreateWithoutUserInput = {
   id?: string
   name: string
@@ -1043,6 +1064,7 @@ export type MerchantCreateWithoutUserInput = {
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutMerchantInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantUncheckedCreateWithoutUserInput = {
@@ -1076,6 +1098,7 @@ export type MerchantUncheckedCreateWithoutUserInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutMerchantInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantCreateOrConnectWithoutUserInput = {
@@ -1125,6 +1148,7 @@ export type MerchantUpdateWithoutUserInput = {
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutMerchantNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantUncheckedUpdateWithoutUserInput = {
@@ -1158,6 +1182,7 @@ export type MerchantUncheckedUpdateWithoutUserInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUncheckedUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutMerchantNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantCreateWithoutFoodsInput = {
@@ -1190,6 +1215,7 @@ export type MerchantCreateWithoutFoodsInput = {
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutMerchantInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutMerchantInput
   user: Prisma.UserCreateNestedOneWithoutMerchantInput
 }
 
@@ -1224,6 +1250,7 @@ export type MerchantUncheckedCreateWithoutFoodsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutMerchantInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantCreateOrConnectWithoutFoodsInput = {
@@ -1272,6 +1299,7 @@ export type MerchantUpdateWithoutFoodsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutMerchantNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutMerchantNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
 }
 
@@ -1306,6 +1334,7 @@ export type MerchantUncheckedUpdateWithoutFoodsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUncheckedUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutMerchantNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantCreateWithoutOrdersInput = {
@@ -1338,6 +1367,7 @@ export type MerchantCreateWithoutOrdersInput = {
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutMerchantInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutMerchantInput
   user: Prisma.UserCreateNestedOneWithoutMerchantInput
 }
 
@@ -1372,6 +1402,7 @@ export type MerchantUncheckedCreateWithoutOrdersInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutMerchantInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantCreateOrConnectWithoutOrdersInput = {
@@ -1420,6 +1451,7 @@ export type MerchantUpdateWithoutOrdersInput = {
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutMerchantNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutMerchantNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
 }
 
@@ -1454,6 +1486,7 @@ export type MerchantUncheckedUpdateWithoutOrdersInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUncheckedUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutMerchantNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantCreateWithoutWishlistsInput = {
@@ -1486,6 +1519,7 @@ export type MerchantCreateWithoutWishlistsInput = {
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutMerchantInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutMerchantInput
   user: Prisma.UserCreateNestedOneWithoutMerchantInput
 }
 
@@ -1520,6 +1554,7 @@ export type MerchantUncheckedCreateWithoutWishlistsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutMerchantInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantCreateOrConnectWithoutWishlistsInput = {
@@ -1568,6 +1603,7 @@ export type MerchantUpdateWithoutWishlistsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutMerchantNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutMerchantNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
 }
 
@@ -1602,6 +1638,7 @@ export type MerchantUncheckedUpdateWithoutWishlistsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUncheckedUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutMerchantNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantCreateWithoutReviewsInput = {
@@ -1634,6 +1671,7 @@ export type MerchantCreateWithoutReviewsInput = {
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutMerchantInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutMerchantInput
   user: Prisma.UserCreateNestedOneWithoutMerchantInput
 }
 
@@ -1668,6 +1706,7 @@ export type MerchantUncheckedCreateWithoutReviewsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutMerchantInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantCreateOrConnectWithoutReviewsInput = {
@@ -1716,6 +1755,7 @@ export type MerchantUpdateWithoutReviewsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutMerchantNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutMerchantNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
 }
 
@@ -1750,6 +1790,7 @@ export type MerchantUncheckedUpdateWithoutReviewsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUncheckedUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutMerchantNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantCreateWithoutAffiliateLinksInput = {
@@ -1782,6 +1823,7 @@ export type MerchantCreateWithoutAffiliateLinksInput = {
   reviews?: Prisma.ReviewCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutMerchantInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutMerchantInput
   user: Prisma.UserCreateNestedOneWithoutMerchantInput
 }
 
@@ -1816,6 +1858,7 @@ export type MerchantUncheckedCreateWithoutAffiliateLinksInput = {
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutMerchantInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantCreateOrConnectWithoutAffiliateLinksInput = {
@@ -1864,6 +1907,7 @@ export type MerchantUpdateWithoutAffiliateLinksInput = {
   reviews?: Prisma.ReviewUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutMerchantNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutMerchantNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
 }
 
@@ -1898,6 +1942,7 @@ export type MerchantUncheckedUpdateWithoutAffiliateLinksInput = {
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUncheckedUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutMerchantNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantCreateWithoutCampaignsInput = {
@@ -1930,6 +1975,7 @@ export type MerchantCreateWithoutCampaignsInput = {
   reviews?: Prisma.ReviewCreateNestedManyWithoutMerchantInput
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutMerchantInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutMerchantInput
   user: Prisma.UserCreateNestedOneWithoutMerchantInput
 }
 
@@ -1964,6 +2010,7 @@ export type MerchantUncheckedCreateWithoutCampaignsInput = {
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMerchantInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutMerchantInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantCreateOrConnectWithoutCampaignsInput = {
@@ -2012,6 +2059,7 @@ export type MerchantUpdateWithoutCampaignsInput = {
   reviews?: Prisma.ReviewUpdateManyWithoutMerchantNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutMerchantNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutMerchantNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
 }
 
@@ -2046,6 +2094,7 @@ export type MerchantUncheckedUpdateWithoutCampaignsInput = {
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMerchantNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutMerchantNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantCreateWithoutCheckInsInput = {
@@ -2078,6 +2127,7 @@ export type MerchantCreateWithoutCheckInsInput = {
   reviews?: Prisma.ReviewCreateNestedManyWithoutMerchantInput
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignCreateNestedManyWithoutMerchantInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutMerchantInput
   user: Prisma.UserCreateNestedOneWithoutMerchantInput
 }
 
@@ -2112,6 +2162,7 @@ export type MerchantUncheckedCreateWithoutCheckInsInput = {
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMerchantInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutMerchantInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantCreateOrConnectWithoutCheckInsInput = {
@@ -2160,6 +2211,7 @@ export type MerchantUpdateWithoutCheckInsInput = {
   reviews?: Prisma.ReviewUpdateManyWithoutMerchantNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUpdateManyWithoutMerchantNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutMerchantNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
 }
 
@@ -2194,6 +2246,159 @@ export type MerchantUncheckedUpdateWithoutCheckInsInput = {
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMerchantNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUncheckedUpdateManyWithoutMerchantNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutMerchantNestedInput
+}
+
+export type MerchantCreateWithoutBookingsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  restaurantType: string
+  mainDishType: string
+  priceRange: string
+  email: string
+  phone: string
+  address: string
+  openingHours: string
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  logoUrl?: string | null
+  rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  reviewCount?: number
+  totalViews?: number
+  strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: number | null
+  lastRebalancedAt?: Date | string | null
+  status?: $Enums.MerchantStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  foods?: Prisma.FoodCreateNestedManyWithoutMerchantInput
+  orders?: Prisma.OrderCreateNestedManyWithoutMerchantInput
+  wishlists?: Prisma.WishlistCreateNestedManyWithoutMerchantInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutMerchantInput
+  affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutMerchantInput
+  campaigns?: Prisma.CampaignCreateNestedManyWithoutMerchantInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutMerchantInput
+  user: Prisma.UserCreateNestedOneWithoutMerchantInput
+}
+
+export type MerchantUncheckedCreateWithoutBookingsInput = {
+  id?: string
+  userId: string
+  name: string
+  description?: string | null
+  restaurantType: string
+  mainDishType: string
+  priceRange: string
+  email: string
+  phone: string
+  address: string
+  openingHours: string
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  logoUrl?: string | null
+  rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  reviewCount?: number
+  totalViews?: number
+  strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: number | null
+  lastRebalancedAt?: Date | string | null
+  status?: $Enums.MerchantStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  foods?: Prisma.FoodUncheckedCreateNestedManyWithoutMerchantInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutMerchantInput
+  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutMerchantInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMerchantInput
+  affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutMerchantInput
+  campaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutMerchantInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutMerchantInput
+}
+
+export type MerchantCreateOrConnectWithoutBookingsInput = {
+  where: Prisma.MerchantWhereUniqueInput
+  create: Prisma.XOR<Prisma.MerchantCreateWithoutBookingsInput, Prisma.MerchantUncheckedCreateWithoutBookingsInput>
+}
+
+export type MerchantUpsertWithoutBookingsInput = {
+  update: Prisma.XOR<Prisma.MerchantUpdateWithoutBookingsInput, Prisma.MerchantUncheckedUpdateWithoutBookingsInput>
+  create: Prisma.XOR<Prisma.MerchantCreateWithoutBookingsInput, Prisma.MerchantUncheckedCreateWithoutBookingsInput>
+  where?: Prisma.MerchantWhereInput
+}
+
+export type MerchantUpdateToOneWithWhereWithoutBookingsInput = {
+  where?: Prisma.MerchantWhereInput
+  data: Prisma.XOR<Prisma.MerchantUpdateWithoutBookingsInput, Prisma.MerchantUncheckedUpdateWithoutBookingsInput>
+}
+
+export type MerchantUpdateWithoutBookingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  restaurantType?: Prisma.StringFieldUpdateOperationsInput | string
+  mainDishType?: Prisma.StringFieldUpdateOperationsInput | string
+  priceRange?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  openingHours?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalViews?: Prisma.IntFieldUpdateOperationsInput | number
+  strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  foods?: Prisma.FoodUpdateManyWithoutMerchantNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutMerchantNestedInput
+  wishlists?: Prisma.WishlistUpdateManyWithoutMerchantNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutMerchantNestedInput
+  affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutMerchantNestedInput
+  campaigns?: Prisma.CampaignUpdateManyWithoutMerchantNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutMerchantNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
+}
+
+export type MerchantUncheckedUpdateWithoutBookingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  restaurantType?: Prisma.StringFieldUpdateOperationsInput | string
+  mainDishType?: Prisma.StringFieldUpdateOperationsInput | string
+  priceRange?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  openingHours?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalViews?: Prisma.IntFieldUpdateOperationsInput | number
+  strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  foods?: Prisma.FoodUncheckedUpdateManyWithoutMerchantNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutMerchantNestedInput
+  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutMerchantNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMerchantNestedInput
+  affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutMerchantNestedInput
+  campaigns?: Prisma.CampaignUncheckedUpdateManyWithoutMerchantNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 
@@ -2209,6 +2414,7 @@ export type MerchantCountOutputType = {
   affiliateLinks: number
   campaigns: number
   checkIns: number
+  bookings: number
 }
 
 export type MerchantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2219,6 +2425,7 @@ export type MerchantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensio
   affiliateLinks?: boolean | MerchantCountOutputTypeCountAffiliateLinksArgs
   campaigns?: boolean | MerchantCountOutputTypeCountCampaignsArgs
   checkIns?: boolean | MerchantCountOutputTypeCountCheckInsArgs
+  bookings?: boolean | MerchantCountOutputTypeCountBookingsArgs
 }
 
 /**
@@ -2280,6 +2487,13 @@ export type MerchantCountOutputTypeCountCheckInsArgs<ExtArgs extends runtime.Typ
   where?: Prisma.CheckInWhereInput
 }
 
+/**
+ * MerchantCountOutputType without action
+ */
+export type MerchantCountOutputTypeCountBookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BookingWhereInput
+}
+
 
 export type MerchantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2313,6 +2527,7 @@ export type MerchantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   affiliateLinks?: boolean | Prisma.Merchant$affiliateLinksArgs<ExtArgs>
   campaigns?: boolean | Prisma.Merchant$campaignsArgs<ExtArgs>
   checkIns?: boolean | Prisma.Merchant$checkInsArgs<ExtArgs>
+  bookings?: boolean | Prisma.Merchant$bookingsArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.MerchantCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["merchant"]>
@@ -2409,6 +2624,7 @@ export type MerchantInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   affiliateLinks?: boolean | Prisma.Merchant$affiliateLinksArgs<ExtArgs>
   campaigns?: boolean | Prisma.Merchant$campaignsArgs<ExtArgs>
   checkIns?: boolean | Prisma.Merchant$checkInsArgs<ExtArgs>
+  bookings?: boolean | Prisma.Merchant$bookingsArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.MerchantCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -2429,6 +2645,7 @@ export type $MerchantPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     affiliateLinks: Prisma.$AffiliateLinkPayload<ExtArgs>[]
     campaigns: Prisma.$CampaignPayload<ExtArgs>[]
     checkIns: Prisma.$CheckInPayload<ExtArgs>[]
+    bookings: Prisma.$BookingPayload<ExtArgs>[]
     user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -2857,6 +3074,7 @@ export interface Prisma__MerchantClient<T, Null = never, ExtArgs extends runtime
   affiliateLinks<T extends Prisma.Merchant$affiliateLinksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Merchant$affiliateLinksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AffiliateLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   campaigns<T extends Prisma.Merchant$campaignsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Merchant$campaignsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CampaignPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   checkIns<T extends Prisma.Merchant$checkInsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Merchant$checkInsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CheckInPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  bookings<T extends Prisma.Merchant$bookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Merchant$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -3477,6 +3695,30 @@ export type Merchant$checkInsArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.CheckInScalarFieldEnum | Prisma.CheckInScalarFieldEnum[]
+}
+
+/**
+ * Merchant.bookings
+ */
+export type Merchant$bookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Booking
+   */
+  select?: Prisma.BookingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Booking
+   */
+  omit?: Prisma.BookingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookingInclude<ExtArgs> | null
+  where?: Prisma.BookingWhereInput
+  orderBy?: Prisma.BookingOrderByWithRelationInput | Prisma.BookingOrderByWithRelationInput[]
+  cursor?: Prisma.BookingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BookingScalarFieldEnum | Prisma.BookingScalarFieldEnum[]
 }
 
 /**

@@ -79,7 +79,8 @@ export const ModelName = {
   CheckIn: 'CheckIn',
   Notification: 'Notification',
   AuditLog: 'AuditLog',
-  RebalancingRun: 'RebalancingRun'
+  RebalancingRun: 'RebalancingRun',
+  Booking: 'Booking'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -119,6 +120,9 @@ export const CustomerScalarFieldEnum = {
   userId: 'userId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  preferredRestaurantTypes: 'preferredRestaurantTypes',
+  preferredMainDishTypes: 'preferredMainDishTypes',
+  preferredPriceRanges: 'preferredPriceRanges',
   reviewerPoints: 'reviewerPoints',
   reviewerRank: 'reviewerRank'
 } as const
@@ -570,6 +574,22 @@ export const RebalancingRunScalarFieldEnum = {
 } as const
 
 export type RebalancingRunScalarFieldEnum = (typeof RebalancingRunScalarFieldEnum)[keyof typeof RebalancingRunScalarFieldEnum]
+
+
+export const BookingScalarFieldEnum = {
+  id: 'id',
+  customerId: 'customerId',
+  merchantId: 'merchantId',
+  bookingAt: 'bookingAt',
+  partySize: 'partySize',
+  note: 'note',
+  status: 'status',
+  rejectionReason: 'rejectionReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -29,6 +29,8 @@ const getMerchantId = (req: Request): string => {
 export const getMerchants = asyncHandler(
   async (req: Request, res: Response) => {
     const result = await merchantService.getMerchants({
+      customerId: req.user?.CustomerId ?? undefined,
+
       search: req.query.search as string | undefined,
 
       categoryId: req.query.categoryId as string | undefined,

@@ -425,7 +425,8 @@ export const ModelName = {
   CheckIn: 'CheckIn',
   Notification: 'Notification',
   AuditLog: 'AuditLog',
-  RebalancingRun: 'RebalancingRun'
+  RebalancingRun: 'RebalancingRun',
+  Booking: 'Booking'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -441,7 +442,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "customer" | "refreshToken" | "passwordResetToken" | "application" | "applicationMenu" | "merchant" | "category" | "food" | "foodCategory" | "foodTopping" | "order" | "orderDetail" | "orderDetailTopping" | "bill" | "wishlist" | "review" | "reviewDetail" | "reviewerApplication" | "affiliateLink" | "affiliateClick" | "reviewerEarningTransaction" | "affiliateTransaction" | "reviewerPointTransaction" | "campaign" | "checkIn" | "notification" | "auditLog" | "rebalancingRun"
+    modelProps: "user" | "customer" | "refreshToken" | "passwordResetToken" | "application" | "applicationMenu" | "merchant" | "category" | "food" | "foodCategory" | "foodTopping" | "order" | "orderDetail" | "orderDetailTopping" | "bill" | "wishlist" | "review" | "reviewDetail" | "reviewerApplication" | "affiliateLink" | "affiliateClick" | "reviewerEarningTransaction" | "affiliateTransaction" | "reviewerPointTransaction" | "campaign" | "checkIn" | "notification" | "auditLog" | "rebalancingRun" | "booking"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2591,6 +2592,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Booking: {
+      payload: Prisma.$BookingPayload<ExtArgs>
+      fields: Prisma.BookingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BookingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BookingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingPayload>
+        }
+        findFirst: {
+          args: Prisma.BookingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BookingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingPayload>
+        }
+        findMany: {
+          args: Prisma.BookingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingPayload>[]
+        }
+        create: {
+          args: Prisma.BookingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingPayload>
+        }
+        createMany: {
+          args: Prisma.BookingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BookingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingPayload>[]
+        }
+        delete: {
+          args: Prisma.BookingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingPayload>
+        }
+        update: {
+          args: Prisma.BookingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingPayload>
+        }
+        deleteMany: {
+          args: Prisma.BookingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BookingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BookingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingPayload>[]
+        }
+        upsert: {
+          args: Prisma.BookingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingPayload>
+        }
+        aggregate: {
+          args: Prisma.BookingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBooking>
+        }
+        groupBy: {
+          args: Prisma.BookingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BookingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BookingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BookingCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2651,6 +2726,9 @@ export const CustomerScalarFieldEnum = {
   userId: 'userId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  preferredRestaurantTypes: 'preferredRestaurantTypes',
+  preferredMainDishTypes: 'preferredMainDishTypes',
+  preferredPriceRanges: 'preferredPriceRanges',
   reviewerPoints: 'reviewerPoints',
   reviewerRank: 'reviewerRank'
 } as const
@@ -3104,6 +3182,22 @@ export const RebalancingRunScalarFieldEnum = {
 export type RebalancingRunScalarFieldEnum = (typeof RebalancingRunScalarFieldEnum)[keyof typeof RebalancingRunScalarFieldEnum]
 
 
+export const BookingScalarFieldEnum = {
+  id: 'id',
+  customerId: 'customerId',
+  merchantId: 'merchantId',
+  bookingAt: 'bookingAt',
+  partySize: 'partySize',
+  note: 'note',
+  status: 'status',
+  rejectionReason: 'rejectionReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -3439,6 +3533,20 @@ export type ListEnumRebalancingStatusFieldRefInput<$PrismaModel> = FieldRefInput
 
 
 /**
+ * Reference to a field of type 'BookingStatus'
+ */
+export type EnumBookingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BookingStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'BookingStatus[]'
+ */
+export type ListEnumBookingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BookingStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -3631,6 +3739,7 @@ export type GlobalOmitConfig = {
   notification?: Prisma.NotificationOmit
   auditLog?: Prisma.AuditLogOmit
   rebalancingRun?: Prisma.RebalancingRunOmit
+  booking?: Prisma.BookingOmit
 }
 
 /* Types for Logging */

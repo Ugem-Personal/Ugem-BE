@@ -66,10 +66,17 @@ type MapMerchantInput = {
   }>;
 };
 
+type CustomerPreferences = {
+  preferredRestaurantTypes: string[];
+  preferredMainDishTypes: string[];
+  preferredPriceRanges: string[];
+} | null;
+
 const mapMerchant = (
   merchant: MapMerchantInput,
   customerLat?: number,
   customerLng?: number,
+  customerPreferences?: CustomerPreferences,
 ) => {
   const rating = Number(merchant.rating);
   const merchantLat =
@@ -120,6 +127,45 @@ const mapMerchant = (
     : 0;
   const recommendationRank = (merchant as any).recommendationRank ?? null;
 
+  let preferenceScore = 0;
+  if (customerPreferences) {
+    let matched = 0;
+    let total = 0;
+
+    if (customerPreferences.preferredRestaurantTypes.length > 0) {
+      total++;
+      if (
+        customerPreferences.preferredRestaurantTypes.includes(
+          merchant.restaurantType,
+        )
+      ) {
+        matched++;
+      }
+    }
+
+    if (customerPreferences.preferredMainDishTypes.length > 0) {
+      total++;
+      if (
+        customerPreferences.preferredMainDishTypes.includes(
+          merchant.mainDishType,
+        )
+      ) {
+        matched++;
+      }
+    }
+
+    if (customerPreferences.preferredPriceRanges.length > 0) {
+      total++;
+      if (
+        customerPreferences.preferredPriceRanges.includes(merchant.priceRange)
+      ) {
+        matched++;
+      }
+    }
+
+    preferenceScore = total > 0 ? (matched / total) * 100 : 0;
+  }
+
   const campaignScore = hasActiveCampaign ? 100 : 0;
   const distanceScore =
     distance !== null ? Math.max(0, 100 - distance * 5) : 100;
@@ -127,10 +173,11 @@ const mapMerchant = (
 
   const recommendationScore =
     Math.round(
-      (underratedScore * 0.4 +
-        campaignScore * 0.2 +
-        distanceScore * 0.2 +
-        ratingScore * 0.2) *
+      (preferenceScore * 0.25 +
+        underratedScore * 0.30 +
+        campaignScore * 0.15 +
+        distanceScore * 0.15 +
+        ratingScore * 0.15) *
         100,
     ) / 100;
 
@@ -153,6 +200,7 @@ const mapMerchant = (
     rating,
     strengthIndex,
     underratedScore,
+    preferenceScore,
     recommendationRank,
     distance,
     hasActiveCampaign,
@@ -203,6 +251,19 @@ const mapStaffMerchant = (merchant: {
 export const getMerchants = async (query: MerchantListQuery) => {
   const pageIndex = query.pageIndex || 1;
   const pageSize = query.pageSize || 10;
+
+  const customerPreferences = query.customerId
+    ? await prisma.customer.findUnique({
+        where: {
+          id: query.customerId,
+        },
+        select: {
+          preferredRestaurantTypes: true,
+          preferredMainDishTypes: true,
+          preferredPriceRanges: true,
+        },
+      })
+    : null;
 
 
   const where: Prisma.MerchantWhereInput = {
@@ -304,7 +365,7 @@ export const getMerchants = async (query: MerchantListQuery) => {
   });
 
   let mapped = rawMerchants.map((m) =>
-    mapMerchant(m, query.latitude, query.longitude),
+    mapMerchant(m, query.latitude, query.longitude, customerPreferences),
   );
 
   if (query.latitude !== undefined && query.longitude !== undefined) {

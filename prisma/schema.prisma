@@ -138,6 +138,11 @@ model Customer {
   userId               String                       @unique
   createdAt            DateTime                     @default(now())
   updatedAt            DateTime                     @updatedAt
+
+  preferredRestaurantTypes String[] @default([])
+  preferredMainDishTypes   String[] @default([])
+  preferredPriceRanges     String[] @default([])
+
   orders               Order[]
   wishlists            Wishlist[]
   reviews              Review[]
@@ -146,6 +151,7 @@ model Customer {
   earningTransactions  ReviewerEarningTransaction[]
   affiliateClicks      AffiliateClick[]
   checkIns             CheckIn[]
+  bookings             Booking[]
   reviewerPoints       Int                          @default(0)
   reviewerRank         String                       @default("Bronze")
   pointTransactions    ReviewerPointTransaction[]
@@ -274,6 +280,7 @@ model Merchant {
   affiliateLinks AffiliateLink[]
   campaigns      Campaign[]
   checkIns       CheckIn[]
+  bookings       Booking[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -821,5 +828,34 @@ model RebalancingRun {
   @@index([startedAt])
   @@index([status])
   @@map("rebalancing_runs")
+}
+
+enum BookingStatus {
+  Pending
+  Accepted
+  Rejected
+  Cancelled
+  Completed
+}
+
+model Booking {
+  id              String        @id @default(uuid())
+  customerId      String
+  merchantId      String
+  bookingAt       DateTime
+  partySize       Int
+  note            String?
+  status          BookingStatus @default(Pending)
+  rejectionReason String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  @@index([customerId])
+  @@index([merchantId])
+  @@index([status])
+  @@map("bookings")
 }
 

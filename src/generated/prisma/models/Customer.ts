@@ -57,6 +57,9 @@ export type CustomerCountAggregateOutputType = {
   userId: number
   createdAt: number
   updatedAt: number
+  preferredRestaurantTypes: number
+  preferredMainDishTypes: number
+  preferredPriceRanges: number
   reviewerPoints: number
   reviewerRank: number
   _all: number
@@ -94,6 +97,9 @@ export type CustomerCountAggregateInputType = {
   userId?: true
   createdAt?: true
   updatedAt?: true
+  preferredRestaurantTypes?: true
+  preferredMainDishTypes?: true
+  preferredPriceRanges?: true
   reviewerPoints?: true
   reviewerRank?: true
   _all?: true
@@ -190,6 +196,9 @@ export type CustomerGroupByOutputType = {
   userId: string
   createdAt: Date
   updatedAt: Date
+  preferredRestaurantTypes: string[]
+  preferredMainDishTypes: string[]
+  preferredPriceRanges: string[]
   reviewerPoints: number
   reviewerRank: string
   _count: CustomerCountAggregateOutputType | null
@@ -222,6 +231,9 @@ export type CustomerWhereInput = {
   userId?: Prisma.StringFilter<"Customer"> | string
   createdAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
+  preferredRestaurantTypes?: Prisma.StringNullableListFilter<"Customer">
+  preferredMainDishTypes?: Prisma.StringNullableListFilter<"Customer">
+  preferredPriceRanges?: Prisma.StringNullableListFilter<"Customer">
   reviewerPoints?: Prisma.IntFilter<"Customer"> | number
   reviewerRank?: Prisma.StringFilter<"Customer"> | string
   orders?: Prisma.OrderListRelationFilter
@@ -232,6 +244,7 @@ export type CustomerWhereInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionListRelationFilter
   affiliateClicks?: Prisma.AffiliateClickListRelationFilter
   checkIns?: Prisma.CheckInListRelationFilter
+  bookings?: Prisma.BookingListRelationFilter
   pointTransactions?: Prisma.ReviewerPointTransactionListRelationFilter
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
@@ -241,6 +254,9 @@ export type CustomerOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  preferredRestaurantTypes?: Prisma.SortOrder
+  preferredMainDishTypes?: Prisma.SortOrder
+  preferredPriceRanges?: Prisma.SortOrder
   reviewerPoints?: Prisma.SortOrder
   reviewerRank?: Prisma.SortOrder
   orders?: Prisma.OrderOrderByRelationAggregateInput
@@ -251,6 +267,7 @@ export type CustomerOrderByWithRelationInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionOrderByRelationAggregateInput
   affiliateClicks?: Prisma.AffiliateClickOrderByRelationAggregateInput
   checkIns?: Prisma.CheckInOrderByRelationAggregateInput
+  bookings?: Prisma.BookingOrderByRelationAggregateInput
   pointTransactions?: Prisma.ReviewerPointTransactionOrderByRelationAggregateInput
   user?: Prisma.UserOrderByWithRelationInput
 }
@@ -263,6 +280,9 @@ export type CustomerWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.CustomerWhereInput | Prisma.CustomerWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
+  preferredRestaurantTypes?: Prisma.StringNullableListFilter<"Customer">
+  preferredMainDishTypes?: Prisma.StringNullableListFilter<"Customer">
+  preferredPriceRanges?: Prisma.StringNullableListFilter<"Customer">
   reviewerPoints?: Prisma.IntFilter<"Customer"> | number
   reviewerRank?: Prisma.StringFilter<"Customer"> | string
   orders?: Prisma.OrderListRelationFilter
@@ -273,6 +293,7 @@ export type CustomerWhereUniqueInput = Prisma.AtLeast<{
   earningTransactions?: Prisma.ReviewerEarningTransactionListRelationFilter
   affiliateClicks?: Prisma.AffiliateClickListRelationFilter
   checkIns?: Prisma.CheckInListRelationFilter
+  bookings?: Prisma.BookingListRelationFilter
   pointTransactions?: Prisma.ReviewerPointTransactionListRelationFilter
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "userId">
@@ -282,6 +303,9 @@ export type CustomerOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  preferredRestaurantTypes?: Prisma.SortOrder
+  preferredMainDishTypes?: Prisma.SortOrder
+  preferredPriceRanges?: Prisma.SortOrder
   reviewerPoints?: Prisma.SortOrder
   reviewerRank?: Prisma.SortOrder
   _count?: Prisma.CustomerCountOrderByAggregateInput
@@ -299,6 +323,9 @@ export type CustomerScalarWhereWithAggregatesInput = {
   userId?: Prisma.StringWithAggregatesFilter<"Customer"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Customer"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Customer"> | Date | string
+  preferredRestaurantTypes?: Prisma.StringNullableListFilter<"Customer">
+  preferredMainDishTypes?: Prisma.StringNullableListFilter<"Customer">
+  preferredPriceRanges?: Prisma.StringNullableListFilter<"Customer">
   reviewerPoints?: Prisma.IntWithAggregatesFilter<"Customer"> | number
   reviewerRank?: Prisma.StringWithAggregatesFilter<"Customer"> | string
 }
@@ -307,6 +334,9 @@ export type CustomerCreateInput = {
   id?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
   orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
@@ -317,6 +347,7 @@ export type CustomerCreateInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionCreateNestedManyWithoutReviewerInput
   affiliateClicks?: Prisma.AffiliateClickCreateNestedManyWithoutCustomerInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutCustomerInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutCustomerInput
   pointTransactions?: Prisma.ReviewerPointTransactionCreateNestedManyWithoutReviewerInput
   user: Prisma.UserCreateNestedOneWithoutCustomerInput
 }
@@ -326,6 +357,9 @@ export type CustomerUncheckedCreateInput = {
   userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
@@ -336,6 +370,7 @@ export type CustomerUncheckedCreateInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedManyWithoutReviewerInput
   affiliateClicks?: Prisma.AffiliateClickUncheckedCreateNestedManyWithoutCustomerInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutCustomerInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCustomerInput
   pointTransactions?: Prisma.ReviewerPointTransactionUncheckedCreateNestedManyWithoutReviewerInput
 }
 
@@ -343,6 +378,9 @@ export type CustomerUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
   orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
@@ -353,6 +391,7 @@ export type CustomerUpdateInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionUpdateManyWithoutReviewerNestedInput
   affiliateClicks?: Prisma.AffiliateClickUpdateManyWithoutCustomerNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutCustomerNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutCustomerNestedInput
   pointTransactions?: Prisma.ReviewerPointTransactionUpdateManyWithoutReviewerNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCustomerNestedInput
 }
@@ -362,6 +401,9 @@ export type CustomerUncheckedUpdateInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
@@ -372,6 +414,7 @@ export type CustomerUncheckedUpdateInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionUncheckedUpdateManyWithoutReviewerNestedInput
   affiliateClicks?: Prisma.AffiliateClickUncheckedUpdateManyWithoutCustomerNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutCustomerNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutCustomerNestedInput
   pointTransactions?: Prisma.ReviewerPointTransactionUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
@@ -380,6 +423,9 @@ export type CustomerCreateManyInput = {
   userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
 }
@@ -388,6 +434,9 @@ export type CustomerUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
 }
@@ -397,6 +446,9 @@ export type CustomerUncheckedUpdateManyInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
 }
@@ -406,11 +458,22 @@ export type CustomerNullableScalarRelationFilter = {
   isNot?: Prisma.CustomerWhereInput | null
 }
 
+export type StringNullableListFilter<$PrismaModel = never> = {
+  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
+  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
+  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
+}
+
 export type CustomerCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  preferredRestaurantTypes?: Prisma.SortOrder
+  preferredMainDishTypes?: Prisma.SortOrder
+  preferredPriceRanges?: Prisma.SortOrder
   reviewerPoints?: Prisma.SortOrder
   reviewerRank?: Prisma.SortOrder
 }
@@ -476,6 +539,33 @@ export type CustomerUncheckedUpdateOneWithoutUserNestedInput = {
   delete?: Prisma.CustomerWhereInput | boolean
   connect?: Prisma.CustomerWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.CustomerUpdateToOneWithWhereWithoutUserInput, Prisma.CustomerUpdateWithoutUserInput>, Prisma.CustomerUncheckedUpdateWithoutUserInput>
+}
+
+export type CustomerCreatepreferredRestaurantTypesInput = {
+  set: string[]
+}
+
+export type CustomerCreatepreferredMainDishTypesInput = {
+  set: string[]
+}
+
+export type CustomerCreatepreferredPriceRangesInput = {
+  set: string[]
+}
+
+export type CustomerUpdatepreferredRestaurantTypesInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
+export type CustomerUpdatepreferredMainDishTypesInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
+export type CustomerUpdatepreferredPriceRangesInput = {
+  set?: string[]
+  push?: string | string[]
 }
 
 export type IntFieldUpdateOperationsInput = {
@@ -614,10 +704,27 @@ export type CustomerUpdateOneRequiredWithoutCheckInsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CustomerUpdateToOneWithWhereWithoutCheckInsInput, Prisma.CustomerUpdateWithoutCheckInsInput>, Prisma.CustomerUncheckedUpdateWithoutCheckInsInput>
 }
 
+export type CustomerCreateNestedOneWithoutBookingsInput = {
+  create?: Prisma.XOR<Prisma.CustomerCreateWithoutBookingsInput, Prisma.CustomerUncheckedCreateWithoutBookingsInput>
+  connectOrCreate?: Prisma.CustomerCreateOrConnectWithoutBookingsInput
+  connect?: Prisma.CustomerWhereUniqueInput
+}
+
+export type CustomerUpdateOneRequiredWithoutBookingsNestedInput = {
+  create?: Prisma.XOR<Prisma.CustomerCreateWithoutBookingsInput, Prisma.CustomerUncheckedCreateWithoutBookingsInput>
+  connectOrCreate?: Prisma.CustomerCreateOrConnectWithoutBookingsInput
+  upsert?: Prisma.CustomerUpsertWithoutBookingsInput
+  connect?: Prisma.CustomerWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CustomerUpdateToOneWithWhereWithoutBookingsInput, Prisma.CustomerUpdateWithoutBookingsInput>, Prisma.CustomerUncheckedUpdateWithoutBookingsInput>
+}
+
 export type CustomerCreateWithoutUserInput = {
   id?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
   orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
@@ -628,6 +735,7 @@ export type CustomerCreateWithoutUserInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionCreateNestedManyWithoutReviewerInput
   affiliateClicks?: Prisma.AffiliateClickCreateNestedManyWithoutCustomerInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutCustomerInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutCustomerInput
   pointTransactions?: Prisma.ReviewerPointTransactionCreateNestedManyWithoutReviewerInput
 }
 
@@ -635,6 +743,9 @@ export type CustomerUncheckedCreateWithoutUserInput = {
   id?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
@@ -645,6 +756,7 @@ export type CustomerUncheckedCreateWithoutUserInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedManyWithoutReviewerInput
   affiliateClicks?: Prisma.AffiliateClickUncheckedCreateNestedManyWithoutCustomerInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutCustomerInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCustomerInput
   pointTransactions?: Prisma.ReviewerPointTransactionUncheckedCreateNestedManyWithoutReviewerInput
 }
 
@@ -668,6 +780,9 @@ export type CustomerUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
   orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
@@ -678,6 +793,7 @@ export type CustomerUpdateWithoutUserInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionUpdateManyWithoutReviewerNestedInput
   affiliateClicks?: Prisma.AffiliateClickUpdateManyWithoutCustomerNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutCustomerNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutCustomerNestedInput
   pointTransactions?: Prisma.ReviewerPointTransactionUpdateManyWithoutReviewerNestedInput
 }
 
@@ -685,6 +801,9 @@ export type CustomerUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
@@ -695,6 +814,7 @@ export type CustomerUncheckedUpdateWithoutUserInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionUncheckedUpdateManyWithoutReviewerNestedInput
   affiliateClicks?: Prisma.AffiliateClickUncheckedUpdateManyWithoutCustomerNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutCustomerNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutCustomerNestedInput
   pointTransactions?: Prisma.ReviewerPointTransactionUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
@@ -702,6 +822,9 @@ export type CustomerCreateWithoutOrdersInput = {
   id?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
   wishlists?: Prisma.WishlistCreateNestedManyWithoutCustomerInput
@@ -711,6 +834,7 @@ export type CustomerCreateWithoutOrdersInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionCreateNestedManyWithoutReviewerInput
   affiliateClicks?: Prisma.AffiliateClickCreateNestedManyWithoutCustomerInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutCustomerInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutCustomerInput
   pointTransactions?: Prisma.ReviewerPointTransactionCreateNestedManyWithoutReviewerInput
   user: Prisma.UserCreateNestedOneWithoutCustomerInput
 }
@@ -720,6 +844,9 @@ export type CustomerUncheckedCreateWithoutOrdersInput = {
   userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
   wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutCustomerInput
@@ -729,6 +856,7 @@ export type CustomerUncheckedCreateWithoutOrdersInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedManyWithoutReviewerInput
   affiliateClicks?: Prisma.AffiliateClickUncheckedCreateNestedManyWithoutCustomerInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutCustomerInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCustomerInput
   pointTransactions?: Prisma.ReviewerPointTransactionUncheckedCreateNestedManyWithoutReviewerInput
 }
 
@@ -752,6 +880,9 @@ export type CustomerUpdateWithoutOrdersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
   wishlists?: Prisma.WishlistUpdateManyWithoutCustomerNestedInput
@@ -761,6 +892,7 @@ export type CustomerUpdateWithoutOrdersInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionUpdateManyWithoutReviewerNestedInput
   affiliateClicks?: Prisma.AffiliateClickUpdateManyWithoutCustomerNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutCustomerNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutCustomerNestedInput
   pointTransactions?: Prisma.ReviewerPointTransactionUpdateManyWithoutReviewerNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCustomerNestedInput
 }
@@ -770,6 +902,9 @@ export type CustomerUncheckedUpdateWithoutOrdersInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
   wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutCustomerNestedInput
@@ -779,6 +914,7 @@ export type CustomerUncheckedUpdateWithoutOrdersInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionUncheckedUpdateManyWithoutReviewerNestedInput
   affiliateClicks?: Prisma.AffiliateClickUncheckedUpdateManyWithoutCustomerNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutCustomerNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutCustomerNestedInput
   pointTransactions?: Prisma.ReviewerPointTransactionUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
@@ -786,6 +922,9 @@ export type CustomerCreateWithoutWishlistsInput = {
   id?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
   orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
@@ -795,6 +934,7 @@ export type CustomerCreateWithoutWishlistsInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionCreateNestedManyWithoutReviewerInput
   affiliateClicks?: Prisma.AffiliateClickCreateNestedManyWithoutCustomerInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutCustomerInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutCustomerInput
   pointTransactions?: Prisma.ReviewerPointTransactionCreateNestedManyWithoutReviewerInput
   user: Prisma.UserCreateNestedOneWithoutCustomerInput
 }
@@ -804,6 +944,9 @@ export type CustomerUncheckedCreateWithoutWishlistsInput = {
   userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
@@ -813,6 +956,7 @@ export type CustomerUncheckedCreateWithoutWishlistsInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedManyWithoutReviewerInput
   affiliateClicks?: Prisma.AffiliateClickUncheckedCreateNestedManyWithoutCustomerInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutCustomerInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCustomerInput
   pointTransactions?: Prisma.ReviewerPointTransactionUncheckedCreateNestedManyWithoutReviewerInput
 }
 
@@ -836,6 +980,9 @@ export type CustomerUpdateWithoutWishlistsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
   orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
@@ -845,6 +992,7 @@ export type CustomerUpdateWithoutWishlistsInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionUpdateManyWithoutReviewerNestedInput
   affiliateClicks?: Prisma.AffiliateClickUpdateManyWithoutCustomerNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutCustomerNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutCustomerNestedInput
   pointTransactions?: Prisma.ReviewerPointTransactionUpdateManyWithoutReviewerNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCustomerNestedInput
 }
@@ -854,6 +1002,9 @@ export type CustomerUncheckedUpdateWithoutWishlistsInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
@@ -863,6 +1014,7 @@ export type CustomerUncheckedUpdateWithoutWishlistsInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionUncheckedUpdateManyWithoutReviewerNestedInput
   affiliateClicks?: Prisma.AffiliateClickUncheckedUpdateManyWithoutCustomerNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutCustomerNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutCustomerNestedInput
   pointTransactions?: Prisma.ReviewerPointTransactionUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
@@ -870,6 +1022,9 @@ export type CustomerCreateWithoutReviewsInput = {
   id?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
   orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
@@ -879,6 +1034,7 @@ export type CustomerCreateWithoutReviewsInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionCreateNestedManyWithoutReviewerInput
   affiliateClicks?: Prisma.AffiliateClickCreateNestedManyWithoutCustomerInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutCustomerInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutCustomerInput
   pointTransactions?: Prisma.ReviewerPointTransactionCreateNestedManyWithoutReviewerInput
   user: Prisma.UserCreateNestedOneWithoutCustomerInput
 }
@@ -888,6 +1044,9 @@ export type CustomerUncheckedCreateWithoutReviewsInput = {
   userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
@@ -897,6 +1056,7 @@ export type CustomerUncheckedCreateWithoutReviewsInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedManyWithoutReviewerInput
   affiliateClicks?: Prisma.AffiliateClickUncheckedCreateNestedManyWithoutCustomerInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutCustomerInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCustomerInput
   pointTransactions?: Prisma.ReviewerPointTransactionUncheckedCreateNestedManyWithoutReviewerInput
 }
 
@@ -920,6 +1080,9 @@ export type CustomerUpdateWithoutReviewsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
   orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
@@ -929,6 +1092,7 @@ export type CustomerUpdateWithoutReviewsInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionUpdateManyWithoutReviewerNestedInput
   affiliateClicks?: Prisma.AffiliateClickUpdateManyWithoutCustomerNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutCustomerNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutCustomerNestedInput
   pointTransactions?: Prisma.ReviewerPointTransactionUpdateManyWithoutReviewerNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCustomerNestedInput
 }
@@ -938,6 +1102,9 @@ export type CustomerUncheckedUpdateWithoutReviewsInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
@@ -947,6 +1114,7 @@ export type CustomerUncheckedUpdateWithoutReviewsInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionUncheckedUpdateManyWithoutReviewerNestedInput
   affiliateClicks?: Prisma.AffiliateClickUncheckedUpdateManyWithoutCustomerNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutCustomerNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutCustomerNestedInput
   pointTransactions?: Prisma.ReviewerPointTransactionUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
@@ -954,6 +1122,9 @@ export type CustomerCreateWithoutReviewerApplicationsInput = {
   id?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
   orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
@@ -963,6 +1134,7 @@ export type CustomerCreateWithoutReviewerApplicationsInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionCreateNestedManyWithoutReviewerInput
   affiliateClicks?: Prisma.AffiliateClickCreateNestedManyWithoutCustomerInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutCustomerInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutCustomerInput
   pointTransactions?: Prisma.ReviewerPointTransactionCreateNestedManyWithoutReviewerInput
   user: Prisma.UserCreateNestedOneWithoutCustomerInput
 }
@@ -972,6 +1144,9 @@ export type CustomerUncheckedCreateWithoutReviewerApplicationsInput = {
   userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
@@ -981,6 +1156,7 @@ export type CustomerUncheckedCreateWithoutReviewerApplicationsInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedManyWithoutReviewerInput
   affiliateClicks?: Prisma.AffiliateClickUncheckedCreateNestedManyWithoutCustomerInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutCustomerInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCustomerInput
   pointTransactions?: Prisma.ReviewerPointTransactionUncheckedCreateNestedManyWithoutReviewerInput
 }
 
@@ -1004,6 +1180,9 @@ export type CustomerUpdateWithoutReviewerApplicationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
   orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
@@ -1013,6 +1192,7 @@ export type CustomerUpdateWithoutReviewerApplicationsInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionUpdateManyWithoutReviewerNestedInput
   affiliateClicks?: Prisma.AffiliateClickUpdateManyWithoutCustomerNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutCustomerNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutCustomerNestedInput
   pointTransactions?: Prisma.ReviewerPointTransactionUpdateManyWithoutReviewerNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCustomerNestedInput
 }
@@ -1022,6 +1202,9 @@ export type CustomerUncheckedUpdateWithoutReviewerApplicationsInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
@@ -1031,6 +1214,7 @@ export type CustomerUncheckedUpdateWithoutReviewerApplicationsInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionUncheckedUpdateManyWithoutReviewerNestedInput
   affiliateClicks?: Prisma.AffiliateClickUncheckedUpdateManyWithoutCustomerNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutCustomerNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutCustomerNestedInput
   pointTransactions?: Prisma.ReviewerPointTransactionUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
@@ -1038,6 +1222,9 @@ export type CustomerCreateWithoutAffiliateLinksInput = {
   id?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
   orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
@@ -1047,6 +1234,7 @@ export type CustomerCreateWithoutAffiliateLinksInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionCreateNestedManyWithoutReviewerInput
   affiliateClicks?: Prisma.AffiliateClickCreateNestedManyWithoutCustomerInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutCustomerInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutCustomerInput
   pointTransactions?: Prisma.ReviewerPointTransactionCreateNestedManyWithoutReviewerInput
   user: Prisma.UserCreateNestedOneWithoutCustomerInput
 }
@@ -1056,6 +1244,9 @@ export type CustomerUncheckedCreateWithoutAffiliateLinksInput = {
   userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
@@ -1065,6 +1256,7 @@ export type CustomerUncheckedCreateWithoutAffiliateLinksInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedManyWithoutReviewerInput
   affiliateClicks?: Prisma.AffiliateClickUncheckedCreateNestedManyWithoutCustomerInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutCustomerInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCustomerInput
   pointTransactions?: Prisma.ReviewerPointTransactionUncheckedCreateNestedManyWithoutReviewerInput
 }
 
@@ -1088,6 +1280,9 @@ export type CustomerUpdateWithoutAffiliateLinksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
   orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
@@ -1097,6 +1292,7 @@ export type CustomerUpdateWithoutAffiliateLinksInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionUpdateManyWithoutReviewerNestedInput
   affiliateClicks?: Prisma.AffiliateClickUpdateManyWithoutCustomerNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutCustomerNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutCustomerNestedInput
   pointTransactions?: Prisma.ReviewerPointTransactionUpdateManyWithoutReviewerNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCustomerNestedInput
 }
@@ -1106,6 +1302,9 @@ export type CustomerUncheckedUpdateWithoutAffiliateLinksInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
@@ -1115,6 +1314,7 @@ export type CustomerUncheckedUpdateWithoutAffiliateLinksInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionUncheckedUpdateManyWithoutReviewerNestedInput
   affiliateClicks?: Prisma.AffiliateClickUncheckedUpdateManyWithoutCustomerNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutCustomerNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutCustomerNestedInput
   pointTransactions?: Prisma.ReviewerPointTransactionUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
@@ -1122,6 +1322,9 @@ export type CustomerCreateWithoutAffiliateClicksInput = {
   id?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
   orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
@@ -1131,6 +1334,7 @@ export type CustomerCreateWithoutAffiliateClicksInput = {
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutReviewerInput
   earningTransactions?: Prisma.ReviewerEarningTransactionCreateNestedManyWithoutReviewerInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutCustomerInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutCustomerInput
   pointTransactions?: Prisma.ReviewerPointTransactionCreateNestedManyWithoutReviewerInput
   user: Prisma.UserCreateNestedOneWithoutCustomerInput
 }
@@ -1140,6 +1344,9 @@ export type CustomerUncheckedCreateWithoutAffiliateClicksInput = {
   userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
@@ -1149,6 +1356,7 @@ export type CustomerUncheckedCreateWithoutAffiliateClicksInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutReviewerInput
   earningTransactions?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedManyWithoutReviewerInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutCustomerInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCustomerInput
   pointTransactions?: Prisma.ReviewerPointTransactionUncheckedCreateNestedManyWithoutReviewerInput
 }
 
@@ -1172,6 +1380,9 @@ export type CustomerUpdateWithoutAffiliateClicksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
   orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
@@ -1181,6 +1392,7 @@ export type CustomerUpdateWithoutAffiliateClicksInput = {
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutReviewerNestedInput
   earningTransactions?: Prisma.ReviewerEarningTransactionUpdateManyWithoutReviewerNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutCustomerNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutCustomerNestedInput
   pointTransactions?: Prisma.ReviewerPointTransactionUpdateManyWithoutReviewerNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCustomerNestedInput
 }
@@ -1190,6 +1402,9 @@ export type CustomerUncheckedUpdateWithoutAffiliateClicksInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
@@ -1199,6 +1414,7 @@ export type CustomerUncheckedUpdateWithoutAffiliateClicksInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutReviewerNestedInput
   earningTransactions?: Prisma.ReviewerEarningTransactionUncheckedUpdateManyWithoutReviewerNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutCustomerNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutCustomerNestedInput
   pointTransactions?: Prisma.ReviewerPointTransactionUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
@@ -1206,6 +1422,9 @@ export type CustomerCreateWithoutEarningTransactionsInput = {
   id?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
   orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
@@ -1215,6 +1434,7 @@ export type CustomerCreateWithoutEarningTransactionsInput = {
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutReviewerInput
   affiliateClicks?: Prisma.AffiliateClickCreateNestedManyWithoutCustomerInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutCustomerInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutCustomerInput
   pointTransactions?: Prisma.ReviewerPointTransactionCreateNestedManyWithoutReviewerInput
   user: Prisma.UserCreateNestedOneWithoutCustomerInput
 }
@@ -1224,6 +1444,9 @@ export type CustomerUncheckedCreateWithoutEarningTransactionsInput = {
   userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
@@ -1233,6 +1456,7 @@ export type CustomerUncheckedCreateWithoutEarningTransactionsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutReviewerInput
   affiliateClicks?: Prisma.AffiliateClickUncheckedCreateNestedManyWithoutCustomerInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutCustomerInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCustomerInput
   pointTransactions?: Prisma.ReviewerPointTransactionUncheckedCreateNestedManyWithoutReviewerInput
 }
 
@@ -1256,6 +1480,9 @@ export type CustomerUpdateWithoutEarningTransactionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
   orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
@@ -1265,6 +1492,7 @@ export type CustomerUpdateWithoutEarningTransactionsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutReviewerNestedInput
   affiliateClicks?: Prisma.AffiliateClickUpdateManyWithoutCustomerNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutCustomerNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutCustomerNestedInput
   pointTransactions?: Prisma.ReviewerPointTransactionUpdateManyWithoutReviewerNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCustomerNestedInput
 }
@@ -1274,6 +1502,9 @@ export type CustomerUncheckedUpdateWithoutEarningTransactionsInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
@@ -1283,6 +1514,7 @@ export type CustomerUncheckedUpdateWithoutEarningTransactionsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutReviewerNestedInput
   affiliateClicks?: Prisma.AffiliateClickUncheckedUpdateManyWithoutCustomerNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutCustomerNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutCustomerNestedInput
   pointTransactions?: Prisma.ReviewerPointTransactionUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
@@ -1290,6 +1522,9 @@ export type CustomerCreateWithoutPointTransactionsInput = {
   id?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
   orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
@@ -1300,6 +1535,7 @@ export type CustomerCreateWithoutPointTransactionsInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionCreateNestedManyWithoutReviewerInput
   affiliateClicks?: Prisma.AffiliateClickCreateNestedManyWithoutCustomerInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutCustomerInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutCustomerInput
   user: Prisma.UserCreateNestedOneWithoutCustomerInput
 }
 
@@ -1308,6 +1544,9 @@ export type CustomerUncheckedCreateWithoutPointTransactionsInput = {
   userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
@@ -1318,6 +1557,7 @@ export type CustomerUncheckedCreateWithoutPointTransactionsInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedManyWithoutReviewerInput
   affiliateClicks?: Prisma.AffiliateClickUncheckedCreateNestedManyWithoutCustomerInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutCustomerInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCustomerInput
 }
 
 export type CustomerCreateOrConnectWithoutPointTransactionsInput = {
@@ -1340,6 +1580,9 @@ export type CustomerUpdateWithoutPointTransactionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
   orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
@@ -1350,6 +1593,7 @@ export type CustomerUpdateWithoutPointTransactionsInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionUpdateManyWithoutReviewerNestedInput
   affiliateClicks?: Prisma.AffiliateClickUpdateManyWithoutCustomerNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutCustomerNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutCustomerNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCustomerNestedInput
 }
 
@@ -1358,6 +1602,9 @@ export type CustomerUncheckedUpdateWithoutPointTransactionsInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
@@ -1368,12 +1615,16 @@ export type CustomerUncheckedUpdateWithoutPointTransactionsInput = {
   earningTransactions?: Prisma.ReviewerEarningTransactionUncheckedUpdateManyWithoutReviewerNestedInput
   affiliateClicks?: Prisma.AffiliateClickUncheckedUpdateManyWithoutCustomerNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutCustomerNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutCustomerNestedInput
 }
 
 export type CustomerCreateWithoutCheckInsInput = {
   id?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
   orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
@@ -1383,6 +1634,7 @@ export type CustomerCreateWithoutCheckInsInput = {
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutReviewerInput
   earningTransactions?: Prisma.ReviewerEarningTransactionCreateNestedManyWithoutReviewerInput
   affiliateClicks?: Prisma.AffiliateClickCreateNestedManyWithoutCustomerInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutCustomerInput
   pointTransactions?: Prisma.ReviewerPointTransactionCreateNestedManyWithoutReviewerInput
   user: Prisma.UserCreateNestedOneWithoutCustomerInput
 }
@@ -1392,6 +1644,9 @@ export type CustomerUncheckedCreateWithoutCheckInsInput = {
   userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
@@ -1401,6 +1656,7 @@ export type CustomerUncheckedCreateWithoutCheckInsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutReviewerInput
   earningTransactions?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedManyWithoutReviewerInput
   affiliateClicks?: Prisma.AffiliateClickUncheckedCreateNestedManyWithoutCustomerInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCustomerInput
   pointTransactions?: Prisma.ReviewerPointTransactionUncheckedCreateNestedManyWithoutReviewerInput
 }
 
@@ -1424,6 +1680,9 @@ export type CustomerUpdateWithoutCheckInsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
   orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
@@ -1433,6 +1692,7 @@ export type CustomerUpdateWithoutCheckInsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutReviewerNestedInput
   earningTransactions?: Prisma.ReviewerEarningTransactionUpdateManyWithoutReviewerNestedInput
   affiliateClicks?: Prisma.AffiliateClickUpdateManyWithoutCustomerNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutCustomerNestedInput
   pointTransactions?: Prisma.ReviewerPointTransactionUpdateManyWithoutReviewerNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCustomerNestedInput
 }
@@ -1442,6 +1702,9 @@ export type CustomerUncheckedUpdateWithoutCheckInsInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
@@ -1451,6 +1714,107 @@ export type CustomerUncheckedUpdateWithoutCheckInsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutReviewerNestedInput
   earningTransactions?: Prisma.ReviewerEarningTransactionUncheckedUpdateManyWithoutReviewerNestedInput
   affiliateClicks?: Prisma.AffiliateClickUncheckedUpdateManyWithoutCustomerNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutCustomerNestedInput
+  pointTransactions?: Prisma.ReviewerPointTransactionUncheckedUpdateManyWithoutReviewerNestedInput
+}
+
+export type CustomerCreateWithoutBookingsInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
+  reviewerPoints?: number
+  reviewerRank?: string
+  orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  wishlists?: Prisma.WishlistCreateNestedManyWithoutCustomerInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutCustomerInput
+  reviewerApplications?: Prisma.ReviewerApplicationCreateNestedManyWithoutCustomerInput
+  affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutReviewerInput
+  earningTransactions?: Prisma.ReviewerEarningTransactionCreateNestedManyWithoutReviewerInput
+  affiliateClicks?: Prisma.AffiliateClickCreateNestedManyWithoutCustomerInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutCustomerInput
+  pointTransactions?: Prisma.ReviewerPointTransactionCreateNestedManyWithoutReviewerInput
+  user: Prisma.UserCreateNestedOneWithoutCustomerInput
+}
+
+export type CustomerUncheckedCreateWithoutBookingsInput = {
+  id?: string
+  userId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
+  reviewerPoints?: number
+  reviewerRank?: string
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutCustomerInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutCustomerInput
+  reviewerApplications?: Prisma.ReviewerApplicationUncheckedCreateNestedManyWithoutCustomerInput
+  affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutReviewerInput
+  earningTransactions?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedManyWithoutReviewerInput
+  affiliateClicks?: Prisma.AffiliateClickUncheckedCreateNestedManyWithoutCustomerInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutCustomerInput
+  pointTransactions?: Prisma.ReviewerPointTransactionUncheckedCreateNestedManyWithoutReviewerInput
+}
+
+export type CustomerCreateOrConnectWithoutBookingsInput = {
+  where: Prisma.CustomerWhereUniqueInput
+  create: Prisma.XOR<Prisma.CustomerCreateWithoutBookingsInput, Prisma.CustomerUncheckedCreateWithoutBookingsInput>
+}
+
+export type CustomerUpsertWithoutBookingsInput = {
+  update: Prisma.XOR<Prisma.CustomerUpdateWithoutBookingsInput, Prisma.CustomerUncheckedUpdateWithoutBookingsInput>
+  create: Prisma.XOR<Prisma.CustomerCreateWithoutBookingsInput, Prisma.CustomerUncheckedCreateWithoutBookingsInput>
+  where?: Prisma.CustomerWhereInput
+}
+
+export type CustomerUpdateToOneWithWhereWithoutBookingsInput = {
+  where?: Prisma.CustomerWhereInput
+  data: Prisma.XOR<Prisma.CustomerUpdateWithoutBookingsInput, Prisma.CustomerUncheckedUpdateWithoutBookingsInput>
+}
+
+export type CustomerUpdateWithoutBookingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
+  reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  wishlists?: Prisma.WishlistUpdateManyWithoutCustomerNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutCustomerNestedInput
+  reviewerApplications?: Prisma.ReviewerApplicationUpdateManyWithoutCustomerNestedInput
+  affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutReviewerNestedInput
+  earningTransactions?: Prisma.ReviewerEarningTransactionUpdateManyWithoutReviewerNestedInput
+  affiliateClicks?: Prisma.AffiliateClickUpdateManyWithoutCustomerNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutCustomerNestedInput
+  pointTransactions?: Prisma.ReviewerPointTransactionUpdateManyWithoutReviewerNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutCustomerNestedInput
+}
+
+export type CustomerUncheckedUpdateWithoutBookingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
+  preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
+  reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutCustomerNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutCustomerNestedInput
+  reviewerApplications?: Prisma.ReviewerApplicationUncheckedUpdateManyWithoutCustomerNestedInput
+  affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutReviewerNestedInput
+  earningTransactions?: Prisma.ReviewerEarningTransactionUncheckedUpdateManyWithoutReviewerNestedInput
+  affiliateClicks?: Prisma.AffiliateClickUncheckedUpdateManyWithoutCustomerNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutCustomerNestedInput
   pointTransactions?: Prisma.ReviewerPointTransactionUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
@@ -1468,6 +1832,7 @@ export type CustomerCountOutputType = {
   earningTransactions: number
   affiliateClicks: number
   checkIns: number
+  bookings: number
   pointTransactions: number
 }
 
@@ -1480,6 +1845,7 @@ export type CustomerCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensio
   earningTransactions?: boolean | CustomerCountOutputTypeCountEarningTransactionsArgs
   affiliateClicks?: boolean | CustomerCountOutputTypeCountAffiliateClicksArgs
   checkIns?: boolean | CustomerCountOutputTypeCountCheckInsArgs
+  bookings?: boolean | CustomerCountOutputTypeCountBookingsArgs
   pointTransactions?: boolean | CustomerCountOutputTypeCountPointTransactionsArgs
 }
 
@@ -1552,6 +1918,13 @@ export type CustomerCountOutputTypeCountCheckInsArgs<ExtArgs extends runtime.Typ
 /**
  * CustomerCountOutputType without action
  */
+export type CustomerCountOutputTypeCountBookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BookingWhereInput
+}
+
+/**
+ * CustomerCountOutputType without action
+ */
 export type CustomerCountOutputTypeCountPointTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ReviewerPointTransactionWhereInput
 }
@@ -1562,6 +1935,9 @@ export type CustomerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  preferredRestaurantTypes?: boolean
+  preferredMainDishTypes?: boolean
+  preferredPriceRanges?: boolean
   reviewerPoints?: boolean
   reviewerRank?: boolean
   orders?: boolean | Prisma.Customer$ordersArgs<ExtArgs>
@@ -1572,6 +1948,7 @@ export type CustomerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   earningTransactions?: boolean | Prisma.Customer$earningTransactionsArgs<ExtArgs>
   affiliateClicks?: boolean | Prisma.Customer$affiliateClicksArgs<ExtArgs>
   checkIns?: boolean | Prisma.Customer$checkInsArgs<ExtArgs>
+  bookings?: boolean | Prisma.Customer$bookingsArgs<ExtArgs>
   pointTransactions?: boolean | Prisma.Customer$pointTransactionsArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.CustomerCountOutputTypeDefaultArgs<ExtArgs>
@@ -1582,6 +1959,9 @@ export type CustomerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  preferredRestaurantTypes?: boolean
+  preferredMainDishTypes?: boolean
+  preferredPriceRanges?: boolean
   reviewerPoints?: boolean
   reviewerRank?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1592,6 +1972,9 @@ export type CustomerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  preferredRestaurantTypes?: boolean
+  preferredMainDishTypes?: boolean
+  preferredPriceRanges?: boolean
   reviewerPoints?: boolean
   reviewerRank?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1602,11 +1985,14 @@ export type CustomerSelectScalar = {
   userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  preferredRestaurantTypes?: boolean
+  preferredMainDishTypes?: boolean
+  preferredPriceRanges?: boolean
   reviewerPoints?: boolean
   reviewerRank?: boolean
 }
 
-export type CustomerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "createdAt" | "updatedAt" | "reviewerPoints" | "reviewerRank", ExtArgs["result"]["customer"]>
+export type CustomerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "createdAt" | "updatedAt" | "preferredRestaurantTypes" | "preferredMainDishTypes" | "preferredPriceRanges" | "reviewerPoints" | "reviewerRank", ExtArgs["result"]["customer"]>
 export type CustomerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   orders?: boolean | Prisma.Customer$ordersArgs<ExtArgs>
   wishlists?: boolean | Prisma.Customer$wishlistsArgs<ExtArgs>
@@ -1616,6 +2002,7 @@ export type CustomerInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   earningTransactions?: boolean | Prisma.Customer$earningTransactionsArgs<ExtArgs>
   affiliateClicks?: boolean | Prisma.Customer$affiliateClicksArgs<ExtArgs>
   checkIns?: boolean | Prisma.Customer$checkInsArgs<ExtArgs>
+  bookings?: boolean | Prisma.Customer$bookingsArgs<ExtArgs>
   pointTransactions?: boolean | Prisma.Customer$pointTransactionsArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.CustomerCountOutputTypeDefaultArgs<ExtArgs>
@@ -1638,6 +2025,7 @@ export type $CustomerPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     earningTransactions: Prisma.$ReviewerEarningTransactionPayload<ExtArgs>[]
     affiliateClicks: Prisma.$AffiliateClickPayload<ExtArgs>[]
     checkIns: Prisma.$CheckInPayload<ExtArgs>[]
+    bookings: Prisma.$BookingPayload<ExtArgs>[]
     pointTransactions: Prisma.$ReviewerPointTransactionPayload<ExtArgs>[]
     user: Prisma.$UserPayload<ExtArgs>
   }
@@ -1646,6 +2034,9 @@ export type $CustomerPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     userId: string
     createdAt: Date
     updatedAt: Date
+    preferredRestaurantTypes: string[]
+    preferredMainDishTypes: string[]
+    preferredPriceRanges: string[]
     reviewerPoints: number
     reviewerRank: string
   }, ExtArgs["result"]["customer"]>
@@ -2050,6 +2441,7 @@ export interface Prisma__CustomerClient<T, Null = never, ExtArgs extends runtime
   earningTransactions<T extends Prisma.Customer$earningTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Customer$earningTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewerEarningTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   affiliateClicks<T extends Prisma.Customer$affiliateClicksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Customer$affiliateClicksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AffiliateClickPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   checkIns<T extends Prisma.Customer$checkInsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Customer$checkInsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CheckInPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  bookings<T extends Prisma.Customer$bookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Customer$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   pointTransactions<T extends Prisma.Customer$pointTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Customer$pointTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewerPointTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
@@ -2085,6 +2477,9 @@ export interface CustomerFieldRefs {
   readonly userId: Prisma.FieldRef<"Customer", 'String'>
   readonly createdAt: Prisma.FieldRef<"Customer", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Customer", 'DateTime'>
+  readonly preferredRestaurantTypes: Prisma.FieldRef<"Customer", 'String[]'>
+  readonly preferredMainDishTypes: Prisma.FieldRef<"Customer", 'String[]'>
+  readonly preferredPriceRanges: Prisma.FieldRef<"Customer", 'String[]'>
   readonly reviewerPoints: Prisma.FieldRef<"Customer", 'Int'>
   readonly reviewerRank: Prisma.FieldRef<"Customer", 'String'>
 }
@@ -2677,6 +3072,30 @@ export type Customer$checkInsArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.CheckInScalarFieldEnum | Prisma.CheckInScalarFieldEnum[]
+}
+
+/**
+ * Customer.bookings
+ */
+export type Customer$bookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Booking
+   */
+  select?: Prisma.BookingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Booking
+   */
+  omit?: Prisma.BookingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookingInclude<ExtArgs> | null
+  where?: Prisma.BookingWhereInput
+  orderBy?: Prisma.BookingOrderByWithRelationInput | Prisma.BookingOrderByWithRelationInput[]
+  cursor?: Prisma.BookingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BookingScalarFieldEnum | Prisma.BookingScalarFieldEnum[]
 }
 
 /**

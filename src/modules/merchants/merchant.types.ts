@@ -1,4 +1,5 @@
 export interface MerchantListQuery {
+  customerId?: string;
   search?: string;
 
   categoryId?: string;

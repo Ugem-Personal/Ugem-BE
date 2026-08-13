@@ -9,13 +9,16 @@ import { getProfile, updateProfile } from "../users/user.controller.js";
 import { updateProfileSchema } from "../users/user.schema.js";
 
 import {
+  getCustomerPreferences,
   searchCustomersByEmail,
   searchCustomersByPhoneNumber,
+  updateCustomerPreferences,
 } from "./customer.controller.js";
 
 import {
   searchCustomersByEmailSchema,
   searchCustomersByPhoneNumberSchema,
+  updateCustomerPreferencesSchema,
 } from "./customer.schema.js";
 
 export const customerRouter = Router();
@@ -35,7 +38,6 @@ customerRouter.patch(
   updateProfile,
 );
 
-// Giữ lại để tương thích với client cũ.
 customerRouter.put(
   "/profile",
   authorizeRoles("Customer", "Reviewer"),
@@ -43,9 +45,19 @@ customerRouter.put(
   updateProfile,
 );
 
-/*
- * Hai API này được dùng khi Merchant tạo đơn cho Customer.
- */
+customerRouter.get(
+  "/preferences",
+  authorizeRoles("Customer", "Reviewer"),
+  getCustomerPreferences,
+);
+
+customerRouter.patch(
+  "/preferences",
+  authorizeRoles("Customer", "Reviewer"),
+  validate(updateCustomerPreferencesSchema),
+  updateCustomerPreferences,
+);
+
 customerRouter.get(
   "/search-by-email",
   requireApprovedMerchant,

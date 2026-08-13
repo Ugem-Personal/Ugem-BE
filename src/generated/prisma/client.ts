@@ -186,3 +186,8 @@ export type AuditLog = Prisma.AuditLogModel
  * 
  */
 export type RebalancingRun = Prisma.RebalancingRunModel
+/**
+ * Model Booking
+ * 
+ */
+export type Booking = Prisma.BookingModel
