@@ -54,14 +54,15 @@ const mapMerchant = (merchant: {
     phone: merchant.phone,
     address: merchant.address,
     openingHours: merchant.openingHours,
-
     latitude: merchant.latitude !== null ? Number(merchant.latitude) : null,
-
     longitude: merchant.longitude !== null ? Number(merchant.longitude) : null,
-
     logoUrl: merchant.logoUrl,
     rating,
-    underratedScore: calculateUnderratedScore(rating),
+    underratedScore: calculateUnderratedScore(
+      rating,
+      merchant.reviewCount,
+      merchant.totalViews,
+    ),
     reviewCount: merchant.reviewCount,
     totalViews: merchant.totalViews,
     status: merchant.status,
@@ -89,30 +90,18 @@ const mapStaffMerchant = (merchant: {
   return {
     id: merchant.id,
     merchantId: merchant.id,
-
     name: merchant.name,
     description: merchant.description,
-
     address: merchant.address,
     logoUrl: merchant.logoUrl,
     email: merchant.email,
     openingHours: merchant.openingHours,
-
     restaurantType: merchant.restaurantType,
     mainDishType: merchant.mainDishType,
-
     rating,
     reviewCount: merchant.reviewCount,
-
-    /*
-     * FE hiển thị theo thang từ 0 đến 1.
-     * Đây là giá trị fallback vì database chưa có
-     * công thức Underrated Score chính thức.
-     */
-    underratedScore: calculateUnderratedScore(rating),
-
+    underratedScore: calculateUnderratedScore(rating, merchant.reviewCount, 0),
     platformFeePercent: env.PLATFORM_FEE_PERCENT,
-
     status: merchant.status,
   };
 };
@@ -145,11 +134,6 @@ export const getMerchants = async (query: MerchantListQuery) => {
           mode: "insensitive",
         }
       : undefined,
-
-    /*
-     * Merchant phải có ít nhất một món đang bán
-     * thuộc Category được chọn.
-     */
     foods: query.categoryId
       ? {
           some: {
