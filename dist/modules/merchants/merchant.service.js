@@ -3,6 +3,7 @@ import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
 import { env } from "../../config/env.js";
 import { calculateUnderratedScore } from "../../common/utils/merchant-score.js";
+import { recommendationCache } from "../../common/services/recommendation-cache.js";
 function calculateDistanceKm(lat1, lon1, lat2, lon2) {
     const R = 6371; // Radius of Earth in km
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
@@ -15,7 +16,7 @@ function calculateDistanceKm(lat1, lon1, lat2, lon2) {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return Math.round(R * c * 100) / 100;
 }
-const mapMerchant = (merchant, customerLat, customerLng) => {
+const mapMerchant = (merchant, customerLat, customerLng, customerPreferences) => {
     const rating = Number(merchant.rating);
     const merchantLat = merchant.latitude !== null ? Number(merchant.latitude) : null;
     const merchantLng = merchant.longitude !== null ? Number(merchant.longitude) : null;
@@ -43,13 +44,38 @@ const mapMerchant = (merchant, customerLat, customerLng) => {
         ? Number(merchant.strengthIndex)
         : 0;
     const recommendationRank = merchant.recommendationRank ?? null;
+    let preferenceScore = 0;
+    if (customerPreferences) {
+        let matched = 0;
+        let total = 0;
+        if (customerPreferences.preferredRestaurantTypes.length > 0) {
+            total++;
+            if (customerPreferences.preferredRestaurantTypes.includes(merchant.restaurantType)) {
+                matched++;
+            }
+        }
+        if (customerPreferences.preferredMainDishTypes.length > 0) {
+            total++;
+            if (customerPreferences.preferredMainDishTypes.includes(merchant.mainDishType)) {
+                matched++;
+            }
+        }
+        if (customerPreferences.preferredPriceRanges.length > 0) {
+            total++;
+            if (customerPreferences.preferredPriceRanges.includes(merchant.priceRange)) {
+                matched++;
+            }
+        }
+        preferenceScore = total > 0 ? (matched / total) * 100 : 0;
+    }
     const campaignScore = hasActiveCampaign ? 100 : 0;
     const distanceScore = distance !== null ? Math.max(0, 100 - distance * 5) : 100;
     const ratingScore = (rating / 5) * 100;
-    const recommendationScore = Math.round((underratedScore * 0.4 +
-        campaignScore * 0.2 +
-        distanceScore * 0.2 +
-        ratingScore * 0.2) *
+    const recommendationScore = Math.round((preferenceScore * 0.25 +
+        underratedScore * 0.30 +
+        campaignScore * 0.15 +
+        distanceScore * 0.15 +
+        ratingScore * 0.15) *
         100) / 100;
     return {
         id: merchant.id,
@@ -70,6 +96,7 @@ const mapMerchant = (merchant, customerLat, customerLng) => {
         rating,
         strengthIndex,
         underratedScore,
+        preferenceScore,
         recommendationRank,
         distance,
         hasActiveCampaign,
@@ -104,6 +131,23 @@ const mapStaffMerchant = (merchant) => {
 export const getMerchants = async (query) => {
     const pageIndex = query.pageIndex || 1;
     const pageSize = query.pageSize || 10;
+    const cacheKey = `recommendation:${JSON.stringify(query)}`;
+    const cachedResult = recommendationCache.get(cacheKey);
+    if (cachedResult) {
+        return cachedResult;
+    }
+    const customerPreferences = query.customerId
+        ? await prisma.customer.findUnique({
+            where: {
+                id: query.customerId,
+            },
+            select: {
+                preferredRestaurantTypes: true,
+                preferredMainDishTypes: true,
+                preferredPriceRanges: true,
+            },
+        })
+        : null;
     const where = {
         status: MerchantStatus.Active,
         restaurantType: query.restaurantType
@@ -192,7 +236,7 @@ export const getMerchants = async (query) => {
             },
         },
     });
-    let mapped = rawMerchants.map((m) => mapMerchant(m, query.latitude, query.longitude));
+    let mapped = rawMerchants.map((m) => mapMerchant(m, query.latitude, query.longitude, customerPreferences));
     if (query.latitude !== undefined && query.longitude !== undefined) {
         const radiusKm = query.radiusKm ?? 15;
         mapped = mapped.filter((m) => m.distance === null || m.distance <= radiusKm);
@@ -201,13 +245,15 @@ export const getMerchants = async (query) => {
     const totalItems = mapped.length;
     const skip = (pageIndex - 1) * pageSize;
     const pagedItems = mapped.slice(skip, skip + pageSize);
-    return {
+    const result = {
         items: pagedItems,
         totalItems,
         pageIndex,
         pageSize,
         totalPages: Math.ceil(totalItems / pageSize),
     };
+    recommendationCache.set(cacheKey, result);
+    return result;
 };
 export const getMerchantById = async (merchantId) => {
     const merchant = await prisma.merchant.findFirst({

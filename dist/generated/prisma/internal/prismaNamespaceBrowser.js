@@ -67,7 +67,8 @@ export const ModelName = {
     CheckIn: 'CheckIn',
     Notification: 'Notification',
     AuditLog: 'AuditLog',
-    RebalancingRun: 'RebalancingRun'
+    RebalancingRun: 'RebalancingRun',
+    Booking: 'Booking'
 };
 /*
  * Enums
@@ -95,6 +96,9 @@ export const CustomerScalarFieldEnum = {
     userId: 'userId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
+    preferredRestaurantTypes: 'preferredRestaurantTypes',
+    preferredMainDishTypes: 'preferredMainDishTypes',
+    preferredPriceRanges: 'preferredPriceRanges',
     reviewerPoints: 'reviewerPoints',
     reviewerRank: 'reviewerRank'
 };
@@ -435,6 +439,18 @@ export const RebalancingRunScalarFieldEnum = {
     startedAt: 'startedAt',
     completedAt: 'completedAt',
     errorMessage: 'errorMessage'
+};
+export const BookingScalarFieldEnum = {
+    id: 'id',
+    customerId: 'customerId',
+    merchantId: 'merchantId',
+    bookingAt: 'bookingAt',
+    partySize: 'partySize',
+    note: 'note',
+    status: 'status',
+    rejectionReason: 'rejectionReason',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
 };
 export const SortOrder = {
     asc: 'asc',

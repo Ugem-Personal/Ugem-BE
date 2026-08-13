@@ -18,6 +18,7 @@ const getMerchantId = (req) => {
 };
 export const getMerchants = asyncHandler(async (req, res) => {
     const result = await merchantService.getMerchants({
+        customerId: req.user?.CustomerId ?? undefined,
         search: req.query.search,
         categoryId: req.query.categoryId,
         restaurantType: req.query.restaurantType,

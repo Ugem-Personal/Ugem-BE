@@ -20,3 +20,16 @@ export const searchCustomersByPhoneNumberSchema = z.object({
         limit: searchLimitSchema,
     }),
 });
+export const updateCustomerPreferencesSchema = z.object({
+    body: z.object({
+        preferredRestaurantTypes: z
+            .array(z.string().trim().min(1).max(100))
+            .max(20),
+        preferredMainDishTypes: z
+            .array(z.string().trim().min(1).max(100))
+            .max(20),
+        preferredPriceRanges: z
+            .array(z.string().trim().min(1).max(100))
+            .max(10),
+    }),
+});

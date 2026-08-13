@@ -5,16 +5,14 @@ import { authorizeRoles } from "../../common/middleware/role.middleware.js";
 import { validate } from "../../common/middleware/validate.middleware.js";
 import { getProfile, updateProfile } from "../users/user.controller.js";
 import { updateProfileSchema } from "../users/user.schema.js";
-import { searchCustomersByEmail, searchCustomersByPhoneNumber, } from "./customer.controller.js";
-import { searchCustomersByEmailSchema, searchCustomersByPhoneNumberSchema, } from "./customer.schema.js";
+import { getCustomerPreferences, searchCustomersByEmail, searchCustomersByPhoneNumber, updateCustomerPreferences, } from "./customer.controller.js";
+import { searchCustomersByEmailSchema, searchCustomersByPhoneNumberSchema, updateCustomerPreferencesSchema, } from "./customer.schema.js";
 export const customerRouter = Router();
 customerRouter.use(authenticate);
 customerRouter.get("/profile", authorizeRoles("Customer", "Reviewer"), getProfile);
 customerRouter.patch("/profile", authorizeRoles("Customer", "Reviewer"), validate(updateProfileSchema), updateProfile);
-// Giữ lại để tương thích với client cũ.
 customerRouter.put("/profile", authorizeRoles("Customer", "Reviewer"), validate(updateProfileSchema), updateProfile);
-/*
- * Hai API này được dùng khi Merchant tạo đơn cho Customer.
- */
+customerRouter.get("/preferences", authorizeRoles("Customer", "Reviewer"), getCustomerPreferences);
+customerRouter.patch("/preferences", authorizeRoles("Customer", "Reviewer"), validate(updateCustomerPreferencesSchema), updateCustomerPreferences);
 customerRouter.get("/search-by-email", requireApprovedMerchant, validate(searchCustomersByEmailSchema), searchCustomersByEmail);
 customerRouter.get("/search-by-phone-number", requireApprovedMerchant, validate(searchCustomersByPhoneNumberSchema), searchCustomersByPhoneNumber);

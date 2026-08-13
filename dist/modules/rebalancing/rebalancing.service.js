@@ -2,6 +2,7 @@ import { RebalancingStatus } from "../../generated/prisma/client.js";
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
 import { calculateNormalizedUnderratedScore, calculateStrengthIndex, } from "../../common/utils/merchant-score.js";
+import { recommendationCache } from "../../common/services/recommendation-cache.js";
 export const runRebalancing = async () => {
     const run = await prisma.rebalancingRun.create({
         data: {
@@ -109,6 +110,8 @@ export const runRebalancing = async () => {
                 completedAt: now,
             },
         });
+        // Invalidate stale recommendation cache after rebalancing completes
+        recommendationCache.clear();
         return {
             runId: run.id,
             status: RebalancingStatus.Completed,

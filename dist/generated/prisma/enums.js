@@ -95,3 +95,10 @@ export const AffiliateTransactionStatus = {
     Success: 'Success',
     Commissioned: 'Commissioned'
 };
+export const BookingStatus = {
+    Pending: 'Pending',
+    Accepted: 'Accepted',
+    Rejected: 'Rejected',
+    Cancelled: 'Cancelled',
+    Completed: 'Completed'
+};

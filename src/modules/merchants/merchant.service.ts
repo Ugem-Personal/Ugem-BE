@@ -16,6 +16,7 @@ import type {
 } from "./merchant.types.js";
 import { env } from "../../config/env.js";
 import { calculateUnderratedScore } from "../../common/utils/merchant-score.js";
+import { recommendationCache } from "../../common/services/recommendation-cache.js";
 
 function calculateDistanceKm(
   lat1: number,
@@ -252,6 +253,12 @@ export const getMerchants = async (query: MerchantListQuery) => {
   const pageIndex = query.pageIndex || 1;
   const pageSize = query.pageSize || 10;
 
+  const cacheKey = `recommendation:${JSON.stringify(query)}`;
+  const cachedResult = recommendationCache.get<any>(cacheKey);
+  if (cachedResult) {
+    return cachedResult;
+  }
+
   const customerPreferences = query.customerId
     ? await prisma.customer.findUnique({
         where: {
@@ -381,13 +388,16 @@ export const getMerchants = async (query: MerchantListQuery) => {
   const skip = (pageIndex - 1) * pageSize;
   const pagedItems = mapped.slice(skip, skip + pageSize);
 
-  return {
+  const result = {
     items: pagedItems,
     totalItems,
     pageIndex,
     pageSize,
     totalPages: Math.ceil(totalItems / pageSize),
   };
+
+  recommendationCache.set(cacheKey, result);
+  return result;
 };
 
 

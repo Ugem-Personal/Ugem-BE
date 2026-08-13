@@ -54,11 +54,6 @@ const normalizePhoneNumber = (phoneNumber) => {
 };
 export const searchCustomersByPhoneNumber = async (query) => {
     const normalizedPhoneNumber = normalizePhoneNumber(query.phoneNumber.trim());
-    /*
-     * PostgreSQL/Prisma không thể chuẩn hóa dấu cách và dấu gạch ngay trong
-     * contains một cách portable. Lấy một tập ứng viên giới hạn rồi chuẩn hóa
-     * ở Node.js để khớp cách FE đang xử lý số điện thoại.
-     */
     const candidates = await prisma.customer.findMany({
         where: {
             user: {
@@ -89,4 +84,33 @@ export const searchCustomersByPhoneNumber = async (query) => {
     })
         .slice(0, query.limit)
         .map(mapCustomerSearchResult);
+};
+export const getCustomerPreferences = async (customerId) => {
+    return prisma.customer.findUnique({
+        where: {
+            id: customerId,
+        },
+        select: {
+            preferredRestaurantTypes: true,
+            preferredMainDishTypes: true,
+            preferredPriceRanges: true,
+        },
+    });
+};
+export const updateCustomerPreferences = async (customerId, input) => {
+    return prisma.customer.update({
+        where: {
+            id: customerId,
+        },
+        data: {
+            preferredRestaurantTypes: input.preferredRestaurantTypes,
+            preferredMainDishTypes: input.preferredMainDishTypes,
+            preferredPriceRanges: input.preferredPriceRanges,
+        },
+        select: {
+            preferredRestaurantTypes: true,
+            preferredMainDishTypes: true,
+            preferredPriceRanges: true,
+        },
+    });
 };
