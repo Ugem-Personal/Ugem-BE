@@ -17,7 +17,26 @@ import type {
 import { env } from "../../config/env.js";
 import { calculateUnderratedScore } from "../../common/utils/merchant-score.js";
 
-const mapMerchant = (merchant: {
+function calculateDistanceKm(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number,
+): number {
+  const R = 6371; // Radius of Earth in km
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return Math.round(R * c * 100) / 100;
+}
+
+type MapMerchantInput = {
   id: string;
   userId: string;
   name: string;
@@ -38,8 +57,70 @@ const mapMerchant = (merchant: {
   status: MerchantStatus;
   createdAt: Date;
   updatedAt: Date;
-}) => {
+  campaigns?: Array<{
+    isActive: boolean;
+    startAt: Date;
+    endAt: Date;
+    usageLimit: number | null;
+    usedCount: number;
+  }>;
+};
+
+const mapMerchant = (
+  merchant: MapMerchantInput,
+  customerLat?: number,
+  customerLng?: number,
+) => {
   const rating = Number(merchant.rating);
+  const merchantLat =
+    merchant.latitude !== null ? Number(merchant.latitude) : null;
+  const merchantLng =
+    merchant.longitude !== null ? Number(merchant.longitude) : null;
+
+  let distance: number | null = null;
+  if (
+    customerLat !== undefined &&
+    customerLng !== undefined &&
+    merchantLat !== null &&
+    merchantLng !== null
+  ) {
+    distance = calculateDistanceKm(
+      customerLat,
+      customerLng,
+      merchantLat,
+      merchantLng,
+    );
+  }
+
+  const now = new Date();
+  const hasActiveCampaign = merchant.campaigns
+    ? merchant.campaigns.some(
+        (c) =>
+          c.isActive &&
+          new Date(c.startAt) <= now &&
+          new Date(c.endAt) >= now &&
+          (c.usageLimit == null || c.usedCount < c.usageLimit),
+      )
+    : false;
+
+  const underratedScore = calculateUnderratedScore(
+    rating,
+    merchant.reviewCount,
+    merchant.totalViews,
+  );
+  const campaignScore = hasActiveCampaign ? 100 : 0;
+  const distanceScore =
+    distance !== null ? Math.max(0, 100 - distance * 5) : 100;
+  const ratingScore = (rating / 5) * 100;
+
+  const recommendationScore =
+    Math.round(
+      (underratedScore * 0.4 +
+        campaignScore * 0.2 +
+        distanceScore * 0.2 +
+        ratingScore * 0.2) *
+        100,
+    ) / 100;
 
   return {
     id: merchant.id,
@@ -54,15 +135,14 @@ const mapMerchant = (merchant: {
     phone: merchant.phone,
     address: merchant.address,
     openingHours: merchant.openingHours,
-    latitude: merchant.latitude !== null ? Number(merchant.latitude) : null,
-    longitude: merchant.longitude !== null ? Number(merchant.longitude) : null,
+    latitude: merchantLat,
+    longitude: merchantLng,
     logoUrl: merchant.logoUrl,
     rating,
-    underratedScore: calculateUnderratedScore(
-      rating,
-      merchant.reviewCount,
-      merchant.totalViews,
-    ),
+    underratedScore,
+    distance,
+    hasActiveCampaign,
+    recommendationScore,
     reviewCount: merchant.reviewCount,
     totalViews: merchant.totalViews,
     status: merchant.status,
@@ -109,7 +189,7 @@ const mapStaffMerchant = (merchant: {
 export const getMerchants = async (query: MerchantListQuery) => {
   const pageIndex = query.pageIndex || 1;
   const pageSize = query.pageSize || 10;
-  const skip = (pageIndex - 1) * pageSize;
+
 
   const where: Prisma.MerchantWhereInput = {
     status: MerchantStatus.Active,
@@ -198,34 +278,73 @@ export const getMerchants = async (query: MerchantListQuery) => {
       : undefined,
   };
 
-  const [merchants, totalItems] = await prisma.$transaction([
-    prisma.merchant.findMany({
-      where,
-      orderBy: [
-        {
-          rating: "desc",
+  const rawMerchants = await prisma.merchant.findMany({
+    where,
+    include: {
+      campaigns: {
+        where: {
+          isActive: true,
         },
-        {
-          createdAt: "desc",
-        },
-      ],
-      skip,
-      take: pageSize,
-    }),
+      },
+    },
+  });
 
-    prisma.merchant.count({
-      where,
-    }),
-  ]);
+  let mapped = rawMerchants.map((m) =>
+    mapMerchant(m, query.latitude, query.longitude),
+  );
+
+  if (query.latitude !== undefined && query.longitude !== undefined) {
+    const radiusKm = query.radiusKm ?? 15;
+    mapped = mapped.filter(
+      (m) => m.distance === null || m.distance <= radiusKm,
+    );
+  }
+
+  mapped.sort((a, b) => b.recommendationScore - a.recommendationScore);
+
+  const totalItems = mapped.length;
+  const skip = (pageIndex - 1) * pageSize;
+  const pagedItems = mapped.slice(skip, skip + pageSize);
 
   return {
-    items: merchants.map(mapMerchant),
+    items: pagedItems,
     totalItems,
     pageIndex,
     pageSize,
     totalPages: Math.ceil(totalItems / pageSize),
   };
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export const getMerchantById = async (merchantId: string) => {
   const merchant = await prisma.merchant.findFirst({
