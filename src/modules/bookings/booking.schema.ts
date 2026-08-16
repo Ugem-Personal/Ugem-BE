@@ -9,6 +9,8 @@ export const createBookingSchema = z.object({
     partySize: z.number().int().min(1, "Số khách tối thiểu là 1").max(20, "Số khách tối đa là 20"),
 
     note: z.string().trim().max(500, "Ghi chú không quá 500 ký tự").optional(),
+
+    affiliateLinkCode: z.string().trim().optional(),
   }),
 });
 

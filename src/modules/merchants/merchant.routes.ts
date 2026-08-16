@@ -1,6 +1,9 @@
 import { Router } from "express";
 
-import { authenticate } from "../../common/middleware/auth.middleware.js";
+import {
+  authenticate,
+  optionalAuthenticate,
+} from "../../common/middleware/auth.middleware.js";
 import { requireApprovedMerchant } from "../../common/middleware/merchant.middleware.js";
 import { validate } from "../../common/middleware/validate.middleware.js";
 
@@ -29,12 +32,18 @@ import { authorizeRoles } from "../../common/middleware/role.middleware.js";
 
 export const merchantRouter = Router();
 
-merchantRouter.get("/", validate(merchantListSchema), getMerchants);
+merchantRouter.get(
+  "/",
+  optionalAuthenticate,
+  validate(merchantListSchema),
+  getMerchants,
+);
 
 merchantRouter.get("/map", validate(merchantMapSchema), getMerchantsForMap);
 
 merchantRouter.get(
   "/by-category",
+  optionalAuthenticate,
   validate(merchantsByCategorySchema),
   getMerchantsByCategory,
 );
@@ -80,6 +89,7 @@ merchantRouter.put(
 
 merchantRouter.post(
   "/:id/views",
+  optionalAuthenticate,
   validate(merchantIdSchema),
   incrementMerchantView,
 );

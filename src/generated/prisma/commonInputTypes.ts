@@ -596,6 +596,23 @@ export type EnumBookingStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumBookingStatusFilter<$PrismaModel>
 }
 
+export type EnumMerchantTrafficSourceFilter<$PrismaModel = never> = {
+  equals?: $Enums.MerchantTrafficSource | Prisma.EnumMerchantTrafficSourceFieldRefInput<$PrismaModel>
+  in?: $Enums.MerchantTrafficSource[] | Prisma.ListEnumMerchantTrafficSourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.MerchantTrafficSource[] | Prisma.ListEnumMerchantTrafficSourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumMerchantTrafficSourceFilter<$PrismaModel> | $Enums.MerchantTrafficSource
+}
+
+export type EnumMerchantTrafficSourceWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.MerchantTrafficSource | Prisma.EnumMerchantTrafficSourceFieldRefInput<$PrismaModel>
+  in?: $Enums.MerchantTrafficSource[] | Prisma.ListEnumMerchantTrafficSourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.MerchantTrafficSource[] | Prisma.ListEnumMerchantTrafficSourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumMerchantTrafficSourceWithAggregatesFilter<$PrismaModel> | $Enums.MerchantTrafficSource
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumMerchantTrafficSourceFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumMerchantTrafficSourceFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -1162,6 +1179,23 @@ export type NestedEnumBookingStatusWithAggregatesFilter<$PrismaModel = never> = 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumBookingStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumBookingStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumMerchantTrafficSourceFilter<$PrismaModel = never> = {
+  equals?: $Enums.MerchantTrafficSource | Prisma.EnumMerchantTrafficSourceFieldRefInput<$PrismaModel>
+  in?: $Enums.MerchantTrafficSource[] | Prisma.ListEnumMerchantTrafficSourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.MerchantTrafficSource[] | Prisma.ListEnumMerchantTrafficSourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumMerchantTrafficSourceFilter<$PrismaModel> | $Enums.MerchantTrafficSource
+}
+
+export type NestedEnumMerchantTrafficSourceWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.MerchantTrafficSource | Prisma.EnumMerchantTrafficSourceFieldRefInput<$PrismaModel>
+  in?: $Enums.MerchantTrafficSource[] | Prisma.ListEnumMerchantTrafficSourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.MerchantTrafficSource[] | Prisma.ListEnumMerchantTrafficSourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumMerchantTrafficSourceWithAggregatesFilter<$PrismaModel> | $Enums.MerchantTrafficSource
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumMerchantTrafficSourceFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumMerchantTrafficSourceFilter<$PrismaModel>
 }
 
 

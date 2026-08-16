@@ -40,6 +40,7 @@ export type ReviewerEarningTransactionMinAggregateOutputType = {
   id: string | null
   reviewerId: string | null
   orderId: string | null
+  bookingId: string | null
   amount: runtime.Decimal | null
   earningsAfter: runtime.Decimal | null
   type: string | null
@@ -51,6 +52,7 @@ export type ReviewerEarningTransactionMaxAggregateOutputType = {
   id: string | null
   reviewerId: string | null
   orderId: string | null
+  bookingId: string | null
   amount: runtime.Decimal | null
   earningsAfter: runtime.Decimal | null
   type: string | null
@@ -62,6 +64,7 @@ export type ReviewerEarningTransactionCountAggregateOutputType = {
   id: number
   reviewerId: number
   orderId: number
+  bookingId: number
   amount: number
   earningsAfter: number
   type: number
@@ -85,6 +88,7 @@ export type ReviewerEarningTransactionMinAggregateInputType = {
   id?: true
   reviewerId?: true
   orderId?: true
+  bookingId?: true
   amount?: true
   earningsAfter?: true
   type?: true
@@ -96,6 +100,7 @@ export type ReviewerEarningTransactionMaxAggregateInputType = {
   id?: true
   reviewerId?: true
   orderId?: true
+  bookingId?: true
   amount?: true
   earningsAfter?: true
   type?: true
@@ -107,6 +112,7 @@ export type ReviewerEarningTransactionCountAggregateInputType = {
   id?: true
   reviewerId?: true
   orderId?: true
+  bookingId?: true
   amount?: true
   earningsAfter?: true
   type?: true
@@ -204,7 +210,8 @@ export type ReviewerEarningTransactionGroupByArgs<ExtArgs extends runtime.Types.
 export type ReviewerEarningTransactionGroupByOutputType = {
   id: string
   reviewerId: string
-  orderId: string
+  orderId: string | null
+  bookingId: string | null
   amount: runtime.Decimal
   earningsAfter: runtime.Decimal
   type: string
@@ -238,20 +245,23 @@ export type ReviewerEarningTransactionWhereInput = {
   NOT?: Prisma.ReviewerEarningTransactionWhereInput | Prisma.ReviewerEarningTransactionWhereInput[]
   id?: Prisma.StringFilter<"ReviewerEarningTransaction"> | string
   reviewerId?: Prisma.StringFilter<"ReviewerEarningTransaction"> | string
-  orderId?: Prisma.StringFilter<"ReviewerEarningTransaction"> | string
+  orderId?: Prisma.StringNullableFilter<"ReviewerEarningTransaction"> | string | null
+  bookingId?: Prisma.StringNullableFilter<"ReviewerEarningTransaction"> | string | null
   amount?: Prisma.DecimalFilter<"ReviewerEarningTransaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   earningsAfter?: Prisma.DecimalFilter<"ReviewerEarningTransaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   type?: Prisma.StringFilter<"ReviewerEarningTransaction"> | string
   reason?: Prisma.StringNullableFilter<"ReviewerEarningTransaction"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ReviewerEarningTransaction"> | Date | string
   reviewer?: Prisma.XOR<Prisma.CustomerScalarRelationFilter, Prisma.CustomerWhereInput>
-  order?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>
+  order?: Prisma.XOR<Prisma.OrderNullableScalarRelationFilter, Prisma.OrderWhereInput> | null
+  booking?: Prisma.XOR<Prisma.BookingNullableScalarRelationFilter, Prisma.BookingWhereInput> | null
 }
 
 export type ReviewerEarningTransactionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   reviewerId?: Prisma.SortOrder
-  orderId?: Prisma.SortOrder
+  orderId?: Prisma.SortOrderInput | Prisma.SortOrder
+  bookingId?: Prisma.SortOrderInput | Prisma.SortOrder
   amount?: Prisma.SortOrder
   earningsAfter?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -259,11 +269,13 @@ export type ReviewerEarningTransactionOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   reviewer?: Prisma.CustomerOrderByWithRelationInput
   order?: Prisma.OrderOrderByWithRelationInput
+  booking?: Prisma.BookingOrderByWithRelationInput
 }
 
 export type ReviewerEarningTransactionWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   orderId?: string
+  bookingId?: string
   AND?: Prisma.ReviewerEarningTransactionWhereInput | Prisma.ReviewerEarningTransactionWhereInput[]
   OR?: Prisma.ReviewerEarningTransactionWhereInput[]
   NOT?: Prisma.ReviewerEarningTransactionWhereInput | Prisma.ReviewerEarningTransactionWhereInput[]
@@ -274,13 +286,15 @@ export type ReviewerEarningTransactionWhereUniqueInput = Prisma.AtLeast<{
   reason?: Prisma.StringNullableFilter<"ReviewerEarningTransaction"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ReviewerEarningTransaction"> | Date | string
   reviewer?: Prisma.XOR<Prisma.CustomerScalarRelationFilter, Prisma.CustomerWhereInput>
-  order?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>
-}, "id" | "orderId">
+  order?: Prisma.XOR<Prisma.OrderNullableScalarRelationFilter, Prisma.OrderWhereInput> | null
+  booking?: Prisma.XOR<Prisma.BookingNullableScalarRelationFilter, Prisma.BookingWhereInput> | null
+}, "id" | "orderId" | "bookingId">
 
 export type ReviewerEarningTransactionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   reviewerId?: Prisma.SortOrder
-  orderId?: Prisma.SortOrder
+  orderId?: Prisma.SortOrderInput | Prisma.SortOrder
+  bookingId?: Prisma.SortOrderInput | Prisma.SortOrder
   amount?: Prisma.SortOrder
   earningsAfter?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -299,7 +313,8 @@ export type ReviewerEarningTransactionScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ReviewerEarningTransactionScalarWhereWithAggregatesInput | Prisma.ReviewerEarningTransactionScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"ReviewerEarningTransaction"> | string
   reviewerId?: Prisma.StringWithAggregatesFilter<"ReviewerEarningTransaction"> | string
-  orderId?: Prisma.StringWithAggregatesFilter<"ReviewerEarningTransaction"> | string
+  orderId?: Prisma.StringNullableWithAggregatesFilter<"ReviewerEarningTransaction"> | string | null
+  bookingId?: Prisma.StringNullableWithAggregatesFilter<"ReviewerEarningTransaction"> | string | null
   amount?: Prisma.DecimalWithAggregatesFilter<"ReviewerEarningTransaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   earningsAfter?: Prisma.DecimalWithAggregatesFilter<"ReviewerEarningTransaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   type?: Prisma.StringWithAggregatesFilter<"ReviewerEarningTransaction"> | string
@@ -315,13 +330,15 @@ export type ReviewerEarningTransactionCreateInput = {
   reason?: string | null
   createdAt?: Date | string
   reviewer: Prisma.CustomerCreateNestedOneWithoutEarningTransactionsInput
-  order: Prisma.OrderCreateNestedOneWithoutEarningTransactionInput
+  order?: Prisma.OrderCreateNestedOneWithoutEarningTransactionInput
+  booking?: Prisma.BookingCreateNestedOneWithoutEarningTransactionInput
 }
 
 export type ReviewerEarningTransactionUncheckedCreateInput = {
   id?: string
   reviewerId: string
-  orderId: string
+  orderId?: string | null
+  bookingId?: string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   earningsAfter: runtime.Decimal | runtime.DecimalJsLike | number | string
   type: string
@@ -337,13 +354,15 @@ export type ReviewerEarningTransactionUpdateInput = {
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewer?: Prisma.CustomerUpdateOneRequiredWithoutEarningTransactionsNestedInput
-  order?: Prisma.OrderUpdateOneRequiredWithoutEarningTransactionNestedInput
+  order?: Prisma.OrderUpdateOneWithoutEarningTransactionNestedInput
+  booking?: Prisma.BookingUpdateOneWithoutEarningTransactionNestedInput
 }
 
 export type ReviewerEarningTransactionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   reviewerId?: Prisma.StringFieldUpdateOperationsInput | string
-  orderId?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   earningsAfter?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -354,7 +373,8 @@ export type ReviewerEarningTransactionUncheckedUpdateInput = {
 export type ReviewerEarningTransactionCreateManyInput = {
   id?: string
   reviewerId: string
-  orderId: string
+  orderId?: string | null
+  bookingId?: string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   earningsAfter: runtime.Decimal | runtime.DecimalJsLike | number | string
   type: string
@@ -374,7 +394,8 @@ export type ReviewerEarningTransactionUpdateManyMutationInput = {
 export type ReviewerEarningTransactionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   reviewerId?: Prisma.StringFieldUpdateOperationsInput | string
-  orderId?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   earningsAfter?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -401,6 +422,7 @@ export type ReviewerEarningTransactionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   reviewerId?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
+  bookingId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   earningsAfter?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -417,6 +439,7 @@ export type ReviewerEarningTransactionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   reviewerId?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
+  bookingId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   earningsAfter?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -428,6 +451,7 @@ export type ReviewerEarningTransactionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   reviewerId?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
+  bookingId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   earningsAfter?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -514,6 +538,38 @@ export type ReviewerEarningTransactionUncheckedUpdateOneWithoutOrderNestedInput 
   update?: Prisma.XOR<Prisma.XOR<Prisma.ReviewerEarningTransactionUpdateToOneWithWhereWithoutOrderInput, Prisma.ReviewerEarningTransactionUpdateWithoutOrderInput>, Prisma.ReviewerEarningTransactionUncheckedUpdateWithoutOrderInput>
 }
 
+export type ReviewerEarningTransactionCreateNestedOneWithoutBookingInput = {
+  create?: Prisma.XOR<Prisma.ReviewerEarningTransactionCreateWithoutBookingInput, Prisma.ReviewerEarningTransactionUncheckedCreateWithoutBookingInput>
+  connectOrCreate?: Prisma.ReviewerEarningTransactionCreateOrConnectWithoutBookingInput
+  connect?: Prisma.ReviewerEarningTransactionWhereUniqueInput
+}
+
+export type ReviewerEarningTransactionUncheckedCreateNestedOneWithoutBookingInput = {
+  create?: Prisma.XOR<Prisma.ReviewerEarningTransactionCreateWithoutBookingInput, Prisma.ReviewerEarningTransactionUncheckedCreateWithoutBookingInput>
+  connectOrCreate?: Prisma.ReviewerEarningTransactionCreateOrConnectWithoutBookingInput
+  connect?: Prisma.ReviewerEarningTransactionWhereUniqueInput
+}
+
+export type ReviewerEarningTransactionUpdateOneWithoutBookingNestedInput = {
+  create?: Prisma.XOR<Prisma.ReviewerEarningTransactionCreateWithoutBookingInput, Prisma.ReviewerEarningTransactionUncheckedCreateWithoutBookingInput>
+  connectOrCreate?: Prisma.ReviewerEarningTransactionCreateOrConnectWithoutBookingInput
+  upsert?: Prisma.ReviewerEarningTransactionUpsertWithoutBookingInput
+  disconnect?: Prisma.ReviewerEarningTransactionWhereInput | boolean
+  delete?: Prisma.ReviewerEarningTransactionWhereInput | boolean
+  connect?: Prisma.ReviewerEarningTransactionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ReviewerEarningTransactionUpdateToOneWithWhereWithoutBookingInput, Prisma.ReviewerEarningTransactionUpdateWithoutBookingInput>, Prisma.ReviewerEarningTransactionUncheckedUpdateWithoutBookingInput>
+}
+
+export type ReviewerEarningTransactionUncheckedUpdateOneWithoutBookingNestedInput = {
+  create?: Prisma.XOR<Prisma.ReviewerEarningTransactionCreateWithoutBookingInput, Prisma.ReviewerEarningTransactionUncheckedCreateWithoutBookingInput>
+  connectOrCreate?: Prisma.ReviewerEarningTransactionCreateOrConnectWithoutBookingInput
+  upsert?: Prisma.ReviewerEarningTransactionUpsertWithoutBookingInput
+  disconnect?: Prisma.ReviewerEarningTransactionWhereInput | boolean
+  delete?: Prisma.ReviewerEarningTransactionWhereInput | boolean
+  connect?: Prisma.ReviewerEarningTransactionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ReviewerEarningTransactionUpdateToOneWithWhereWithoutBookingInput, Prisma.ReviewerEarningTransactionUpdateWithoutBookingInput>, Prisma.ReviewerEarningTransactionUncheckedUpdateWithoutBookingInput>
+}
+
 export type ReviewerEarningTransactionCreateWithoutReviewerInput = {
   id?: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -521,12 +577,14 @@ export type ReviewerEarningTransactionCreateWithoutReviewerInput = {
   type: string
   reason?: string | null
   createdAt?: Date | string
-  order: Prisma.OrderCreateNestedOneWithoutEarningTransactionInput
+  order?: Prisma.OrderCreateNestedOneWithoutEarningTransactionInput
+  booking?: Prisma.BookingCreateNestedOneWithoutEarningTransactionInput
 }
 
 export type ReviewerEarningTransactionUncheckedCreateWithoutReviewerInput = {
   id?: string
-  orderId: string
+  orderId?: string | null
+  bookingId?: string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   earningsAfter: runtime.Decimal | runtime.DecimalJsLike | number | string
   type: string
@@ -566,7 +624,8 @@ export type ReviewerEarningTransactionScalarWhereInput = {
   NOT?: Prisma.ReviewerEarningTransactionScalarWhereInput | Prisma.ReviewerEarningTransactionScalarWhereInput[]
   id?: Prisma.StringFilter<"ReviewerEarningTransaction"> | string
   reviewerId?: Prisma.StringFilter<"ReviewerEarningTransaction"> | string
-  orderId?: Prisma.StringFilter<"ReviewerEarningTransaction"> | string
+  orderId?: Prisma.StringNullableFilter<"ReviewerEarningTransaction"> | string | null
+  bookingId?: Prisma.StringNullableFilter<"ReviewerEarningTransaction"> | string | null
   amount?: Prisma.DecimalFilter<"ReviewerEarningTransaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   earningsAfter?: Prisma.DecimalFilter<"ReviewerEarningTransaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   type?: Prisma.StringFilter<"ReviewerEarningTransaction"> | string
@@ -582,11 +641,13 @@ export type ReviewerEarningTransactionCreateWithoutOrderInput = {
   reason?: string | null
   createdAt?: Date | string
   reviewer: Prisma.CustomerCreateNestedOneWithoutEarningTransactionsInput
+  booking?: Prisma.BookingCreateNestedOneWithoutEarningTransactionInput
 }
 
 export type ReviewerEarningTransactionUncheckedCreateWithoutOrderInput = {
   id?: string
   reviewerId: string
+  bookingId?: string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   earningsAfter: runtime.Decimal | runtime.DecimalJsLike | number | string
   type: string
@@ -618,11 +679,73 @@ export type ReviewerEarningTransactionUpdateWithoutOrderInput = {
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewer?: Prisma.CustomerUpdateOneRequiredWithoutEarningTransactionsNestedInput
+  booking?: Prisma.BookingUpdateOneWithoutEarningTransactionNestedInput
 }
 
 export type ReviewerEarningTransactionUncheckedUpdateWithoutOrderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   reviewerId?: Prisma.StringFieldUpdateOperationsInput | string
+  bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  earningsAfter?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ReviewerEarningTransactionCreateWithoutBookingInput = {
+  id?: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  earningsAfter: runtime.Decimal | runtime.DecimalJsLike | number | string
+  type: string
+  reason?: string | null
+  createdAt?: Date | string
+  reviewer: Prisma.CustomerCreateNestedOneWithoutEarningTransactionsInput
+  order?: Prisma.OrderCreateNestedOneWithoutEarningTransactionInput
+}
+
+export type ReviewerEarningTransactionUncheckedCreateWithoutBookingInput = {
+  id?: string
+  reviewerId: string
+  orderId?: string | null
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  earningsAfter: runtime.Decimal | runtime.DecimalJsLike | number | string
+  type: string
+  reason?: string | null
+  createdAt?: Date | string
+}
+
+export type ReviewerEarningTransactionCreateOrConnectWithoutBookingInput = {
+  where: Prisma.ReviewerEarningTransactionWhereUniqueInput
+  create: Prisma.XOR<Prisma.ReviewerEarningTransactionCreateWithoutBookingInput, Prisma.ReviewerEarningTransactionUncheckedCreateWithoutBookingInput>
+}
+
+export type ReviewerEarningTransactionUpsertWithoutBookingInput = {
+  update: Prisma.XOR<Prisma.ReviewerEarningTransactionUpdateWithoutBookingInput, Prisma.ReviewerEarningTransactionUncheckedUpdateWithoutBookingInput>
+  create: Prisma.XOR<Prisma.ReviewerEarningTransactionCreateWithoutBookingInput, Prisma.ReviewerEarningTransactionUncheckedCreateWithoutBookingInput>
+  where?: Prisma.ReviewerEarningTransactionWhereInput
+}
+
+export type ReviewerEarningTransactionUpdateToOneWithWhereWithoutBookingInput = {
+  where?: Prisma.ReviewerEarningTransactionWhereInput
+  data: Prisma.XOR<Prisma.ReviewerEarningTransactionUpdateWithoutBookingInput, Prisma.ReviewerEarningTransactionUncheckedUpdateWithoutBookingInput>
+}
+
+export type ReviewerEarningTransactionUpdateWithoutBookingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  earningsAfter?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reviewer?: Prisma.CustomerUpdateOneRequiredWithoutEarningTransactionsNestedInput
+  order?: Prisma.OrderUpdateOneWithoutEarningTransactionNestedInput
+}
+
+export type ReviewerEarningTransactionUncheckedUpdateWithoutBookingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewerId?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   earningsAfter?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -632,7 +755,8 @@ export type ReviewerEarningTransactionUncheckedUpdateWithoutOrderInput = {
 
 export type ReviewerEarningTransactionCreateManyReviewerInput = {
   id?: string
-  orderId: string
+  orderId?: string | null
+  bookingId?: string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   earningsAfter: runtime.Decimal | runtime.DecimalJsLike | number | string
   type: string
@@ -647,12 +771,14 @@ export type ReviewerEarningTransactionUpdateWithoutReviewerInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  order?: Prisma.OrderUpdateOneRequiredWithoutEarningTransactionNestedInput
+  order?: Prisma.OrderUpdateOneWithoutEarningTransactionNestedInput
+  booking?: Prisma.BookingUpdateOneWithoutEarningTransactionNestedInput
 }
 
 export type ReviewerEarningTransactionUncheckedUpdateWithoutReviewerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  orderId?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   earningsAfter?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -662,7 +788,8 @@ export type ReviewerEarningTransactionUncheckedUpdateWithoutReviewerInput = {
 
 export type ReviewerEarningTransactionUncheckedUpdateManyWithoutReviewerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  orderId?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   earningsAfter?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -676,45 +803,52 @@ export type ReviewerEarningTransactionSelect<ExtArgs extends runtime.Types.Exten
   id?: boolean
   reviewerId?: boolean
   orderId?: boolean
+  bookingId?: boolean
   amount?: boolean
   earningsAfter?: boolean
   type?: boolean
   reason?: boolean
   createdAt?: boolean
   reviewer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
-  order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
+  order?: boolean | Prisma.ReviewerEarningTransaction$orderArgs<ExtArgs>
+  booking?: boolean | Prisma.ReviewerEarningTransaction$bookingArgs<ExtArgs>
 }, ExtArgs["result"]["reviewerEarningTransaction"]>
 
 export type ReviewerEarningTransactionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   reviewerId?: boolean
   orderId?: boolean
+  bookingId?: boolean
   amount?: boolean
   earningsAfter?: boolean
   type?: boolean
   reason?: boolean
   createdAt?: boolean
   reviewer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
-  order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
+  order?: boolean | Prisma.ReviewerEarningTransaction$orderArgs<ExtArgs>
+  booking?: boolean | Prisma.ReviewerEarningTransaction$bookingArgs<ExtArgs>
 }, ExtArgs["result"]["reviewerEarningTransaction"]>
 
 export type ReviewerEarningTransactionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   reviewerId?: boolean
   orderId?: boolean
+  bookingId?: boolean
   amount?: boolean
   earningsAfter?: boolean
   type?: boolean
   reason?: boolean
   createdAt?: boolean
   reviewer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
-  order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
+  order?: boolean | Prisma.ReviewerEarningTransaction$orderArgs<ExtArgs>
+  booking?: boolean | Prisma.ReviewerEarningTransaction$bookingArgs<ExtArgs>
 }, ExtArgs["result"]["reviewerEarningTransaction"]>
 
 export type ReviewerEarningTransactionSelectScalar = {
   id?: boolean
   reviewerId?: boolean
   orderId?: boolean
+  bookingId?: boolean
   amount?: boolean
   earningsAfter?: boolean
   type?: boolean
@@ -722,30 +856,35 @@ export type ReviewerEarningTransactionSelectScalar = {
   createdAt?: boolean
 }
 
-export type ReviewerEarningTransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "reviewerId" | "orderId" | "amount" | "earningsAfter" | "type" | "reason" | "createdAt", ExtArgs["result"]["reviewerEarningTransaction"]>
+export type ReviewerEarningTransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "reviewerId" | "orderId" | "bookingId" | "amount" | "earningsAfter" | "type" | "reason" | "createdAt", ExtArgs["result"]["reviewerEarningTransaction"]>
 export type ReviewerEarningTransactionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   reviewer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
-  order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
+  order?: boolean | Prisma.ReviewerEarningTransaction$orderArgs<ExtArgs>
+  booking?: boolean | Prisma.ReviewerEarningTransaction$bookingArgs<ExtArgs>
 }
 export type ReviewerEarningTransactionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   reviewer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
-  order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
+  order?: boolean | Prisma.ReviewerEarningTransaction$orderArgs<ExtArgs>
+  booking?: boolean | Prisma.ReviewerEarningTransaction$bookingArgs<ExtArgs>
 }
 export type ReviewerEarningTransactionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   reviewer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
-  order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
+  order?: boolean | Prisma.ReviewerEarningTransaction$orderArgs<ExtArgs>
+  booking?: boolean | Prisma.ReviewerEarningTransaction$bookingArgs<ExtArgs>
 }
 
 export type $ReviewerEarningTransactionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ReviewerEarningTransaction"
   objects: {
     reviewer: Prisma.$CustomerPayload<ExtArgs>
-    order: Prisma.$OrderPayload<ExtArgs>
+    order: Prisma.$OrderPayload<ExtArgs> | null
+    booking: Prisma.$BookingPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     reviewerId: string
-    orderId: string
+    orderId: string | null
+    bookingId: string | null
     amount: runtime.Decimal
     earningsAfter: runtime.Decimal
     type: string
@@ -1146,7 +1285,8 @@ readonly fields: ReviewerEarningTransactionFieldRefs;
 export interface Prisma__ReviewerEarningTransactionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   reviewer<T extends Prisma.CustomerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CustomerDefaultArgs<ExtArgs>>): Prisma.Prisma__CustomerClient<runtime.Types.Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  order<T extends Prisma.OrderDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrderDefaultArgs<ExtArgs>>): Prisma.Prisma__OrderClient<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  order<T extends Prisma.ReviewerEarningTransaction$orderArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ReviewerEarningTransaction$orderArgs<ExtArgs>>): Prisma.Prisma__OrderClient<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  booking<T extends Prisma.ReviewerEarningTransaction$bookingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ReviewerEarningTransaction$bookingArgs<ExtArgs>>): Prisma.Prisma__BookingClient<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1179,6 +1319,7 @@ export interface ReviewerEarningTransactionFieldRefs {
   readonly id: Prisma.FieldRef<"ReviewerEarningTransaction", 'String'>
   readonly reviewerId: Prisma.FieldRef<"ReviewerEarningTransaction", 'String'>
   readonly orderId: Prisma.FieldRef<"ReviewerEarningTransaction", 'String'>
+  readonly bookingId: Prisma.FieldRef<"ReviewerEarningTransaction", 'String'>
   readonly amount: Prisma.FieldRef<"ReviewerEarningTransaction", 'Decimal'>
   readonly earningsAfter: Prisma.FieldRef<"ReviewerEarningTransaction", 'Decimal'>
   readonly type: Prisma.FieldRef<"ReviewerEarningTransaction", 'String'>
@@ -1582,6 +1723,44 @@ export type ReviewerEarningTransactionDeleteManyArgs<ExtArgs extends runtime.Typ
    * Limit how many ReviewerEarningTransactions to delete.
    */
   limit?: number
+}
+
+/**
+ * ReviewerEarningTransaction.order
+ */
+export type ReviewerEarningTransaction$orderArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Order
+   */
+  select?: Prisma.OrderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Order
+   */
+  omit?: Prisma.OrderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrderInclude<ExtArgs> | null
+  where?: Prisma.OrderWhereInput
+}
+
+/**
+ * ReviewerEarningTransaction.booking
+ */
+export type ReviewerEarningTransaction$bookingArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Booking
+   */
+  select?: Prisma.BookingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Booking
+   */
+  omit?: Prisma.BookingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookingInclude<ExtArgs> | null
+  where?: Prisma.BookingWhereInput
 }
 
 /**

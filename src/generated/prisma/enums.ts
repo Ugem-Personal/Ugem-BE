@@ -166,3 +166,14 @@ export const BookingStatus = {
 } as const
 
 export type BookingStatus = (typeof BookingStatus)[keyof typeof BookingStatus]
+
+
+export const MerchantTrafficSource = {
+  Recommendation: 'Recommendation',
+  Search: 'Search',
+  Map: 'Map',
+  Affiliate: 'Affiliate',
+  Direct: 'Direct'
+} as const
+
+export type MerchantTrafficSource = (typeof MerchantTrafficSource)[keyof typeof MerchantTrafficSource]

@@ -38,6 +38,7 @@ export type BookingMinAggregateOutputType = {
   id: string | null
   customerId: string | null
   merchantId: string | null
+  affiliateLinkId: string | null
   bookingAt: Date | null
   partySize: number | null
   note: string | null
@@ -51,6 +52,7 @@ export type BookingMaxAggregateOutputType = {
   id: string | null
   customerId: string | null
   merchantId: string | null
+  affiliateLinkId: string | null
   bookingAt: Date | null
   partySize: number | null
   note: string | null
@@ -64,6 +66,7 @@ export type BookingCountAggregateOutputType = {
   id: number
   customerId: number
   merchantId: number
+  affiliateLinkId: number
   bookingAt: number
   partySize: number
   note: number
@@ -87,6 +90,7 @@ export type BookingMinAggregateInputType = {
   id?: true
   customerId?: true
   merchantId?: true
+  affiliateLinkId?: true
   bookingAt?: true
   partySize?: true
   note?: true
@@ -100,6 +104,7 @@ export type BookingMaxAggregateInputType = {
   id?: true
   customerId?: true
   merchantId?: true
+  affiliateLinkId?: true
   bookingAt?: true
   partySize?: true
   note?: true
@@ -113,6 +118,7 @@ export type BookingCountAggregateInputType = {
   id?: true
   customerId?: true
   merchantId?: true
+  affiliateLinkId?: true
   bookingAt?: true
   partySize?: true
   note?: true
@@ -213,6 +219,7 @@ export type BookingGroupByOutputType = {
   id: string
   customerId: string
   merchantId: string
+  affiliateLinkId: string | null
   bookingAt: Date
   partySize: number
   note: string | null
@@ -249,6 +256,7 @@ export type BookingWhereInput = {
   id?: Prisma.StringFilter<"Booking"> | string
   customerId?: Prisma.StringFilter<"Booking"> | string
   merchantId?: Prisma.StringFilter<"Booking"> | string
+  affiliateLinkId?: Prisma.StringNullableFilter<"Booking"> | string | null
   bookingAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
   partySize?: Prisma.IntFilter<"Booking"> | number
   note?: Prisma.StringNullableFilter<"Booking"> | string | null
@@ -258,12 +266,16 @@ export type BookingWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
   customer?: Prisma.XOR<Prisma.CustomerScalarRelationFilter, Prisma.CustomerWhereInput>
   merchant?: Prisma.XOR<Prisma.MerchantScalarRelationFilter, Prisma.MerchantWhereInput>
+  affiliateLink?: Prisma.XOR<Prisma.AffiliateLinkNullableScalarRelationFilter, Prisma.AffiliateLinkWhereInput> | null
+  affiliateTransaction?: Prisma.XOR<Prisma.AffiliateTransactionNullableScalarRelationFilter, Prisma.AffiliateTransactionWhereInput> | null
+  earningTransaction?: Prisma.XOR<Prisma.ReviewerEarningTransactionNullableScalarRelationFilter, Prisma.ReviewerEarningTransactionWhereInput> | null
 }
 
 export type BookingOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   customerId?: Prisma.SortOrder
   merchantId?: Prisma.SortOrder
+  affiliateLinkId?: Prisma.SortOrderInput | Prisma.SortOrder
   bookingAt?: Prisma.SortOrder
   partySize?: Prisma.SortOrder
   note?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -273,6 +285,9 @@ export type BookingOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   customer?: Prisma.CustomerOrderByWithRelationInput
   merchant?: Prisma.MerchantOrderByWithRelationInput
+  affiliateLink?: Prisma.AffiliateLinkOrderByWithRelationInput
+  affiliateTransaction?: Prisma.AffiliateTransactionOrderByWithRelationInput
+  earningTransaction?: Prisma.ReviewerEarningTransactionOrderByWithRelationInput
 }
 
 export type BookingWhereUniqueInput = Prisma.AtLeast<{
@@ -282,6 +297,7 @@ export type BookingWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.BookingWhereInput | Prisma.BookingWhereInput[]
   customerId?: Prisma.StringFilter<"Booking"> | string
   merchantId?: Prisma.StringFilter<"Booking"> | string
+  affiliateLinkId?: Prisma.StringNullableFilter<"Booking"> | string | null
   bookingAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
   partySize?: Prisma.IntFilter<"Booking"> | number
   note?: Prisma.StringNullableFilter<"Booking"> | string | null
@@ -291,12 +307,16 @@ export type BookingWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
   customer?: Prisma.XOR<Prisma.CustomerScalarRelationFilter, Prisma.CustomerWhereInput>
   merchant?: Prisma.XOR<Prisma.MerchantScalarRelationFilter, Prisma.MerchantWhereInput>
+  affiliateLink?: Prisma.XOR<Prisma.AffiliateLinkNullableScalarRelationFilter, Prisma.AffiliateLinkWhereInput> | null
+  affiliateTransaction?: Prisma.XOR<Prisma.AffiliateTransactionNullableScalarRelationFilter, Prisma.AffiliateTransactionWhereInput> | null
+  earningTransaction?: Prisma.XOR<Prisma.ReviewerEarningTransactionNullableScalarRelationFilter, Prisma.ReviewerEarningTransactionWhereInput> | null
 }, "id">
 
 export type BookingOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   customerId?: Prisma.SortOrder
   merchantId?: Prisma.SortOrder
+  affiliateLinkId?: Prisma.SortOrderInput | Prisma.SortOrder
   bookingAt?: Prisma.SortOrder
   partySize?: Prisma.SortOrder
   note?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -318,6 +338,7 @@ export type BookingScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Booking"> | string
   customerId?: Prisma.StringWithAggregatesFilter<"Booking"> | string
   merchantId?: Prisma.StringWithAggregatesFilter<"Booking"> | string
+  affiliateLinkId?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   bookingAt?: Prisma.DateTimeWithAggregatesFilter<"Booking"> | Date | string
   partySize?: Prisma.IntWithAggregatesFilter<"Booking"> | number
   note?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
@@ -338,12 +359,16 @@ export type BookingCreateInput = {
   updatedAt?: Date | string
   customer: Prisma.CustomerCreateNestedOneWithoutBookingsInput
   merchant: Prisma.MerchantCreateNestedOneWithoutBookingsInput
+  affiliateLink?: Prisma.AffiliateLinkCreateNestedOneWithoutBookingsInput
+  affiliateTransaction?: Prisma.AffiliateTransactionCreateNestedOneWithoutBookingInput
+  earningTransaction?: Prisma.ReviewerEarningTransactionCreateNestedOneWithoutBookingInput
 }
 
 export type BookingUncheckedCreateInput = {
   id?: string
   customerId: string
   merchantId: string
+  affiliateLinkId?: string | null
   bookingAt: Date | string
   partySize: number
   note?: string | null
@@ -351,6 +376,8 @@ export type BookingUncheckedCreateInput = {
   rejectionReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedCreateNestedOneWithoutBookingInput
+  earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedOneWithoutBookingInput
 }
 
 export type BookingUpdateInput = {
@@ -364,12 +391,16 @@ export type BookingUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   customer?: Prisma.CustomerUpdateOneRequiredWithoutBookingsNestedInput
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutBookingsNestedInput
+  affiliateLink?: Prisma.AffiliateLinkUpdateOneWithoutBookingsNestedInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUpdateOneWithoutBookingNestedInput
+  earningTransaction?: Prisma.ReviewerEarningTransactionUpdateOneWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
   merchantId?: Prisma.StringFieldUpdateOperationsInput | string
+  affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bookingAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   partySize?: Prisma.IntFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -377,12 +408,15 @@ export type BookingUncheckedUpdateInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedUpdateOneWithoutBookingNestedInput
+  earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedUpdateOneWithoutBookingNestedInput
 }
 
 export type BookingCreateManyInput = {
   id?: string
   customerId: string
   merchantId: string
+  affiliateLinkId?: string | null
   bookingAt: Date | string
   partySize: number
   note?: string | null
@@ -407,6 +441,7 @@ export type BookingUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
   merchantId?: Prisma.StringFieldUpdateOperationsInput | string
+  affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bookingAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   partySize?: Prisma.IntFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -426,10 +461,16 @@ export type BookingOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type BookingNullableScalarRelationFilter = {
+  is?: Prisma.BookingWhereInput | null
+  isNot?: Prisma.BookingWhereInput | null
+}
+
 export type BookingCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   customerId?: Prisma.SortOrder
   merchantId?: Prisma.SortOrder
+  affiliateLinkId?: Prisma.SortOrder
   bookingAt?: Prisma.SortOrder
   partySize?: Prisma.SortOrder
   note?: Prisma.SortOrder
@@ -447,6 +488,7 @@ export type BookingMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   customerId?: Prisma.SortOrder
   merchantId?: Prisma.SortOrder
+  affiliateLinkId?: Prisma.SortOrder
   bookingAt?: Prisma.SortOrder
   partySize?: Prisma.SortOrder
   note?: Prisma.SortOrder
@@ -460,6 +502,7 @@ export type BookingMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   customerId?: Prisma.SortOrder
   merchantId?: Prisma.SortOrder
+  affiliateLinkId?: Prisma.SortOrder
   bookingAt?: Prisma.SortOrder
   partySize?: Prisma.SortOrder
   note?: Prisma.SortOrder
@@ -557,6 +600,80 @@ export type BookingUncheckedUpdateManyWithoutMerchantNestedInput = {
   deleteMany?: Prisma.BookingScalarWhereInput | Prisma.BookingScalarWhereInput[]
 }
 
+export type BookingCreateNestedManyWithoutAffiliateLinkInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutAffiliateLinkInput, Prisma.BookingUncheckedCreateWithoutAffiliateLinkInput> | Prisma.BookingCreateWithoutAffiliateLinkInput[] | Prisma.BookingUncheckedCreateWithoutAffiliateLinkInput[]
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutAffiliateLinkInput | Prisma.BookingCreateOrConnectWithoutAffiliateLinkInput[]
+  createMany?: Prisma.BookingCreateManyAffiliateLinkInputEnvelope
+  connect?: Prisma.BookingWhereUniqueInput | Prisma.BookingWhereUniqueInput[]
+}
+
+export type BookingUncheckedCreateNestedManyWithoutAffiliateLinkInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutAffiliateLinkInput, Prisma.BookingUncheckedCreateWithoutAffiliateLinkInput> | Prisma.BookingCreateWithoutAffiliateLinkInput[] | Prisma.BookingUncheckedCreateWithoutAffiliateLinkInput[]
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutAffiliateLinkInput | Prisma.BookingCreateOrConnectWithoutAffiliateLinkInput[]
+  createMany?: Prisma.BookingCreateManyAffiliateLinkInputEnvelope
+  connect?: Prisma.BookingWhereUniqueInput | Prisma.BookingWhereUniqueInput[]
+}
+
+export type BookingUpdateManyWithoutAffiliateLinkNestedInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutAffiliateLinkInput, Prisma.BookingUncheckedCreateWithoutAffiliateLinkInput> | Prisma.BookingCreateWithoutAffiliateLinkInput[] | Prisma.BookingUncheckedCreateWithoutAffiliateLinkInput[]
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutAffiliateLinkInput | Prisma.BookingCreateOrConnectWithoutAffiliateLinkInput[]
+  upsert?: Prisma.BookingUpsertWithWhereUniqueWithoutAffiliateLinkInput | Prisma.BookingUpsertWithWhereUniqueWithoutAffiliateLinkInput[]
+  createMany?: Prisma.BookingCreateManyAffiliateLinkInputEnvelope
+  set?: Prisma.BookingWhereUniqueInput | Prisma.BookingWhereUniqueInput[]
+  disconnect?: Prisma.BookingWhereUniqueInput | Prisma.BookingWhereUniqueInput[]
+  delete?: Prisma.BookingWhereUniqueInput | Prisma.BookingWhereUniqueInput[]
+  connect?: Prisma.BookingWhereUniqueInput | Prisma.BookingWhereUniqueInput[]
+  update?: Prisma.BookingUpdateWithWhereUniqueWithoutAffiliateLinkInput | Prisma.BookingUpdateWithWhereUniqueWithoutAffiliateLinkInput[]
+  updateMany?: Prisma.BookingUpdateManyWithWhereWithoutAffiliateLinkInput | Prisma.BookingUpdateManyWithWhereWithoutAffiliateLinkInput[]
+  deleteMany?: Prisma.BookingScalarWhereInput | Prisma.BookingScalarWhereInput[]
+}
+
+export type BookingUncheckedUpdateManyWithoutAffiliateLinkNestedInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutAffiliateLinkInput, Prisma.BookingUncheckedCreateWithoutAffiliateLinkInput> | Prisma.BookingCreateWithoutAffiliateLinkInput[] | Prisma.BookingUncheckedCreateWithoutAffiliateLinkInput[]
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutAffiliateLinkInput | Prisma.BookingCreateOrConnectWithoutAffiliateLinkInput[]
+  upsert?: Prisma.BookingUpsertWithWhereUniqueWithoutAffiliateLinkInput | Prisma.BookingUpsertWithWhereUniqueWithoutAffiliateLinkInput[]
+  createMany?: Prisma.BookingCreateManyAffiliateLinkInputEnvelope
+  set?: Prisma.BookingWhereUniqueInput | Prisma.BookingWhereUniqueInput[]
+  disconnect?: Prisma.BookingWhereUniqueInput | Prisma.BookingWhereUniqueInput[]
+  delete?: Prisma.BookingWhereUniqueInput | Prisma.BookingWhereUniqueInput[]
+  connect?: Prisma.BookingWhereUniqueInput | Prisma.BookingWhereUniqueInput[]
+  update?: Prisma.BookingUpdateWithWhereUniqueWithoutAffiliateLinkInput | Prisma.BookingUpdateWithWhereUniqueWithoutAffiliateLinkInput[]
+  updateMany?: Prisma.BookingUpdateManyWithWhereWithoutAffiliateLinkInput | Prisma.BookingUpdateManyWithWhereWithoutAffiliateLinkInput[]
+  deleteMany?: Prisma.BookingScalarWhereInput | Prisma.BookingScalarWhereInput[]
+}
+
+export type BookingCreateNestedOneWithoutEarningTransactionInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutEarningTransactionInput, Prisma.BookingUncheckedCreateWithoutEarningTransactionInput>
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutEarningTransactionInput
+  connect?: Prisma.BookingWhereUniqueInput
+}
+
+export type BookingUpdateOneWithoutEarningTransactionNestedInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutEarningTransactionInput, Prisma.BookingUncheckedCreateWithoutEarningTransactionInput>
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutEarningTransactionInput
+  upsert?: Prisma.BookingUpsertWithoutEarningTransactionInput
+  disconnect?: Prisma.BookingWhereInput | boolean
+  delete?: Prisma.BookingWhereInput | boolean
+  connect?: Prisma.BookingWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BookingUpdateToOneWithWhereWithoutEarningTransactionInput, Prisma.BookingUpdateWithoutEarningTransactionInput>, Prisma.BookingUncheckedUpdateWithoutEarningTransactionInput>
+}
+
+export type BookingCreateNestedOneWithoutAffiliateTransactionInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutAffiliateTransactionInput, Prisma.BookingUncheckedCreateWithoutAffiliateTransactionInput>
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutAffiliateTransactionInput
+  connect?: Prisma.BookingWhereUniqueInput
+}
+
+export type BookingUpdateOneWithoutAffiliateTransactionNestedInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutAffiliateTransactionInput, Prisma.BookingUncheckedCreateWithoutAffiliateTransactionInput>
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutAffiliateTransactionInput
+  upsert?: Prisma.BookingUpsertWithoutAffiliateTransactionInput
+  disconnect?: Prisma.BookingWhereInput | boolean
+  delete?: Prisma.BookingWhereInput | boolean
+  connect?: Prisma.BookingWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BookingUpdateToOneWithWhereWithoutAffiliateTransactionInput, Prisma.BookingUpdateWithoutAffiliateTransactionInput>, Prisma.BookingUncheckedUpdateWithoutAffiliateTransactionInput>
+}
+
 export type EnumBookingStatusFieldUpdateOperationsInput = {
   set?: $Enums.BookingStatus
 }
@@ -571,11 +688,15 @@ export type BookingCreateWithoutCustomerInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   merchant: Prisma.MerchantCreateNestedOneWithoutBookingsInput
+  affiliateLink?: Prisma.AffiliateLinkCreateNestedOneWithoutBookingsInput
+  affiliateTransaction?: Prisma.AffiliateTransactionCreateNestedOneWithoutBookingInput
+  earningTransaction?: Prisma.ReviewerEarningTransactionCreateNestedOneWithoutBookingInput
 }
 
 export type BookingUncheckedCreateWithoutCustomerInput = {
   id?: string
   merchantId: string
+  affiliateLinkId?: string | null
   bookingAt: Date | string
   partySize: number
   note?: string | null
@@ -583,6 +704,8 @@ export type BookingUncheckedCreateWithoutCustomerInput = {
   rejectionReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedCreateNestedOneWithoutBookingInput
+  earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedOneWithoutBookingInput
 }
 
 export type BookingCreateOrConnectWithoutCustomerInput = {
@@ -618,6 +741,7 @@ export type BookingScalarWhereInput = {
   id?: Prisma.StringFilter<"Booking"> | string
   customerId?: Prisma.StringFilter<"Booking"> | string
   merchantId?: Prisma.StringFilter<"Booking"> | string
+  affiliateLinkId?: Prisma.StringNullableFilter<"Booking"> | string | null
   bookingAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
   partySize?: Prisma.IntFilter<"Booking"> | number
   note?: Prisma.StringNullableFilter<"Booking"> | string | null
@@ -637,11 +761,15 @@ export type BookingCreateWithoutMerchantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   customer: Prisma.CustomerCreateNestedOneWithoutBookingsInput
+  affiliateLink?: Prisma.AffiliateLinkCreateNestedOneWithoutBookingsInput
+  affiliateTransaction?: Prisma.AffiliateTransactionCreateNestedOneWithoutBookingInput
+  earningTransaction?: Prisma.ReviewerEarningTransactionCreateNestedOneWithoutBookingInput
 }
 
 export type BookingUncheckedCreateWithoutMerchantInput = {
   id?: string
   customerId: string
+  affiliateLinkId?: string | null
   bookingAt: Date | string
   partySize: number
   note?: string | null
@@ -649,6 +777,8 @@ export type BookingUncheckedCreateWithoutMerchantInput = {
   rejectionReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedCreateNestedOneWithoutBookingInput
+  earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedOneWithoutBookingInput
 }
 
 export type BookingCreateOrConnectWithoutMerchantInput = {
@@ -677,9 +807,218 @@ export type BookingUpdateManyWithWhereWithoutMerchantInput = {
   data: Prisma.XOR<Prisma.BookingUpdateManyMutationInput, Prisma.BookingUncheckedUpdateManyWithoutMerchantInput>
 }
 
+export type BookingCreateWithoutAffiliateLinkInput = {
+  id?: string
+  bookingAt: Date | string
+  partySize: number
+  note?: string | null
+  status?: $Enums.BookingStatus
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  customer: Prisma.CustomerCreateNestedOneWithoutBookingsInput
+  merchant: Prisma.MerchantCreateNestedOneWithoutBookingsInput
+  affiliateTransaction?: Prisma.AffiliateTransactionCreateNestedOneWithoutBookingInput
+  earningTransaction?: Prisma.ReviewerEarningTransactionCreateNestedOneWithoutBookingInput
+}
+
+export type BookingUncheckedCreateWithoutAffiliateLinkInput = {
+  id?: string
+  customerId: string
+  merchantId: string
+  bookingAt: Date | string
+  partySize: number
+  note?: string | null
+  status?: $Enums.BookingStatus
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedCreateNestedOneWithoutBookingInput
+  earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedOneWithoutBookingInput
+}
+
+export type BookingCreateOrConnectWithoutAffiliateLinkInput = {
+  where: Prisma.BookingWhereUniqueInput
+  create: Prisma.XOR<Prisma.BookingCreateWithoutAffiliateLinkInput, Prisma.BookingUncheckedCreateWithoutAffiliateLinkInput>
+}
+
+export type BookingCreateManyAffiliateLinkInputEnvelope = {
+  data: Prisma.BookingCreateManyAffiliateLinkInput | Prisma.BookingCreateManyAffiliateLinkInput[]
+  skipDuplicates?: boolean
+}
+
+export type BookingUpsertWithWhereUniqueWithoutAffiliateLinkInput = {
+  where: Prisma.BookingWhereUniqueInput
+  update: Prisma.XOR<Prisma.BookingUpdateWithoutAffiliateLinkInput, Prisma.BookingUncheckedUpdateWithoutAffiliateLinkInput>
+  create: Prisma.XOR<Prisma.BookingCreateWithoutAffiliateLinkInput, Prisma.BookingUncheckedCreateWithoutAffiliateLinkInput>
+}
+
+export type BookingUpdateWithWhereUniqueWithoutAffiliateLinkInput = {
+  where: Prisma.BookingWhereUniqueInput
+  data: Prisma.XOR<Prisma.BookingUpdateWithoutAffiliateLinkInput, Prisma.BookingUncheckedUpdateWithoutAffiliateLinkInput>
+}
+
+export type BookingUpdateManyWithWhereWithoutAffiliateLinkInput = {
+  where: Prisma.BookingScalarWhereInput
+  data: Prisma.XOR<Prisma.BookingUpdateManyMutationInput, Prisma.BookingUncheckedUpdateManyWithoutAffiliateLinkInput>
+}
+
+export type BookingCreateWithoutEarningTransactionInput = {
+  id?: string
+  bookingAt: Date | string
+  partySize: number
+  note?: string | null
+  status?: $Enums.BookingStatus
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  customer: Prisma.CustomerCreateNestedOneWithoutBookingsInput
+  merchant: Prisma.MerchantCreateNestedOneWithoutBookingsInput
+  affiliateLink?: Prisma.AffiliateLinkCreateNestedOneWithoutBookingsInput
+  affiliateTransaction?: Prisma.AffiliateTransactionCreateNestedOneWithoutBookingInput
+}
+
+export type BookingUncheckedCreateWithoutEarningTransactionInput = {
+  id?: string
+  customerId: string
+  merchantId: string
+  affiliateLinkId?: string | null
+  bookingAt: Date | string
+  partySize: number
+  note?: string | null
+  status?: $Enums.BookingStatus
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedCreateNestedOneWithoutBookingInput
+}
+
+export type BookingCreateOrConnectWithoutEarningTransactionInput = {
+  where: Prisma.BookingWhereUniqueInput
+  create: Prisma.XOR<Prisma.BookingCreateWithoutEarningTransactionInput, Prisma.BookingUncheckedCreateWithoutEarningTransactionInput>
+}
+
+export type BookingUpsertWithoutEarningTransactionInput = {
+  update: Prisma.XOR<Prisma.BookingUpdateWithoutEarningTransactionInput, Prisma.BookingUncheckedUpdateWithoutEarningTransactionInput>
+  create: Prisma.XOR<Prisma.BookingCreateWithoutEarningTransactionInput, Prisma.BookingUncheckedCreateWithoutEarningTransactionInput>
+  where?: Prisma.BookingWhereInput
+}
+
+export type BookingUpdateToOneWithWhereWithoutEarningTransactionInput = {
+  where?: Prisma.BookingWhereInput
+  data: Prisma.XOR<Prisma.BookingUpdateWithoutEarningTransactionInput, Prisma.BookingUncheckedUpdateWithoutEarningTransactionInput>
+}
+
+export type BookingUpdateWithoutEarningTransactionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookingAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  partySize?: Prisma.IntFieldUpdateOperationsInput | number
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  customer?: Prisma.CustomerUpdateOneRequiredWithoutBookingsNestedInput
+  merchant?: Prisma.MerchantUpdateOneRequiredWithoutBookingsNestedInput
+  affiliateLink?: Prisma.AffiliateLinkUpdateOneWithoutBookingsNestedInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUpdateOneWithoutBookingNestedInput
+}
+
+export type BookingUncheckedUpdateWithoutEarningTransactionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  customerId?: Prisma.StringFieldUpdateOperationsInput | string
+  merchantId?: Prisma.StringFieldUpdateOperationsInput | string
+  affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookingAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  partySize?: Prisma.IntFieldUpdateOperationsInput | number
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedUpdateOneWithoutBookingNestedInput
+}
+
+export type BookingCreateWithoutAffiliateTransactionInput = {
+  id?: string
+  bookingAt: Date | string
+  partySize: number
+  note?: string | null
+  status?: $Enums.BookingStatus
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  customer: Prisma.CustomerCreateNestedOneWithoutBookingsInput
+  merchant: Prisma.MerchantCreateNestedOneWithoutBookingsInput
+  affiliateLink?: Prisma.AffiliateLinkCreateNestedOneWithoutBookingsInput
+  earningTransaction?: Prisma.ReviewerEarningTransactionCreateNestedOneWithoutBookingInput
+}
+
+export type BookingUncheckedCreateWithoutAffiliateTransactionInput = {
+  id?: string
+  customerId: string
+  merchantId: string
+  affiliateLinkId?: string | null
+  bookingAt: Date | string
+  partySize: number
+  note?: string | null
+  status?: $Enums.BookingStatus
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedCreateNestedOneWithoutBookingInput
+}
+
+export type BookingCreateOrConnectWithoutAffiliateTransactionInput = {
+  where: Prisma.BookingWhereUniqueInput
+  create: Prisma.XOR<Prisma.BookingCreateWithoutAffiliateTransactionInput, Prisma.BookingUncheckedCreateWithoutAffiliateTransactionInput>
+}
+
+export type BookingUpsertWithoutAffiliateTransactionInput = {
+  update: Prisma.XOR<Prisma.BookingUpdateWithoutAffiliateTransactionInput, Prisma.BookingUncheckedUpdateWithoutAffiliateTransactionInput>
+  create: Prisma.XOR<Prisma.BookingCreateWithoutAffiliateTransactionInput, Prisma.BookingUncheckedCreateWithoutAffiliateTransactionInput>
+  where?: Prisma.BookingWhereInput
+}
+
+export type BookingUpdateToOneWithWhereWithoutAffiliateTransactionInput = {
+  where?: Prisma.BookingWhereInput
+  data: Prisma.XOR<Prisma.BookingUpdateWithoutAffiliateTransactionInput, Prisma.BookingUncheckedUpdateWithoutAffiliateTransactionInput>
+}
+
+export type BookingUpdateWithoutAffiliateTransactionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookingAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  partySize?: Prisma.IntFieldUpdateOperationsInput | number
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  customer?: Prisma.CustomerUpdateOneRequiredWithoutBookingsNestedInput
+  merchant?: Prisma.MerchantUpdateOneRequiredWithoutBookingsNestedInput
+  affiliateLink?: Prisma.AffiliateLinkUpdateOneWithoutBookingsNestedInput
+  earningTransaction?: Prisma.ReviewerEarningTransactionUpdateOneWithoutBookingNestedInput
+}
+
+export type BookingUncheckedUpdateWithoutAffiliateTransactionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  customerId?: Prisma.StringFieldUpdateOperationsInput | string
+  merchantId?: Prisma.StringFieldUpdateOperationsInput | string
+  affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookingAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  partySize?: Prisma.IntFieldUpdateOperationsInput | number
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedUpdateOneWithoutBookingNestedInput
+}
+
 export type BookingCreateManyCustomerInput = {
   id?: string
   merchantId: string
+  affiliateLinkId?: string | null
   bookingAt: Date | string
   partySize: number
   note?: string | null
@@ -699,11 +1038,15 @@ export type BookingUpdateWithoutCustomerInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutBookingsNestedInput
+  affiliateLink?: Prisma.AffiliateLinkUpdateOneWithoutBookingsNestedInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUpdateOneWithoutBookingNestedInput
+  earningTransaction?: Prisma.ReviewerEarningTransactionUpdateOneWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateWithoutCustomerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   merchantId?: Prisma.StringFieldUpdateOperationsInput | string
+  affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bookingAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   partySize?: Prisma.IntFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -711,11 +1054,14 @@ export type BookingUncheckedUpdateWithoutCustomerInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedUpdateOneWithoutBookingNestedInput
+  earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedUpdateOneWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateManyWithoutCustomerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   merchantId?: Prisma.StringFieldUpdateOperationsInput | string
+  affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bookingAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   partySize?: Prisma.IntFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -728,6 +1074,7 @@ export type BookingUncheckedUpdateManyWithoutCustomerInput = {
 export type BookingCreateManyMerchantInput = {
   id?: string
   customerId: string
+  affiliateLinkId?: string | null
   bookingAt: Date | string
   partySize: number
   note?: string | null
@@ -747,11 +1094,30 @@ export type BookingUpdateWithoutMerchantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   customer?: Prisma.CustomerUpdateOneRequiredWithoutBookingsNestedInput
+  affiliateLink?: Prisma.AffiliateLinkUpdateOneWithoutBookingsNestedInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUpdateOneWithoutBookingNestedInput
+  earningTransaction?: Prisma.ReviewerEarningTransactionUpdateOneWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateWithoutMerchantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
+  affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookingAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  partySize?: Prisma.IntFieldUpdateOperationsInput | number
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedUpdateOneWithoutBookingNestedInput
+  earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedUpdateOneWithoutBookingNestedInput
+}
+
+export type BookingUncheckedUpdateManyWithoutMerchantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  customerId?: Prisma.StringFieldUpdateOperationsInput | string
+  affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bookingAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   partySize?: Prisma.IntFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -761,9 +1127,53 @@ export type BookingUncheckedUpdateWithoutMerchantInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type BookingUncheckedUpdateManyWithoutMerchantInput = {
+export type BookingCreateManyAffiliateLinkInput = {
+  id?: string
+  customerId: string
+  merchantId: string
+  bookingAt: Date | string
+  partySize: number
+  note?: string | null
+  status?: $Enums.BookingStatus
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type BookingUpdateWithoutAffiliateLinkInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookingAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  partySize?: Prisma.IntFieldUpdateOperationsInput | number
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  customer?: Prisma.CustomerUpdateOneRequiredWithoutBookingsNestedInput
+  merchant?: Prisma.MerchantUpdateOneRequiredWithoutBookingsNestedInput
+  affiliateTransaction?: Prisma.AffiliateTransactionUpdateOneWithoutBookingNestedInput
+  earningTransaction?: Prisma.ReviewerEarningTransactionUpdateOneWithoutBookingNestedInput
+}
+
+export type BookingUncheckedUpdateWithoutAffiliateLinkInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
+  merchantId?: Prisma.StringFieldUpdateOperationsInput | string
+  bookingAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  partySize?: Prisma.IntFieldUpdateOperationsInput | number
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  affiliateTransaction?: Prisma.AffiliateTransactionUncheckedUpdateOneWithoutBookingNestedInput
+  earningTransaction?: Prisma.ReviewerEarningTransactionUncheckedUpdateOneWithoutBookingNestedInput
+}
+
+export type BookingUncheckedUpdateManyWithoutAffiliateLinkInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  customerId?: Prisma.StringFieldUpdateOperationsInput | string
+  merchantId?: Prisma.StringFieldUpdateOperationsInput | string
   bookingAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   partySize?: Prisma.IntFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -779,6 +1189,7 @@ export type BookingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   id?: boolean
   customerId?: boolean
   merchantId?: boolean
+  affiliateLinkId?: boolean
   bookingAt?: boolean
   partySize?: boolean
   note?: boolean
@@ -788,12 +1199,16 @@ export type BookingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   updatedAt?: boolean
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
+  affiliateLink?: boolean | Prisma.Booking$affiliateLinkArgs<ExtArgs>
+  affiliateTransaction?: boolean | Prisma.Booking$affiliateTransactionArgs<ExtArgs>
+  earningTransaction?: boolean | Prisma.Booking$earningTransactionArgs<ExtArgs>
 }, ExtArgs["result"]["booking"]>
 
 export type BookingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   customerId?: boolean
   merchantId?: boolean
+  affiliateLinkId?: boolean
   bookingAt?: boolean
   partySize?: boolean
   note?: boolean
@@ -803,12 +1218,14 @@ export type BookingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   updatedAt?: boolean
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
+  affiliateLink?: boolean | Prisma.Booking$affiliateLinkArgs<ExtArgs>
 }, ExtArgs["result"]["booking"]>
 
 export type BookingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   customerId?: boolean
   merchantId?: boolean
+  affiliateLinkId?: boolean
   bookingAt?: boolean
   partySize?: boolean
   note?: boolean
@@ -818,12 +1235,14 @@ export type BookingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   updatedAt?: boolean
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
+  affiliateLink?: boolean | Prisma.Booking$affiliateLinkArgs<ExtArgs>
 }, ExtArgs["result"]["booking"]>
 
 export type BookingSelectScalar = {
   id?: boolean
   customerId?: boolean
   merchantId?: boolean
+  affiliateLinkId?: boolean
   bookingAt?: boolean
   partySize?: boolean
   note?: boolean
@@ -833,18 +1252,23 @@ export type BookingSelectScalar = {
   updatedAt?: boolean
 }
 
-export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "customerId" | "merchantId" | "bookingAt" | "partySize" | "note" | "status" | "rejectionReason" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
+export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "customerId" | "merchantId" | "affiliateLinkId" | "bookingAt" | "partySize" | "note" | "status" | "rejectionReason" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
 export type BookingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
+  affiliateLink?: boolean | Prisma.Booking$affiliateLinkArgs<ExtArgs>
+  affiliateTransaction?: boolean | Prisma.Booking$affiliateTransactionArgs<ExtArgs>
+  earningTransaction?: boolean | Prisma.Booking$earningTransactionArgs<ExtArgs>
 }
 export type BookingIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
+  affiliateLink?: boolean | Prisma.Booking$affiliateLinkArgs<ExtArgs>
 }
 export type BookingIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
+  affiliateLink?: boolean | Prisma.Booking$affiliateLinkArgs<ExtArgs>
 }
 
 export type $BookingPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -852,11 +1276,15 @@ export type $BookingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   objects: {
     customer: Prisma.$CustomerPayload<ExtArgs>
     merchant: Prisma.$MerchantPayload<ExtArgs>
+    affiliateLink: Prisma.$AffiliateLinkPayload<ExtArgs> | null
+    affiliateTransaction: Prisma.$AffiliateTransactionPayload<ExtArgs> | null
+    earningTransaction: Prisma.$ReviewerEarningTransactionPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     customerId: string
     merchantId: string
+    affiliateLinkId: string | null
     bookingAt: Date
     partySize: number
     note: string | null
@@ -1260,6 +1688,9 @@ export interface Prisma__BookingClient<T, Null = never, ExtArgs extends runtime.
   readonly [Symbol.toStringTag]: "PrismaPromise"
   customer<T extends Prisma.CustomerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CustomerDefaultArgs<ExtArgs>>): Prisma.Prisma__CustomerClient<runtime.Types.Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   merchant<T extends Prisma.MerchantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MerchantDefaultArgs<ExtArgs>>): Prisma.Prisma__MerchantClient<runtime.Types.Result.GetResult<Prisma.$MerchantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  affiliateLink<T extends Prisma.Booking$affiliateLinkArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Booking$affiliateLinkArgs<ExtArgs>>): Prisma.Prisma__AffiliateLinkClient<runtime.Types.Result.GetResult<Prisma.$AffiliateLinkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  affiliateTransaction<T extends Prisma.Booking$affiliateTransactionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Booking$affiliateTransactionArgs<ExtArgs>>): Prisma.Prisma__AffiliateTransactionClient<runtime.Types.Result.GetResult<Prisma.$AffiliateTransactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  earningTransaction<T extends Prisma.Booking$earningTransactionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Booking$earningTransactionArgs<ExtArgs>>): Prisma.Prisma__ReviewerEarningTransactionClient<runtime.Types.Result.GetResult<Prisma.$ReviewerEarningTransactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1292,6 +1723,7 @@ export interface BookingFieldRefs {
   readonly id: Prisma.FieldRef<"Booking", 'String'>
   readonly customerId: Prisma.FieldRef<"Booking", 'String'>
   readonly merchantId: Prisma.FieldRef<"Booking", 'String'>
+  readonly affiliateLinkId: Prisma.FieldRef<"Booking", 'String'>
   readonly bookingAt: Prisma.FieldRef<"Booking", 'DateTime'>
   readonly partySize: Prisma.FieldRef<"Booking", 'Int'>
   readonly note: Prisma.FieldRef<"Booking", 'String'>
@@ -1697,6 +2129,63 @@ export type BookingDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Bookings to delete.
    */
   limit?: number
+}
+
+/**
+ * Booking.affiliateLink
+ */
+export type Booking$affiliateLinkArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AffiliateLink
+   */
+  select?: Prisma.AffiliateLinkSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AffiliateLink
+   */
+  omit?: Prisma.AffiliateLinkOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AffiliateLinkInclude<ExtArgs> | null
+  where?: Prisma.AffiliateLinkWhereInput
+}
+
+/**
+ * Booking.affiliateTransaction
+ */
+export type Booking$affiliateTransactionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AffiliateTransaction
+   */
+  select?: Prisma.AffiliateTransactionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AffiliateTransaction
+   */
+  omit?: Prisma.AffiliateTransactionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AffiliateTransactionInclude<ExtArgs> | null
+  where?: Prisma.AffiliateTransactionWhereInput
+}
+
+/**
+ * Booking.earningTransaction
+ */
+export type Booking$earningTransactionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ReviewerEarningTransaction
+   */
+  select?: Prisma.ReviewerEarningTransactionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ReviewerEarningTransaction
+   */
+  omit?: Prisma.ReviewerEarningTransactionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ReviewerEarningTransactionInclude<ExtArgs> | null
+  where?: Prisma.ReviewerEarningTransactionWhereInput
 }
 
 /**

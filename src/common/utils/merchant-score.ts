@@ -14,13 +14,19 @@ export const calculateStrengthIndex = (
   orders: number,
   reviews: number,
   views: number,
+  checkIns: number = 0,
 ): number => {
-  // SI = f(O, R, V)
-  const oWeight = 0.4;
-  const rWeight = 0.3;
-  const vWeight = 0.3;
+  // SI = f(O, R, V, C) where O=Orders, R=Reviews, V=Views, C=CheckIns
+  const oWeight = 0.35;
+  const rWeight = 0.25;
+  const vWeight = 0.25;
+  const cWeight = 0.15;
 
-  const rawScore = orders * oWeight + reviews * rWeight + (views / 10) * vWeight;
+  const rawScore =
+    orders * oWeight +
+    reviews * rWeight +
+    (views / 10) * vWeight +
+    checkIns * cWeight;
   return Number(Math.max(0, rawScore).toFixed(2));
 };
 

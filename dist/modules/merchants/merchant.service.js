@@ -1,4 +1,4 @@
-import { MerchantStatus, OrderPaymentStatus, OrderStatus, Prisma, } from "../../generated/prisma/client.js";
+import { MerchantStatus, MerchantTrafficSource, OrderPaymentStatus, OrderStatus, Prisma, } from "../../generated/prisma/client.js";
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
 import { env } from "../../config/env.js";
@@ -45,7 +45,11 @@ const mapMerchant = (merchant, customerLat, customerLng, customerPreferences) =>
         : 0;
     const recommendationRank = merchant.recommendationRank ?? null;
     let preferenceScore = 0;
-    if (customerPreferences) {
+    const hasUserPreferences = Boolean(customerPreferences) &&
+        ((customerPreferences?.preferredRestaurantTypes?.length ?? 0) > 0 ||
+            (customerPreferences?.preferredMainDishTypes?.length ?? 0) > 0 ||
+            (customerPreferences?.preferredPriceRanges?.length ?? 0) > 0);
+    if (hasUserPreferences && customerPreferences) {
         let matched = 0;
         let total = 0;
         if (customerPreferences.preferredRestaurantTypes.length > 0) {
@@ -71,12 +75,24 @@ const mapMerchant = (merchant, customerLat, customerLng, customerPreferences) =>
     const campaignScore = hasActiveCampaign ? 100 : 0;
     const distanceScore = distance !== null ? Math.max(0, 100 - distance * 5) : 100;
     const ratingScore = (rating / 5) * 100;
-    const recommendationScore = Math.round((preferenceScore * 0.25 +
-        underratedScore * 0.30 +
-        campaignScore * 0.15 +
-        distanceScore * 0.15 +
-        ratingScore * 0.15) *
-        100) / 100;
+    // Split scoring formula:
+    // Logged Customer with preference: Preference * 0.25 + Underrated * 0.30 + Campaign * 0.15 + Distance * 0.15 + Rating * 0.15
+    // Guest or Customer without preference: Underrated * 0.40 + Campaign * 0.20 + Distance * 0.20 + Rating * 0.20
+    const recommendationScore = hasUserPreferences
+        ? Math.round((preferenceScore * 0.25 +
+            underratedScore * 0.30 +
+            campaignScore * 0.15 +
+            distanceScore * 0.15 +
+            ratingScore * 0.15) *
+            100) / 100
+        : Math.round((underratedScore * 0.40 +
+            campaignScore * 0.20 +
+            distanceScore * 0.20 +
+            ratingScore * 0.20) *
+            100) / 100;
+    const featuredFoods = merchant.foods
+        ? merchant.foods.slice(0, 3).map((f) => f.name)
+        : [];
     return {
         id: merchant.id,
         merchantId: merchant.id,
@@ -100,6 +116,7 @@ const mapMerchant = (merchant, customerLat, customerLng, customerPreferences) =>
         recommendationRank,
         distance,
         hasActiveCampaign,
+        featuredFoods,
         recommendationScore,
         reviewCount: merchant.reviewCount,
         totalViews: merchant.totalViews,
@@ -233,6 +250,15 @@ export const getMerchants = async (query) => {
                 where: {
                     isActive: true,
                 },
+            },
+            foods: {
+                where: {
+                    isAvailable: true,
+                },
+                select: {
+                    name: true,
+                },
+                take: 3,
             },
         },
     });
@@ -390,10 +416,10 @@ export const getMerchantsForMap = async (query) => {
         totalViews: merchant.totalViews,
     }));
 };
-export const incrementMerchantView = async (merchantId) => {
+export const incrementMerchantView = async (params) => {
     const merchant = await prisma.merchant.findFirst({
         where: {
-            id: merchantId,
+            id: params.merchantId,
             status: MerchantStatus.Active,
         },
         select: {
@@ -403,9 +429,16 @@ export const incrementMerchantView = async (merchantId) => {
     if (!merchant) {
         throw new AppError(404, "Không tìm thấy Merchant");
     }
+    await prisma.merchantView.create({
+        data: {
+            merchantId: params.merchantId,
+            customerId: params.customerId || null,
+            source: params.source ?? MerchantTrafficSource.Recommendation,
+        },
+    });
     const updatedMerchant = await prisma.merchant.update({
         where: {
-            id: merchantId,
+            id: params.merchantId,
         },
         data: {
             totalViews: {
@@ -438,6 +471,9 @@ export const getMyMerchantViews = async (merchantId) => {
     return {
         merchantId: merchant.id,
         totalViews: merchant.totalViews,
+        recommendationViews: await prisma.merchantView.count({
+            where: { merchantId, source: MerchantTrafficSource.Recommendation },
+        }),
     };
 };
 export const getMyMerchantStatistics = async (merchantId) => {

@@ -60,8 +60,14 @@ export const runRebalancing = async () => {
     const computed = merchants.map((m) => {
       const ordersCount = m._count.orders;
       const reviewsCount = m._count.reviews;
+      const checkInsCount = m._count.checkIns;
       const viewsCount = m.totalViews;
-      const si = calculateStrengthIndex(ordersCount, reviewsCount, viewsCount);
+      const si = calculateStrengthIndex(
+        ordersCount,
+        reviewsCount,
+        viewsCount,
+        checkInsCount,
+      );
 
       return {
         merchant: m,

@@ -1,4 +1,5 @@
 import {
+  AffiliateTransactionStatus,
   BookingStatus,
   MerchantStatus,
   NotificationType,
@@ -7,6 +8,7 @@ import {
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
 import { createNotification } from "../notifications/notification.service.js";
+import { createReviewerBookingCommission } from "../affiliate-links/affiliate-earning.service.js";
 
 import type { CreateBookingInput, ReviewBookingInput } from "./booking.types.js";
 
@@ -29,10 +31,44 @@ export const createBooking = async (
     throw new AppError(400, "Thời gian đặt bàn phải ở tương lai");
   }
 
+  let affiliateLink: {
+    id: string;
+    reviewerId: string;
+    merchantId: string;
+    isActive: boolean;
+  } | null = null;
+
+  if (input.affiliateLinkCode?.trim()) {
+    affiliateLink = await prisma.affiliateLink.findUnique({
+      where: {
+        linkCode: input.affiliateLinkCode.trim().toUpperCase(),
+      },
+      select: {
+        id: true,
+        reviewerId: true,
+        merchantId: true,
+        isActive: true,
+      },
+    });
+
+    if (!affiliateLink || !affiliateLink.isActive) {
+      throw new AppError(400, "Affiliate Link không hợp lệ");
+    }
+
+    if (affiliateLink.merchantId !== input.merchantId) {
+      throw new AppError(400, "Affiliate Link không thuộc Merchant đặt bàn");
+    }
+
+    if (affiliateLink.reviewerId === customerId) {
+      throw new AppError(400, "Reviewer không được dùng link của chính mình");
+    }
+  }
+
   const booking = await prisma.booking.create({
     data: {
       customerId,
       merchantId: input.merchantId,
+      affiliateLinkId: affiliateLink?.id ?? null,
       bookingAt,
       partySize: input.partySize,
       note: input.note,
@@ -61,6 +97,16 @@ export const createBooking = async (
       },
     },
   });
+
+  if (affiliateLink) {
+    await prisma.affiliateTransaction.create({
+      data: {
+        affiliateLinkId: affiliateLink.id,
+        bookingId: booking.id,
+        status: AffiliateTransactionStatus.Pending,
+      },
+    }).catch(() => null);
+  }
 
   await createNotification({
     userId: merchant.userId,
@@ -172,6 +218,37 @@ export const reviewBooking = async (
     },
   });
 
+  if (booking.affiliateLinkId) {
+    if (input.status === "Accepted") {
+      await prisma.affiliateTransaction.updateMany({
+        where: {
+          bookingId: booking.id,
+          status: AffiliateTransactionStatus.Pending,
+        },
+        data: {
+          status: AffiliateTransactionStatus.Success,
+        },
+      }).catch(() => null);
+
+      await createReviewerBookingCommission(booking.id).catch(() => null);
+    } else if (input.status === "Rejected") {
+      await prisma.affiliateTransaction.updateMany({
+        where: {
+          bookingId: booking.id,
+          status: {
+            in: [
+              AffiliateTransactionStatus.Pending,
+              AffiliateTransactionStatus.Success,
+            ],
+          },
+        },
+        data: {
+          status: AffiliateTransactionStatus.Failed,
+        },
+      }).catch(() => null);
+    }
+  }
+
   const title = input.status === "Accepted" ? "Đặt bàn thành công!" : "Đặt bàn bị từ chối";
   const message =
     input.status === "Accepted"
@@ -205,6 +282,23 @@ export const cancelBooking = async (customerId: string, bookingId: string) => {
 
   if (booking.status !== BookingStatus.Pending) {
     throw new AppError(400, "Chỉ có thể hủy khi đặt bàn đang chờ xác nhận");
+  }
+
+  if (booking.affiliateLinkId) {
+    await prisma.affiliateTransaction.updateMany({
+      where: {
+        bookingId: booking.id,
+        status: {
+          in: [
+            AffiliateTransactionStatus.Pending,
+            AffiliateTransactionStatus.Success,
+          ],
+        },
+      },
+      data: {
+        status: AffiliateTransactionStatus.Failed,
+      },
+    }).catch(() => null);
   }
 
   return prisma.booking.update({

@@ -202,23 +202,35 @@ export const verifyCheckIn = async (
 
   const MAX_CHECK_IN_DISTANCE_METERS = 100;
   if (distanceMeters > MAX_CHECK_IN_DISTANCE_METERS) {
+    // Update DB status to Rejected
+    await prisma.checkIn
+      .updateMany({
+        where: { orderId: order.id },
+        data: { status: CheckInStatus.Rejected },
+      })
+      .catch(() => null);
+
     // Log abnormal check-in attempt
-    await prisma.auditLog.create({
-      data: {
-        actorUserId: order.customer.userId,
-        action: "CHECKIN_GEOFENCE_FAILED",
-        entityType: "CheckIn",
-        entityId: order.id,
-        metadata: {
-          customerLatitude: latitude,
-          customerLongitude: longitude,
-          merchantLatitude,
-          merchantLongitude,
-          distanceMeters,
-          maxAllowedMeters: MAX_CHECK_IN_DISTANCE_METERS,
+    await prisma.auditLog
+      .create({
+        data: {
+          actorUserId: order.customer.userId,
+          action: "CHECKIN_GEOFENCE_FAILED",
+          entityType: "CheckIn",
+          entityId: order.id,
+          metadata: {
+            merchantId: order.merchantId,
+            customerLatitude: latitude,
+            customerLongitude: longitude,
+            merchantLatitude,
+            merchantLongitude,
+            distanceMeters,
+            maxAllowedMeters: MAX_CHECK_IN_DISTANCE_METERS,
+            reason: "Ngoài phạm vi geofence",
+          },
         },
-      },
-    }).catch(() => null);
+      })
+      .catch(() => null);
 
     throw new AppError(400, "Bạn đang ở ngoài phạm vi check-in của quán");
   }
@@ -254,8 +266,52 @@ export const verifyCheckIn = async (
     }
 
     if (existing?.expiresAt && existing.expiresAt <= checkedInAt) {
+      await prisma.checkIn
+        .updateMany({
+          where: { orderId: order.id },
+          data: { status: CheckInStatus.Expired },
+        })
+        .catch(() => null);
+
+      await prisma.auditLog
+        .create({
+          data: {
+            actorUserId: order.customer.userId,
+            action: "CHECKIN_EXPIRED",
+            entityType: "CheckIn",
+            entityId: order.id,
+            metadata: {
+              merchantId: order.merchantId,
+              reason: "Mã QR check-in đã hết hạn",
+            },
+          },
+        })
+        .catch(() => null);
+
       throw new AppError(400, "Mã QR check-in đã hết hiệu lực");
     }
+
+    await prisma.checkIn
+      .updateMany({
+        where: { orderId: order.id },
+        data: { status: CheckInStatus.Rejected },
+      })
+      .catch(() => null);
+
+    await prisma.auditLog
+      .create({
+        data: {
+          actorUserId: order.customer.userId,
+          action: "CHECKIN_REJECTED",
+          entityType: "CheckIn",
+          entityId: order.id,
+          metadata: {
+            merchantId: order.merchantId,
+            reason: "Mã QR check-in không hợp lệ",
+          },
+        },
+      })
+      .catch(() => null);
 
     throw new AppError(400, "Mã QR check-in không hợp lệ hoặc đã hết hiệu lực");
   }
@@ -323,31 +379,106 @@ export const getMerchantCheckInStatistics = async (merchantId: string) => {
   const startOfToday = new Date();
   startOfToday.setHours(0, 0, 0, 0);
 
-  const [total, verified, today] = await prisma.$transaction([
-    prisma.checkIn.count({
-      where: { merchantId },
-    }),
-    prisma.checkIn.count({
-      where: {
-        merchantId,
-        status: CheckInStatus.Verified,
-      },
-    }),
-    prisma.checkIn.count({
-      where: {
-        merchantId,
-        status: CheckInStatus.Verified,
-        checkedInAt: {
-          gte: startOfToday,
+  const [total, verified, today, verifiedCheckIns, merchantOrders] =
+    await prisma.$transaction([
+      prisma.checkIn.count({
+        where: { merchantId },
+      }),
+      prisma.checkIn.count({
+        where: {
+          merchantId,
+          status: CheckInStatus.Verified,
         },
-      },
+      }),
+      prisma.checkIn.count({
+        where: {
+          merchantId,
+          status: CheckInStatus.Verified,
+          checkedInAt: {
+            gte: startOfToday,
+          },
+        },
+      }),
+      prisma.checkIn.findMany({
+        where: {
+          merchantId,
+          status: CheckInStatus.Verified,
+          checkedInAt: { not: null },
+        },
+        select: {
+          checkedInAt: true,
+          customerId: true,
+        },
+        orderBy: {
+          checkedInAt: "asc",
+        },
+      }),
+      prisma.order.findMany({
+        where: { merchantId },
+        select: { id: true },
+      }),
+    ]);
+
+  const dateMap = new Map<
+    string,
+    { totalCheckIns: number; customerSet: Set<string> }
+  >();
+
+  for (const c of verifiedCheckIns) {
+    if (!c.checkedInAt) continue;
+    const dateStr = c.checkedInAt.toISOString().split("T")[0];
+    if (!dateStr) continue;
+    const current = dateMap.get(dateStr) || {
+      totalCheckIns: 0,
+      customerSet: new Set<string>(),
+    };
+    current.totalCheckIns += 1;
+    if (c.customerId) current.customerSet.add(c.customerId);
+    dateMap.set(dateStr, current);
+  }
+
+  const customersOverTime = Array.from(dateMap.entries()).map(
+    ([date, val]) => ({
+      date,
+      totalCheckIns: val.totalCheckIns,
+      uniqueCustomers: val.customerSet.size,
     }),
-  ]);
+  );
+
+  const merchantOrderIds = merchantOrders.map((o) => o.id);
+
+  const abnormalLogs = await prisma.auditLog.findMany({
+    where: {
+      entityType: "CheckIn",
+      action: {
+        in: ["CHECKIN_GEOFENCE_FAILED", "CHECKIN_EXPIRED", "CHECKIN_REJECTED"],
+      },
+      OR: [
+        { entityId: { in: merchantOrderIds } },
+        { metadata: { path: ["merchantId"], equals: merchantId } },
+      ],
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 50,
+  });
+
+  const abnormalCheckIns = abnormalLogs.map((log) => ({
+    id: log.id,
+    action: log.action,
+    orderId: log.entityId,
+    actorUserId: log.actorUserId,
+    createdAt: log.createdAt,
+    metadata: log.metadata,
+  }));
 
   return {
     totalCheckIns: total,
     verifiedVisits: verified,
     todayCheckIns: today,
+    customersOverTime,
+    abnormalCheckIns,
   };
 };
 

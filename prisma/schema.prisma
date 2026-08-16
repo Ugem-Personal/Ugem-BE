@@ -155,6 +155,7 @@ model Customer {
   reviewerPoints       Int                          @default(0)
   reviewerRank         String                       @default("Bronze")
   pointTransactions    ReviewerPointTransaction[]
+  merchantViews        MerchantView[]
   user                 User                         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("customers")
@@ -281,6 +282,7 @@ model Merchant {
   campaigns      Campaign[]
   checkIns       CheckIn[]
   bookings       Booking[]
+  views          MerchantView[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -619,6 +621,7 @@ model AffiliateLink {
 
   clicks AffiliateClick[]
   orders Order[]
+  bookings Booking[]
   affiliateTransactions AffiliateTransaction[]
 
   @@unique([reviewerId, merchantId])
@@ -649,9 +652,10 @@ model AffiliateClick {
 }
 
 model ReviewerEarningTransaction {
-  id         String @id @default(uuid())
+  id         String  @id @default(uuid())
   reviewerId String
-  orderId    String @unique
+  orderId    String? @unique
+  bookingId  String? @unique
 
   amount        Decimal @db.Decimal(12, 2)
   earningsAfter Decimal @db.Decimal(12, 2)
@@ -663,7 +667,8 @@ model ReviewerEarningTransaction {
 
   reviewer Customer @relation(fields: [reviewerId], references: [id], onDelete: Restrict)
 
-  order Order @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  order   Order?   @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  booking Booking? @relation(fields: [bookingId], references: [id], onDelete: Restrict)
 
   @@index([reviewerId])
   @@index([createdAt])
@@ -673,14 +678,16 @@ model ReviewerEarningTransaction {
 model AffiliateTransaction {
   id              String                     @id @default(uuid())
   affiliateLinkId String
-  orderId         String                     @unique
+  orderId         String?                    @unique
+  bookingId       String?                    @unique
   status          AffiliateTransactionStatus @default(Pending)
   commission      Decimal?                   @db.Decimal(12, 2)
   createdAt       DateTime                   @default(now())
   updatedAt       DateTime                   @updatedAt
 
   affiliateLink AffiliateLink @relation(fields: [affiliateLinkId], references: [id], onDelete: Cascade)
-  order         Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  order         Order?        @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  booking       Booking?      @relation(fields: [bookingId], references: [id], onDelete: Cascade)
 
   @@index([affiliateLinkId])
   @@index([status])
@@ -842,6 +849,7 @@ model Booking {
   id              String        @id @default(uuid())
   customerId      String
   merchantId      String
+  affiliateLinkId String?
   bookingAt       DateTime
   partySize       Int
   note            String?
@@ -853,9 +861,40 @@ model Booking {
   customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
   merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
 
+  affiliateLink        AffiliateLink?              @relation(fields: [affiliateLinkId], references: [id], onDelete: SetNull)
+  affiliateTransaction AffiliateTransaction?
+  earningTransaction   ReviewerEarningTransaction?
+
   @@index([customerId])
   @@index([merchantId])
+  @@index([affiliateLinkId])
   @@index([status])
   @@map("bookings")
 }
+
+enum MerchantTrafficSource {
+  Recommendation
+  Search
+  Map
+  Affiliate
+  Direct
+}
+
+model MerchantView {
+  id         String                @id @default(uuid())
+  merchantId String
+  customerId String?
+  source     MerchantTrafficSource @default(Direct)
+  createdAt  DateTime              @default(now())
+
+  merchant Merchant  @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  customer Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+
+  @@index([merchantId])
+  @@index([customerId])
+  @@index([source])
+  @@index([createdAt])
+  @@map("merchant_views")
+}
+
 

@@ -9,12 +9,16 @@
  *
  * Underrated Score (US): Evaluates store quality vs visibility/traffic.
  */
-export const calculateStrengthIndex = (orders, reviews, views) => {
-    // SI = f(O, R, V)
-    const oWeight = 0.4;
-    const rWeight = 0.3;
-    const vWeight = 0.3;
-    const rawScore = orders * oWeight + reviews * rWeight + (views / 10) * vWeight;
+export const calculateStrengthIndex = (orders, reviews, views, checkIns = 0) => {
+    // SI = f(O, R, V, C) where O=Orders, R=Reviews, V=Views, C=CheckIns
+    const oWeight = 0.35;
+    const rWeight = 0.25;
+    const vWeight = 0.25;
+    const cWeight = 0.15;
+    const rawScore = orders * oWeight +
+        reviews * rWeight +
+        (views / 10) * vWeight +
+        checkIns * cWeight;
     return Number(Math.max(0, rawScore).toFixed(2));
 };
 export const calculateUnderratedScore = (rating, reviewCount = 0, totalViews = 0) => {

@@ -102,3 +102,10 @@ export const BookingStatus = {
     Cancelled: 'Cancelled',
     Completed: 'Completed'
 };
+export const MerchantTrafficSource = {
+    Recommendation: 'Recommendation',
+    Search: 'Search',
+    Map: 'Map',
+    Affiliate: 'Affiliate',
+    Direct: 'Direct'
+};

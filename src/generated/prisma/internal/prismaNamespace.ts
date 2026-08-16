@@ -426,7 +426,8 @@ export const ModelName = {
   Notification: 'Notification',
   AuditLog: 'AuditLog',
   RebalancingRun: 'RebalancingRun',
-  Booking: 'Booking'
+  Booking: 'Booking',
+  MerchantView: 'MerchantView'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -442,7 +443,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "customer" | "refreshToken" | "passwordResetToken" | "application" | "applicationMenu" | "merchant" | "category" | "food" | "foodCategory" | "foodTopping" | "order" | "orderDetail" | "orderDetailTopping" | "bill" | "wishlist" | "review" | "reviewDetail" | "reviewerApplication" | "affiliateLink" | "affiliateClick" | "reviewerEarningTransaction" | "affiliateTransaction" | "reviewerPointTransaction" | "campaign" | "checkIn" | "notification" | "auditLog" | "rebalancingRun" | "booking"
+    modelProps: "user" | "customer" | "refreshToken" | "passwordResetToken" | "application" | "applicationMenu" | "merchant" | "category" | "food" | "foodCategory" | "foodTopping" | "order" | "orderDetail" | "orderDetailTopping" | "bill" | "wishlist" | "review" | "reviewDetail" | "reviewerApplication" | "affiliateLink" | "affiliateClick" | "reviewerEarningTransaction" | "affiliateTransaction" | "reviewerPointTransaction" | "campaign" | "checkIn" | "notification" | "auditLog" | "rebalancingRun" | "booking" | "merchantView"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2666,6 +2667,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    MerchantView: {
+      payload: Prisma.$MerchantViewPayload<ExtArgs>
+      fields: Prisma.MerchantViewFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MerchantViewFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantViewPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MerchantViewFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantViewPayload>
+        }
+        findFirst: {
+          args: Prisma.MerchantViewFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantViewPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MerchantViewFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantViewPayload>
+        }
+        findMany: {
+          args: Prisma.MerchantViewFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantViewPayload>[]
+        }
+        create: {
+          args: Prisma.MerchantViewCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantViewPayload>
+        }
+        createMany: {
+          args: Prisma.MerchantViewCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MerchantViewCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantViewPayload>[]
+        }
+        delete: {
+          args: Prisma.MerchantViewDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantViewPayload>
+        }
+        update: {
+          args: Prisma.MerchantViewUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantViewPayload>
+        }
+        deleteMany: {
+          args: Prisma.MerchantViewDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MerchantViewUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MerchantViewUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantViewPayload>[]
+        }
+        upsert: {
+          args: Prisma.MerchantViewUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantViewPayload>
+        }
+        aggregate: {
+          args: Prisma.MerchantViewAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMerchantView>
+        }
+        groupBy: {
+          args: Prisma.MerchantViewGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MerchantViewGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MerchantViewCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MerchantViewCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -3055,6 +3130,7 @@ export const ReviewerEarningTransactionScalarFieldEnum = {
   id: 'id',
   reviewerId: 'reviewerId',
   orderId: 'orderId',
+  bookingId: 'bookingId',
   amount: 'amount',
   earningsAfter: 'earningsAfter',
   type: 'type',
@@ -3069,6 +3145,7 @@ export const AffiliateTransactionScalarFieldEnum = {
   id: 'id',
   affiliateLinkId: 'affiliateLinkId',
   orderId: 'orderId',
+  bookingId: 'bookingId',
   status: 'status',
   commission: 'commission',
   createdAt: 'createdAt',
@@ -3186,6 +3263,7 @@ export const BookingScalarFieldEnum = {
   id: 'id',
   customerId: 'customerId',
   merchantId: 'merchantId',
+  affiliateLinkId: 'affiliateLinkId',
   bookingAt: 'bookingAt',
   partySize: 'partySize',
   note: 'note',
@@ -3196,6 +3274,17 @@ export const BookingScalarFieldEnum = {
 } as const
 
 export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
+
+
+export const MerchantViewScalarFieldEnum = {
+  id: 'id',
+  merchantId: 'merchantId',
+  customerId: 'customerId',
+  source: 'source',
+  createdAt: 'createdAt'
+} as const
+
+export type MerchantViewScalarFieldEnum = (typeof MerchantViewScalarFieldEnum)[keyof typeof MerchantViewScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -3547,6 +3636,20 @@ export type ListEnumBookingStatusFieldRefInput<$PrismaModel> = FieldRefInputType
 
 
 /**
+ * Reference to a field of type 'MerchantTrafficSource'
+ */
+export type EnumMerchantTrafficSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MerchantTrafficSource'>
+    
+
+
+/**
+ * Reference to a field of type 'MerchantTrafficSource[]'
+ */
+export type ListEnumMerchantTrafficSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MerchantTrafficSource[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -3740,6 +3843,7 @@ export type GlobalOmitConfig = {
   auditLog?: Prisma.AuditLogOmit
   rebalancingRun?: Prisma.RebalancingRunOmit
   booking?: Prisma.BookingOmit
+  merchantView?: Prisma.MerchantViewOmit
 }
 
 /* Types for Logging */

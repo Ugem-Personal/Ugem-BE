@@ -167,3 +167,8 @@ export type RebalancingRun = Prisma.RebalancingRunModel
  * 
  */
 export type Booking = Prisma.BookingModel
+/**
+ * Model MerchantView
+ * 
+ */
+export type MerchantView = Prisma.MerchantViewModel

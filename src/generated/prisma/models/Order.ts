@@ -950,6 +950,11 @@ export type OrderScalarRelationFilter = {
   isNot?: Prisma.OrderWhereInput
 }
 
+export type OrderNullableScalarRelationFilter = {
+  is?: Prisma.OrderWhereInput | null
+  isNot?: Prisma.OrderWhereInput | null
+}
+
 export type OrderCreateNestedManyWithoutCustomerInput = {
   create?: Prisma.XOR<Prisma.OrderCreateWithoutCustomerInput, Prisma.OrderUncheckedCreateWithoutCustomerInput> | Prisma.OrderCreateWithoutCustomerInput[] | Prisma.OrderUncheckedCreateWithoutCustomerInput[]
   connectOrCreate?: Prisma.OrderCreateOrConnectWithoutCustomerInput | Prisma.OrderCreateOrConnectWithoutCustomerInput[]
@@ -1140,10 +1145,12 @@ export type OrderCreateNestedOneWithoutEarningTransactionInput = {
   connect?: Prisma.OrderWhereUniqueInput
 }
 
-export type OrderUpdateOneRequiredWithoutEarningTransactionNestedInput = {
+export type OrderUpdateOneWithoutEarningTransactionNestedInput = {
   create?: Prisma.XOR<Prisma.OrderCreateWithoutEarningTransactionInput, Prisma.OrderUncheckedCreateWithoutEarningTransactionInput>
   connectOrCreate?: Prisma.OrderCreateOrConnectWithoutEarningTransactionInput
   upsert?: Prisma.OrderUpsertWithoutEarningTransactionInput
+  disconnect?: Prisma.OrderWhereInput | boolean
+  delete?: Prisma.OrderWhereInput | boolean
   connect?: Prisma.OrderWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.OrderUpdateToOneWithWhereWithoutEarningTransactionInput, Prisma.OrderUpdateWithoutEarningTransactionInput>, Prisma.OrderUncheckedUpdateWithoutEarningTransactionInput>
 }
@@ -1154,10 +1161,12 @@ export type OrderCreateNestedOneWithoutAffiliateTransactionInput = {
   connect?: Prisma.OrderWhereUniqueInput
 }
 
-export type OrderUpdateOneRequiredWithoutAffiliateTransactionNestedInput = {
+export type OrderUpdateOneWithoutAffiliateTransactionNestedInput = {
   create?: Prisma.XOR<Prisma.OrderCreateWithoutAffiliateTransactionInput, Prisma.OrderUncheckedCreateWithoutAffiliateTransactionInput>
   connectOrCreate?: Prisma.OrderCreateOrConnectWithoutAffiliateTransactionInput
   upsert?: Prisma.OrderUpsertWithoutAffiliateTransactionInput
+  disconnect?: Prisma.OrderWhereInput | boolean
+  delete?: Prisma.OrderWhereInput | boolean
   connect?: Prisma.OrderWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.OrderUpdateToOneWithWhereWithoutAffiliateTransactionInput, Prisma.OrderUpdateWithoutAffiliateTransactionInput>, Prisma.OrderUncheckedUpdateWithoutAffiliateTransactionInput>
 }

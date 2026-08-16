@@ -68,7 +68,8 @@ export const ModelName = {
     Notification: 'Notification',
     AuditLog: 'AuditLog',
     RebalancingRun: 'RebalancingRun',
-    Booking: 'Booking'
+    Booking: 'Booking',
+    MerchantView: 'MerchantView'
 };
 /*
  * Enums
@@ -345,6 +346,7 @@ export const ReviewerEarningTransactionScalarFieldEnum = {
     id: 'id',
     reviewerId: 'reviewerId',
     orderId: 'orderId',
+    bookingId: 'bookingId',
     amount: 'amount',
     earningsAfter: 'earningsAfter',
     type: 'type',
@@ -355,6 +357,7 @@ export const AffiliateTransactionScalarFieldEnum = {
     id: 'id',
     affiliateLinkId: 'affiliateLinkId',
     orderId: 'orderId',
+    bookingId: 'bookingId',
     status: 'status',
     commission: 'commission',
     createdAt: 'createdAt',
@@ -444,6 +447,7 @@ export const BookingScalarFieldEnum = {
     id: 'id',
     customerId: 'customerId',
     merchantId: 'merchantId',
+    affiliateLinkId: 'affiliateLinkId',
     bookingAt: 'bookingAt',
     partySize: 'partySize',
     note: 'note',
@@ -451,6 +455,13 @@ export const BookingScalarFieldEnum = {
     rejectionReason: 'rejectionReason',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
+};
+export const MerchantViewScalarFieldEnum = {
+    id: 'id',
+    merchantId: 'merchantId',
+    customerId: 'customerId',
+    source: 'source',
+    createdAt: 'createdAt'
 };
 export const SortOrder = {
     asc: 'asc',

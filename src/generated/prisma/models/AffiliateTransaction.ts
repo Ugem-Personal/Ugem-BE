@@ -38,6 +38,7 @@ export type AffiliateTransactionMinAggregateOutputType = {
   id: string | null
   affiliateLinkId: string | null
   orderId: string | null
+  bookingId: string | null
   status: $Enums.AffiliateTransactionStatus | null
   commission: runtime.Decimal | null
   createdAt: Date | null
@@ -48,6 +49,7 @@ export type AffiliateTransactionMaxAggregateOutputType = {
   id: string | null
   affiliateLinkId: string | null
   orderId: string | null
+  bookingId: string | null
   status: $Enums.AffiliateTransactionStatus | null
   commission: runtime.Decimal | null
   createdAt: Date | null
@@ -58,6 +60,7 @@ export type AffiliateTransactionCountAggregateOutputType = {
   id: number
   affiliateLinkId: number
   orderId: number
+  bookingId: number
   status: number
   commission: number
   createdAt: number
@@ -78,6 +81,7 @@ export type AffiliateTransactionMinAggregateInputType = {
   id?: true
   affiliateLinkId?: true
   orderId?: true
+  bookingId?: true
   status?: true
   commission?: true
   createdAt?: true
@@ -88,6 +92,7 @@ export type AffiliateTransactionMaxAggregateInputType = {
   id?: true
   affiliateLinkId?: true
   orderId?: true
+  bookingId?: true
   status?: true
   commission?: true
   createdAt?: true
@@ -98,6 +103,7 @@ export type AffiliateTransactionCountAggregateInputType = {
   id?: true
   affiliateLinkId?: true
   orderId?: true
+  bookingId?: true
   status?: true
   commission?: true
   createdAt?: true
@@ -194,7 +200,8 @@ export type AffiliateTransactionGroupByArgs<ExtArgs extends runtime.Types.Extens
 export type AffiliateTransactionGroupByOutputType = {
   id: string
   affiliateLinkId: string
-  orderId: string
+  orderId: string | null
+  bookingId: string | null
   status: $Enums.AffiliateTransactionStatus
   commission: runtime.Decimal | null
   createdAt: Date
@@ -227,30 +234,35 @@ export type AffiliateTransactionWhereInput = {
   NOT?: Prisma.AffiliateTransactionWhereInput | Prisma.AffiliateTransactionWhereInput[]
   id?: Prisma.StringFilter<"AffiliateTransaction"> | string
   affiliateLinkId?: Prisma.StringFilter<"AffiliateTransaction"> | string
-  orderId?: Prisma.StringFilter<"AffiliateTransaction"> | string
+  orderId?: Prisma.StringNullableFilter<"AffiliateTransaction"> | string | null
+  bookingId?: Prisma.StringNullableFilter<"AffiliateTransaction"> | string | null
   status?: Prisma.EnumAffiliateTransactionStatusFilter<"AffiliateTransaction"> | $Enums.AffiliateTransactionStatus
   commission?: Prisma.DecimalNullableFilter<"AffiliateTransaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFilter<"AffiliateTransaction"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AffiliateTransaction"> | Date | string
   affiliateLink?: Prisma.XOR<Prisma.AffiliateLinkScalarRelationFilter, Prisma.AffiliateLinkWhereInput>
-  order?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>
+  order?: Prisma.XOR<Prisma.OrderNullableScalarRelationFilter, Prisma.OrderWhereInput> | null
+  booking?: Prisma.XOR<Prisma.BookingNullableScalarRelationFilter, Prisma.BookingWhereInput> | null
 }
 
 export type AffiliateTransactionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   affiliateLinkId?: Prisma.SortOrder
-  orderId?: Prisma.SortOrder
+  orderId?: Prisma.SortOrderInput | Prisma.SortOrder
+  bookingId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   commission?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   affiliateLink?: Prisma.AffiliateLinkOrderByWithRelationInput
   order?: Prisma.OrderOrderByWithRelationInput
+  booking?: Prisma.BookingOrderByWithRelationInput
 }
 
 export type AffiliateTransactionWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   orderId?: string
+  bookingId?: string
   AND?: Prisma.AffiliateTransactionWhereInput | Prisma.AffiliateTransactionWhereInput[]
   OR?: Prisma.AffiliateTransactionWhereInput[]
   NOT?: Prisma.AffiliateTransactionWhereInput | Prisma.AffiliateTransactionWhereInput[]
@@ -260,13 +272,15 @@ export type AffiliateTransactionWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"AffiliateTransaction"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AffiliateTransaction"> | Date | string
   affiliateLink?: Prisma.XOR<Prisma.AffiliateLinkScalarRelationFilter, Prisma.AffiliateLinkWhereInput>
-  order?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>
-}, "id" | "orderId">
+  order?: Prisma.XOR<Prisma.OrderNullableScalarRelationFilter, Prisma.OrderWhereInput> | null
+  booking?: Prisma.XOR<Prisma.BookingNullableScalarRelationFilter, Prisma.BookingWhereInput> | null
+}, "id" | "orderId" | "bookingId">
 
 export type AffiliateTransactionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   affiliateLinkId?: Prisma.SortOrder
-  orderId?: Prisma.SortOrder
+  orderId?: Prisma.SortOrderInput | Prisma.SortOrder
+  bookingId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   commission?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -284,7 +298,8 @@ export type AffiliateTransactionScalarWhereWithAggregatesInput = {
   NOT?: Prisma.AffiliateTransactionScalarWhereWithAggregatesInput | Prisma.AffiliateTransactionScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"AffiliateTransaction"> | string
   affiliateLinkId?: Prisma.StringWithAggregatesFilter<"AffiliateTransaction"> | string
-  orderId?: Prisma.StringWithAggregatesFilter<"AffiliateTransaction"> | string
+  orderId?: Prisma.StringNullableWithAggregatesFilter<"AffiliateTransaction"> | string | null
+  bookingId?: Prisma.StringNullableWithAggregatesFilter<"AffiliateTransaction"> | string | null
   status?: Prisma.EnumAffiliateTransactionStatusWithAggregatesFilter<"AffiliateTransaction"> | $Enums.AffiliateTransactionStatus
   commission?: Prisma.DecimalNullableWithAggregatesFilter<"AffiliateTransaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"AffiliateTransaction"> | Date | string
@@ -298,13 +313,15 @@ export type AffiliateTransactionCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   affiliateLink: Prisma.AffiliateLinkCreateNestedOneWithoutAffiliateTransactionsInput
-  order: Prisma.OrderCreateNestedOneWithoutAffiliateTransactionInput
+  order?: Prisma.OrderCreateNestedOneWithoutAffiliateTransactionInput
+  booking?: Prisma.BookingCreateNestedOneWithoutAffiliateTransactionInput
 }
 
 export type AffiliateTransactionUncheckedCreateInput = {
   id?: string
   affiliateLinkId: string
-  orderId: string
+  orderId?: string | null
+  bookingId?: string | null
   status?: $Enums.AffiliateTransactionStatus
   commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
@@ -318,13 +335,15 @@ export type AffiliateTransactionUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   affiliateLink?: Prisma.AffiliateLinkUpdateOneRequiredWithoutAffiliateTransactionsNestedInput
-  order?: Prisma.OrderUpdateOneRequiredWithoutAffiliateTransactionNestedInput
+  order?: Prisma.OrderUpdateOneWithoutAffiliateTransactionNestedInput
+  booking?: Prisma.BookingUpdateOneWithoutAffiliateTransactionNestedInput
 }
 
 export type AffiliateTransactionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   affiliateLinkId?: Prisma.StringFieldUpdateOperationsInput | string
-  orderId?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumAffiliateTransactionStatusFieldUpdateOperationsInput | $Enums.AffiliateTransactionStatus
   commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -334,7 +353,8 @@ export type AffiliateTransactionUncheckedUpdateInput = {
 export type AffiliateTransactionCreateManyInput = {
   id?: string
   affiliateLinkId: string
-  orderId: string
+  orderId?: string | null
+  bookingId?: string | null
   status?: $Enums.AffiliateTransactionStatus
   commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
@@ -352,7 +372,8 @@ export type AffiliateTransactionUpdateManyMutationInput = {
 export type AffiliateTransactionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   affiliateLinkId?: Prisma.StringFieldUpdateOperationsInput | string
-  orderId?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumAffiliateTransactionStatusFieldUpdateOperationsInput | $Enums.AffiliateTransactionStatus
   commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -378,6 +399,7 @@ export type AffiliateTransactionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   affiliateLinkId?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
+  bookingId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   commission?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -392,6 +414,7 @@ export type AffiliateTransactionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   affiliateLinkId?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
+  bookingId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   commission?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -402,6 +425,7 @@ export type AffiliateTransactionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   affiliateLinkId?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
+  bookingId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   commission?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -490,6 +514,38 @@ export type EnumAffiliateTransactionStatusFieldUpdateOperationsInput = {
   set?: $Enums.AffiliateTransactionStatus
 }
 
+export type AffiliateTransactionCreateNestedOneWithoutBookingInput = {
+  create?: Prisma.XOR<Prisma.AffiliateTransactionCreateWithoutBookingInput, Prisma.AffiliateTransactionUncheckedCreateWithoutBookingInput>
+  connectOrCreate?: Prisma.AffiliateTransactionCreateOrConnectWithoutBookingInput
+  connect?: Prisma.AffiliateTransactionWhereUniqueInput
+}
+
+export type AffiliateTransactionUncheckedCreateNestedOneWithoutBookingInput = {
+  create?: Prisma.XOR<Prisma.AffiliateTransactionCreateWithoutBookingInput, Prisma.AffiliateTransactionUncheckedCreateWithoutBookingInput>
+  connectOrCreate?: Prisma.AffiliateTransactionCreateOrConnectWithoutBookingInput
+  connect?: Prisma.AffiliateTransactionWhereUniqueInput
+}
+
+export type AffiliateTransactionUpdateOneWithoutBookingNestedInput = {
+  create?: Prisma.XOR<Prisma.AffiliateTransactionCreateWithoutBookingInput, Prisma.AffiliateTransactionUncheckedCreateWithoutBookingInput>
+  connectOrCreate?: Prisma.AffiliateTransactionCreateOrConnectWithoutBookingInput
+  upsert?: Prisma.AffiliateTransactionUpsertWithoutBookingInput
+  disconnect?: Prisma.AffiliateTransactionWhereInput | boolean
+  delete?: Prisma.AffiliateTransactionWhereInput | boolean
+  connect?: Prisma.AffiliateTransactionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AffiliateTransactionUpdateToOneWithWhereWithoutBookingInput, Prisma.AffiliateTransactionUpdateWithoutBookingInput>, Prisma.AffiliateTransactionUncheckedUpdateWithoutBookingInput>
+}
+
+export type AffiliateTransactionUncheckedUpdateOneWithoutBookingNestedInput = {
+  create?: Prisma.XOR<Prisma.AffiliateTransactionCreateWithoutBookingInput, Prisma.AffiliateTransactionUncheckedCreateWithoutBookingInput>
+  connectOrCreate?: Prisma.AffiliateTransactionCreateOrConnectWithoutBookingInput
+  upsert?: Prisma.AffiliateTransactionUpsertWithoutBookingInput
+  disconnect?: Prisma.AffiliateTransactionWhereInput | boolean
+  delete?: Prisma.AffiliateTransactionWhereInput | boolean
+  connect?: Prisma.AffiliateTransactionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AffiliateTransactionUpdateToOneWithWhereWithoutBookingInput, Prisma.AffiliateTransactionUpdateWithoutBookingInput>, Prisma.AffiliateTransactionUncheckedUpdateWithoutBookingInput>
+}
+
 export type AffiliateTransactionCreateWithoutOrderInput = {
   id?: string
   status?: $Enums.AffiliateTransactionStatus
@@ -497,11 +553,13 @@ export type AffiliateTransactionCreateWithoutOrderInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   affiliateLink: Prisma.AffiliateLinkCreateNestedOneWithoutAffiliateTransactionsInput
+  booking?: Prisma.BookingCreateNestedOneWithoutAffiliateTransactionInput
 }
 
 export type AffiliateTransactionUncheckedCreateWithoutOrderInput = {
   id?: string
   affiliateLinkId: string
+  bookingId?: string | null
   status?: $Enums.AffiliateTransactionStatus
   commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
@@ -531,11 +589,13 @@ export type AffiliateTransactionUpdateWithoutOrderInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   affiliateLink?: Prisma.AffiliateLinkUpdateOneRequiredWithoutAffiliateTransactionsNestedInput
+  booking?: Prisma.BookingUpdateOneWithoutAffiliateTransactionNestedInput
 }
 
 export type AffiliateTransactionUncheckedUpdateWithoutOrderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   affiliateLinkId?: Prisma.StringFieldUpdateOperationsInput | string
+  bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumAffiliateTransactionStatusFieldUpdateOperationsInput | $Enums.AffiliateTransactionStatus
   commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -548,12 +608,14 @@ export type AffiliateTransactionCreateWithoutAffiliateLinkInput = {
   commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  order: Prisma.OrderCreateNestedOneWithoutAffiliateTransactionInput
+  order?: Prisma.OrderCreateNestedOneWithoutAffiliateTransactionInput
+  booking?: Prisma.BookingCreateNestedOneWithoutAffiliateTransactionInput
 }
 
 export type AffiliateTransactionUncheckedCreateWithoutAffiliateLinkInput = {
   id?: string
-  orderId: string
+  orderId?: string | null
+  bookingId?: string | null
   status?: $Enums.AffiliateTransactionStatus
   commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
@@ -592,16 +654,74 @@ export type AffiliateTransactionScalarWhereInput = {
   NOT?: Prisma.AffiliateTransactionScalarWhereInput | Prisma.AffiliateTransactionScalarWhereInput[]
   id?: Prisma.StringFilter<"AffiliateTransaction"> | string
   affiliateLinkId?: Prisma.StringFilter<"AffiliateTransaction"> | string
-  orderId?: Prisma.StringFilter<"AffiliateTransaction"> | string
+  orderId?: Prisma.StringNullableFilter<"AffiliateTransaction"> | string | null
+  bookingId?: Prisma.StringNullableFilter<"AffiliateTransaction"> | string | null
   status?: Prisma.EnumAffiliateTransactionStatusFilter<"AffiliateTransaction"> | $Enums.AffiliateTransactionStatus
   commission?: Prisma.DecimalNullableFilter<"AffiliateTransaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFilter<"AffiliateTransaction"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AffiliateTransaction"> | Date | string
 }
 
+export type AffiliateTransactionCreateWithoutBookingInput = {
+  id?: string
+  status?: $Enums.AffiliateTransactionStatus
+  commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  affiliateLink: Prisma.AffiliateLinkCreateNestedOneWithoutAffiliateTransactionsInput
+  order?: Prisma.OrderCreateNestedOneWithoutAffiliateTransactionInput
+}
+
+export type AffiliateTransactionUncheckedCreateWithoutBookingInput = {
+  id?: string
+  affiliateLinkId: string
+  orderId?: string | null
+  status?: $Enums.AffiliateTransactionStatus
+  commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type AffiliateTransactionCreateOrConnectWithoutBookingInput = {
+  where: Prisma.AffiliateTransactionWhereUniqueInput
+  create: Prisma.XOR<Prisma.AffiliateTransactionCreateWithoutBookingInput, Prisma.AffiliateTransactionUncheckedCreateWithoutBookingInput>
+}
+
+export type AffiliateTransactionUpsertWithoutBookingInput = {
+  update: Prisma.XOR<Prisma.AffiliateTransactionUpdateWithoutBookingInput, Prisma.AffiliateTransactionUncheckedUpdateWithoutBookingInput>
+  create: Prisma.XOR<Prisma.AffiliateTransactionCreateWithoutBookingInput, Prisma.AffiliateTransactionUncheckedCreateWithoutBookingInput>
+  where?: Prisma.AffiliateTransactionWhereInput
+}
+
+export type AffiliateTransactionUpdateToOneWithWhereWithoutBookingInput = {
+  where?: Prisma.AffiliateTransactionWhereInput
+  data: Prisma.XOR<Prisma.AffiliateTransactionUpdateWithoutBookingInput, Prisma.AffiliateTransactionUncheckedUpdateWithoutBookingInput>
+}
+
+export type AffiliateTransactionUpdateWithoutBookingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumAffiliateTransactionStatusFieldUpdateOperationsInput | $Enums.AffiliateTransactionStatus
+  commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  affiliateLink?: Prisma.AffiliateLinkUpdateOneRequiredWithoutAffiliateTransactionsNestedInput
+  order?: Prisma.OrderUpdateOneWithoutAffiliateTransactionNestedInput
+}
+
+export type AffiliateTransactionUncheckedUpdateWithoutBookingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  affiliateLinkId?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAffiliateTransactionStatusFieldUpdateOperationsInput | $Enums.AffiliateTransactionStatus
+  commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type AffiliateTransactionCreateManyAffiliateLinkInput = {
   id?: string
-  orderId: string
+  orderId?: string | null
+  bookingId?: string | null
   status?: $Enums.AffiliateTransactionStatus
   commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
@@ -614,12 +734,14 @@ export type AffiliateTransactionUpdateWithoutAffiliateLinkInput = {
   commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  order?: Prisma.OrderUpdateOneRequiredWithoutAffiliateTransactionNestedInput
+  order?: Prisma.OrderUpdateOneWithoutAffiliateTransactionNestedInput
+  booking?: Prisma.BookingUpdateOneWithoutAffiliateTransactionNestedInput
 }
 
 export type AffiliateTransactionUncheckedUpdateWithoutAffiliateLinkInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  orderId?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumAffiliateTransactionStatusFieldUpdateOperationsInput | $Enums.AffiliateTransactionStatus
   commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -628,7 +750,8 @@ export type AffiliateTransactionUncheckedUpdateWithoutAffiliateLinkInput = {
 
 export type AffiliateTransactionUncheckedUpdateManyWithoutAffiliateLinkInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  orderId?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumAffiliateTransactionStatusFieldUpdateOperationsInput | $Enums.AffiliateTransactionStatus
   commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -641,72 +764,84 @@ export type AffiliateTransactionSelect<ExtArgs extends runtime.Types.Extensions.
   id?: boolean
   affiliateLinkId?: boolean
   orderId?: boolean
+  bookingId?: boolean
   status?: boolean
   commission?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   affiliateLink?: boolean | Prisma.AffiliateLinkDefaultArgs<ExtArgs>
-  order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
+  order?: boolean | Prisma.AffiliateTransaction$orderArgs<ExtArgs>
+  booking?: boolean | Prisma.AffiliateTransaction$bookingArgs<ExtArgs>
 }, ExtArgs["result"]["affiliateTransaction"]>
 
 export type AffiliateTransactionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   affiliateLinkId?: boolean
   orderId?: boolean
+  bookingId?: boolean
   status?: boolean
   commission?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   affiliateLink?: boolean | Prisma.AffiliateLinkDefaultArgs<ExtArgs>
-  order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
+  order?: boolean | Prisma.AffiliateTransaction$orderArgs<ExtArgs>
+  booking?: boolean | Prisma.AffiliateTransaction$bookingArgs<ExtArgs>
 }, ExtArgs["result"]["affiliateTransaction"]>
 
 export type AffiliateTransactionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   affiliateLinkId?: boolean
   orderId?: boolean
+  bookingId?: boolean
   status?: boolean
   commission?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   affiliateLink?: boolean | Prisma.AffiliateLinkDefaultArgs<ExtArgs>
-  order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
+  order?: boolean | Prisma.AffiliateTransaction$orderArgs<ExtArgs>
+  booking?: boolean | Prisma.AffiliateTransaction$bookingArgs<ExtArgs>
 }, ExtArgs["result"]["affiliateTransaction"]>
 
 export type AffiliateTransactionSelectScalar = {
   id?: boolean
   affiliateLinkId?: boolean
   orderId?: boolean
+  bookingId?: boolean
   status?: boolean
   commission?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type AffiliateTransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "affiliateLinkId" | "orderId" | "status" | "commission" | "createdAt" | "updatedAt", ExtArgs["result"]["affiliateTransaction"]>
+export type AffiliateTransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "affiliateLinkId" | "orderId" | "bookingId" | "status" | "commission" | "createdAt" | "updatedAt", ExtArgs["result"]["affiliateTransaction"]>
 export type AffiliateTransactionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   affiliateLink?: boolean | Prisma.AffiliateLinkDefaultArgs<ExtArgs>
-  order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
+  order?: boolean | Prisma.AffiliateTransaction$orderArgs<ExtArgs>
+  booking?: boolean | Prisma.AffiliateTransaction$bookingArgs<ExtArgs>
 }
 export type AffiliateTransactionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   affiliateLink?: boolean | Prisma.AffiliateLinkDefaultArgs<ExtArgs>
-  order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
+  order?: boolean | Prisma.AffiliateTransaction$orderArgs<ExtArgs>
+  booking?: boolean | Prisma.AffiliateTransaction$bookingArgs<ExtArgs>
 }
 export type AffiliateTransactionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   affiliateLink?: boolean | Prisma.AffiliateLinkDefaultArgs<ExtArgs>
-  order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
+  order?: boolean | Prisma.AffiliateTransaction$orderArgs<ExtArgs>
+  booking?: boolean | Prisma.AffiliateTransaction$bookingArgs<ExtArgs>
 }
 
 export type $AffiliateTransactionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "AffiliateTransaction"
   objects: {
     affiliateLink: Prisma.$AffiliateLinkPayload<ExtArgs>
-    order: Prisma.$OrderPayload<ExtArgs>
+    order: Prisma.$OrderPayload<ExtArgs> | null
+    booking: Prisma.$BookingPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     affiliateLinkId: string
-    orderId: string
+    orderId: string | null
+    bookingId: string | null
     status: $Enums.AffiliateTransactionStatus
     commission: runtime.Decimal | null
     createdAt: Date
@@ -1106,7 +1241,8 @@ readonly fields: AffiliateTransactionFieldRefs;
 export interface Prisma__AffiliateTransactionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   affiliateLink<T extends Prisma.AffiliateLinkDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AffiliateLinkDefaultArgs<ExtArgs>>): Prisma.Prisma__AffiliateLinkClient<runtime.Types.Result.GetResult<Prisma.$AffiliateLinkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  order<T extends Prisma.OrderDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrderDefaultArgs<ExtArgs>>): Prisma.Prisma__OrderClient<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  order<T extends Prisma.AffiliateTransaction$orderArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AffiliateTransaction$orderArgs<ExtArgs>>): Prisma.Prisma__OrderClient<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  booking<T extends Prisma.AffiliateTransaction$bookingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AffiliateTransaction$bookingArgs<ExtArgs>>): Prisma.Prisma__BookingClient<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1139,6 +1275,7 @@ export interface AffiliateTransactionFieldRefs {
   readonly id: Prisma.FieldRef<"AffiliateTransaction", 'String'>
   readonly affiliateLinkId: Prisma.FieldRef<"AffiliateTransaction", 'String'>
   readonly orderId: Prisma.FieldRef<"AffiliateTransaction", 'String'>
+  readonly bookingId: Prisma.FieldRef<"AffiliateTransaction", 'String'>
   readonly status: Prisma.FieldRef<"AffiliateTransaction", 'AffiliateTransactionStatus'>
   readonly commission: Prisma.FieldRef<"AffiliateTransaction", 'Decimal'>
   readonly createdAt: Prisma.FieldRef<"AffiliateTransaction", 'DateTime'>
@@ -1541,6 +1678,44 @@ export type AffiliateTransactionDeleteManyArgs<ExtArgs extends runtime.Types.Ext
    * Limit how many AffiliateTransactions to delete.
    */
   limit?: number
+}
+
+/**
+ * AffiliateTransaction.order
+ */
+export type AffiliateTransaction$orderArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Order
+   */
+  select?: Prisma.OrderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Order
+   */
+  omit?: Prisma.OrderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrderInclude<ExtArgs> | null
+  where?: Prisma.OrderWhereInput
+}
+
+/**
+ * AffiliateTransaction.booking
+ */
+export type AffiliateTransaction$bookingArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Booking
+   */
+  select?: Prisma.BookingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Booking
+   */
+  omit?: Prisma.BookingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookingInclude<ExtArgs> | null
+  where?: Prisma.BookingWhereInput
 }
 
 /**

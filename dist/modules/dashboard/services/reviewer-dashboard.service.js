@@ -158,15 +158,17 @@ export const getReviewerRecentEarnings = async (reviewerId, limit) => {
             earningsAfter: Number(transaction.earningsAfter),
             type: transaction.type,
             reason: transaction.reason,
-            order: {
-                id: transaction.order.id,
-                finalPrice: Number(transaction.order.finalPrice),
-                reviewerCommission: Number(transaction.order.reviewerCommission),
-                merchant: transaction.order.merchant,
-                affiliateLink: transaction.order.affiliateLink,
-                orderedAt: transaction.order.orderedAt,
-                completedAt: transaction.order.completedAt,
-            },
+            order: transaction.order
+                ? {
+                    id: transaction.order.id,
+                    finalPrice: Number(transaction.order.finalPrice),
+                    reviewerCommission: Number(transaction.order.reviewerCommission),
+                    merchant: transaction.order.merchant,
+                    affiliateLink: transaction.order.affiliateLink,
+                    orderedAt: transaction.order.orderedAt,
+                    completedAt: transaction.order.completedAt,
+                }
+                : null,
             createdAt: transaction.createdAt,
         })),
     };

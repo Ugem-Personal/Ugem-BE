@@ -80,7 +80,8 @@ export const ModelName = {
   Notification: 'Notification',
   AuditLog: 'AuditLog',
   RebalancingRun: 'RebalancingRun',
-  Booking: 'Booking'
+  Booking: 'Booking',
+  MerchantView: 'MerchantView'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -449,6 +450,7 @@ export const ReviewerEarningTransactionScalarFieldEnum = {
   id: 'id',
   reviewerId: 'reviewerId',
   orderId: 'orderId',
+  bookingId: 'bookingId',
   amount: 'amount',
   earningsAfter: 'earningsAfter',
   type: 'type',
@@ -463,6 +465,7 @@ export const AffiliateTransactionScalarFieldEnum = {
   id: 'id',
   affiliateLinkId: 'affiliateLinkId',
   orderId: 'orderId',
+  bookingId: 'bookingId',
   status: 'status',
   commission: 'commission',
   createdAt: 'createdAt',
@@ -580,6 +583,7 @@ export const BookingScalarFieldEnum = {
   id: 'id',
   customerId: 'customerId',
   merchantId: 'merchantId',
+  affiliateLinkId: 'affiliateLinkId',
   bookingAt: 'bookingAt',
   partySize: 'partySize',
   note: 'note',
@@ -590,6 +594,17 @@ export const BookingScalarFieldEnum = {
 } as const
 
 export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
+
+
+export const MerchantViewScalarFieldEnum = {
+  id: 'id',
+  merchantId: 'merchantId',
+  customerId: 'customerId',
+  source: 'source',
+  createdAt: 'createdAt'
+} as const
+
+export type MerchantViewScalarFieldEnum = (typeof MerchantViewScalarFieldEnum)[keyof typeof MerchantViewScalarFieldEnum]
 
 
 export const SortOrder = {

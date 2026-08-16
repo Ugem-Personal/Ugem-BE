@@ -1,5 +1,6 @@
 import {
   MerchantStatus,
+  MerchantTrafficSource,
   OrderPaymentStatus,
   OrderStatus,
   Prisma,
@@ -65,6 +66,9 @@ type MapMerchantInput = {
     usageLimit: number | null;
     usedCount: number;
   }>;
+  foods?: Array<{
+    name: string;
+  }>;
 };
 
 type CustomerPreferences = {
@@ -129,7 +133,13 @@ const mapMerchant = (
   const recommendationRank = (merchant as any).recommendationRank ?? null;
 
   let preferenceScore = 0;
-  if (customerPreferences) {
+  const hasUserPreferences =
+    Boolean(customerPreferences) &&
+    ((customerPreferences?.preferredRestaurantTypes?.length ?? 0) > 0 ||
+      (customerPreferences?.preferredMainDishTypes?.length ?? 0) > 0 ||
+      (customerPreferences?.preferredPriceRanges?.length ?? 0) > 0);
+
+  if (hasUserPreferences && customerPreferences) {
     let matched = 0;
     let total = 0;
 
@@ -172,15 +182,29 @@ const mapMerchant = (
     distance !== null ? Math.max(0, 100 - distance * 5) : 100;
   const ratingScore = (rating / 5) * 100;
 
-  const recommendationScore =
-    Math.round(
-      (preferenceScore * 0.25 +
-        underratedScore * 0.30 +
-        campaignScore * 0.15 +
-        distanceScore * 0.15 +
-        ratingScore * 0.15) *
-        100,
-    ) / 100;
+  // Split scoring formula:
+  // Logged Customer with preference: Preference * 0.25 + Underrated * 0.30 + Campaign * 0.15 + Distance * 0.15 + Rating * 0.15
+  // Guest or Customer without preference: Underrated * 0.40 + Campaign * 0.20 + Distance * 0.20 + Rating * 0.20
+  const recommendationScore = hasUserPreferences
+    ? Math.round(
+        (preferenceScore * 0.25 +
+          underratedScore * 0.30 +
+          campaignScore * 0.15 +
+          distanceScore * 0.15 +
+          ratingScore * 0.15) *
+          100,
+      ) / 100
+    : Math.round(
+        (underratedScore * 0.40 +
+          campaignScore * 0.20 +
+          distanceScore * 0.20 +
+          ratingScore * 0.20) *
+          100,
+      ) / 100;
+
+  const featuredFoods = merchant.foods
+    ? merchant.foods.slice(0, 3).map((f) => f.name)
+    : [];
 
   return {
     id: merchant.id,
@@ -205,6 +229,7 @@ const mapMerchant = (
     recommendationRank,
     distance,
     hasActiveCampaign,
+    featuredFoods,
     recommendationScore,
     reviewCount: merchant.reviewCount,
     totalViews: merchant.totalViews,
@@ -367,6 +392,15 @@ export const getMerchants = async (query: MerchantListQuery) => {
         where: {
           isActive: true,
         },
+      },
+      foods: {
+        where: {
+          isAvailable: true,
+        },
+        select: {
+          name: true,
+        },
+        take: 3,
       },
     },
   });
@@ -626,10 +660,14 @@ export const getMerchantsForMap = async (query: MerchantMapQuery) => {
   }));
 };
 
-export const incrementMerchantView = async (merchantId: string) => {
+export const incrementMerchantView = async (params: {
+  merchantId: string;
+  customerId?: string;
+  source?: MerchantTrafficSource;
+}) => {
   const merchant = await prisma.merchant.findFirst({
     where: {
-      id: merchantId,
+      id: params.merchantId,
       status: MerchantStatus.Active,
     },
 
@@ -642,9 +680,18 @@ export const incrementMerchantView = async (merchantId: string) => {
     throw new AppError(404, "Không tìm thấy Merchant");
   }
 
+  await prisma.merchantView.create({
+    data: {
+      merchantId: params.merchantId,
+      customerId: params.customerId || null,
+      source: params.source ?? MerchantTrafficSource.Recommendation,
+    },
+  });
+
+
   const updatedMerchant = await prisma.merchant.update({
     where: {
-      id: merchantId,
+      id: params.merchantId,
     },
 
     data: {
@@ -684,6 +731,9 @@ export const getMyMerchantViews = async (merchantId: string) => {
   return {
     merchantId: merchant.id,
     totalViews: merchant.totalViews,
+    recommendationViews: await prisma.merchantView.count({
+      where: { merchantId, source: MerchantTrafficSource.Recommendation },
+    }),
   };
 };
 

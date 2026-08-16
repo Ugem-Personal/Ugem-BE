@@ -290,6 +290,21 @@ export const getReviewerEarnings = async (reviewerId, query) => {
                         },
                     },
                 },
+                booking: {
+                    select: {
+                        id: true,
+                        merchantId: true,
+                        partySize: true,
+                        createdAt: true,
+                        merchant: {
+                            select: {
+                                id: true,
+                                name: true,
+                                logoUrl: true,
+                            },
+                        },
+                    },
+                },
             },
             orderBy: {
                 createdAt: "desc",
@@ -325,31 +340,30 @@ export const getReviewerEarnings = async (reviewerId, query) => {
     const points = reviewer.reviewerPoints;
     const rank = reviewer.reviewerRank;
     const recentTransactions = transactions.map((transaction) => ({
-        /*
-         * Contract FE.
-         */
         transactionId: transaction.id,
         orderId: transaction.orderId,
+        bookingId: transaction.bookingId,
         amount: Number(transaction.amount),
         type: transaction.type,
         earningsAfter: Number(transaction.earningsAfter),
         createdAtUtc: transaction.createdAt.toISOString(),
         reason: transaction.reason,
-        /*
-         * Giữ các field cũ nếu màn hình khác đang dùng.
-         */
         id: transaction.id,
         createdAt: transaction.createdAt,
-        order: {
-            ...transaction.order,
-            finalPrice: Number(transaction.order.finalPrice),
-            reviewerCommission: Number(transaction.order.reviewerCommission),
-        },
+        order: transaction.order
+            ? {
+                ...transaction.order,
+                finalPrice: Number(transaction.order.finalPrice),
+                reviewerCommission: Number(transaction.order.reviewerCommission),
+            }
+            : null,
+        booking: transaction.booking
+            ? {
+                ...transaction.booking,
+            }
+            : null,
     }));
     return {
-        /*
-         * Contract chính FE đang đọc.
-         */
         reviewerId,
         points,
         rank,
@@ -357,11 +371,6 @@ export const getReviewerEarnings = async (reviewerId, query) => {
         totalCommission,
         totalReversal,
         netEarnings,
-        /*
-         * Vì database chưa lưu phần trăm commission,
-         * field này hiện là mức tiền commission trung bình
-         * trên mỗi order thành công.
-         */
         commissionRate,
         affiliateLinkCount,
         totalClicks,

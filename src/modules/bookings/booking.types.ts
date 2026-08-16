@@ -3,6 +3,7 @@ export interface CreateBookingInput {
   bookingAt: Date;
   partySize: number;
   note?: string;
+  affiliateLinkCode?: string;
 }
 
 export interface ReviewBookingInput {

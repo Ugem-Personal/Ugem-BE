@@ -139,7 +139,11 @@ export const getMerchantsForMap = asyncHandler(
 
 export const incrementMerchantView = asyncHandler(
   async (req: Request, res: Response) => {
-    const result = await merchantService.incrementMerchantView(getRouteId(req));
+    const result = await merchantService.incrementMerchantView({
+      merchantId: getRouteId(req),
+      customerId: req.user?.CustomerId ?? undefined,
+      source: req.body?.source as any,
+    });
 
     return sendSuccess(res, {
       message: "Ghi nhận lượt xem Merchant thành công",
@@ -195,6 +199,8 @@ export const getStaffMerchants = asyncHandler(
 export const getMerchantsByCategory = asyncHandler(
   async (req: Request, res: Response) => {
     const result = await merchantService.getMerchants({
+      customerId: req.user?.CustomerId ?? undefined,
+
       categoryId: String(req.query.categoryId),
 
       search:

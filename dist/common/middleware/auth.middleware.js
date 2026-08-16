@@ -18,3 +18,22 @@ export const authenticate = (req, _res, next) => {
         return next(new AppError(401, "Access token không hợp lệ hoặc đã hết hạn"));
     }
 };
+export const optionalAuthenticate = (req, _res, next) => {
+    const authorizationHeader = req.headers.authorization;
+    if (!authorizationHeader) {
+        req.user = undefined;
+        return next();
+    }
+    const [scheme, token] = authorizationHeader.split(" ");
+    if (scheme !== "Bearer" || !token) {
+        return next(new AppError(401, "Access token không đúng định dạng Bearer"));
+    }
+    try {
+        const payload = verifyAccessToken(token);
+        req.user = payload;
+        return next();
+    }
+    catch {
+        return next(new AppError(401, "Access token không hợp lệ hoặc đã hết hạn"));
+    }
+};
