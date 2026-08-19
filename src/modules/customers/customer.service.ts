@@ -1,4 +1,5 @@
 import { prisma } from "../../config/prisma.js";
+import { recommendationCache } from "../../common/services/recommendation-cache.js";
 
 import type {
   SearchCustomersByEmailQuery,
@@ -150,7 +151,7 @@ export const updateCustomerPreferences = async (
   customerId: string,
   input: UpdateCustomerPreferencesInput,
 ) => {
-  return prisma.customer.update({
+  const preferences = await prisma.customer.update({
     where: {
       id: customerId,
     },
@@ -167,4 +168,8 @@ export const updateCustomerPreferences = async (
       preferredPriceRanges: true,
     },
   });
+
+  recommendationCache.invalidateCustomer(customerId);
+
+  return preferences;
 };

@@ -32,6 +32,16 @@ class RecommendationCacheService {
   public invalidate(key: string): void {
     this.cache.delete(key);
   }
+
+  public invalidateCustomer(customerId: string): void {
+    const customerToken = `"customerId":"${customerId}"`;
+
+    for (const key of this.cache.keys()) {
+      if (key.startsWith("recommendation:") && key.includes(customerToken)) {
+        this.cache.delete(key);
+      }
+    }
+  }
 }
 
 export const recommendationCache = new RecommendationCacheService();

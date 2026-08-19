@@ -18,6 +18,7 @@ import type {
 import { env } from "../../config/env.js";
 import { calculateUnderratedScore } from "../../common/utils/merchant-score.js";
 import { recommendationCache } from "../../common/services/recommendation-cache.js";
+import { matchesAnyPreference } from "../../common/utils/preference-match.js";
 
 function calculateDistanceKm(
   lat1: number,
@@ -146,7 +147,8 @@ const mapMerchant = (
     if (customerPreferences.preferredRestaurantTypes.length > 0) {
       total++;
       if (
-        customerPreferences.preferredRestaurantTypes.includes(
+        matchesAnyPreference(
+          customerPreferences.preferredRestaurantTypes,
           merchant.restaurantType,
         )
       ) {
@@ -157,7 +159,8 @@ const mapMerchant = (
     if (customerPreferences.preferredMainDishTypes.length > 0) {
       total++;
       if (
-        customerPreferences.preferredMainDishTypes.includes(
+        matchesAnyPreference(
+          customerPreferences.preferredMainDishTypes,
           merchant.mainDishType,
         )
       ) {
@@ -168,7 +171,10 @@ const mapMerchant = (
     if (customerPreferences.preferredPriceRanges.length > 0) {
       total++;
       if (
-        customerPreferences.preferredPriceRanges.includes(merchant.priceRange)
+        matchesAnyPreference(
+          customerPreferences.preferredPriceRanges,
+          merchant.priceRange,
+        )
       ) {
         matched++;
       }

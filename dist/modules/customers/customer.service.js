@@ -1,4 +1,5 @@
 import { prisma } from "../../config/prisma.js";
+import { recommendationCache } from "../../common/services/recommendation-cache.js";
 const customerSelect = {
     id: true,
     user: {
@@ -98,7 +99,7 @@ export const getCustomerPreferences = async (customerId) => {
     });
 };
 export const updateCustomerPreferences = async (customerId, input) => {
-    return prisma.customer.update({
+    const preferences = await prisma.customer.update({
         where: {
             id: customerId,
         },
@@ -113,4 +114,6 @@ export const updateCustomerPreferences = async (customerId, input) => {
             preferredPriceRanges: true,
         },
     });
+    recommendationCache.invalidateCustomer(customerId);
+    return preferences;
 };

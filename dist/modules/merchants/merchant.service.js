@@ -4,6 +4,7 @@ import { AppError } from "../../common/errors/app-error.js";
 import { env } from "../../config/env.js";
 import { calculateUnderratedScore } from "../../common/utils/merchant-score.js";
 import { recommendationCache } from "../../common/services/recommendation-cache.js";
+import { matchesAnyPreference } from "../../common/utils/preference-match.js";
 function calculateDistanceKm(lat1, lon1, lat2, lon2) {
     const R = 6371; // Radius of Earth in km
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
@@ -54,19 +55,19 @@ const mapMerchant = (merchant, customerLat, customerLng, customerPreferences) =>
         let total = 0;
         if (customerPreferences.preferredRestaurantTypes.length > 0) {
             total++;
-            if (customerPreferences.preferredRestaurantTypes.includes(merchant.restaurantType)) {
+            if (matchesAnyPreference(customerPreferences.preferredRestaurantTypes, merchant.restaurantType)) {
                 matched++;
             }
         }
         if (customerPreferences.preferredMainDishTypes.length > 0) {
             total++;
-            if (customerPreferences.preferredMainDishTypes.includes(merchant.mainDishType)) {
+            if (matchesAnyPreference(customerPreferences.preferredMainDishTypes, merchant.mainDishType)) {
                 matched++;
             }
         }
         if (customerPreferences.preferredPriceRanges.length > 0) {
             total++;
-            if (customerPreferences.preferredPriceRanges.includes(merchant.priceRange)) {
+            if (matchesAnyPreference(customerPreferences.preferredPriceRanges, merchant.priceRange)) {
                 matched++;
             }
         }
