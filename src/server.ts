@@ -4,6 +4,7 @@ import { prisma } from "./config/prisma.js";
 import { logger } from "./common/utils/logger.js";
 import { setShuttingDown } from "./modules/health/health.service.js";
 import { startRebalancingJob } from "./jobs/rebalancing.job.js";
+import { ensureSchemaCompatibility } from "./config/schema-compatibility.js";
 
 const SHUTDOWN_TIMEOUT_MS = 10_000;
 
@@ -19,6 +20,7 @@ const startServer = async () => {
         port: env.PORT,
         environment: env.NODE_ENV,
       });
+      void ensureSchemaCompatibility();
     });
 
     let shutdownStarted = false;

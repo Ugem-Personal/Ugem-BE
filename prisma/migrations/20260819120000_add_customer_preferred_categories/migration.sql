@@ -1,2 +1,2 @@
 ALTER TABLE "customers"
-ADD COLUMN "preferredCategoryIds" TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[];
+ADD COLUMN IF NOT EXISTS "preferredCategoryIds" TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[];
