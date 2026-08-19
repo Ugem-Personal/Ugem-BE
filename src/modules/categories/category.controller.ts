@@ -27,6 +27,17 @@ export const getCategories = asyncHandler(
   },
 );
 
+export const getDiscoveryOptions = asyncHandler(
+  async (_req: Request, res: Response) => {
+    const options = await categoryService.getDiscoveryOptions();
+
+    return sendSuccess(res, {
+      message: "Lấy bộ lọc khám phá thành công",
+      data: options,
+    });
+  },
+);
+
 export const getAllCategoriesForManagement = asyncHandler(
   async (_req: Request, res: Response) => {
     const categories = await categoryService.getAllCategoriesForManagement();

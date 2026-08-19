@@ -11,5 +11,6 @@ export interface SearchCustomersByPhoneNumberQuery {
 export interface UpdateCustomerPreferencesInput {
   preferredRestaurantTypes: string[];
   preferredMainDishTypes: string[];
+  preferredCategoryIds: string[];
   preferredPriceRanges: string[];
 }

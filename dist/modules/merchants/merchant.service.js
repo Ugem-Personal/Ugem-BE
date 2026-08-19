@@ -4,7 +4,7 @@ import { AppError } from "../../common/errors/app-error.js";
 import { env } from "../../config/env.js";
 import { calculateUnderratedScore } from "../../common/utils/merchant-score.js";
 import { recommendationCache } from "../../common/services/recommendation-cache.js";
-import { matchesAnyPreference } from "../../common/utils/preference-match.js";
+import { calculatePreferenceScore, } from "../../common/utils/preference-score.js";
 function calculateDistanceKm(lat1, lon1, lat2, lon2) {
     const R = 6371; // Radius of Earth in km
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
@@ -45,34 +45,17 @@ const mapMerchant = (merchant, customerLat, customerLng, customerPreferences) =>
         ? Number(merchant.strengthIndex)
         : 0;
     const recommendationRank = merchant.recommendationRank ?? null;
-    let preferenceScore = 0;
-    const hasUserPreferences = Boolean(customerPreferences) &&
-        ((customerPreferences?.preferredRestaurantTypes?.length ?? 0) > 0 ||
-            (customerPreferences?.preferredMainDishTypes?.length ?? 0) > 0 ||
-            (customerPreferences?.preferredPriceRanges?.length ?? 0) > 0);
-    if (hasUserPreferences && customerPreferences) {
-        let matched = 0;
-        let total = 0;
-        if (customerPreferences.preferredRestaurantTypes.length > 0) {
-            total++;
-            if (matchesAnyPreference(customerPreferences.preferredRestaurantTypes, merchant.restaurantType)) {
-                matched++;
-            }
-        }
-        if (customerPreferences.preferredMainDishTypes.length > 0) {
-            total++;
-            if (matchesAnyPreference(customerPreferences.preferredMainDishTypes, merchant.mainDishType)) {
-                matched++;
-            }
-        }
-        if (customerPreferences.preferredPriceRanges.length > 0) {
-            total++;
-            if (matchesAnyPreference(customerPreferences.preferredPriceRanges, merchant.priceRange)) {
-                matched++;
-            }
-        }
-        preferenceScore = total > 0 ? (matched / total) * 100 : 0;
-    }
+    const categoryIds = [
+        ...new Set((merchant.foods ?? []).flatMap((food) => food.categories.flatMap((category) => category.category.parentId
+            ? [category.categoryId, category.category.parentId]
+            : [category.categoryId]))),
+    ];
+    const { hasPreferences: hasUserPreferences, score: preferenceScore, } = calculatePreferenceScore(customerPreferences ?? null, {
+        restaurantType: merchant.restaurantType,
+        mainDishType: merchant.mainDishType,
+        priceRange: merchant.priceRange,
+        categoryIds,
+    });
     const campaignScore = hasActiveCampaign ? 100 : 0;
     const distanceScore = distance !== null ? Math.max(0, 100 - distance * 5) : 100;
     const ratingScore = (rating / 5) * 100;
@@ -162,6 +145,7 @@ export const getMerchants = async (query) => {
             select: {
                 preferredRestaurantTypes: true,
                 preferredMainDishTypes: true,
+                preferredCategoryIds: true,
                 preferredPriceRanges: true,
             },
         })
@@ -192,9 +176,12 @@ export const getMerchants = async (query) => {
                     isAvailable: true,
                     categories: {
                         some: {
-                            categoryId: query.categoryId,
                             category: {
                                 isActive: true,
+                                OR: [
+                                    { id: query.categoryId },
+                                    { parentId: query.categoryId },
+                                ],
                             },
                         },
                     },
@@ -258,8 +245,17 @@ export const getMerchants = async (query) => {
                 },
                 select: {
                     name: true,
+                    categories: {
+                        select: {
+                            categoryId: true,
+                            category: {
+                                select: {
+                                    parentId: true,
+                                },
+                            },
+                        },
+                    },
                 },
-                take: 3,
             },
         },
     });

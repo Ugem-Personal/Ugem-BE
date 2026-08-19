@@ -1,5 +1,6 @@
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
+import { PRICE_RANGES, RESTAURANT_TYPES, } from "../../common/constants/discovery-options.js";
 const categorySelect = {
     id: true,
     parentId: true,
@@ -35,6 +36,14 @@ export const getCategories = async () => {
             name: "asc",
         },
     });
+};
+export const getDiscoveryOptions = async () => {
+    const foodCategories = await getCategories();
+    return {
+        restaurantTypes: RESTAURANT_TYPES,
+        priceRanges: PRICE_RANGES,
+        foodCategories,
+    };
 };
 export const getAllCategoriesForManagement = async () => {
     return prisma.category.findMany({

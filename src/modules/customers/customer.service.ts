@@ -1,5 +1,6 @@
 import { prisma } from "../../config/prisma.js";
 import { recommendationCache } from "../../common/services/recommendation-cache.js";
+import { AppError } from "../../common/errors/app-error.js";
 
 import type {
   SearchCustomersByEmailQuery,
@@ -142,6 +143,7 @@ export const getCustomerPreferences = async (customerId: string) => {
     select: {
       preferredRestaurantTypes: true,
       preferredMainDishTypes: true,
+      preferredCategoryIds: true,
       preferredPriceRanges: true,
     },
   });
@@ -151,6 +153,21 @@ export const updateCustomerPreferences = async (
   customerId: string,
   input: UpdateCustomerPreferencesInput,
 ) => {
+  const preferredCategoryIds = [...new Set(input.preferredCategoryIds)];
+
+  if (preferredCategoryIds.length > 0) {
+    const validCategories = await prisma.category.count({
+      where: {
+        id: { in: preferredCategoryIds },
+        isActive: true,
+      },
+    });
+
+    if (validCategories !== preferredCategoryIds.length) {
+      throw new AppError(400, "Có nhóm món yêu thích không hợp lệ");
+    }
+  }
+
   const preferences = await prisma.customer.update({
     where: {
       id: customerId,
@@ -159,12 +176,14 @@ export const updateCustomerPreferences = async (
     data: {
       preferredRestaurantTypes: input.preferredRestaurantTypes,
       preferredMainDishTypes: input.preferredMainDishTypes,
+      preferredCategoryIds,
       preferredPriceRanges: input.preferredPriceRanges,
     },
 
     select: {
       preferredRestaurantTypes: true,
       preferredMainDishTypes: true,
+      preferredCategoryIds: true,
       preferredPriceRanges: true,
     },
   });

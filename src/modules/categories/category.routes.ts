@@ -10,6 +10,7 @@ import {
   getAllCategoriesForManagement,
   getCategories,
   getChildCategories,
+  getDiscoveryOptions,
   updateCategory,
 } from "./category.controller.js";
 
@@ -23,6 +24,8 @@ import {
 export const categoryRouter = Router();
 
 categoryRouter.get("/", getCategories);
+
+categoryRouter.get("/discovery-options", getDiscoveryOptions);
 
 categoryRouter.get(
   "/:parentId/children",

@@ -59,6 +59,7 @@ export type CustomerCountAggregateOutputType = {
   updatedAt: number
   preferredRestaurantTypes: number
   preferredMainDishTypes: number
+  preferredCategoryIds: number
   preferredPriceRanges: number
   reviewerPoints: number
   reviewerRank: number
@@ -99,6 +100,7 @@ export type CustomerCountAggregateInputType = {
   updatedAt?: true
   preferredRestaurantTypes?: true
   preferredMainDishTypes?: true
+  preferredCategoryIds?: true
   preferredPriceRanges?: true
   reviewerPoints?: true
   reviewerRank?: true
@@ -198,6 +200,7 @@ export type CustomerGroupByOutputType = {
   updatedAt: Date
   preferredRestaurantTypes: string[]
   preferredMainDishTypes: string[]
+  preferredCategoryIds: string[]
   preferredPriceRanges: string[]
   reviewerPoints: number
   reviewerRank: string
@@ -233,6 +236,7 @@ export type CustomerWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   preferredRestaurantTypes?: Prisma.StringNullableListFilter<"Customer">
   preferredMainDishTypes?: Prisma.StringNullableListFilter<"Customer">
+  preferredCategoryIds?: Prisma.StringNullableListFilter<"Customer">
   preferredPriceRanges?: Prisma.StringNullableListFilter<"Customer">
   reviewerPoints?: Prisma.IntFilter<"Customer"> | number
   reviewerRank?: Prisma.StringFilter<"Customer"> | string
@@ -257,6 +261,7 @@ export type CustomerOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   preferredRestaurantTypes?: Prisma.SortOrder
   preferredMainDishTypes?: Prisma.SortOrder
+  preferredCategoryIds?: Prisma.SortOrder
   preferredPriceRanges?: Prisma.SortOrder
   reviewerPoints?: Prisma.SortOrder
   reviewerRank?: Prisma.SortOrder
@@ -284,6 +289,7 @@ export type CustomerWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   preferredRestaurantTypes?: Prisma.StringNullableListFilter<"Customer">
   preferredMainDishTypes?: Prisma.StringNullableListFilter<"Customer">
+  preferredCategoryIds?: Prisma.StringNullableListFilter<"Customer">
   preferredPriceRanges?: Prisma.StringNullableListFilter<"Customer">
   reviewerPoints?: Prisma.IntFilter<"Customer"> | number
   reviewerRank?: Prisma.StringFilter<"Customer"> | string
@@ -308,6 +314,7 @@ export type CustomerOrderByWithAggregationInput = {
   updatedAt?: Prisma.SortOrder
   preferredRestaurantTypes?: Prisma.SortOrder
   preferredMainDishTypes?: Prisma.SortOrder
+  preferredCategoryIds?: Prisma.SortOrder
   preferredPriceRanges?: Prisma.SortOrder
   reviewerPoints?: Prisma.SortOrder
   reviewerRank?: Prisma.SortOrder
@@ -328,6 +335,7 @@ export type CustomerScalarWhereWithAggregatesInput = {
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Customer"> | Date | string
   preferredRestaurantTypes?: Prisma.StringNullableListFilter<"Customer">
   preferredMainDishTypes?: Prisma.StringNullableListFilter<"Customer">
+  preferredCategoryIds?: Prisma.StringNullableListFilter<"Customer">
   preferredPriceRanges?: Prisma.StringNullableListFilter<"Customer">
   reviewerPoints?: Prisma.IntWithAggregatesFilter<"Customer"> | number
   reviewerRank?: Prisma.StringWithAggregatesFilter<"Customer"> | string
@@ -339,6 +347,7 @@ export type CustomerCreateInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -363,6 +372,7 @@ export type CustomerUncheckedCreateInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -385,6 +395,7 @@ export type CustomerUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -409,6 +420,7 @@ export type CustomerUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -432,6 +444,7 @@ export type CustomerCreateManyInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -443,6 +456,7 @@ export type CustomerUpdateManyMutationInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -455,6 +469,7 @@ export type CustomerUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -480,6 +495,7 @@ export type CustomerCountOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   preferredRestaurantTypes?: Prisma.SortOrder
   preferredMainDishTypes?: Prisma.SortOrder
+  preferredCategoryIds?: Prisma.SortOrder
   preferredPriceRanges?: Prisma.SortOrder
   reviewerPoints?: Prisma.SortOrder
   reviewerRank?: Prisma.SortOrder
@@ -556,6 +572,10 @@ export type CustomerCreatepreferredMainDishTypesInput = {
   set: string[]
 }
 
+export type CustomerCreatepreferredCategoryIdsInput = {
+  set: string[]
+}
+
 export type CustomerCreatepreferredPriceRangesInput = {
   set: string[]
 }
@@ -566,6 +586,11 @@ export type CustomerUpdatepreferredRestaurantTypesInput = {
 }
 
 export type CustomerUpdatepreferredMainDishTypesInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
+export type CustomerUpdatepreferredCategoryIdsInput = {
   set?: string[]
   push?: string | string[]
 }
@@ -747,6 +772,7 @@ export type CustomerCreateWithoutUserInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -769,6 +795,7 @@ export type CustomerUncheckedCreateWithoutUserInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -807,6 +834,7 @@ export type CustomerUpdateWithoutUserInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -829,6 +857,7 @@ export type CustomerUncheckedUpdateWithoutUserInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -851,6 +880,7 @@ export type CustomerCreateWithoutOrdersInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -874,6 +904,7 @@ export type CustomerUncheckedCreateWithoutOrdersInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -911,6 +942,7 @@ export type CustomerUpdateWithoutOrdersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -934,6 +966,7 @@ export type CustomerUncheckedUpdateWithoutOrdersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -955,6 +988,7 @@ export type CustomerCreateWithoutWishlistsInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -978,6 +1012,7 @@ export type CustomerUncheckedCreateWithoutWishlistsInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -1015,6 +1050,7 @@ export type CustomerUpdateWithoutWishlistsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1038,6 +1074,7 @@ export type CustomerUncheckedUpdateWithoutWishlistsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1059,6 +1096,7 @@ export type CustomerCreateWithoutReviewsInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -1082,6 +1120,7 @@ export type CustomerUncheckedCreateWithoutReviewsInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -1119,6 +1158,7 @@ export type CustomerUpdateWithoutReviewsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1142,6 +1182,7 @@ export type CustomerUncheckedUpdateWithoutReviewsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1163,6 +1204,7 @@ export type CustomerCreateWithoutReviewerApplicationsInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -1186,6 +1228,7 @@ export type CustomerUncheckedCreateWithoutReviewerApplicationsInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -1223,6 +1266,7 @@ export type CustomerUpdateWithoutReviewerApplicationsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1246,6 +1290,7 @@ export type CustomerUncheckedUpdateWithoutReviewerApplicationsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1267,6 +1312,7 @@ export type CustomerCreateWithoutAffiliateLinksInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -1290,6 +1336,7 @@ export type CustomerUncheckedCreateWithoutAffiliateLinksInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -1327,6 +1374,7 @@ export type CustomerUpdateWithoutAffiliateLinksInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1350,6 +1398,7 @@ export type CustomerUncheckedUpdateWithoutAffiliateLinksInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1371,6 +1420,7 @@ export type CustomerCreateWithoutAffiliateClicksInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -1394,6 +1444,7 @@ export type CustomerUncheckedCreateWithoutAffiliateClicksInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -1431,6 +1482,7 @@ export type CustomerUpdateWithoutAffiliateClicksInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1454,6 +1506,7 @@ export type CustomerUncheckedUpdateWithoutAffiliateClicksInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1475,6 +1528,7 @@ export type CustomerCreateWithoutEarningTransactionsInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -1498,6 +1552,7 @@ export type CustomerUncheckedCreateWithoutEarningTransactionsInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -1535,6 +1590,7 @@ export type CustomerUpdateWithoutEarningTransactionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1558,6 +1614,7 @@ export type CustomerUncheckedUpdateWithoutEarningTransactionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1579,6 +1636,7 @@ export type CustomerCreateWithoutPointTransactionsInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -1602,6 +1660,7 @@ export type CustomerUncheckedCreateWithoutPointTransactionsInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -1639,6 +1698,7 @@ export type CustomerUpdateWithoutPointTransactionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1662,6 +1722,7 @@ export type CustomerUncheckedUpdateWithoutPointTransactionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1683,6 +1744,7 @@ export type CustomerCreateWithoutCheckInsInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -1706,6 +1768,7 @@ export type CustomerUncheckedCreateWithoutCheckInsInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -1743,6 +1806,7 @@ export type CustomerUpdateWithoutCheckInsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1766,6 +1830,7 @@ export type CustomerUncheckedUpdateWithoutCheckInsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1787,6 +1852,7 @@ export type CustomerCreateWithoutBookingsInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -1810,6 +1876,7 @@ export type CustomerUncheckedCreateWithoutBookingsInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -1847,6 +1914,7 @@ export type CustomerUpdateWithoutBookingsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1870,6 +1938,7 @@ export type CustomerUncheckedUpdateWithoutBookingsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1891,6 +1960,7 @@ export type CustomerCreateWithoutMerchantViewsInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -1914,6 +1984,7 @@ export type CustomerUncheckedCreateWithoutMerchantViewsInput = {
   updatedAt?: Date | string
   preferredRestaurantTypes?: Prisma.CustomerCreatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerCreatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerCreatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
@@ -1951,6 +2022,7 @@ export type CustomerUpdateWithoutMerchantViewsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1974,6 +2046,7 @@ export type CustomerUncheckedUpdateWithoutMerchantViewsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredRestaurantTypes?: Prisma.CustomerUpdatepreferredRestaurantTypesInput | string[]
   preferredMainDishTypes?: Prisma.CustomerUpdatepreferredMainDishTypesInput | string[]
+  preferredCategoryIds?: Prisma.CustomerUpdatepreferredCategoryIdsInput | string[]
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2117,6 +2190,7 @@ export type CustomerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   updatedAt?: boolean
   preferredRestaurantTypes?: boolean
   preferredMainDishTypes?: boolean
+  preferredCategoryIds?: boolean
   preferredPriceRanges?: boolean
   reviewerPoints?: boolean
   reviewerRank?: boolean
@@ -2142,6 +2216,7 @@ export type CustomerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   updatedAt?: boolean
   preferredRestaurantTypes?: boolean
   preferredMainDishTypes?: boolean
+  preferredCategoryIds?: boolean
   preferredPriceRanges?: boolean
   reviewerPoints?: boolean
   reviewerRank?: boolean
@@ -2155,6 +2230,7 @@ export type CustomerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   updatedAt?: boolean
   preferredRestaurantTypes?: boolean
   preferredMainDishTypes?: boolean
+  preferredCategoryIds?: boolean
   preferredPriceRanges?: boolean
   reviewerPoints?: boolean
   reviewerRank?: boolean
@@ -2168,12 +2244,13 @@ export type CustomerSelectScalar = {
   updatedAt?: boolean
   preferredRestaurantTypes?: boolean
   preferredMainDishTypes?: boolean
+  preferredCategoryIds?: boolean
   preferredPriceRanges?: boolean
   reviewerPoints?: boolean
   reviewerRank?: boolean
 }
 
-export type CustomerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "createdAt" | "updatedAt" | "preferredRestaurantTypes" | "preferredMainDishTypes" | "preferredPriceRanges" | "reviewerPoints" | "reviewerRank", ExtArgs["result"]["customer"]>
+export type CustomerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "createdAt" | "updatedAt" | "preferredRestaurantTypes" | "preferredMainDishTypes" | "preferredCategoryIds" | "preferredPriceRanges" | "reviewerPoints" | "reviewerRank", ExtArgs["result"]["customer"]>
 export type CustomerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   orders?: boolean | Prisma.Customer$ordersArgs<ExtArgs>
   wishlists?: boolean | Prisma.Customer$wishlistsArgs<ExtArgs>
@@ -2219,6 +2296,7 @@ export type $CustomerPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     updatedAt: Date
     preferredRestaurantTypes: string[]
     preferredMainDishTypes: string[]
+    preferredCategoryIds: string[]
     preferredPriceRanges: string[]
     reviewerPoints: number
     reviewerRank: string
@@ -2663,6 +2741,7 @@ export interface CustomerFieldRefs {
   readonly updatedAt: Prisma.FieldRef<"Customer", 'DateTime'>
   readonly preferredRestaurantTypes: Prisma.FieldRef<"Customer", 'String[]'>
   readonly preferredMainDishTypes: Prisma.FieldRef<"Customer", 'String[]'>
+  readonly preferredCategoryIds: Prisma.FieldRef<"Customer", 'String[]'>
   readonly preferredPriceRanges: Prisma.FieldRef<"Customer", 'String[]'>
   readonly reviewerPoints: Prisma.FieldRef<"Customer", 'Int'>
   readonly reviewerRank: Prisma.FieldRef<"Customer", 'String'>

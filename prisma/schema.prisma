@@ -141,6 +141,7 @@ model Customer {
 
   preferredRestaurantTypes String[] @default([])
   preferredMainDishTypes   String[] @default([])
+  preferredCategoryIds     String[] @default([])
   preferredPriceRanges     String[] @default([])
 
   orders               Order[]

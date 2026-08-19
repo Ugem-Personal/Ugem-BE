@@ -18,7 +18,10 @@ import type {
 import { env } from "../../config/env.js";
 import { calculateUnderratedScore } from "../../common/utils/merchant-score.js";
 import { recommendationCache } from "../../common/services/recommendation-cache.js";
-import { matchesAnyPreference } from "../../common/utils/preference-match.js";
+import {
+  calculatePreferenceScore,
+  type CustomerPreferenceInput,
+} from "../../common/utils/preference-score.js";
 
 function calculateDistanceKm(
   lat1: number,
@@ -69,20 +72,20 @@ type MapMerchantInput = {
   }>;
   foods?: Array<{
     name: string;
+    categories: Array<{
+      categoryId: string;
+      category: {
+        parentId: string | null;
+      };
+    }>;
   }>;
 };
-
-type CustomerPreferences = {
-  preferredRestaurantTypes: string[];
-  preferredMainDishTypes: string[];
-  preferredPriceRanges: string[];
-} | null;
 
 const mapMerchant = (
   merchant: MapMerchantInput,
   customerLat?: number,
   customerLng?: number,
-  customerPreferences?: CustomerPreferences,
+  customerPreferences?: CustomerPreferenceInput,
 ) => {
   const rating = Number(merchant.rating);
   const merchantLat =
@@ -133,55 +136,26 @@ const mapMerchant = (
     : 0;
   const recommendationRank = (merchant as any).recommendationRank ?? null;
 
-  let preferenceScore = 0;
-  const hasUserPreferences =
-    Boolean(customerPreferences) &&
-    ((customerPreferences?.preferredRestaurantTypes?.length ?? 0) > 0 ||
-      (customerPreferences?.preferredMainDishTypes?.length ?? 0) > 0 ||
-      (customerPreferences?.preferredPriceRanges?.length ?? 0) > 0);
-
-  if (hasUserPreferences && customerPreferences) {
-    let matched = 0;
-    let total = 0;
-
-    if (customerPreferences.preferredRestaurantTypes.length > 0) {
-      total++;
-      if (
-        matchesAnyPreference(
-          customerPreferences.preferredRestaurantTypes,
-          merchant.restaurantType,
-        )
-      ) {
-        matched++;
-      }
-    }
-
-    if (customerPreferences.preferredMainDishTypes.length > 0) {
-      total++;
-      if (
-        matchesAnyPreference(
-          customerPreferences.preferredMainDishTypes,
-          merchant.mainDishType,
-        )
-      ) {
-        matched++;
-      }
-    }
-
-    if (customerPreferences.preferredPriceRanges.length > 0) {
-      total++;
-      if (
-        matchesAnyPreference(
-          customerPreferences.preferredPriceRanges,
-          merchant.priceRange,
-        )
-      ) {
-        matched++;
-      }
-    }
-
-    preferenceScore = total > 0 ? (matched / total) * 100 : 0;
-  }
+  const categoryIds = [
+    ...new Set(
+      (merchant.foods ?? []).flatMap((food) =>
+        food.categories.flatMap((category) =>
+          category.category.parentId
+            ? [category.categoryId, category.category.parentId]
+            : [category.categoryId],
+        ),
+      ),
+    ),
+  ];
+  const {
+    hasPreferences: hasUserPreferences,
+    score: preferenceScore,
+  } = calculatePreferenceScore(customerPreferences ?? null, {
+    restaurantType: merchant.restaurantType,
+    mainDishType: merchant.mainDishType,
+    priceRange: merchant.priceRange,
+    categoryIds,
+  });
 
   const campaignScore = hasActiveCampaign ? 100 : 0;
   const distanceScore =
@@ -298,6 +272,7 @@ export const getMerchants = async (query: MerchantListQuery) => {
         select: {
           preferredRestaurantTypes: true,
           preferredMainDishTypes: true,
+          preferredCategoryIds: true,
           preferredPriceRanges: true,
         },
       })
@@ -334,10 +309,12 @@ export const getMerchants = async (query: MerchantListQuery) => {
 
             categories: {
               some: {
-                categoryId: query.categoryId,
-
                 category: {
                   isActive: true,
+                  OR: [
+                    { id: query.categoryId },
+                    { parentId: query.categoryId },
+                  ],
                 },
               },
             },
@@ -405,8 +382,17 @@ export const getMerchants = async (query: MerchantListQuery) => {
         },
         select: {
           name: true,
+          categories: {
+            select: {
+              categoryId: true,
+              category: {
+                select: {
+                  parentId: true,
+                },
+              },
+            },
+          },
         },
-        take: 3,
       },
     },
   });

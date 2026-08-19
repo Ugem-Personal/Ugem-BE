@@ -123,6 +123,7 @@ export const CustomerScalarFieldEnum = {
   updatedAt: 'updatedAt',
   preferredRestaurantTypes: 'preferredRestaurantTypes',
   preferredMainDishTypes: 'preferredMainDishTypes',
+  preferredCategoryIds: 'preferredCategoryIds',
   preferredPriceRanges: 'preferredPriceRanges',
   reviewerPoints: 'reviewerPoints',
   reviewerRank: 'reviewerRank'

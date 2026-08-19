@@ -28,6 +28,7 @@ export const updateCustomerPreferencesSchema = z.object({
         preferredMainDishTypes: z
             .array(z.string().trim().min(1).max(100))
             .max(20),
+        preferredCategoryIds: z.array(z.string().uuid()).max(20).default([]),
         preferredPriceRanges: z
             .array(z.string().trim().min(1).max(100))
             .max(10),
