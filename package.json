@@ -15,7 +15,7 @@
     "backfill:notifications": "tsx src/scripts/backfill-notifications.ts",
     "db:backup": "node scripts/backup-database.mjs",
     "db:restore-drill": "tsx scripts/restore-drill.mjs",
-    "start": "npm run prisma:deploy && node dist/server.js",
+    "start": "node dist/server.js",
     "prisma:generate": "prisma generate",
     "prisma:deploy": "prisma migrate deploy",
     "verify": "npm run prisma:generate && npm test && npm run build",
@@ -37,7 +37,6 @@
     "multer": "^2.2.0",
     "node-cron": "^4.6.0",
     "nodemailer": "^9.0.3",
-    "prisma": "^7.9.0",
     "qrcode": "^1.5.4",
     "zod": "4.3.6"
   },
@@ -54,6 +53,7 @@
     "@types/node-cron": "^3.0.11",
     "@types/nodemailer": "^8.0.1",
     "@types/qrcode": "^1.5.6",
+    "prisma": "^7.9.0",
     "tsx": "^4.23.1",
     "typescript": "6.0.3",
     "vitest": "^4.1.10"
