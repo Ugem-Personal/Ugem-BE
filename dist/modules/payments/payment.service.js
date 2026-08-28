@@ -6,7 +6,8 @@ import { createReviewerCommission } from "../affiliate-links/affiliate-earning.s
 import { createNotification } from "../notifications/notification.service.js";
 export const markAffiliatePaymentStatus = async (orderId, isSuccess) => {
     if (isSuccess) {
-        await prisma.affiliateTransaction.updateMany({
+        await prisma.affiliateTransaction
+            .updateMany({
             where: {
                 orderId,
                 status: AffiliateTransactionStatus.Pending,
@@ -14,10 +15,12 @@ export const markAffiliatePaymentStatus = async (orderId, isSuccess) => {
             data: {
                 status: AffiliateTransactionStatus.Success,
             },
-        }).catch(() => null);
+        })
+            .catch(() => null);
     }
     else {
-        await prisma.affiliateTransaction.updateMany({
+        await prisma.affiliateTransaction
+            .updateMany({
             where: {
                 orderId,
                 status: {
@@ -30,7 +33,8 @@ export const markAffiliatePaymentStatus = async (orderId, isSuccess) => {
             data: {
                 status: AffiliateTransactionStatus.Failed,
             },
-        }).catch(() => null);
+        })
+            .catch(() => null);
     }
 };
 const activeOrderStatuses = new Set([
@@ -612,9 +616,9 @@ export const confirmBill = async (customerId, input) => {
                 where: { id: order.id },
                 data: {
                     paymentMethod,
-                    ...(paymentMethod === PaymentMethod.Cash
-                        ? { paymentStatus: OrderPaymentStatus.Paid }
-                        : {}),
+                    paymentStatus: paymentMethod === PaymentMethod.Cash
+                        ? OrderPaymentStatus.Paid
+                        : OrderPaymentStatus.Pending,
                 },
             });
             return await transaction.bill.upsert({
@@ -657,9 +661,9 @@ export const confirmBill = async (customerId, input) => {
             where: { id: existingBill.orderId },
             data: {
                 paymentMethod,
-                ...(paymentMethod === PaymentMethod.Cash
-                    ? { paymentStatus: OrderPaymentStatus.Paid }
-                    : {}),
+                paymentStatus: paymentMethod === PaymentMethod.Cash
+                    ? OrderPaymentStatus.Paid
+                    : OrderPaymentStatus.Pending,
             },
         });
         const updatedBill = await transaction.bill.update({
