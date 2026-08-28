@@ -604,20 +604,24 @@ export const confirmBill = async (customerId, input) => {
                 throw new AppError(400, "Bạn cần check-in thành công tại quán trước khi thanh toán");
             }
         }
+        const paymentMethod = input.paymentMethod
+            ? PaymentMethod[input.paymentMethod]
+            : order.paymentMethod;
         const confirmedBill = await prisma.$transaction(async (transaction) => {
-            if (order.paymentMethod === PaymentMethod.Cash) {
-                await transaction.order.update({
-                    where: { id: order.id },
-                    data: {
-                        paymentStatus: OrderPaymentStatus.Paid,
-                    },
-                });
-            }
+            await transaction.order.update({
+                where: { id: order.id },
+                data: {
+                    paymentMethod,
+                    ...(paymentMethod === PaymentMethod.Cash
+                        ? { paymentStatus: OrderPaymentStatus.Paid }
+                        : {}),
+                },
+            });
             return await transaction.bill.upsert({
                 where: { orderId: order.id },
                 create: {
                     orderId: order.id,
-                    method: order.paymentMethod,
+                    method: paymentMethod,
                     amount: order.finalPrice,
                     status: BillStatus.Confirmed,
                     merchantConfirmedAt: new Date(),
@@ -640,31 +644,30 @@ export const confirmBill = async (customerId, input) => {
             referenceId: confirmedBill.orderId,
             referenceType: "Order",
         });
-        await markAffiliatePaymentStatus(confirmedBill.orderId, true);
-        if (confirmedBill.order.status === OrderStatus.Completed) {
-            await createReviewerCommission(confirmedBill.orderId);
-        }
         return mapBill(confirmedBill);
     }
     if (existingBill.order.customerId !== customerId) {
         throw new AppError(403, "Hóa đơn không thuộc Customer này");
     }
     const confirmedBill = await prisma.$transaction(async (transaction) => {
-        if (existingBill.order.paymentMethod === PaymentMethod.Cash) {
-            await transaction.order.update({
-                where: {
-                    id: existingBill.orderId,
-                },
-                data: {
-                    paymentStatus: OrderPaymentStatus.Paid,
-                },
-            });
-        }
+        const paymentMethod = input.paymentMethod
+            ? PaymentMethod[input.paymentMethod]
+            : existingBill.order.paymentMethod;
+        await transaction.order.update({
+            where: { id: existingBill.orderId },
+            data: {
+                paymentMethod,
+                ...(paymentMethod === PaymentMethod.Cash
+                    ? { paymentStatus: OrderPaymentStatus.Paid }
+                    : {}),
+            },
+        });
         const updatedBill = await transaction.bill.update({
             where: {
                 id: existingBill.id,
             },
             data: {
+                method: paymentMethod,
                 status: BillStatus.Confirmed,
                 customerConfirmedAt: new Date(),
                 rejectedAt: null,
@@ -682,10 +685,6 @@ export const confirmBill = async (customerId, input) => {
         referenceId: confirmedBill.orderId,
         referenceType: "Order",
     });
-    await markAffiliatePaymentStatus(confirmedBill.orderId, true);
-    if (confirmedBill.order.status === OrderStatus.Completed) {
-        await createReviewerCommission(confirmedBill.orderId);
-    }
     return mapBill(confirmedBill);
 };
 export const rejectBill = async (customerId, input) => {
