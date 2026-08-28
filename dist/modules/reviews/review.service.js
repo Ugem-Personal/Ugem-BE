@@ -1,4 +1,4 @@
-import { CheckInStatus, NotificationType, Prisma, } from "../../generated/prisma/client.js";
+import { CheckInStatus, NotificationType, OrderType, OrderStatus, Prisma, } from "../../generated/prisma/client.js";
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
 import { createNotification } from "../notifications/notification.service.js";
@@ -109,6 +109,8 @@ export const createReview = async (customerId, input) => {
                     status: true,
                 },
             },
+            orderType: true,
+            status: true,
             merchant: {
                 select: {
                     userId: true,
@@ -126,8 +128,13 @@ export const createReview = async (customerId, input) => {
     if (input.merchantId && input.merchantId !== order.merchantId) {
         throw new AppError(400, "Merchant ID không khớp với Order");
     }
-    if (!order.checkIn?.checkedInAt || order.checkIn.status !== CheckInStatus.Verified) {
-        throw new AppError(403, "Bạn cần check-in tại quán trước khi đánh giá");
+    if (order.orderType === OrderType.Offline) {
+        if (!order.checkIn?.checkedInAt || order.checkIn.status !== CheckInStatus.Verified) {
+            throw new AppError(403, "Bạn cần check-in tại quán trước khi đánh giá");
+        }
+    }
+    else if (order.status !== OrderStatus.Completed) {
+        throw new AppError(403, "Chỉ có thể đánh giá khi đơn hàng đã hoàn tất");
     }
     const existingReview = await prisma.review.findUnique({
         where: {

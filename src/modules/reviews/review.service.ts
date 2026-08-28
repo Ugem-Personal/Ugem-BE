@@ -185,7 +185,10 @@ export const createReview = async (
   }
 
   if (order.orderType === OrderType.Offline) {
-    if (!order.checkIn?.checkedInAt || order.checkIn.status !== CheckInStatus.Verified) {
+    if (
+      !order.checkIn?.checkedInAt ||
+      order.checkIn.status !== CheckInStatus.Verified
+    ) {
       throw new AppError(403, "Bạn cần check-in tại quán trước khi đánh giá");
     }
   } else if (order.status !== OrderStatus.Completed) {
