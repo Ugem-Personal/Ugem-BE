@@ -54,6 +54,8 @@ export const confirmBillSchema = z.object({
       orderId: z.string().uuid("Order ID không hợp lệ").optional(),
 
       billId: z.string().uuid("Bill ID không hợp lệ").optional(),
+
+      paymentMethod: z.enum(["Cash", "BankTransfer"]).optional(),
     })
     .refine((body) => body.orderId || body.billId, {
       message: "Phải cung cấp orderId hoặc billId",

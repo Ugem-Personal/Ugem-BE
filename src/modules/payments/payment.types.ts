@@ -19,6 +19,7 @@ export interface SubmitBillInput {
 export interface ConfirmBillInput {
   orderId?: string;
   billId?: string;
+  paymentMethod?: "Cash" | "BankTransfer";
 }
 
 export interface RejectBillInput {
