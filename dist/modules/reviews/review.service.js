@@ -109,8 +109,6 @@ export const createReview = async (customerId, input) => {
                     status: true,
                 },
             },
-            orderType: true,
-            status: true,
             merchant: {
                 select: {
                     userId: true,
@@ -129,7 +127,8 @@ export const createReview = async (customerId, input) => {
         throw new AppError(400, "Merchant ID không khớp với Order");
     }
     if (order.orderType === OrderType.Offline) {
-        if (!order.checkIn?.checkedInAt || order.checkIn.status !== CheckInStatus.Verified) {
+        if (!order.checkIn?.checkedInAt ||
+            order.checkIn.status !== CheckInStatus.Verified) {
             throw new AppError(403, "Bạn cần check-in tại quán trước khi đánh giá");
         }
     }

@@ -161,8 +161,6 @@ export const createReview = async (
           status: true,
         },
       },
-      orderType: true,
-      status: true,
       merchant: {
         select: {
           userId: true,
