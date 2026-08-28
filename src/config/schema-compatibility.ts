@@ -25,6 +25,30 @@ export const ensureSchemaCompatibility = async () => {
           ADD COLUMN IF NOT EXISTS "preferredCategoryIds"
           TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[]
         `);
+        await transaction.$executeRawUnsafe(`
+          ALTER TABLE "bookings"
+          ADD COLUMN IF NOT EXISTS "affiliateLinkId" TEXT
+        `);
+        await transaction.$executeRawUnsafe(`
+          ALTER TABLE "affiliate_transactions"
+          ADD COLUMN IF NOT EXISTS "bookingId" TEXT
+        `);
+        await transaction.$executeRawUnsafe(`
+          ALTER TABLE "reviewer_earning_transactions"
+          ADD COLUMN IF NOT EXISTS "bookingId" TEXT
+        `);
+        await transaction.$executeRawUnsafe(`
+          CREATE INDEX IF NOT EXISTS "bookings_affiliateLinkId_idx"
+          ON "bookings"("affiliateLinkId")
+        `);
+        await transaction.$executeRawUnsafe(`
+          CREATE UNIQUE INDEX IF NOT EXISTS "affiliate_transactions_bookingId_key"
+          ON "affiliate_transactions"("bookingId")
+        `);
+        await transaction.$executeRawUnsafe(`
+          CREATE UNIQUE INDEX IF NOT EXISTS "reviewer_earning_transactions_bookingId_key"
+          ON "reviewer_earning_transactions"("bookingId")
+        `);
       });
 
       logger.info("database.schema_compatibility.ready");

@@ -10,13 +10,13 @@ const startServer = async () => {
     try {
         await prisma.$connect();
         logger.info("database.connected");
+        await ensureSchemaCompatibility();
         startRebalancingJob();
         const server = app.listen(env.PORT, () => {
             logger.info("server.started", {
                 port: env.PORT,
                 environment: env.NODE_ENV,
             });
-            void ensureSchemaCompatibility();
         });
         let shutdownStarted = false;
         const shutdown = async (signal, exitCode = 0) => {
