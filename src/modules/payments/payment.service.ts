@@ -28,30 +28,34 @@ export const markAffiliatePaymentStatus = async (
   isSuccess: boolean,
 ) => {
   if (isSuccess) {
-    await prisma.affiliateTransaction.updateMany({
-      where: {
-        orderId,
-        status: AffiliateTransactionStatus.Pending,
-      },
-      data: {
-        status: AffiliateTransactionStatus.Success,
-      },
-    }).catch(() => null);
-  } else {
-    await prisma.affiliateTransaction.updateMany({
-      where: {
-        orderId,
-        status: {
-          in: [
-            AffiliateTransactionStatus.Pending,
-            AffiliateTransactionStatus.Success,
-          ],
+    await prisma.affiliateTransaction
+      .updateMany({
+        where: {
+          orderId,
+          status: AffiliateTransactionStatus.Pending,
         },
-      },
-      data: {
-        status: AffiliateTransactionStatus.Failed,
-      },
-    }).catch(() => null);
+        data: {
+          status: AffiliateTransactionStatus.Success,
+        },
+      })
+      .catch(() => null);
+  } else {
+    await prisma.affiliateTransaction
+      .updateMany({
+        where: {
+          orderId,
+          status: {
+            in: [
+              AffiliateTransactionStatus.Pending,
+              AffiliateTransactionStatus.Success,
+            ],
+          },
+        },
+        data: {
+          status: AffiliateTransactionStatus.Failed,
+        },
+      })
+      .catch(() => null);
   }
 };
 
@@ -208,7 +212,10 @@ const mapBill = (bill: any) => ({
   updatedAt: bill.updatedAt,
 });
 
-const findBillOptional = async (input: { orderId?: string; billId?: string }) => {
+const findBillOptional = async (input: {
+  orderId?: string;
+  billId?: string;
+}) => {
   if (input.billId) {
     return prisma.bill.findUnique({
       where: {
