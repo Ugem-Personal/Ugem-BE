@@ -31,7 +31,7 @@ const ticketInclude = {
   },
 };
 
-const mapTicket = (ticket: any) => ({
+const mapTicket = (ticket: any, includeInternal = true) => ({
   id: ticket.id,
   merchantId: ticket.merchantId,
   category: ticket.category,
@@ -48,13 +48,16 @@ const mapTicket = (ticket: any) => ({
     : null,
   createdBy: ticket.createdBy,
   assignedStaff: ticket.assignedStaff,
-  messages: ticket.messages.map((message: any) => ({
-    id: message.id,
-    message: message.message,
-    attachmentUrl: message.attachmentUrl,
-    createdAt: message.createdAt,
-    sender: message.sender,
-  })),
+  messages: ticket.messages
+    .filter((message: any) => includeInternal || !message.isInternal)
+    .map((message: any) => ({
+      id: message.id,
+      message: message.message,
+      attachmentUrl: message.attachmentUrl,
+      isInternal: message.isInternal,
+      createdAt: message.createdAt,
+      sender: message.sender,
+    })),
 });
 
 async function getTicketOrThrow(id: string) {
@@ -138,13 +141,13 @@ export const getMerchantTickets = async (
     orderBy: { updatedAt: "desc" },
   });
 
-  return tickets.map(mapTicket);
+  return tickets.map((ticket) => mapTicket(ticket, false));
 };
 
 export const getMerchantTicket = async (merchantId: string, id: string) => {
   const ticket = await getTicketOrThrow(id);
   assertMerchantAccess(ticket, merchantId);
-  return mapTicket(ticket);
+  return mapTicket(ticket, false);
 };
 
 export const getStaffTickets = async (query: SupportTicketListQuery) => {
@@ -154,7 +157,7 @@ export const getStaffTickets = async (query: SupportTicketListQuery) => {
     orderBy: [{ priority: "desc" }, { updatedAt: "desc" }],
   });
 
-  return tickets.map(mapTicket);
+  return tickets.map((ticket) => mapTicket(ticket, false));
 };
 
 export const getStaffTicket = async (id: string) =>
@@ -179,6 +182,7 @@ export const addMerchantMessage = async (
       senderUserId: userId,
       message: input.message.trim(),
       attachmentUrl: input.attachmentUrl ?? null,
+      isInternal: false,
     },
   });
 
@@ -208,29 +212,34 @@ export const addStaffMessage = async (
 ) => {
   const ticket = await getTicketOrThrow(id);
 
+  const isInternal = input.isInternal === true;
+
   await prisma.supportMessage.create({
     data: {
       ticketId: id,
       senderUserId: staffUserId,
       message: input.message.trim(),
       attachmentUrl: input.attachmentUrl ?? null,
+      isInternal,
     },
   });
 
   await prisma.supportTicket.update({
     where: { id },
     data: {
-      status: SupportTicketStatus.WaitingForMerchant,
+      status: isInternal ? ticket.status : SupportTicketStatus.WaitingForMerchant,
       assignedStaffId: staffUserId,
     },
   });
 
-  await notifyMerchant(
-    ticket.merchant.userId,
-    id,
-    "Staff đã phản hồi yêu cầu hỗ trợ",
-    ticket.subject,
-  );
+  if (!isInternal) {
+    await notifyMerchant(
+      ticket.merchant.userId,
+      id,
+      "Staff đã phản hồi yêu cầu hỗ trợ",
+      ticket.subject,
+    );
+  }
 
   return getStaffTicket(id);
 };

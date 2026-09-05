@@ -861,6 +861,7 @@ model SupportMessage {
   senderUserId  String
   message       String
   attachmentUrl String?
+  isInternal    Boolean  @default(false)
   createdAt     DateTime @default(now())
 
   ticket SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)

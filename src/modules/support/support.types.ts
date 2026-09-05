@@ -19,6 +19,7 @@ export type SupportTicketListQuery = {
 export type CreateSupportMessageInput = {
   message: string;
   attachmentUrl?: string;
+  isInternal?: boolean;
 };
 
 export type UpdateSupportTicketStatusInput = {

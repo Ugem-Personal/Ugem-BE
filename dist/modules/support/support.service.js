@@ -15,7 +15,7 @@ const ticketInclude = {
         },
     },
 };
-const mapTicket = (ticket) => ({
+const mapTicket = (ticket, includeInternal = true) => ({
     id: ticket.id,
     merchantId: ticket.merchantId,
     category: ticket.category,
@@ -32,10 +32,13 @@ const mapTicket = (ticket) => ({
         : null,
     createdBy: ticket.createdBy,
     assignedStaff: ticket.assignedStaff,
-    messages: ticket.messages.map((message) => ({
+    messages: ticket.messages
+        .filter((message) => includeInternal || !message.isInternal)
+        .map((message) => ({
         id: message.id,
         message: message.message,
         attachmentUrl: message.attachmentUrl,
+        isInternal: message.isInternal,
         createdAt: message.createdAt,
         sender: message.sender,
     })),
@@ -98,12 +101,12 @@ export const getMerchantTickets = async (merchantId, query) => {
         include: ticketInclude,
         orderBy: { updatedAt: "desc" },
     });
-    return tickets.map(mapTicket);
+    return tickets.map((ticket) => mapTicket(ticket, false));
 };
 export const getMerchantTicket = async (merchantId, id) => {
     const ticket = await getTicketOrThrow(id);
     assertMerchantAccess(ticket, merchantId);
-    return mapTicket(ticket);
+    return mapTicket(ticket, false);
 };
 export const getStaffTickets = async (query) => {
     const tickets = await prisma.supportTicket.findMany({
@@ -111,7 +114,7 @@ export const getStaffTickets = async (query) => {
         include: ticketInclude,
         orderBy: [{ priority: "desc" }, { updatedAt: "desc" }],
     });
-    return tickets.map(mapTicket);
+    return tickets.map((ticket) => mapTicket(ticket, false));
 };
 export const getStaffTicket = async (id) => mapTicket(await getTicketOrThrow(id));
 export const addMerchantMessage = async (merchantId, userId, id, input) => {
@@ -126,6 +129,7 @@ export const addMerchantMessage = async (merchantId, userId, id, input) => {
             senderUserId: userId,
             message: input.message.trim(),
             attachmentUrl: input.attachmentUrl ?? null,
+            isInternal: false,
         },
     });
     await prisma.supportTicket.update({
@@ -146,22 +150,26 @@ export const addMerchantMessage = async (merchantId, userId, id, input) => {
 };
 export const addStaffMessage = async (staffUserId, id, input) => {
     const ticket = await getTicketOrThrow(id);
+    const isInternal = input.isInternal === true;
     await prisma.supportMessage.create({
         data: {
             ticketId: id,
             senderUserId: staffUserId,
             message: input.message.trim(),
             attachmentUrl: input.attachmentUrl ?? null,
+            isInternal,
         },
     });
     await prisma.supportTicket.update({
         where: { id },
         data: {
-            status: SupportTicketStatus.WaitingForMerchant,
+            status: isInternal ? ticket.status : SupportTicketStatus.WaitingForMerchant,
             assignedStaffId: staffUserId,
         },
     });
-    await notifyMerchant(ticket.merchant.userId, id, "Staff đã phản hồi yêu cầu hỗ trợ", ticket.subject);
+    if (!isInternal) {
+        await notifyMerchant(ticket.merchant.userId, id, "Staff đã phản hồi yêu cầu hỗ trợ", ticket.subject);
+    }
     return getStaffTicket(id);
 };
 export const updateMerchantStatus = async (merchantId, id, input) => {

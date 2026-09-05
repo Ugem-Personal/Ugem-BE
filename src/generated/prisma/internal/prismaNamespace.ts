@@ -3404,6 +3404,7 @@ export const SupportMessageScalarFieldEnum = {
   senderUserId: 'senderUserId',
   message: 'message',
   attachmentUrl: 'attachmentUrl',
+  isInternal: 'isInternal',
   createdAt: 'createdAt'
 } as const
 

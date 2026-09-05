@@ -41,6 +41,7 @@ export const createSupportMessageSchema = z.object({
     body: z.object({
         message: z.string().trim().min(1).max(5000),
         attachmentUrl: z.string().url().optional(),
+        isInternal: z.boolean().optional(),
     }),
 });
 export const updateSupportTicketStatusSchema = z.object({
