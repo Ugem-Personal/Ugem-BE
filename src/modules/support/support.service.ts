@@ -227,7 +227,9 @@ export const addStaffMessage = async (
   await prisma.supportTicket.update({
     where: { id },
     data: {
-      status: isInternal ? ticket.status : SupportTicketStatus.WaitingForMerchant,
+      status: isInternal
+        ? ticket.status
+        : SupportTicketStatus.WaitingForMerchant,
       assignedStaffId: staffUserId,
     },
   });

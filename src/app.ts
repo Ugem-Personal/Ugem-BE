@@ -35,7 +35,10 @@ import { staffRouter } from "./modules/staff/staff.routes.js";
 import { mediaRouter } from "./modules/media/media.routes.js";
 import { rebalancingRouter } from "./modules/rebalancing/rebalancing.routes.js";
 import { bookingRouter } from "./modules/bookings/booking.routes.js";
-import { merchantSupportRouter, staffSupportRouter } from "./modules/support/support.routes.js";
+import {
+  merchantSupportRouter,
+  staffSupportRouter,
+} from "./modules/support/support.routes.js";
 
 export const app = express();
 
@@ -49,7 +52,12 @@ app.use(helmet());
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || origin.includes("localhost") || origin.includes("vercel.app") || origin === env.FRONTEND_URL) {
+      if (
+        !origin ||
+        origin.includes("localhost") ||
+        origin.includes("vercel.app") ||
+        origin === env.FRONTEND_URL
+      ) {
         callback(null, true);
       } else {
         callback(null, true);
