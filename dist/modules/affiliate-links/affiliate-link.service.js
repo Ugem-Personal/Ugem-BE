@@ -4,6 +4,7 @@ import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
 import { env } from "../../config/env.js";
 import { getReviewerCommissionRate } from "../../common/utils/reviewer-rank.js";
+const CLICK_DEDUP_WINDOW_MS = 24 * 60 * 60 * 1000;
 const affiliateLinkInclude = {
     merchant: {
         select: {
@@ -171,7 +172,26 @@ export const trackAffiliateLink = async (code, context) => {
         throw new AppError(409, "Merchant hiện không hoạt động");
     }
     const ipHash = hashIp(context.ipAddress);
-    await prisma.$transaction(async (transaction) => {
+    const tracking = await prisma.$transaction(async (transaction) => {
+        if (context.customerId === link.reviewerId) {
+            return { tracked: false, deduplicated: true };
+        }
+        const clickedSince = new Date(Date.now() - CLICK_DEDUP_WINDOW_MS);
+        const recentClick = await transaction.affiliateClick.findFirst({
+            where: {
+                affiliateLinkId: link.id,
+                clickedAt: { gte: clickedSince },
+                ...(context.customerId
+                    ? { customerId: context.customerId }
+                    : ipHash
+                        ? { ipHash }
+                        : {}),
+            },
+            select: { id: true },
+        });
+        if (recentClick) {
+            return { tracked: false, deduplicated: true };
+        }
         const reviewer = await transaction.customer.update({
             where: { id: link.reviewerId },
             data: { reviewerPoints: { increment: 1 } },
@@ -205,6 +225,7 @@ export const trackAffiliateLink = async (code, context) => {
                 referenceId: link.id,
             },
         });
+        return { tracked: true, deduplicated: false };
     });
     return {
         affiliateLinkId: link.id,
@@ -215,6 +236,7 @@ export const trackAffiliateLink = async (code, context) => {
             ...link.merchant,
             rating: Number(link.merchant.rating),
         },
+        ...tracking,
     };
 };
 export const getReviewerEarnings = async (reviewerId, query) => {
