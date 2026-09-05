@@ -128,6 +128,39 @@ export const NotificationType = {
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
 
 
+export const SupportTicketStatus = {
+  Open: 'Open',
+  InProgress: 'InProgress',
+  WaitingForMerchant: 'WaitingForMerchant',
+  Resolved: 'Resolved',
+  Closed: 'Closed'
+} as const
+
+export type SupportTicketStatus = (typeof SupportTicketStatus)[keyof typeof SupportTicketStatus]
+
+
+export const SupportTicketPriority = {
+  Low: 'Low',
+  Normal: 'Normal',
+  High: 'High',
+  Urgent: 'Urgent'
+} as const
+
+export type SupportTicketPriority = (typeof SupportTicketPriority)[keyof typeof SupportTicketPriority]
+
+
+export const SupportTicketCategory = {
+  Orders: 'Orders',
+  Delivery: 'Delivery',
+  Payment: 'Payment',
+  Menu: 'Menu',
+  Account: 'Account',
+  Other: 'Other'
+} as const
+
+export type SupportTicketCategory = (typeof SupportTicketCategory)[keyof typeof SupportTicketCategory]
+
+
 export const CheckInStatus = {
   Pending: 'Pending',
   Verified: 'Verified',

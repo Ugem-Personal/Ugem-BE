@@ -17,6 +17,8 @@ const buildNotificationUrl = (referenceType, referenceId) => {
             return `/campaigns/${referenceId}`;
         case "Review":
             return `/reviews/${referenceId}`;
+        case "SupportTicket":
+            return `/merchant/support/${referenceId}`;
         default:
             return null;
     }

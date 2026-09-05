@@ -35,6 +35,7 @@ import { staffRouter } from "./modules/staff/staff.routes.js";
 import { mediaRouter } from "./modules/media/media.routes.js";
 import { rebalancingRouter } from "./modules/rebalancing/rebalancing.routes.js";
 import { bookingRouter } from "./modules/bookings/booking.routes.js";
+import { merchantSupportRouter, staffSupportRouter } from "./modules/support/support.routes.js";
 
 export const app = express();
 
@@ -92,5 +93,7 @@ app.use("/api/v1/rebalancing", rebalancingRouter);
 app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/media", mediaRouter);
 app.use("/api/v1/bookings", bookingRouter);
+app.use("/api/v1/merchant/support", merchantSupportRouter);
+app.use("/api/v1/staff/support", staffSupportRouter);
 app.use(notFoundHandler);
 app.use(errorHandler);

@@ -177,6 +177,16 @@ export type CheckIn = Prisma.CheckInModel
  */
 export type Notification = Prisma.NotificationModel
 /**
+ * Model SupportTicket
+ * 
+ */
+export type SupportTicket = Prisma.SupportTicketModel
+/**
+ * Model SupportMessage
+ * 
+ */
+export type SupportMessage = Prisma.SupportMessageModel
+/**
  * Model AuditLog
  * 
  */

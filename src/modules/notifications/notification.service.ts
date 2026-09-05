@@ -49,6 +49,9 @@ const buildNotificationUrl = (
     case "Review":
       return `/reviews/${referenceId}`;
 
+    case "SupportTicket":
+      return `/merchant/support/${referenceId}`;
+
     default:
       return null;
   }

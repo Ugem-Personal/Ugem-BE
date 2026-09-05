@@ -78,6 +78,8 @@ export const ModelName = {
   Campaign: 'Campaign',
   CheckIn: 'CheckIn',
   Notification: 'Notification',
+  SupportTicket: 'SupportTicket',
+  SupportMessage: 'SupportMessage',
   AuditLog: 'AuditLog',
   RebalancingRun: 'RebalancingRun',
   Booking: 'Booking',
@@ -547,6 +549,37 @@ export const NotificationScalarFieldEnum = {
 } as const
 
 export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+export const SupportTicketScalarFieldEnum = {
+  id: 'id',
+  merchantId: 'merchantId',
+  createdByUserId: 'createdByUserId',
+  assignedStaffId: 'assignedStaffId',
+  category: 'category',
+  priority: 'priority',
+  status: 'status',
+  subject: 'subject',
+  description: 'description',
+  orderId: 'orderId',
+  resolvedAt: 'resolvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SupportTicketScalarFieldEnum = (typeof SupportTicketScalarFieldEnum)[keyof typeof SupportTicketScalarFieldEnum]
+
+
+export const SupportMessageScalarFieldEnum = {
+  id: 'id',
+  ticketId: 'ticketId',
+  senderUserId: 'senderUserId',
+  message: 'message',
+  attachmentUrl: 'attachmentUrl',
+  createdAt: 'createdAt'
+} as const
+
+export type SupportMessageScalarFieldEnum = (typeof SupportMessageScalarFieldEnum)[keyof typeof SupportMessageScalarFieldEnum]
 
 
 export const AuditLogScalarFieldEnum = {

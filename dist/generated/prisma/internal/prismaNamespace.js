@@ -94,6 +94,8 @@ export const ModelName = {
     Campaign: 'Campaign',
     CheckIn: 'CheckIn',
     Notification: 'Notification',
+    SupportTicket: 'SupportTicket',
+    SupportMessage: 'SupportMessage',
     AuditLog: 'AuditLog',
     RebalancingRun: 'RebalancingRun',
     Booking: 'Booking',
@@ -448,6 +450,29 @@ export const NotificationScalarFieldEnum = {
     isRead: 'isRead',
     createdAt: 'createdAt',
     readAt: 'readAt'
+};
+export const SupportTicketScalarFieldEnum = {
+    id: 'id',
+    merchantId: 'merchantId',
+    createdByUserId: 'createdByUserId',
+    assignedStaffId: 'assignedStaffId',
+    category: 'category',
+    priority: 'priority',
+    status: 'status',
+    subject: 'subject',
+    description: 'description',
+    orderId: 'orderId',
+    resolvedAt: 'resolvedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const SupportMessageScalarFieldEnum = {
+    id: 'id',
+    ticketId: 'ticketId',
+    senderUserId: 'senderUserId',
+    message: 'message',
+    attachmentUrl: 'attachmentUrl',
+    createdAt: 'createdAt'
 };
 export const AuditLogScalarFieldEnum = {
     id: 'id',

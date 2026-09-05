@@ -78,6 +78,27 @@ export const NotificationType = {
     Affiliate: 'Affiliate',
     System: 'System'
 };
+export const SupportTicketStatus = {
+    Open: 'Open',
+    InProgress: 'InProgress',
+    WaitingForMerchant: 'WaitingForMerchant',
+    Resolved: 'Resolved',
+    Closed: 'Closed'
+};
+export const SupportTicketPriority = {
+    Low: 'Low',
+    Normal: 'Normal',
+    High: 'High',
+    Urgent: 'Urgent'
+};
+export const SupportTicketCategory = {
+    Orders: 'Orders',
+    Delivery: 'Delivery',
+    Payment: 'Payment',
+    Menu: 'Menu',
+    Account: 'Account',
+    Other: 'Other'
+};
 export const CheckInStatus = {
     Pending: 'Pending',
     Verified: 'Verified',
