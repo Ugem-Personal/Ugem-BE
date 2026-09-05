@@ -167,15 +167,14 @@ export const addStaffMessage = async (staffUserId, id, input) => {
 export const updateMerchantStatus = async (merchantId, id, input) => {
     const ticket = await getTicketOrThrow(id);
     assertMerchantAccess(ticket, merchantId);
-    if (input.status !== SupportTicketStatus.Open &&
-        input.status !== SupportTicketStatus.Resolved) {
-        throw new AppError(400, "Merchant chỉ được mở lại hoặc xác nhận đã xử lý");
+    if (input.status !== SupportTicketStatus.Open) {
+        throw new AppError(400, "Merchant chỉ được mở lại yêu cầu hỗ trợ");
     }
     const updated = await prisma.supportTicket.update({
         where: { id },
         data: {
             status: input.status,
-            resolvedAt: input.status === SupportTicketStatus.Resolved ? new Date() : null,
+            resolvedAt: null,
         },
         include: ticketInclude,
     });
@@ -202,7 +201,10 @@ export const assignStaff = async (staffUserId, id) => {
     const ticket = await getTicketOrThrow(id);
     const updated = await prisma.supportTicket.update({
         where: { id },
-        data: { assignedStaffId: staffUserId, status: SupportTicketStatus.InProgress },
+        data: {
+            assignedStaffId: staffUserId,
+            status: SupportTicketStatus.InProgress,
+        },
         include: ticketInclude,
     });
     await notifyMerchant(ticket.merchant.userId, id, "Yêu cầu hỗ trợ đã được tiếp nhận", ticket.subject);
