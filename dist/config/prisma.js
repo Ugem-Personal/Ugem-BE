@@ -4,8 +4,10 @@ import { PrismaClient } from "../generated/prisma/client.js";
 import { env } from "./env.js";
 const isLocalHost = env.DATABASE_URL.includes("localhost") ||
     env.DATABASE_URL.includes("127.0.0.1");
+const runtimeDatabaseUrl = new URL(env.DATABASE_URL);
+runtimeDatabaseUrl.searchParams.delete("sslmode");
 const pool = new pg.Pool({
-    connectionString: env.DATABASE_URL,
+    connectionString: runtimeDatabaseUrl.toString(),
     ssl: isLocalHost ? false : { rejectUnauthorized: false },
     connectionTimeoutMillis: 10000,
     max: 10,
