@@ -30,7 +30,8 @@ const getListQuery = (req) => ({
     pageSize: Number(req.query.pageSize ?? 10),
 });
 export const createOrder = asyncHandler(async (req, res) => {
-    const order = await orderService.createOrder(getCustomerId(req), req.body);
+    const idempotencyKey = req.headers["idempotency-key"] || req.body.idempotencyKey;
+    const order = await orderService.createOrder(getCustomerId(req), req.body, idempotencyKey);
     return sendSuccess(res, {
         statusCode: 201,
         message: "Tạo order thành công",

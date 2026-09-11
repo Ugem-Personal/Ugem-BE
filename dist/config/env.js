@@ -33,6 +33,7 @@ const envSchema = z.object({
         .string()
         .trim()
         .regex(/^[A-Z0-9]{4,19}$/, "Số tài khoản ngân hàng không hợp lệ"),
+    REDIS_URL: z.string().optional(),
 });
 const parsedEnv = envSchema.safeParse(process.env);
 if (!parsedEnv.success) {

@@ -46,7 +46,13 @@ const getListQuery = (req: Request) => ({
 });
 
 export const createOrder = asyncHandler(async (req: Request, res: Response) => {
-  const order = await orderService.createOrder(getCustomerId(req), req.body);
+  const idempotencyKey =
+    (req.headers["idempotency-key"] as string) || req.body.idempotencyKey;
+  const order = await orderService.createOrder(
+    getCustomerId(req),
+    req.body,
+    idempotencyKey,
+  );
 
   return sendSuccess(res, {
     statusCode: 201,

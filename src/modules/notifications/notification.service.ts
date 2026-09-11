@@ -6,6 +6,7 @@ import {
 
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
+import { realtimeService } from "../realtime/realtime.service.js";
 
 export interface CreateNotificationInput {
   userId: string;
@@ -112,7 +113,12 @@ export const createNotification = async (input: CreateNotificationInput) => {
     },
   });
 
-  return mapNotification(notification);
+  const mapped = mapNotification(notification);
+  try {
+    realtimeService.sendToUser(input.userId, "notification:new", mapped);
+  } catch {}
+
+  return mapped;
 };
 
 export const createNotifications = async (
@@ -120,7 +126,7 @@ export const createNotifications = async (
 ) => {
   if (inputs.length === 0) return { count: 0 };
 
-  return prisma.notification.createMany({
+  const result = await prisma.notification.createMany({
     data: inputs.map((input) => ({
       userId: input.userId,
       type: input.type,
@@ -130,6 +136,23 @@ export const createNotifications = async (
       referenceType: input.referenceType ?? null,
     })),
   });
+
+  try {
+    inputs.forEach((input) => {
+      realtimeService.sendToUser(input.userId, "notification:new", {
+        userId: input.userId,
+        type: input.type,
+        title: input.title,
+        message: input.message,
+        referenceId: input.referenceId ?? null,
+        referenceType: input.referenceType ?? null,
+        isRead: false,
+        createdAt: new Date().toISOString(),
+      });
+    });
+  } catch {}
+
+  return result;
 };
 
 export const notifyActiveUsersByRoles = async (

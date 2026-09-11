@@ -1,5 +1,6 @@
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
+import { realtimeService } from "../realtime/realtime.service.js";
 const buildNotificationUrl = (referenceType, referenceId) => {
     if (!referenceType || !referenceId) {
         return null;
@@ -59,12 +60,17 @@ export const createNotification = async (input) => {
             referenceType: input.referenceType ?? null,
         },
     });
-    return mapNotification(notification);
+    const mapped = mapNotification(notification);
+    try {
+        realtimeService.sendToUser(input.userId, "notification:new", mapped);
+    }
+    catch { }
+    return mapped;
 };
 export const createNotifications = async (inputs) => {
     if (inputs.length === 0)
         return { count: 0 };
-    return prisma.notification.createMany({
+    const result = await prisma.notification.createMany({
         data: inputs.map((input) => ({
             userId: input.userId,
             type: input.type,
@@ -74,6 +80,22 @@ export const createNotifications = async (inputs) => {
             referenceType: input.referenceType ?? null,
         })),
     });
+    try {
+        inputs.forEach((input) => {
+            realtimeService.sendToUser(input.userId, "notification:new", {
+                userId: input.userId,
+                type: input.type,
+                title: input.title,
+                message: input.message,
+                referenceId: input.referenceId ?? null,
+                referenceType: input.referenceType ?? null,
+                isRead: false,
+                createdAt: new Date().toISOString(),
+            });
+        });
+    }
+    catch { }
+    return result;
 };
 export const notifyActiveUsersByRoles = async (roles, notification) => {
     const recipients = await prisma.user.findMany({

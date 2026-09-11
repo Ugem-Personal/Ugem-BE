@@ -322,6 +322,7 @@ model Merchant {
   @@index([name])
   @@index([recommendationRank])
   @@index([underratedScore])
+  @@index([latitude, longitude])
   @@map("merchants")
 }
 

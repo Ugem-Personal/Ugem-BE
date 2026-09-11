@@ -1,8 +1,10 @@
 import { AffiliateTransactionStatus, NotificationType, OrderPaymentStatus, OrderStatus, OrderType, PaymentMethod, Prisma, } from "../../generated/prisma/client.js";
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
+import { recommendationCache } from "../../common/services/recommendation-cache.js";
 import { createReviewerCommission } from "../affiliate-links/affiliate-earning.service.js";
 import { createNotification } from "../notifications/notification.service.js";
+import { realtimeService } from "../realtime/realtime.service.js";
 import { canCustomerConfirmOrder, canMerchantTransitionOrder, } from "./order-state-machine.js";
 const orderInclude = {
     merchant: {
@@ -123,7 +125,16 @@ const mapOrder = (order) => {
         updatedAt: order.updatedAt,
     };
 };
-export const createOrder = async (customerId, input) => {
+export const createOrder = async (customerId, input, idempotencyKey) => {
+    const cacheKey = idempotencyKey?.trim()
+        ? `idempotency:order:${customerId}:${idempotencyKey.trim()}`
+        : null;
+    if (cacheKey) {
+        const cached = recommendationCache.get(cacheKey);
+        if (cached) {
+            return cached;
+        }
+    }
     const foodIds = [...new Set(input.foods.map((item) => item.foodId))];
     const foods = await prisma.food.findMany({
         where: {
@@ -309,28 +320,19 @@ export const createOrder = async (customerId, input) => {
     });
     const order = campaign
         ? await prisma.$transaction(async (transaction) => {
-            const currentCampaign = await transaction.campaign.findUnique({
-                where: {
-                    id: campaign.id,
-                },
-            });
-            if (!currentCampaign) {
-                throw new AppError(404, "Campaign không tồn tại");
+            // Atomic conditional update to prevent Race Conditions (TOCTOU)
+            const updatedRows = await transaction.$executeRaw `
+          UPDATE "campaigns"
+          SET "usedCount" = "usedCount" + 1
+          WHERE "id" = ${campaign.id}
+            AND "isActive" = true
+            AND "startAt" <= NOW()
+            AND "endAt" >= NOW()
+            AND ("usageLimit" IS NULL OR "usedCount" < "usageLimit")
+        `;
+            if (updatedRows === 0) {
+                throw new AppError(409, "Campaign đã hết lượt sử dụng hoặc không còn hiệu lực");
             }
-            if (currentCampaign.usageLimit !== null &&
-                currentCampaign.usedCount >= currentCampaign.usageLimit) {
-                throw new AppError(409, "Campaign đã hết lượt sử dụng");
-            }
-            await transaction.campaign.update({
-                where: {
-                    id: campaign.id,
-                },
-                data: {
-                    usedCount: {
-                        increment: 1,
-                    },
-                },
-            });
             return createOrder(transaction);
         })
         : await createOrder(prisma);
@@ -361,7 +363,18 @@ export const createOrder = async (customerId, input) => {
             },
         }).catch(() => null);
     }
-    return mapOrder(order);
+    const mappedOrder = mapOrder(order);
+    try {
+        realtimeService.sendToMerchant(order.merchantId, "order:new", mappedOrder);
+        if (merchant) {
+            realtimeService.sendToUser(merchant.userId, "order:new", mappedOrder);
+        }
+    }
+    catch { }
+    if (cacheKey) {
+        recommendationCache.set(cacheKey, mappedOrder, 5 * 60 * 1000);
+    }
+    return mappedOrder;
 };
 export const createMerchantOrder = async (merchantId, customerId, input) => {
     const customer = await prisma.customer.findUnique({
@@ -632,7 +645,15 @@ export const updateOrderStatus = async (merchantId, orderId, input) => {
         },
         include: orderInclude,
     });
-    return mapOrder(refreshedOrder);
+    const mappedRefreshed = mapOrder(refreshedOrder);
+    try {
+        if (customer) {
+            realtimeService.sendToUser(customer.userId, "order:status_changed", mappedRefreshed);
+        }
+        realtimeService.sendToMerchant(updatedOrder.merchantId, "order:status_changed", mappedRefreshed);
+    }
+    catch { }
+    return mappedRefreshed;
 };
 export const updateCustomerOrderStatus = async (customerId, orderId, input) => {
     const order = await prisma.order.findUnique({
@@ -717,5 +738,13 @@ export const updateCustomerOrderStatus = async (customerId, orderId, input) => {
         },
         include: orderInclude,
     });
-    return mapOrder(refreshedOrder);
+    const mappedRefreshed = mapOrder(refreshedOrder);
+    try {
+        if (merchant) {
+            realtimeService.sendToUser(merchant.userId, "order:status_changed", mappedRefreshed);
+        }
+        realtimeService.sendToMerchant(updatedOrder.merchantId, "order:status_changed", mappedRefreshed);
+    }
+    catch { }
+    return mappedRefreshed;
 };

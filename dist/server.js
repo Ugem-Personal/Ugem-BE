@@ -4,6 +4,7 @@ import { prisma } from "./config/prisma.js";
 import { logger } from "./common/utils/logger.js";
 import { setShuttingDown } from "./modules/health/health.service.js";
 import { startRebalancingJob } from "./jobs/rebalancing.job.js";
+import { startSepayOrderExpirationJob } from "./jobs/sepay-order-expiration.job.js";
 import { ensureSchemaCompatibility } from "./config/schema-compatibility.js";
 const SHUTDOWN_TIMEOUT_MS = 10_000;
 const startServer = async () => {
@@ -12,6 +13,7 @@ const startServer = async () => {
         logger.info("database.connected");
         await ensureSchemaCompatibility();
         startRebalancingJob();
+        startSepayOrderExpirationJob();
         const server = app.listen(env.PORT, () => {
             logger.info("server.started", {
                 port: env.PORT,

@@ -232,7 +232,10 @@ export const verifyCheckIn = async (
       })
       .catch(() => null);
 
-    throw new AppError(400, "Bạn đang ở ngoài phạm vi check-in của quán");
+    throw new AppError(
+      400,
+      `Bạn đang ở quá xa quán (${Math.round(distanceMeters)}m). Vui lòng check-in trực tiếp tại quán (bán kính tối đa ${MAX_CHECK_IN_DISTANCE_METERS}m)`,
+    );
   }
 
   const checkedInAt = new Date();
@@ -316,11 +319,39 @@ export const verifyCheckIn = async (
     throw new AppError(400, "Mã QR check-in không hợp lệ hoặc đã hết hiệu lực");
   }
 
+  // Award check-in reward points
+  const CHECK_IN_REWARD_POINTS = 10;
+  const currentCustomer = await prisma.customer.findUnique({
+    where: { id: customerId },
+    select: { reviewerPoints: true },
+  });
+  const currentPoints = currentCustomer?.reviewerPoints ?? 0;
+  const newPoints = currentPoints + CHECK_IN_REWARD_POINTS;
+
+  await prisma
+    .$transaction([
+      prisma.customer.update({
+        where: { id: customerId },
+        data: { reviewerPoints: { increment: CHECK_IN_REWARD_POINTS } },
+      }),
+      prisma.reviewerPointTransaction.create({
+        data: {
+          reviewerId: customerId,
+          amount: CHECK_IN_REWARD_POINTS,
+          pointsAfter: newPoints,
+          type: "CHECK_IN",
+          reason: `Điểm thưởng check-in tại ${order.merchant.name}`,
+          referenceId: order.id,
+        },
+      }),
+    ])
+    .catch(() => null);
+
   await createNotification({
     userId: order.customer.userId,
     type: NotificationType.System,
     title: "Check-in thành công",
-    message: `Bạn đã check-in thành công tại ${order.merchant.name}.`,
+    message: `Bạn đã check-in thành công tại ${order.merchant.name} (+${CHECK_IN_REWARD_POINTS} điểm thưởng).`,
     referenceId: order.id,
     referenceType: "CheckIn",
   });
@@ -329,7 +360,8 @@ export const verifyCheckIn = async (
     orderId: order.id,
     merchant: order.merchant,
     checkedInAt,
-    distanceMeters,
+    distanceMeters: Math.round(distanceMeters),
+    pointsAwarded: CHECK_IN_REWARD_POINTS,
     status: "Verified",
   };
 };

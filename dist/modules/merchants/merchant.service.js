@@ -170,6 +170,25 @@ export const getMerchants = async (query) => {
                 mode: "insensitive",
             }
             : undefined,
+        // Spatial Bounding Box Pre-filtering at Database Layer
+        latitude: query.latitude !== undefined
+            ? {
+                gte: new Prisma.Decimal(query.latitude - (query.radiusKm ?? 15) / 111.0),
+                lte: new Prisma.Decimal(query.latitude + (query.radiusKm ?? 15) / 111.0),
+            }
+            : undefined,
+        longitude: query.latitude !== undefined && query.longitude !== undefined
+            ? {
+                gte: new Prisma.Decimal(query.longitude -
+                    (query.radiusKm ?? 15) /
+                        (111.0 *
+                            Math.max(0.1, Math.cos((query.latitude * Math.PI) / 180.0)))),
+                lte: new Prisma.Decimal(query.longitude +
+                    (query.radiusKm ?? 15) /
+                        (111.0 *
+                            Math.max(0.1, Math.cos((query.latitude * Math.PI) / 180.0)))),
+            }
+            : undefined,
         foods: query.categoryId
             ? {
                 some: {
