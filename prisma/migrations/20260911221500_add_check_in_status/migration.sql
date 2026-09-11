@@ -41,12 +41,28 @@ EXCEPTION
     WHEN duplicate_object THEN null;
 END $$;
 
+DO $$ BEGIN
+    CREATE TYPE "CheckInStatus" AS ENUM ('Pending', 'Verified', 'Rejected', 'Expired');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+
 -- Align customers columns
 ALTER TABLE "customers"
 ADD COLUMN IF NOT EXISTS "preferredRestaurantTypes" TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[],
 ADD COLUMN IF NOT EXISTS "preferredMainDishTypes" TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[],
 ADD COLUMN IF NOT EXISTS "preferredCategoryIds" TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[],
 ADD COLUMN IF NOT EXISTS "preferredPriceRanges" TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[];
+
+-- Align check_ins columns and indexes
+ALTER TABLE "check_ins"
+ADD COLUMN IF NOT EXISTS "expiresAt" TIMESTAMP(3),
+ADD COLUMN IF NOT EXISTS "verifiedAt" TIMESTAMP(3),
+ADD COLUMN IF NOT EXISTS "latitude" DECIMAL(10,7),
+ADD COLUMN IF NOT EXISTS "longitude" DECIMAL(10,7),
+ADD COLUMN IF NOT EXISTS "status" "CheckInStatus" NOT NULL DEFAULT 'Pending';
+
+CREATE INDEX IF NOT EXISTS "check_ins_status_idx" ON "check_ins"("status");
 
 -- Align merchants columns and indexes
 ALTER TABLE "merchants"
