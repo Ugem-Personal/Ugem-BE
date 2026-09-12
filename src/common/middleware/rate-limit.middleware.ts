@@ -34,19 +34,19 @@ export const apiRateLimiter = createLimiter(
 
 export const authRateLimiter = createLimiter(
   15 * 60 * 1000,
-  10,
+  100,
   "Ban da thu dang nhap qua nhieu lan",
 );
 
 export const registrationRateLimiter = createLimiter(
-  60 * 60 * 1000,
-  5,
+  15 * 60 * 1000,
+  100,
   "Ban da tao qua nhieu tai khoan trong thoi gian ngan",
 );
 
 export const passwordResetRateLimiter = createLimiter(
-  60 * 60 * 1000,
-  5,
+  15 * 60 * 1000,
+  30,
   "Ban da yeu cau dat lai mat khau qua nhieu lan",
 );
 
