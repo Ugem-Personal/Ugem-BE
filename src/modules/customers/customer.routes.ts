@@ -10,6 +10,7 @@ import { updateProfileSchema } from "../users/user.schema.js";
 
 import {
   getCustomerPreferences,
+  getReviewerProfile,
   searchCustomersByEmail,
   searchCustomersByPhoneNumber,
   updateCustomerPreferences,
@@ -49,6 +50,12 @@ customerRouter.get(
   "/preferences",
   authorizeRoles("Customer", "Reviewer"),
   getCustomerPreferences,
+);
+
+customerRouter.get(
+  "/reviewer-profile",
+  authorizeRoles("Customer", "Reviewer"),
+  getReviewerProfile,
 );
 
 customerRouter.patch(

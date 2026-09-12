@@ -24,6 +24,8 @@ export interface CreateOrderInput {
 
   campaignId?: string | null;
 
+  pointsToRedeem?: number | null;
+
   foods: CreateOrderFoodInput[];
 }
 

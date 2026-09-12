@@ -72,3 +72,17 @@ export const updateCustomerPreferences = asyncHandler(
     });
   },
 );
+
+export const getReviewerProfile = asyncHandler(
+  async (req: Request, res: Response) => {
+    const customerId = getCustomerId(req);
+
+    const profile = await customerService.getReviewerProfile(customerId);
+
+    return sendSuccess(res, {
+      message: "Lấy thông tin hạng Reviewer & điểm thưởng thành công",
+      data: profile,
+    });
+  },
+);
+
