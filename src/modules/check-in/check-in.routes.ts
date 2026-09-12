@@ -10,15 +10,33 @@ import {
   getCurrentCheckIns,
   getMerchantCheckInHistory,
   getMerchantCheckInStatistics,
+  getMyCheckInCode,
+  merchantVerifyCustomerCode,
   verifyCheckIn,
 } from "./check-in.controller.js";
 
 import {
   generateCheckInQrSchema,
+  merchantVerifyCustomerCodeSchema,
   verifyCheckInSchema,
 } from "./check-in.schema.js";
 
 export const checkInRouter = Router();
+
+checkInRouter.get(
+  "/my-code",
+  authenticate,
+  authorizeRoles("Customer", "Reviewer"),
+  getMyCheckInCode,
+);
+
+checkInRouter.post(
+  "/merchant/verify-customer-code",
+  authenticate,
+  requireApprovedMerchant,
+  validate(merchantVerifyCustomerCodeSchema),
+  merchantVerifyCustomerCode,
+);
 
 checkInRouter.get(
   "/generate-qr",
@@ -56,3 +74,4 @@ checkInRouter.get(
   requireApprovedMerchant,
   getMerchantCheckInHistory,
 );
+

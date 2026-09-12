@@ -52,3 +52,23 @@ export const getMerchantCheckInHistory = asyncHandler(async (req, res) => {
         data: history,
     });
 });
+export const getMyCheckInCode = asyncHandler(async (req, res) => {
+    const userId = req.user?.UserId;
+    if (!userId) {
+        throw new AppError(401, "Bạn chưa đăng nhập");
+    }
+    const data = await checkInService.getCustomerCheckInCode(userId);
+    return sendSuccess(res, {
+        message: "Lấy mã check-in tích điểm thành công",
+        data,
+    });
+});
+export const merchantVerifyCustomerCode = asyncHandler(async (req, res) => {
+    const merchantId = getMerchantId(req);
+    const { customerCode, rewardBenefit, notes } = req.body;
+    const result = await checkInService.merchantVerifyCustomerCode(merchantId, customerCode, rewardBenefit, notes);
+    return sendSuccess(res, {
+        message: `Xác nhận check-in cho khách hàng ${result.customerName} thành công!`,
+        data: result,
+    });
+});

@@ -1,12 +1,21 @@
 import cron from "node-cron";
 import { prisma } from "../config/prisma.js";
+import { RebalancingStatus } from "../generated/prisma/client.js";
 import { runRebalancing } from "../modules/rebalancing/rebalancing.service.js";
 const REBALANCING_INTERVAL_DAYS = 14;
 export const checkAndRunRebalancing = async () => {
     try {
+        // Skip if another rebalancing job is already running
+        const activeRun = await prisma.rebalancingRun.findFirst({
+            where: { status: RebalancingStatus.Running },
+        });
+        if (activeRun) {
+            console.log("[Rebalancing Job] Skipping check: Another rebalancing run is currently in progress.");
+            return;
+        }
         const lastRun = await prisma.rebalancingRun.findFirst({
             where: {
-                status: "Completed",
+                status: RebalancingStatus.Completed,
             },
             orderBy: {
                 completedAt: "desc",

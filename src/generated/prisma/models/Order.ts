@@ -1219,10 +1219,12 @@ export type OrderCreateNestedOneWithoutCheckInInput = {
   connect?: Prisma.OrderWhereUniqueInput
 }
 
-export type OrderUpdateOneRequiredWithoutCheckInNestedInput = {
+export type OrderUpdateOneWithoutCheckInNestedInput = {
   create?: Prisma.XOR<Prisma.OrderCreateWithoutCheckInInput, Prisma.OrderUncheckedCreateWithoutCheckInInput>
   connectOrCreate?: Prisma.OrderCreateOrConnectWithoutCheckInInput
   upsert?: Prisma.OrderUpsertWithoutCheckInInput
+  disconnect?: Prisma.OrderWhereInput | boolean
+  delete?: Prisma.OrderWhereInput | boolean
   connect?: Prisma.OrderWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.OrderUpdateToOneWithWhereWithoutCheckInInput, Prisma.OrderUpdateWithoutCheckInInput>, Prisma.OrderUncheckedUpdateWithoutCheckInInput>
 }

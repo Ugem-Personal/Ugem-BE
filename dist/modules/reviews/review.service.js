@@ -214,6 +214,20 @@ export const createReview = async (customerId, input) => {
         referenceId: review.id,
         referenceType: "Review",
     });
+    const customerUser = await prisma.customer.findUnique({
+        where: { id: customerId },
+        select: { userId: true },
+    });
+    if (customerUser) {
+        await createNotification({
+            userId: customerUser.userId,
+            type: NotificationType.System,
+            title: "Hoàn thành nhiệm vụ đánh giá!",
+            message: `Bạn đã hoàn thành nhiệm vụ đánh giá tại ${order.merchant.name} (+${input.imageUrl?.trim() ? 20 : 15} điểm thưởng). Cảm ơn đóng góp của bạn!`,
+            referenceId: review.id,
+            referenceType: "Review",
+        }).catch(() => null);
+    }
     return mapReview(review);
 };
 export const getMerchantReviews = async (merchantId, query) => {

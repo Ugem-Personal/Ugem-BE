@@ -16,3 +16,12 @@ export const verifyCheckInSchema = z.object({
     longitude: z.number().min(-180).max(180),
   }),
 });
+
+export const merchantVerifyCustomerCodeSchema = z.object({
+  body: z.object({
+    customerCode: z.string().trim().min(4, "Mã khách hàng phải từ 4 ký tự trở lên").max(50),
+    rewardBenefit: z.string().trim().max(200).optional(),
+    notes: z.string().trim().max(500).optional(),
+  }),
+});
+

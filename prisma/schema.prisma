@@ -184,8 +184,10 @@ model Customer {
   reviewerRank         String                       @default("Bronze")
   pointTransactions    ReviewerPointTransaction[]
   merchantViews        MerchantView[]
+  customerCode         String?                      @unique
   user                 User                         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([customerCode])
   @@map("customers")
 }
 
@@ -782,10 +784,13 @@ model Campaign {
 
 model CheckIn {
   id         String @id @default(uuid())
-  orderId    String @unique
+  orderId    String? @unique
   customerId String
   merchantId String
-  qrToken    String @unique
+  qrToken    String? @unique
+
+  rewardBenefit String?
+  notes         String?
 
   generatedAt DateTime       @default(now())
   expiresAt   DateTime?
@@ -795,7 +800,7 @@ model CheckIn {
   longitude   Decimal?       @db.Decimal(10, 7)
   status      CheckInStatus  @default(Pending)
 
-  order    Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  order    Order?   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   customer Customer @relation(fields: [customerId], references: [id], onDelete: Restrict)
   merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Restrict)
 

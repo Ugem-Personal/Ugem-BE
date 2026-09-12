@@ -104,7 +104,8 @@ export const CustomerScalarFieldEnum = {
     preferredCategoryIds: 'preferredCategoryIds',
     preferredPriceRanges: 'preferredPriceRanges',
     reviewerPoints: 'reviewerPoints',
-    reviewerRank: 'reviewerRank'
+    reviewerRank: 'reviewerRank',
+    customerCode: 'customerCode'
 };
 export const RefreshTokenScalarFieldEnum = {
     id: 'id',
@@ -403,6 +404,8 @@ export const CheckInScalarFieldEnum = {
     customerId: 'customerId',
     merchantId: 'merchantId',
     qrToken: 'qrToken',
+    rewardBenefit: 'rewardBenefit',
+    notes: 'notes',
     generatedAt: 'generatedAt',
     expiresAt: 'expiresAt',
     checkedInAt: 'checkedInAt',

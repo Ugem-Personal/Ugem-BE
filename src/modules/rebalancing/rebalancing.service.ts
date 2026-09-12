@@ -8,6 +8,35 @@ import {
 import { recommendationCache } from "../../common/services/recommendation-cache.js";
 
 export const runRebalancing = async () => {
+  // Check for any concurrent active rebalancing run
+  const activeRun = await prisma.rebalancingRun.findFirst({
+    where: { status: RebalancingStatus.Running },
+  });
+
+  if (activeRun) {
+    const now = new Date();
+    const runningMinutes =
+      (now.getTime() - new Date(activeRun.startedAt).getTime()) / (1000 * 60);
+
+    if (runningMinutes < 15) {
+      throw new AppError(
+        409,
+        "Hệ thống đang thực hiện Rebalancing, vui lòng đợi tiến trình hiện tại hoàn tất.",
+      );
+    }
+
+    // Auto-heal hung/stuck runs older than 15 minutes
+    await prisma.rebalancingRun.update({
+      where: { id: activeRun.id },
+      data: {
+        status: RebalancingStatus.Failed,
+        errorMessage:
+          "Tiến trình bị gián đoạn quá thời gian chờ (Stuck timeout recovery)",
+        completedAt: now,
+      },
+    });
+  }
+
   const run = await prisma.rebalancingRun.create({
     data: {
       status: RebalancingStatus.Running,
@@ -28,7 +57,13 @@ export const runRebalancing = async () => {
         recommendationRank: true,
         _count: {
           select: {
-            orders: true,
+            orders: {
+              where: {
+                status: {
+                  notIn: ["Cancelled", "Rejected"],
+                },
+              },
+            },
             reviews: true,
             checkIns: true,
           },
@@ -117,8 +152,11 @@ export const runRebalancing = async () => {
       });
     });
 
-    // Execute atomic transaction for all updates to safeguard existing ranks in case of failure
-    await prisma.$transaction(updateOperations);
+    // Execute atomic transaction for all updates with extended timeout to prevent batch timeouts
+    await prisma.$transaction(updateOperations, {
+      timeout: 30000,
+      maxWait: 10000,
+    });
 
     await prisma.rebalancingRun.update({
       where: { id: run.id },

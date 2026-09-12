@@ -1,4 +1,5 @@
 import {
+  CheckInStatus,
   MerchantStatus,
   MerchantTrafficSource,
   OrderPaymentStatus,
@@ -16,7 +17,6 @@ import type {
   UpdateMerchantProfileInput,
 } from "./merchant.types.js";
 import { env } from "../../config/env.js";
-import { calculateUnderratedScore } from "../../common/utils/merchant-score.js";
 import { recommendationCache } from "../../common/services/recommendation-cache.js";
 import {
   calculatePreferenceScore,
@@ -63,6 +63,9 @@ type MapMerchantInput = {
   status: MerchantStatus;
   createdAt: Date;
   updatedAt: Date;
+  _count?: {
+    checkIns: number;
+  };
   campaigns?: Array<{
     isActive: boolean;
     startAt: Date;
@@ -119,17 +122,11 @@ const mapMerchant = (
       )
     : false;
 
-  const dbUnderratedScore = (merchant as any).underratedScore
-    ? Number((merchant as any).underratedScore)
-    : 0;
+  const rawUnderratedScore = (merchant as any).underratedScore;
   const underratedScore =
-    dbUnderratedScore > 0
-      ? dbUnderratedScore
-      : calculateUnderratedScore(
-          rating,
-          merchant.reviewCount,
-          merchant.totalViews,
-        );
+    rawUnderratedScore !== null && rawUnderratedScore !== undefined
+      ? Number(rawUnderratedScore)
+      : 0;
 
   const strengthIndex = (merchant as any).strengthIndex
     ? Number((merchant as any).strengthIndex)
@@ -157,30 +154,35 @@ const mapMerchant = (
     categoryIds,
   });
 
-  const campaignScore = hasActiveCampaign ? 100 : 0;
+  const checkInCount = (merchant as any)._count?.checkIns ?? 0;
+  // Ranking logic: Lượt check-in thực tế quyết định độ yêu thích của quán
+  // Quán nhiều check-in -> quán yêu thích, xếp trên đầu
+  // Quán ít check-in -> quán flop, xếp phía dưới
+  // Quán flop có chạy Campaign kích cầu (chủ quán nạp tiền/tài trợ voucher) -> boost ranking & badge nổi bật
+  const checkInScore = Math.min(100, checkInCount * 12);
+  const isFavorite = checkInCount >= 8 || (checkInCount >= 4 && rating >= 4.2);
+  const isFlop = checkInCount < 4;
+  const isBoosted = isFlop && hasActiveCampaign;
+
   const distanceScore =
     distance !== null ? Math.max(0, 100 - distance * 5) : 100;
   const ratingScore = (rating / 5) * 100;
 
-  // Split scoring formula:
-  // Logged Customer with preference: Preference * 0.25 + Underrated * 0.30 + Campaign * 0.15 + Distance * 0.15 + Rating * 0.15
-  // Guest or Customer without preference: Underrated * 0.40 + Campaign * 0.20 + Distance * 0.20 + Rating * 0.20
-  const recommendationScore = hasUserPreferences
-    ? Math.round(
-        (preferenceScore * 0.25 +
-          underratedScore * 0.30 +
-          campaignScore * 0.15 +
-          distanceScore * 0.15 +
-          ratingScore * 0.15) *
-          100,
-      ) / 100
-    : Math.round(
-        (underratedScore * 0.40 +
-          campaignScore * 0.20 +
-          distanceScore * 0.20 +
-          ratingScore * 0.20) *
-          100,
-      ) / 100;
+  // Boost điểm hiển thị cho quán kích cầu
+  const boostBonus = isBoosted ? 45 : hasActiveCampaign ? 20 : 0;
+
+  // preferenceScore là 0 - 100, underratedScore là 0 - 1.
+  // Chuẩn hóa underratedScore lên thang 0 - 100 để đóng góp công bằng 10% (tối đa 10 điểm)
+  const underratedScore100 = Math.min(100, Math.max(0, underratedScore * 100));
+
+  const recommendationScore = Math.round(
+    (checkInScore * 0.40 +
+      ratingScore * 0.20 +
+      distanceScore * 0.20 +
+      (hasUserPreferences ? preferenceScore * 0.10 : underratedScore100 * 0.10) +
+      boostBonus) *
+      100,
+  ) / 100;
 
   const featuredFoods = merchant.foods
     ? merchant.foods.slice(0, 3).map((f) => f.name)
@@ -208,7 +210,15 @@ const mapMerchant = (
     preferenceScore,
     recommendationRank,
     distance,
+    checkInCount,
+    isFavorite,
+    isFlop,
+    isBoosted,
     hasActiveCampaign,
+    checkInPerks: [
+      "Giảm 5% cho hóa đơn tiếp theo",
+      "Tặng 1 ly nước ngọt khi check-in",
+    ],
     featuredFoods,
     recommendationScore,
     reviewCount: merchant.reviewCount,
@@ -231,9 +241,13 @@ const mapStaffMerchant = (merchant: {
   openingHours: string;
   restaurantType: string;
   mainDishType: string;
+  underratedScore: Prisma.Decimal | number | null;
   status: MerchantStatus;
 }) => {
   const rating = Number(merchant.rating);
+  const underratedScore = merchant.underratedScore
+    ? Number(merchant.underratedScore)
+    : 0;
 
   return {
     id: merchant.id,
@@ -248,7 +262,7 @@ const mapStaffMerchant = (merchant: {
     mainDishType: merchant.mainDishType,
     rating,
     reviewCount: merchant.reviewCount,
-    underratedScore: calculateUnderratedScore(rating, merchant.reviewCount, 0),
+    underratedScore,
     platformFeePercent: env.PLATFORM_FEE_PERCENT,
     status: merchant.status,
   };
@@ -409,6 +423,15 @@ export const getMerchants = async (query: MerchantListQuery) => {
   const rawMerchants = await prisma.merchant.findMany({
     where,
     include: {
+      _count: {
+        select: {
+          checkIns: {
+            where: {
+              status: CheckInStatus.Verified,
+            },
+          },
+        },
+      },
       campaigns: {
         where: {
           isActive: true,
@@ -500,6 +523,40 @@ export const getMerchantById = async (merchantId: string) => {
     where: {
       id: merchantId,
       status: MerchantStatus.Active,
+    },
+    include: {
+      _count: {
+        select: {
+          checkIns: {
+            where: {
+              status: CheckInStatus.Verified,
+            },
+          },
+        },
+      },
+      campaigns: {
+        where: {
+          isActive: true,
+        },
+      },
+      foods: {
+        where: {
+          isAvailable: true,
+        },
+        select: {
+          name: true,
+          categories: {
+            select: {
+              categoryId: true,
+              category: {
+                select: {
+                  parentId: true,
+                },
+              },
+            },
+          },
+        },
+      },
     },
   });
 
@@ -639,6 +696,7 @@ export const getMerchantsForMap = async (query: MerchantMapQuery) => {
       mainDishType: true,
 
       totalViews: true,
+      underratedScore: true,
     },
 
     orderBy: [
@@ -676,7 +734,9 @@ export const getMerchantsForMap = async (query: MerchantMapQuery) => {
     logoUrl: merchant.logoUrl,
 
     rating: Number(merchant.rating),
-    underratedScore: calculateUnderratedScore(Number(merchant.rating)),
+    underratedScore: merchant.underratedScore
+      ? Number(merchant.underratedScore)
+      : 0,
 
     reviewCount: merchant.reviewCount,
 
@@ -778,6 +838,7 @@ export const getMyMerchantStatistics = async (merchantId: string) => {
       name: true,
       totalViews: true,
       rating: true,
+      underratedScore: true,
     },
   });
 
@@ -824,7 +885,9 @@ export const getMyMerchantStatistics = async (merchantId: string) => {
   const avgOrderValue =
     totalOrders > 0 ? Number((totalRevenue / totalOrders).toFixed(2)) : 0;
 
-  const underratedScore = calculateUnderratedScore(Number(merchant.rating));
+  const underratedScore = merchant.underratedScore
+    ? Number(merchant.underratedScore)
+    : 0;
 
   return {
     merchantId: merchant.id,
@@ -919,6 +982,7 @@ export const getStaffMerchants = async (query: StaffMerchantListQuery) => {
 
         rating: true,
         reviewCount: true,
+        underratedScore: true,
         status: true,
       },
 

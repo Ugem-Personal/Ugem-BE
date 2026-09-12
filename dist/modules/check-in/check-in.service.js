@@ -1,6 +1,6 @@
 import QRCode from "qrcode";
 import { createHash, randomBytes } from "node:crypto";
-import { CheckInStatus, NotificationType, OrderPaymentStatus, OrderStatus, OrderType, } from "../../generated/prisma/client.js";
+import { CheckInStatus, NotificationType, OrderPaymentStatus, OrderStatus, OrderType, MerchantStatus, } from "../../generated/prisma/client.js";
 import { prisma } from "../../config/prisma.js";
 import { env } from "../../config/env.js";
 import { AppError } from "../../common/errors/app-error.js";
@@ -306,7 +306,7 @@ export const getCurrentCheckIns = async (customerId) => {
         id: checkIn.id,
         orderId: checkIn.orderId,
         merchant: checkIn.merchant,
-        amount: Number(checkIn.order.finalPrice),
+        amount: checkIn.order ? Number(checkIn.order.finalPrice) : 0,
         checkedInAt: checkIn.checkedInAt,
         verifiedAt: checkIn.verifiedAt,
         status: checkIn.status,
@@ -431,6 +431,8 @@ export const getMerchantCheckInHistory = async (merchantId) => {
                     },
                 },
             },
+            rewardBenefit: true,
+            notes: true,
             order: {
                 select: {
                     finalPrice: true,
@@ -449,8 +451,10 @@ export const getMerchantCheckInHistory = async (merchantId) => {
         customerName: item.customer.user.fullName,
         customerPhone: item.customer.user.phoneNumber,
         customerAvatar: item.customer.user.avatarUrl,
-        amount: Number(item.order.finalPrice),
-        orderType: item.order.orderType,
+        amount: item.order ? Number(item.order.finalPrice) : 0,
+        orderType: item.order ? item.order.orderType : "DirectCheckIn",
+        rewardBenefit: item.rewardBenefit,
+        notes: item.notes,
         generatedAt: item.generatedAt,
         checkedInAt: item.checkedInAt,
         verifiedAt: item.verifiedAt,
@@ -458,4 +462,166 @@ export const getMerchantCheckInHistory = async (merchantId) => {
         latitude: item.latitude ? Number(item.latitude) : null,
         longitude: item.longitude ? Number(item.longitude) : null,
     }));
+};
+const generateUniqueCustomerCode = () => {
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    let code = "UGEM-";
+    for (let i = 0; i < 6; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return code;
+};
+export const getCustomerCheckInCode = async (userId) => {
+    const customer = await prisma.customer.findUnique({
+        where: { userId },
+        include: {
+            user: {
+                select: {
+                    fullName: true,
+                    email: true,
+                    phoneNumber: true,
+                    avatarUrl: true,
+                },
+            },
+        },
+    });
+    if (!customer) {
+        throw new AppError(404, "Không tìm thấy thông tin Customer");
+    }
+    let code = customer.customerCode;
+    if (!code) {
+        let attempts = 0;
+        while (!code && attempts < 10) {
+            attempts++;
+            const candidate = generateUniqueCustomerCode();
+            const exists = await prisma.customer.findUnique({
+                where: { customerCode: candidate },
+            });
+            if (!exists) {
+                code = candidate;
+                await prisma.customer.update({
+                    where: { id: customer.id },
+                    data: { customerCode: code },
+                });
+            }
+        }
+    }
+    const qrString = `UGEM:CHECKIN:${code}`;
+    const qrDataUrl = await QRCode.toDataURL(qrString, {
+        width: 320,
+        margin: 2,
+        errorCorrectionLevel: "M",
+    });
+    return {
+        customerId: customer.id,
+        customerCode: code,
+        qrDataUrl,
+        fullName: customer.user.fullName,
+        phoneNumber: customer.user.phoneNumber,
+        reviewerPoints: customer.reviewerPoints,
+        reviewerRank: customer.reviewerRank,
+        activeBenefits: [
+            "Giảm 5% cho hóa đơn tiếp theo tại quán",
+            "Tặng 1 ly Coca / Nước ngọt khi check-in",
+            "Tích ngay +10 điểm thưởng Loyalty UGem",
+        ],
+    };
+};
+export const merchantVerifyCustomerCode = async (merchantId, customerCode, rewardBenefit, notes) => {
+    const merchant = await prisma.merchant.findUnique({
+        where: { id: merchantId },
+        select: {
+            id: true,
+            name: true,
+            status: true,
+        },
+    });
+    if (!merchant || merchant.status !== MerchantStatus.Active) {
+        throw new AppError(404, "Quán không tồn tại hoặc chưa hoạt động");
+    }
+    const normalizedCode = customerCode.trim().toUpperCase();
+    const customer = await prisma.customer.findUnique({
+        where: { customerCode: normalizedCode },
+        include: {
+            user: {
+                select: {
+                    fullName: true,
+                    email: true,
+                    phoneNumber: true,
+                },
+            },
+        },
+    });
+    if (!customer) {
+        throw new AppError(404, `Không tìm thấy khách hàng với mã "${customerCode}"`);
+    }
+    // Chống spam: Giới hạn không check-in liên tục cùng 1 quán trong vòng 2 tiếng
+    const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
+    const recentCheckIn = await prisma.checkIn.findFirst({
+        where: {
+            merchantId,
+            customerId: customer.id,
+            status: CheckInStatus.Verified,
+            checkedInAt: {
+                gte: twoHoursAgo,
+            },
+        },
+    });
+    if (recentCheckIn) {
+        throw new AppError(400, `Khách hàng ${customer.user.fullName} đã check-in tại quán trong vòng 2 giờ qua. Vui lòng không check-in trùng lặp.`);
+    }
+    const CHECK_IN_REWARD_POINTS = 10;
+    const appliedBenefit = rewardBenefit || "Giảm 5% cho hóa đơn tiếp theo & Tặng 1 ly nước";
+    const checkedInAt = new Date();
+    const currentPoints = customer.reviewerPoints;
+    const newPoints = currentPoints + CHECK_IN_REWARD_POINTS;
+    const [checkInRecord] = await prisma.$transaction([
+        prisma.checkIn.create({
+            data: {
+                customerId: customer.id,
+                merchantId,
+                rewardBenefit: appliedBenefit,
+                notes: notes || null,
+                status: CheckInStatus.Verified,
+                checkedInAt,
+                verifiedAt: checkedInAt,
+                generatedAt: checkedInAt,
+            },
+        }),
+        prisma.customer.update({
+            where: { id: customer.id },
+            data: {
+                reviewerPoints: { increment: CHECK_IN_REWARD_POINTS },
+            },
+        }),
+        prisma.reviewerPointTransaction.create({
+            data: {
+                reviewerId: customer.id,
+                amount: CHECK_IN_REWARD_POINTS,
+                pointsAfter: newPoints,
+                type: "CHECK_IN_CODE",
+                reason: `Tích điểm check-in tại ${merchant.name} (Ưu đãi: ${appliedBenefit})`,
+                referenceId: merchantId,
+            },
+        }),
+    ]);
+    await createNotification({
+        userId: customer.userId,
+        type: NotificationType.System,
+        title: "Check-in thành công tại quán!",
+        message: `Bạn đã check-in thành công tại quán ${merchant.name} (+${CHECK_IN_REWARD_POINTS} điểm thưởng). Ưu đãi nhận được: ${appliedBenefit}.`,
+        referenceId: merchantId,
+        referenceType: "Merchant",
+    });
+    return {
+        checkInId: checkInRecord.id,
+        customerName: customer.user.fullName,
+        customerPhone: customer.user.phoneNumber,
+        customerCode: normalizedCode,
+        pointsAwarded: CHECK_IN_REWARD_POINTS,
+        newTotalPoints: newPoints,
+        rewardBenefit: appliedBenefit,
+        checkedInAt,
+        status: "Verified",
+    };
 };

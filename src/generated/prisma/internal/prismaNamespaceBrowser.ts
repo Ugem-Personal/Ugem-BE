@@ -128,7 +128,8 @@ export const CustomerScalarFieldEnum = {
   preferredCategoryIds: 'preferredCategoryIds',
   preferredPriceRanges: 'preferredPriceRanges',
   reviewerPoints: 'reviewerPoints',
-  reviewerRank: 'reviewerRank'
+  reviewerRank: 'reviewerRank',
+  customerCode: 'customerCode'
 } as const
 
 export type CustomerScalarFieldEnum = (typeof CustomerScalarFieldEnum)[keyof typeof CustomerScalarFieldEnum]
@@ -523,6 +524,8 @@ export const CheckInScalarFieldEnum = {
   customerId: 'customerId',
   merchantId: 'merchantId',
   qrToken: 'qrToken',
+  rewardBenefit: 'rewardBenefit',
+  notes: 'notes',
   generatedAt: 'generatedAt',
   expiresAt: 'expiresAt',
   checkedInAt: 'checkedInAt',
