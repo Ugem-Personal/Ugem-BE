@@ -44,6 +44,7 @@ export const createOrderSchema = z.object({
             z.null(),
         ])
             .optional(),
+        pointsToRedeem: z.coerce.number().int().min(0).optional().default(0),
         foods: z
             .array(orderFoodSchema)
             .min(1, "Order phải có ít nhất một món")

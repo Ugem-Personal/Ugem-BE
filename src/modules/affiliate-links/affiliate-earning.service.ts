@@ -176,5 +176,7 @@ export const createReviewerCommission = async (orderId: string) => {
     referenceId: earningTransaction.id,
 
     referenceType: "ReviewerEarningTransaction",
+  });
+
   return earningTransaction;
 };

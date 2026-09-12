@@ -276,7 +276,16 @@ export const createOrder = async (customerId, input, idempotencyKey) => {
         }
         discount = Math.min(discount, subtotal);
     }
-    const finalPrice = subtotal - discount;
+    const currentCustomer = await prisma.customer.findUnique({
+        where: { id: customerId },
+        select: { reviewerPoints: true },
+    });
+    const customerAvailablePoints = currentCustomer?.reviewerPoints ?? 0;
+    const requestedPoints = Math.max(0, input.pointsToRedeem ?? 0);
+    const pointsToRedeem = Math.min(requestedPoints, customerAvailablePoints);
+    const pointDiscount = pointsToRedeem * 1000; // 1 point = 1,000 VND
+    const totalDiscount = Math.min(discount + pointDiscount, subtotal);
+    const finalPrice = Math.max(0, subtotal - totalDiscount);
     const createOrder = (client) => client.order.create({
         data: {
             customerId,
@@ -296,7 +305,7 @@ export const createOrder = async (customerId, input, idempotencyKey) => {
                 ? new Prisma.Decimal(input.deliveryLongitude)
                 : null,
             subtotal: new Prisma.Decimal(subtotal),
-            discount: new Prisma.Decimal(discount),
+            discount: new Prisma.Decimal(totalDiscount),
             finalPrice: new Prisma.Decimal(finalPrice),
             details: {
                 create: calculatedItems.map((item) => ({
@@ -336,6 +345,29 @@ export const createOrder = async (customerId, input, idempotencyKey) => {
             return createOrder(transaction);
         })
         : await createOrder(prisma);
+    if (pointsToRedeem > 0) {
+        const newPoints = Math.max(0, customerAvailablePoints - pointsToRedeem);
+        await prisma
+            .$transaction([
+            prisma.customer.update({
+                where: { id: customerId },
+                data: { reviewerPoints: { decrement: pointsToRedeem } },
+            }),
+            prisma.reviewerPointTransaction.create({
+                data: {
+                    reviewerId: customerId,
+                    amount: -pointsToRedeem,
+                    pointsAfter: newPoints,
+                    type: "POINT_REDEMPTION",
+                    reason: `Dùng ${pointsToRedeem} điểm giảm ${(pointsToRedeem * 1000).toLocaleString("vi-VN")}đ đơn hàng`,
+                    referenceId: order.id,
+                },
+            }),
+        ])
+            .catch((err) => {
+            console.error("Failed to deduct reviewer points:", err);
+        });
+    }
     const merchant = await prisma.merchant.findUnique({
         where: {
             id: order.merchantId,

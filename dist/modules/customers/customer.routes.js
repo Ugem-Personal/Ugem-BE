@@ -5,7 +5,7 @@ import { authorizeRoles } from "../../common/middleware/role.middleware.js";
 import { validate } from "../../common/middleware/validate.middleware.js";
 import { getProfile, updateProfile } from "../users/user.controller.js";
 import { updateProfileSchema } from "../users/user.schema.js";
-import { getCustomerPreferences, searchCustomersByEmail, searchCustomersByPhoneNumber, updateCustomerPreferences, } from "./customer.controller.js";
+import { getCustomerPreferences, getReviewerProfile, searchCustomersByEmail, searchCustomersByPhoneNumber, updateCustomerPreferences, } from "./customer.controller.js";
 import { searchCustomersByEmailSchema, searchCustomersByPhoneNumberSchema, updateCustomerPreferencesSchema, } from "./customer.schema.js";
 export const customerRouter = Router();
 customerRouter.use(authenticate);
@@ -13,6 +13,7 @@ customerRouter.get("/profile", authorizeRoles("Customer", "Reviewer"), getProfil
 customerRouter.patch("/profile", authorizeRoles("Customer", "Reviewer"), validate(updateProfileSchema), updateProfile);
 customerRouter.put("/profile", authorizeRoles("Customer", "Reviewer"), validate(updateProfileSchema), updateProfile);
 customerRouter.get("/preferences", authorizeRoles("Customer", "Reviewer"), getCustomerPreferences);
+customerRouter.get("/reviewer-profile", authorizeRoles("Customer", "Reviewer"), getReviewerProfile);
 customerRouter.patch("/preferences", authorizeRoles("Customer", "Reviewer"), validate(updateCustomerPreferencesSchema), updateCustomerPreferences);
 customerRouter.get("/search-by-email", requireApprovedMerchant, validate(searchCustomersByEmailSchema), searchCustomersByEmail);
 customerRouter.get("/search-by-phone-number", requireApprovedMerchant, validate(searchCustomersByPhoneNumberSchema), searchCustomersByPhoneNumber);

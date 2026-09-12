@@ -26,6 +26,12 @@ const reviewInclude = {
             id: true,
             orderedAt: true,
             completedAt: true,
+            checkIn: {
+                select: {
+                    status: true,
+                    verifiedAt: true,
+                },
+            },
         },
     },
     details: {
@@ -37,6 +43,9 @@ const reviewInclude = {
 const mapReview = (review) => {
     const customerName = review.customer?.user?.fullName ?? null;
     const customerAvatarUrl = review.customer?.user?.avatarUrl ?? null;
+    const isVerifiedDiner = review.order?.checkIn?.status === CheckInStatus.Verified ||
+        !!review.order?.checkIn?.verifiedAt ||
+        !!review.order?.completedAt;
     const reviewDetails = review.details.map((detail) => ({
         reviewDetailId: detail.id,
         orderDetailId: detail.orderDetailId,
@@ -59,6 +68,7 @@ const mapReview = (review) => {
         imageUrl: review.imageUrl,
         customerName,
         customerAvatarUrl,
+        isVerifiedDiner,
         customer: review.customer
             ? {
                 id: review.customer.id,
@@ -173,6 +183,27 @@ export const createReview = async (customerId, input) => {
             include: reviewInclude,
         });
         await updateMerchantRating(transaction, order.merchantId);
+        const REVIEW_REWARD_POINTS = input.imageUrl?.trim() ? 20 : 15;
+        const currentCustomer = await transaction.customer.findUnique({
+            where: { id: customerId },
+            select: { reviewerPoints: true },
+        });
+        const currentPoints = currentCustomer?.reviewerPoints ?? 0;
+        const newPoints = currentPoints + REVIEW_REWARD_POINTS;
+        await transaction.customer.update({
+            where: { id: customerId },
+            data: { reviewerPoints: { increment: REVIEW_REWARD_POINTS } },
+        });
+        await transaction.reviewerPointTransaction.create({
+            data: {
+                reviewerId: customerId,
+                amount: REVIEW_REWARD_POINTS,
+                pointsAfter: newPoints,
+                type: "REVIEW_REWARD",
+                reason: `Điểm thưởng đánh giá tại ${order.merchant.name}`,
+                referenceId: createdReview.id,
+            },
+        });
         return createdReview;
     });
     await createNotification({

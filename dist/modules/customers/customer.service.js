@@ -133,3 +133,25 @@ export const updateCustomerPreferences = async (customerId, input) => {
     recommendationCache.invalidateCustomer(customerId);
     return preferences;
 };
+export const getReviewerProfile = async (customerId) => {
+    const customer = await prisma.customer.findUnique({
+        where: { id: customerId },
+        select: {
+            id: true,
+            reviewerPoints: true,
+            reviewerRank: true,
+            pointTransactions: {
+                orderBy: { createdAt: "desc" },
+                take: 50,
+            },
+        },
+    });
+    if (!customer) {
+        throw new AppError(404, "Không tìm thấy thông tin khách hàng");
+    }
+    return {
+        reviewerPoints: customer.reviewerPoints ?? 0,
+        reviewerRank: customer.reviewerRank || "Bronze",
+        pointTransactions: customer.pointTransactions,
+    };
+};

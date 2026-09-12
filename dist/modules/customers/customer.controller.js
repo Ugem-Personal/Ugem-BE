@@ -45,3 +45,11 @@ export const updateCustomerPreferences = asyncHandler(async (req, res) => {
         data: preferences,
     });
 });
+export const getReviewerProfile = asyncHandler(async (req, res) => {
+    const customerId = getCustomerId(req);
+    const profile = await customerService.getReviewerProfile(customerId);
+    return sendSuccess(res, {
+        message: "Lấy thông tin hạng Reviewer & điểm thưởng thành công",
+        data: profile,
+    });
+});
