@@ -40,20 +40,20 @@ export const applicationBodySchema = z.object({
   restaurantType: z
     .string()
     .trim()
-    .min(1, "Loại nhà hàng không được để trống")
-    .max(100),
+    .max(100)
+    .default("Quán ăn / Đồ uống"),
 
   mainDishType: z
     .string()
     .trim()
-    .min(1, "Món chính không được để trống")
-    .max(100),
+    .max(100)
+    .default("Món đặc trưng"),
 
   priceRange: z
     .string()
     .trim()
-    .min(1, "Khoảng giá không được để trống")
-    .max(100),
+    .max(100)
+    .default("Tự động theo menu"),
 
   email: z
     .string()
@@ -71,8 +71,8 @@ export const applicationBodySchema = z.object({
   openingHours: z
     .string()
     .trim()
-    .min(1, "Giờ mở cửa không được để trống")
-    .max(300),
+    .max(300)
+    .default("Chưa thiết lập (Chủ quán cài đặt sau)"),
 
   address: z.string().trim().min(5, "Địa chỉ phải có ít nhất 5 ký tự").max(500),
 
@@ -86,8 +86,8 @@ export const applicationBodySchema = z.object({
 
   menu: z
     .array(menuItemSchema)
-    .min(1, "Hồ sơ phải có ít nhất một món ăn")
-    .max(100, "Danh sách món ăn quá lớn"),
+    .max(100, "Danh sách món ăn quá lớn")
+    .default([]),
 });
 
 export const applicationIdSchema = z.object({

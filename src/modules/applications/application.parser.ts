@@ -86,11 +86,15 @@ export const parseApplicationFormData = (
 
     description: toStringValue(body.Description ?? body.description) || null,
 
-    restaurantType: toStringValue(body.RestaurantType ?? body.restaurantType),
+    restaurantType:
+      toStringValue(body.RestaurantType ?? body.restaurantType) ||
+      "Quán ăn / Đồ uống",
 
-    mainDishType: toStringValue(body.MainDishType ?? body.mainDishType),
+    mainDishType:
+      toStringValue(body.MainDishType ?? body.mainDishType) || "Món đặc trưng",
 
-    priceRange: toStringValue(body.PriceRange ?? body.priceRange),
+    priceRange:
+      toStringValue(body.PriceRange ?? body.priceRange) || "Tự động theo menu",
 
     email: toStringValue(body.Email ?? body.email),
 
@@ -98,7 +102,9 @@ export const parseApplicationFormData = (
 
     logoUrl: toStringValue(body.LogoUrl ?? body.logoUrl) || null,
 
-    openingHours: toStringValue(body.OpeningHours ?? body.openingHours),
+    openingHours:
+      toStringValue(body.OpeningHours ?? body.openingHours) ||
+      "Chưa thiết lập (Chủ quán cài đặt sau)",
 
     address: toStringValue(body.Address ?? body.address),
 

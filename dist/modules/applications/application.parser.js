@@ -54,13 +54,15 @@ export const parseApplicationFormData = (body) => {
     return {
         name: toStringValue(body.Name ?? body.name),
         description: toStringValue(body.Description ?? body.description) || null,
-        restaurantType: toStringValue(body.RestaurantType ?? body.restaurantType),
-        mainDishType: toStringValue(body.MainDishType ?? body.mainDishType),
-        priceRange: toStringValue(body.PriceRange ?? body.priceRange),
+        restaurantType: toStringValue(body.RestaurantType ?? body.restaurantType) ||
+            "Quán ăn / Đồ uống",
+        mainDishType: toStringValue(body.MainDishType ?? body.mainDishType) || "Món đặc trưng",
+        priceRange: toStringValue(body.PriceRange ?? body.priceRange) || "Tự động theo menu",
         email: toStringValue(body.Email ?? body.email),
         phone: toStringValue(body.Phone ?? body.phone),
         logoUrl: toStringValue(body.LogoUrl ?? body.logoUrl) || null,
-        openingHours: toStringValue(body.OpeningHours ?? body.openingHours),
+        openingHours: toStringValue(body.OpeningHours ?? body.openingHours) ||
+            "Chưa thiết lập (Chủ quán cài đặt sau)",
         address: toStringValue(body.Address ?? body.address),
         latitude: toOptionalNumber(body.Latitude ?? body.latitude),
         longitude: toOptionalNumber(body.Longitude ?? body.longitude),
