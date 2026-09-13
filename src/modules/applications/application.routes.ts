@@ -7,6 +7,7 @@ import { validate } from "../../common/middleware/validate.middleware.js";
 
 import {
   createApplication,
+  checkStoreAvailability,
   getApplicationById,
   getApplications,
   getMyApplications,
@@ -46,6 +47,11 @@ applicationRouter.post(
 );
 
 applicationRouter.get("/mine", authorizeRoles("Merchant"), getMyApplications);
+applicationRouter.get(
+  "/check-availability",
+  authorizeRoles("Merchant"),
+  checkStoreAvailability,
+);
 
 applicationRouter.get("/me", authorizeRoles("Merchant"), getMyApplications);
 applicationRouter.get(

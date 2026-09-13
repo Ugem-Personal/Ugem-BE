@@ -55,6 +55,105 @@ const mapApplication = (application) => {
         updatedAt: application.updatedAt,
     };
 };
+export const checkStoreInfoAvailability = async (currentUserId, query, currentApplicationId) => {
+    const conflicts = {};
+    const trimmedName = query.name?.trim();
+    const trimmedPhone = query.phone?.trim();
+    const trimmedEmail = query.email?.trim();
+    // 1. Check Name
+    if (trimmedName) {
+        const existingMerchant = await prisma.merchant.findFirst({
+            where: {
+                userId: { not: currentUserId },
+                name: { equals: trimmedName, mode: "insensitive" },
+            },
+        });
+        if (existingMerchant) {
+            conflicts.name = `Tên quán "${trimmedName}" đã tồn tại trên hệ thống. Vui lòng thêm phân biệt chi nhánh (Ví dụ: ${trimmedName} - Chi nhánh 2).`;
+        }
+        else {
+            const existingPending = await prisma.application.findFirst({
+                where: {
+                    ...(currentApplicationId ? { id: { not: currentApplicationId } } : {}),
+                    status: ApplicationStatus.Pending,
+                    applicantUserId: { not: currentUserId },
+                    name: { equals: trimmedName, mode: "insensitive" },
+                },
+            });
+            if (existingPending) {
+                conflicts.name = `Tên quán "${trimmedName}" đang có một hồ sơ khác chờ xét duyệt.`;
+            }
+        }
+    }
+    // 2. Check Phone
+    if (trimmedPhone) {
+        const existingMerchant = await prisma.merchant.findFirst({
+            where: {
+                userId: { not: currentUserId },
+                phone: trimmedPhone,
+            },
+        });
+        if (existingMerchant) {
+            conflicts.phone = `Số điện thoại ${trimmedPhone} đã được đăng ký bởi một quán khác.`;
+        }
+        else {
+            const existingPending = await prisma.application.findFirst({
+                where: {
+                    ...(currentApplicationId ? { id: { not: currentApplicationId } } : {}),
+                    status: ApplicationStatus.Pending,
+                    applicantUserId: { not: currentUserId },
+                    phone: trimmedPhone,
+                },
+            });
+            if (existingPending) {
+                conflicts.phone = `Số điện thoại ${trimmedPhone} đang thuộc một hồ sơ khác chờ xét duyệt.`;
+            }
+        }
+    }
+    // 3. Check Email
+    if (trimmedEmail) {
+        const existingMerchant = await prisma.merchant.findFirst({
+            where: {
+                userId: { not: currentUserId },
+                email: { equals: trimmedEmail, mode: "insensitive" },
+            },
+        });
+        if (existingMerchant) {
+            conflicts.email = `Email liên hệ ${trimmedEmail} đã được sử dụng bởi một quán khác.`;
+        }
+        else {
+            const existingPending = await prisma.application.findFirst({
+                where: {
+                    ...(currentApplicationId ? { id: { not: currentApplicationId } } : {}),
+                    status: ApplicationStatus.Pending,
+                    applicantUserId: { not: currentUserId },
+                    email: { equals: trimmedEmail, mode: "insensitive" },
+                },
+            });
+            if (existingPending) {
+                conflicts.email = `Email liên hệ ${trimmedEmail} đang thuộc một hồ sơ khác chờ xét duyệt.`;
+            }
+        }
+    }
+    return {
+        available: Object.keys(conflicts).length === 0,
+        conflicts,
+    };
+};
+export const assertNoDuplicateStoreInfo = async (currentUserId, input, currentApplicationId) => {
+    const result = await checkStoreInfoAvailability(currentUserId, input, currentApplicationId);
+    if (!result.available) {
+        if (result.conflicts.name) {
+            throw new AppError(409, result.conflicts.name);
+        }
+        if (result.conflicts.phone) {
+            throw new AppError(409, result.conflicts.phone);
+        }
+        if (result.conflicts.email) {
+            throw new AppError(409, result.conflicts.email);
+        }
+    }
+};
 export const createApplication = async (userId, input) => {
     const user = await prisma.user.findUnique({
         where: {
@@ -81,6 +180,12 @@ export const createApplication = async (userId, input) => {
         }
         throw new AppError(409, "Bạn đang có một hồ sơ chờ xét duyệt");
     }
+    // Kiểm tra chống trùng lặp Tên quán, SĐT, Email
+    await assertNoDuplicateStoreInfo(userId, {
+        name: input.name,
+        phone: input.phone,
+        email: input.email,
+    });
     const application = await prisma.application.create({
         data: {
             applicantUserId: userId,
@@ -169,6 +274,12 @@ export const updateApplication = async (applicationId, userId, input) => {
         existing.status !== ApplicationStatus.Rejected) {
         throw new AppError(409, "Chỉ có thể sửa hồ sơ Draft hoặc Rejected");
     }
+    // Kiểm tra chống trùng lặp Tên quán, SĐT, Email
+    await assertNoDuplicateStoreInfo(userId, {
+        name: input.name,
+        phone: input.phone,
+        email: input.email,
+    }, applicationId);
     const application = await prisma.$transaction(async (transaction) => {
         await transaction.applicationMenu.deleteMany({
             where: {

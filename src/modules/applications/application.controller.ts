@@ -47,6 +47,30 @@ export const createApplication = asyncHandler(
   },
 );
 
+export const checkStoreAvailability = asyncHandler(
+  async (req: Request, res: Response) => {
+    const currentUser = getCurrentUser(req);
+    const { name, phone, email, applicationId } = req.query;
+
+    const result = await applicationService.checkStoreInfoAvailability(
+      currentUser.userId,
+      {
+        name: typeof name === "string" ? name : undefined,
+        phone: typeof phone === "string" ? phone : undefined,
+        email: typeof email === "string" ? email : undefined,
+      },
+      typeof applicationId === "string" ? applicationId : undefined,
+    );
+
+    return sendSuccess(res, {
+      message: result.available
+        ? "Thông tin khả dụng"
+        : "Thông tin bị trùng lặp",
+      data: result,
+    });
+  },
+);
+
 export const getMyApplications = asyncHandler(
   async (req: Request, res: Response) => {
     const currentUser = getCurrentUser(req);
