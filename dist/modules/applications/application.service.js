@@ -60,16 +60,18 @@ export const checkStoreInfoAvailability = async (currentUserId, query, currentAp
     const trimmedName = query.name?.trim();
     const trimmedPhone = query.phone?.trim();
     const trimmedEmail = query.email?.trim();
-    // 1. Check Name
-    if (trimmedName) {
+    const trimmedAddress = query.address?.trim();
+    // 1. Check Name + Address combination (Cho phép trùng tên quán nếu khác địa chỉ)
+    if (trimmedName && trimmedAddress) {
         const existingMerchant = await prisma.merchant.findFirst({
             where: {
                 userId: { not: currentUserId },
                 name: { equals: trimmedName, mode: "insensitive" },
+                address: { equals: trimmedAddress, mode: "insensitive" },
             },
         });
         if (existingMerchant) {
-            conflicts.name = `Tên quán "${trimmedName}" đã tồn tại trên hệ thống. Vui lòng thêm phân biệt chi nhánh (Ví dụ: ${trimmedName} - Chi nhánh 2).`;
+            conflicts.name = `Cơ sở "${trimmedName}" tại địa chỉ này đã được đăng ký trên hệ thống.`;
         }
         else {
             const existingPending = await prisma.application.findFirst({
@@ -78,10 +80,11 @@ export const checkStoreInfoAvailability = async (currentUserId, query, currentAp
                     status: ApplicationStatus.Pending,
                     applicantUserId: { not: currentUserId },
                     name: { equals: trimmedName, mode: "insensitive" },
+                    address: { equals: trimmedAddress, mode: "insensitive" },
                 },
             });
             if (existingPending) {
-                conflicts.name = `Tên quán "${trimmedName}" đang có một hồ sơ khác chờ xét duyệt.`;
+                conflicts.name = `Cơ sở "${trimmedName}" tại địa chỉ này đang có hồ sơ chờ xét duyệt.`;
             }
         }
     }
@@ -180,11 +183,12 @@ export const createApplication = async (userId, input) => {
         }
         throw new AppError(409, "Bạn đang có một hồ sơ chờ xét duyệt");
     }
-    // Kiểm tra chống trùng lặp Tên quán, SĐT, Email
+    // Kiểm tra chống trùng lặp Tên quán + Địa chỉ, SĐT, Email
     await assertNoDuplicateStoreInfo(userId, {
         name: input.name,
         phone: input.phone,
         email: input.email,
+        address: input.address,
     });
     const application = await prisma.application.create({
         data: {
@@ -279,6 +283,7 @@ export const updateApplication = async (applicationId, userId, input) => {
         name: input.name,
         phone: input.phone,
         email: input.email,
+        address: input.address,
     }, applicationId);
     const application = await prisma.$transaction(async (transaction) => {
         await transaction.applicationMenu.deleteMany({

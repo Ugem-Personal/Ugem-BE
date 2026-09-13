@@ -88,6 +88,7 @@ export interface CheckAvailabilityQuery {
   name?: string;
   phone?: string;
   email?: string;
+  address?: string;
 }
 
 export interface CheckAvailabilityResult {
@@ -108,17 +109,19 @@ export const checkStoreInfoAvailability = async (
   const trimmedName = query.name?.trim();
   const trimmedPhone = query.phone?.trim();
   const trimmedEmail = query.email?.trim();
+  const trimmedAddress = query.address?.trim();
 
-  // 1. Check Name
-  if (trimmedName) {
+  // 1. Check Name + Address combination (Cho phép trùng tên quán nếu khác địa chỉ)
+  if (trimmedName && trimmedAddress) {
     const existingMerchant = await prisma.merchant.findFirst({
       where: {
         userId: { not: currentUserId },
         name: { equals: trimmedName, mode: "insensitive" },
+        address: { equals: trimmedAddress, mode: "insensitive" },
       },
     });
     if (existingMerchant) {
-      conflicts.name = `Tên quán "${trimmedName}" đã tồn tại trên hệ thống. Vui lòng thêm phân biệt chi nhánh (Ví dụ: ${trimmedName} - Chi nhánh 2).`;
+      conflicts.name = `Cơ sở "${trimmedName}" tại địa chỉ này đã được đăng ký trên hệ thống.`;
     } else {
       const existingPending = await prisma.application.findFirst({
         where: {
@@ -126,10 +129,11 @@ export const checkStoreInfoAvailability = async (
           status: ApplicationStatus.Pending,
           applicantUserId: { not: currentUserId },
           name: { equals: trimmedName, mode: "insensitive" },
+          address: { equals: trimmedAddress, mode: "insensitive" },
         },
       });
       if (existingPending) {
-        conflicts.name = `Tên quán "${trimmedName}" đang có một hồ sơ khác chờ xét duyệt.`;
+        conflicts.name = `Cơ sở "${trimmedName}" tại địa chỉ này đang có hồ sơ chờ xét duyệt.`;
       }
     }
   }
@@ -192,7 +196,7 @@ export const checkStoreInfoAvailability = async (
 
 export const assertNoDuplicateStoreInfo = async (
   currentUserId: string,
-  input: { name: string; phone: string; email: string },
+  input: { name: string; phone: string; email: string; address?: string },
   currentApplicationId?: string,
 ) => {
   const result = await checkStoreInfoAvailability(
@@ -249,11 +253,12 @@ export const createApplication = async (
     throw new AppError(409, "Bạn đang có một hồ sơ chờ xét duyệt");
   }
 
-  // Kiểm tra chống trùng lặp Tên quán, SĐT, Email
+  // Kiểm tra chống trùng lặp Tên quán + Địa chỉ, SĐT, Email
   await assertNoDuplicateStoreInfo(userId, {
     name: input.name,
     phone: input.phone,
     email: input.email,
+    address: input.address,
   });
 
   const application = await prisma.application.create({
@@ -384,6 +389,7 @@ export const updateApplication = async (
       name: input.name,
       phone: input.phone,
       email: input.email,
+      address: input.address,
     },
     applicationId,
   );

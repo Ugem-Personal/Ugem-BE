@@ -50,7 +50,7 @@ export const createApplication = asyncHandler(
 export const checkStoreAvailability = asyncHandler(
   async (req: Request, res: Response) => {
     const currentUser = getCurrentUser(req);
-    const { name, phone, email, applicationId } = req.query;
+    const { name, phone, email, address, applicationId } = req.query;
 
     const result = await applicationService.checkStoreInfoAvailability(
       currentUser.userId,
@@ -58,6 +58,7 @@ export const checkStoreAvailability = asyncHandler(
         name: typeof name === "string" ? name : undefined,
         phone: typeof phone === "string" ? phone : undefined,
         email: typeof email === "string" ? email : undefined,
+        address: typeof address === "string" ? address : undefined,
       },
       typeof applicationId === "string" ? applicationId : undefined,
     );
