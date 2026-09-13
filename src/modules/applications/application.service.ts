@@ -115,7 +115,6 @@ export const checkStoreInfoAvailability = async (
   if (trimmedName && trimmedAddress) {
     const existingMerchant = await prisma.merchant.findFirst({
       where: {
-        userId: { not: currentUserId },
         name: { equals: trimmedName, mode: "insensitive" },
         address: { equals: trimmedAddress, mode: "insensitive" },
       },
@@ -127,7 +126,6 @@ export const checkStoreInfoAvailability = async (
         where: {
           ...(currentApplicationId ? { id: { not: currentApplicationId } } : {}),
           status: ApplicationStatus.Pending,
-          applicantUserId: { not: currentUserId },
           name: { equals: trimmedName, mode: "insensitive" },
           address: { equals: trimmedAddress, mode: "insensitive" },
         },
@@ -142,7 +140,6 @@ export const checkStoreInfoAvailability = async (
   if (trimmedPhone) {
     const existingMerchant = await prisma.merchant.findFirst({
       where: {
-        userId: { not: currentUserId },
         phone: trimmedPhone,
       },
     });
@@ -153,12 +150,21 @@ export const checkStoreInfoAvailability = async (
         where: {
           ...(currentApplicationId ? { id: { not: currentApplicationId } } : {}),
           status: ApplicationStatus.Pending,
-          applicantUserId: { not: currentUserId },
           phone: trimmedPhone,
         },
       });
       if (existingPending) {
-        conflicts.phone = `Số điện thoại ${trimmedPhone} đang thuộc một hồ sơ khác chờ xét duyệt.`;
+        conflicts.phone = `Số điện thoại ${trimmedPhone} đang thuộc một hồ sơ chờ xét duyệt.`;
+      } else {
+        const existingUser = await prisma.user.findFirst({
+          where: {
+            ...(currentUserId ? { id: { not: currentUserId } } : {}),
+            phoneNumber: trimmedPhone,
+          },
+        });
+        if (existingUser) {
+          conflicts.phone = `Số điện thoại ${trimmedPhone} đã được liên kết với một tài khoản khác.`;
+        }
       }
     }
   }
@@ -167,7 +173,6 @@ export const checkStoreInfoAvailability = async (
   if (trimmedEmail) {
     const existingMerchant = await prisma.merchant.findFirst({
       where: {
-        userId: { not: currentUserId },
         email: { equals: trimmedEmail, mode: "insensitive" },
       },
     });
@@ -178,12 +183,21 @@ export const checkStoreInfoAvailability = async (
         where: {
           ...(currentApplicationId ? { id: { not: currentApplicationId } } : {}),
           status: ApplicationStatus.Pending,
-          applicantUserId: { not: currentUserId },
           email: { equals: trimmedEmail, mode: "insensitive" },
         },
       });
       if (existingPending) {
-        conflicts.email = `Email liên hệ ${trimmedEmail} đang thuộc một hồ sơ khác chờ xét duyệt.`;
+        conflicts.email = `Email liên hệ ${trimmedEmail} đang thuộc một hồ sơ chờ xét duyệt.`;
+      } else {
+        const existingUser = await prisma.user.findFirst({
+          where: {
+            ...(currentUserId ? { id: { not: currentUserId } } : {}),
+            email: { equals: trimmedEmail, mode: "insensitive" },
+          },
+        });
+        if (existingUser) {
+          conflicts.email = `Email liên hệ ${trimmedEmail} đã được liên kết với một tài khoản khác.`;
+        }
       }
     }
   }
