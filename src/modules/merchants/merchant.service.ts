@@ -296,6 +296,12 @@ export const getMerchants = async (query: MerchantListQuery) => {
   const where: Prisma.MerchantWhereInput = {
     status: MerchantStatus.Active,
 
+    NOT: [
+      { openingHours: { contains: "nghỉ", mode: "insensitive" } },
+      { openingHours: { contains: "tạm đóng", mode: "insensitive" } },
+      { openingHours: { contains: "đóng cửa", mode: "insensitive" } },
+    ],
+
     restaurantType: query.restaurantType
       ? {
           contains: query.restaurantType,
@@ -660,6 +666,12 @@ export const getMerchantsForMap = async (query: MerchantMapQuery) => {
   const merchants = await prisma.merchant.findMany({
     where: {
       status: MerchantStatus.Active,
+
+      NOT: [
+        { openingHours: { contains: "nghỉ", mode: "insensitive" } },
+        { openingHours: { contains: "tạm đóng", mode: "insensitive" } },
+        { openingHours: { contains: "đóng cửa", mode: "insensitive" } },
+      ],
 
       latitude: {
         not: null,
