@@ -1,7 +1,7 @@
 import { OrderStatus, OrderType, } from "../../generated/prisma/client.js";
 const merchantTransitions = {
-    [OrderStatus.Pending]: [OrderStatus.Accepted, OrderStatus.Rejected],
-    [OrderStatus.Accepted]: [OrderStatus.Preparing],
+    [OrderStatus.Pending]: [OrderStatus.Accepted, OrderStatus.Ready, OrderStatus.Rejected],
+    [OrderStatus.Accepted]: [OrderStatus.Preparing, OrderStatus.Ready],
     [OrderStatus.Preparing]: [OrderStatus.Ready],
     [OrderStatus.Ready]: [OrderStatus.Delivering],
     [OrderStatus.Delivering]: [],
@@ -21,6 +21,8 @@ export const canMerchantTransitionOrder = (currentStatus, nextStatus, orderType)
 };
 export const canCustomerConfirmOrder = (currentStatus, orderType) => {
     return orderType === OrderType.Offline
-        ? currentStatus === OrderStatus.Ready
+        ? currentStatus === OrderStatus.Accepted ||
+            currentStatus === OrderStatus.Preparing ||
+            currentStatus === OrderStatus.Ready
         : currentStatus === OrderStatus.Delivering;
 };

@@ -11,7 +11,7 @@ describe("merchant order state machine", () => {
   it("allows a pending order to be accepted or rejected", () => {
     expect(
       getMerchantOrderTransitions(OrderStatus.Pending),
-    ).toEqual([OrderStatus.Accepted, OrderStatus.Rejected]);
+    ).toEqual([OrderStatus.Accepted, OrderStatus.Ready, OrderStatus.Rejected]);
   });
 
   it("rejects invalid and repeated transitions", () => {
@@ -80,14 +80,17 @@ describe("merchant order state machine", () => {
       true,
     );
     expect(
+      canCustomerConfirmOrder(OrderStatus.Preparing, OrderType.Offline),
+    ).toBe(true);
+    expect(
+      canCustomerConfirmOrder(OrderStatus.Accepted, OrderType.Offline),
+    ).toBe(true);
+    expect(
       canCustomerConfirmOrder(OrderStatus.Delivering, OrderType.Online),
     ).toBe(true);
     expect(canCustomerConfirmOrder(OrderStatus.Ready, OrderType.Online)).toBe(
       false,
     );
-    expect(
-      canCustomerConfirmOrder(OrderStatus.Preparing, OrderType.Offline),
-    ).toBe(false);
   });
 
 });
