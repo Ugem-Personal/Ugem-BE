@@ -1,6 +1,7 @@
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
 import {
+  MAIN_DISH_TYPES,
   PRICE_RANGES,
   RESTAURANT_TYPES,
 } from "../../common/constants/discovery-options.js";
@@ -49,6 +50,7 @@ export const getDiscoveryOptions = async () => {
   return {
     restaurantTypes: RESTAURANT_TYPES,
     priceRanges: PRICE_RANGES,
+    mainDishTypes: MAIN_DISH_TYPES,
     foodCategories,
   };
 };
