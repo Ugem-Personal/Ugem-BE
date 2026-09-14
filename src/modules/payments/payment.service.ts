@@ -792,10 +792,7 @@ export const confirmBill = async (
         where: { id: order.id },
         data: {
           paymentMethod,
-          paymentStatus:
-            paymentMethod === PaymentMethod.Cash
-              ? OrderPaymentStatus.Paid
-              : OrderPaymentStatus.Pending,
+          paymentStatus: OrderPaymentStatus.Pending,
         },
       });
 
@@ -844,10 +841,7 @@ export const confirmBill = async (
       where: { id: existingBill.orderId },
       data: {
         paymentMethod,
-        paymentStatus:
-          paymentMethod === PaymentMethod.Cash
-            ? OrderPaymentStatus.Paid
-            : OrderPaymentStatus.Pending,
+        paymentStatus: OrderPaymentStatus.Pending,
       },
     });
 
