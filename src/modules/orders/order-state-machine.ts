@@ -40,8 +40,6 @@ export const canCustomerConfirmOrder = (
   orderType: OrderType,
 ): boolean => {
   return orderType === OrderType.Offline
-    ? currentStatus === OrderStatus.Accepted ||
-        currentStatus === OrderStatus.Preparing ||
-        currentStatus === OrderStatus.Ready
+    ? currentStatus === OrderStatus.Ready
     : currentStatus === OrderStatus.Delivering;
 };

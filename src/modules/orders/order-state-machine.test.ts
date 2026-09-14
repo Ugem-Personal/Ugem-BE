@@ -81,10 +81,10 @@ describe("merchant order state machine", () => {
     );
     expect(
       canCustomerConfirmOrder(OrderStatus.Preparing, OrderType.Offline),
-    ).toBe(true);
+    ).toBe(false);
     expect(
       canCustomerConfirmOrder(OrderStatus.Accepted, OrderType.Offline),
-    ).toBe(true);
+    ).toBe(false);
     expect(
       canCustomerConfirmOrder(OrderStatus.Delivering, OrderType.Online),
     ).toBe(true);
