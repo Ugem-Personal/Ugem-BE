@@ -735,9 +735,28 @@ export const getMyOrders = async (
     status:
       query.status === "Cancelled" || query.status === "Rejected"
         ? { in: [OrderStatus.Cancelled, OrderStatus.Rejected] }
-        : query.status
-          ? (query.status as OrderStatus)
-          : undefined,
+        : query.status === "Active"
+          ? {
+              in: [
+                OrderStatus.Pending,
+                OrderStatus.Accepted,
+                OrderStatus.Preparing,
+                OrderStatus.Ready,
+                OrderStatus.Delivering,
+              ],
+            }
+          : query.status === "History"
+            ? {
+                in: [
+                  OrderStatus.Completed,
+                  OrderStatus.Cancelled,
+                  OrderStatus.Rejected,
+                  OrderStatus.NotReceived,
+                ],
+              }
+            : query.status
+              ? (query.status as OrderStatus)
+              : undefined,
   };
 
   const [orders, totalItems] = await prisma.$transaction([
@@ -775,7 +794,29 @@ export const getMerchantOrders = async (
   const where: Prisma.OrderWhereInput = {
     merchantId,
 
-    status: query.status ? (query.status as OrderStatus) : undefined,
+    status:
+      query.status === "Active"
+        ? {
+            in: [
+              OrderStatus.Pending,
+              OrderStatus.Accepted,
+              OrderStatus.Preparing,
+              OrderStatus.Ready,
+              OrderStatus.Delivering,
+            ],
+          }
+        : query.status === "History"
+          ? {
+              in: [
+                OrderStatus.Completed,
+                OrderStatus.Cancelled,
+                OrderStatus.Rejected,
+                OrderStatus.NotReceived,
+              ],
+            }
+          : query.status
+            ? (query.status as OrderStatus)
+            : undefined,
   };
 
   const [orders, totalItems] = await prisma.$transaction([

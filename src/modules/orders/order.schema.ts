@@ -136,6 +136,8 @@ export const orderListSchema = z.object({
         "Completed",
         "NotReceived",
         "Cancelled",
+        "Active",
+        "History",
       ])
       .optional(),
 
