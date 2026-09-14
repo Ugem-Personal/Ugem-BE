@@ -66,6 +66,7 @@ app.use("/api/v1/foods", foodRouter);
 app.use("/api/v1/food-toppings", foodToppingRouter);
 app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/check-in", checkInRouter);
+app.use("/api/v1/check-ins", checkInRouter);
 app.use("/api/v1/wishlists", wishlistRouter);
 app.use("/api/v1/reviews", reviewRouter);
 app.use("/api/v1/reviewer-application", reviewerApplicationRouter);
