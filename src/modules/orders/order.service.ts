@@ -26,7 +26,7 @@ import {
   canMerchantTransitionOrder,
 } from "./order-state-machine.js";
 
-const orderInclude = {
+export const orderInclude = {
   merchant: {
     select: {
       id: true,
@@ -64,7 +64,7 @@ const orderInclude = {
   bill: true,
 };
 
-const mapOrder = (order: any) => {
+export const mapOrder = (order: any) => {
   const mappedFoods = order.details.map((detail: any) => {
     const toppings = detail.toppings.map((topping: any) => ({
       foodToppingId: topping.toppingId,

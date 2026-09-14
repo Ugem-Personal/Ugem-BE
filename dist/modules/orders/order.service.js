@@ -6,7 +6,7 @@ import { createReviewerCommission } from "../affiliate-links/affiliate-earning.s
 import { createNotification } from "../notifications/notification.service.js";
 import { realtimeService } from "../realtime/realtime.service.js";
 import { canCustomerConfirmOrder, canMerchantTransitionOrder, } from "./order-state-machine.js";
-const orderInclude = {
+export const orderInclude = {
     merchant: {
         select: {
             id: true,
@@ -41,7 +41,7 @@ const orderInclude = {
     },
     bill: true,
 };
-const mapOrder = (order) => {
+export const mapOrder = (order) => {
     const mappedFoods = order.details.map((detail) => {
         const toppings = detail.toppings.map((topping) => ({
             foodToppingId: topping.toppingId,
@@ -506,9 +506,28 @@ export const getMyOrders = async (customerId, query) => {
         customerId,
         status: query.status === "Cancelled" || query.status === "Rejected"
             ? { in: [OrderStatus.Cancelled, OrderStatus.Rejected] }
-            : query.status
-                ? query.status
-                : undefined,
+            : query.status === "Active"
+                ? {
+                    in: [
+                        OrderStatus.Pending,
+                        OrderStatus.Accepted,
+                        OrderStatus.Preparing,
+                        OrderStatus.Ready,
+                        OrderStatus.Delivering,
+                    ],
+                }
+                : query.status === "History"
+                    ? {
+                        in: [
+                            OrderStatus.Completed,
+                            OrderStatus.Cancelled,
+                            OrderStatus.Rejected,
+                            OrderStatus.NotReceived,
+                        ],
+                    }
+                    : query.status
+                        ? query.status
+                        : undefined,
     };
     const [orders, totalItems] = await prisma.$transaction([
         prisma.order.findMany({
@@ -537,7 +556,28 @@ export const getMerchantOrders = async (merchantId, query) => {
     const pageSize = query.pageSize || 10;
     const where = {
         merchantId,
-        status: query.status ? query.status : undefined,
+        status: query.status === "Active"
+            ? {
+                in: [
+                    OrderStatus.Pending,
+                    OrderStatus.Accepted,
+                    OrderStatus.Preparing,
+                    OrderStatus.Ready,
+                    OrderStatus.Delivering,
+                ],
+            }
+            : query.status === "History"
+                ? {
+                    in: [
+                        OrderStatus.Completed,
+                        OrderStatus.Cancelled,
+                        OrderStatus.Rejected,
+                        OrderStatus.NotReceived,
+                    ],
+                }
+                : query.status
+                    ? query.status
+                    : undefined,
     };
     const [orders, totalItems] = await prisma.$transaction([
         prisma.order.findMany({

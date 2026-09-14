@@ -111,6 +111,8 @@ export const orderListSchema = z.object({
             "Completed",
             "NotReceived",
             "Cancelled",
+            "Active",
+            "History",
         ])
             .optional(),
         pageIndex: z.coerce.number().int().min(1).default(1),

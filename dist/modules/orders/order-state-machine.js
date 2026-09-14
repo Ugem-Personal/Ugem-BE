@@ -21,8 +21,6 @@ export const canMerchantTransitionOrder = (currentStatus, nextStatus, orderType)
 };
 export const canCustomerConfirmOrder = (currentStatus, orderType) => {
     return orderType === OrderType.Offline
-        ? currentStatus === OrderStatus.Accepted ||
-            currentStatus === OrderStatus.Preparing ||
-            currentStatus === OrderStatus.Ready
+        ? currentStatus === OrderStatus.Ready
         : currentStatus === OrderStatus.Delivering;
 };

@@ -22,6 +22,8 @@ import type {
 
 import { createReviewerCommission } from "../affiliate-links/affiliate-earning.service.js";
 import { createNotification } from "../notifications/notification.service.js";
+import { realtimeService } from "../realtime/realtime.service.js";
+import { mapOrder, orderInclude } from "../orders/order.service.js";
 
 export const markAffiliatePaymentStatus = async (
   orderId: string,
@@ -71,36 +73,34 @@ const notifyPaymentSuccess = async (orderId: string) => {
     where: {
       id: orderId,
     },
-
-    select: {
-      id: true,
-
-      customer: {
-        select: {
-          userId: true,
-        },
-      },
-
-      details: {
-        include: {
-          toppings: true,
-        },
-      },
-    },
+    include: orderInclude,
   });
 
   if (!order) {
     return;
   }
 
-  await createNotification({
-    userId: order.customer.userId,
-    type: NotificationType.Payment,
-    title: "Thanh toán thành công",
-    message: "Đơn hàng của bạn đã được xác nhận thanh toán thành công.",
-    referenceId: order.id,
-    referenceType: "Order",
-  });
+  const customerUserId =
+    (order.customer as any)?.user?.id || (order.customer as any)?.userId;
+
+  if (customerUserId) {
+    await createNotification({
+      userId: customerUserId,
+      type: NotificationType.Payment,
+      title: "Thanh toán thành công",
+      message: "Đơn hàng của bạn đã được xác nhận thanh toán thành công.",
+      referenceId: order.id,
+      referenceType: "Order",
+    });
+  }
+
+  try {
+    const mappedRefreshed = mapOrder(order);
+    if (customerUserId) {
+      realtimeService.sendToUser(customerUserId, "order:status_changed", mappedRefreshed);
+    }
+    realtimeService.sendToMerchant(order.merchantId, "order:status_changed", mappedRefreshed);
+  } catch {}
 };
 
 const billInclude = {
@@ -424,6 +424,20 @@ export const confirmCashPayment = async (
     referenceId: order.id,
     referenceType: "Order",
   });
+
+  try {
+    const refreshedOrder = await prisma.order.findUnique({
+      where: { id: order.id },
+      include: orderInclude,
+    });
+    if (refreshedOrder) {
+      const mappedRefreshed = mapOrder(refreshedOrder);
+      if (order.customer?.userId) {
+        realtimeService.sendToUser(order.customer.userId, "order:status_changed", mappedRefreshed);
+      }
+      realtimeService.sendToMerchant(order.merchantId, "order:status_changed", mappedRefreshed);
+    }
+  } catch {}
 
   return mapBill(result);
 };

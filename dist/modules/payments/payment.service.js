@@ -4,6 +4,8 @@ import { env } from "../../config/env.js";
 import { AppError } from "../../common/errors/app-error.js";
 import { createReviewerCommission } from "../affiliate-links/affiliate-earning.service.js";
 import { createNotification } from "../notifications/notification.service.js";
+import { realtimeService } from "../realtime/realtime.service.js";
+import { mapOrder, orderInclude } from "../orders/order.service.js";
 export const markAffiliatePaymentStatus = async (orderId, isSuccess) => {
     if (isSuccess) {
         await prisma.affiliateTransaction
@@ -48,31 +50,30 @@ const notifyPaymentSuccess = async (orderId) => {
         where: {
             id: orderId,
         },
-        select: {
-            id: true,
-            customer: {
-                select: {
-                    userId: true,
-                },
-            },
-            details: {
-                include: {
-                    toppings: true,
-                },
-            },
-        },
+        include: orderInclude,
     });
     if (!order) {
         return;
     }
-    await createNotification({
-        userId: order.customer.userId,
-        type: NotificationType.Payment,
-        title: "Thanh toán thành công",
-        message: "Đơn hàng của bạn đã được xác nhận thanh toán thành công.",
-        referenceId: order.id,
-        referenceType: "Order",
-    });
+    const customerUserId = order.customer?.user?.id || order.customer?.userId;
+    if (customerUserId) {
+        await createNotification({
+            userId: customerUserId,
+            type: NotificationType.Payment,
+            title: "Thanh toán thành công",
+            message: "Đơn hàng của bạn đã được xác nhận thanh toán thành công.",
+            referenceId: order.id,
+            referenceType: "Order",
+        });
+    }
+    try {
+        const mappedRefreshed = mapOrder(order);
+        if (customerUserId) {
+            realtimeService.sendToUser(customerUserId, "order:status_changed", mappedRefreshed);
+        }
+        realtimeService.sendToMerchant(order.merchantId, "order:status_changed", mappedRefreshed);
+    }
+    catch { }
 };
 const billInclude = {
     order: {
@@ -213,14 +214,6 @@ export const requestCashConfirmation = async (customerId, orderId) => {
     if (order.customerId !== customerId) {
         throw new AppError(403, "Order không thuộc Customer này");
     }
-    if (order.orderType === OrderType.Offline) {
-        const checkIn = await prisma.checkIn.findUnique({
-            where: { orderId: order.id },
-        });
-        if (!checkIn || checkIn.status !== "Verified") {
-            throw new AppError(400, "Bạn cần check-in thành công tại quán trước khi thanh toán tiền mặt");
-        }
-    }
     if (order.paymentMethod !== PaymentMethod.Cash) {
         throw new AppError(400, "Order này không sử dụng phương thức tiền mặt");
     }
@@ -331,6 +324,20 @@ export const confirmCashPayment = async (merchantId, orderId) => {
         referenceId: order.id,
         referenceType: "Order",
     });
+    try {
+        const refreshedOrder = await prisma.order.findUnique({
+            where: { id: order.id },
+            include: orderInclude,
+        });
+        if (refreshedOrder) {
+            const mappedRefreshed = mapOrder(refreshedOrder);
+            if (order.customer?.userId) {
+                realtimeService.sendToUser(order.customer.userId, "order:status_changed", mappedRefreshed);
+            }
+            realtimeService.sendToMerchant(order.merchantId, "order:status_changed", mappedRefreshed);
+        }
+    }
+    catch { }
     return mapBill(result);
 };
 export const submitBill = async (merchantId, input) => {
@@ -600,14 +607,6 @@ export const confirmBill = async (customerId, input) => {
         if (order.customerId !== customerId) {
             throw new AppError(403, "Đơn hàng không thuộc Customer này");
         }
-        if (order.orderType === OrderType.Offline) {
-            const checkIn = await prisma.checkIn.findUnique({
-                where: { orderId: order.id },
-            });
-            if (!checkIn || checkIn.status !== "Verified") {
-                throw new AppError(400, "Bạn cần check-in thành công tại quán trước khi thanh toán");
-            }
-        }
         const paymentMethod = input.paymentMethod
             ? PaymentMethod[input.paymentMethod]
             : order.paymentMethod;
@@ -616,9 +615,7 @@ export const confirmBill = async (customerId, input) => {
                 where: { id: order.id },
                 data: {
                     paymentMethod,
-                    paymentStatus: paymentMethod === PaymentMethod.Cash
-                        ? OrderPaymentStatus.Paid
-                        : OrderPaymentStatus.Pending,
+                    paymentStatus: OrderPaymentStatus.Pending,
                 },
             });
             return await transaction.bill.upsert({
@@ -661,9 +658,7 @@ export const confirmBill = async (customerId, input) => {
             where: { id: existingBill.orderId },
             data: {
                 paymentMethod,
-                paymentStatus: paymentMethod === PaymentMethod.Cash
-                    ? OrderPaymentStatus.Paid
-                    : OrderPaymentStatus.Pending,
+                paymentStatus: OrderPaymentStatus.Pending,
             },
         });
         const updatedBill = await transaction.bill.update({
