@@ -276,6 +276,48 @@ export const createOrder = async (customerId, input, idempotencyKey) => {
         }
         discount = Math.min(discount, subtotal);
     }
+    let voucherDiscount = 0;
+    let normalizedVoucherCode = null;
+    if (input.voucherCode?.trim()) {
+        normalizedVoucherCode = input.voucherCode.trim().toUpperCase();
+        const voucherTx = await prisma.reviewerPointTransaction.findFirst({
+            where: {
+                reviewerId: customerId,
+                type: "redeem_voucher",
+                referenceId: normalizedVoucherCode,
+            },
+        });
+        if (!voucherTx) {
+            throw new AppError(400, "Mã voucher tích điểm không hợp lệ hoặc không thuộc về bạn");
+        }
+        const alreadyUsed = await prisma.order.findFirst({
+            where: {
+                customerId,
+                notes: { contains: `[Voucher:${normalizedVoucherCode}]` },
+                status: { notIn: [OrderStatus.Rejected, OrderStatus.Cancelled] },
+            },
+        });
+        if (alreadyUsed) {
+            throw new AppError(400, "Voucher này đã được sử dụng cho một đơn hàng khác");
+        }
+        let minOrder = 50000;
+        voucherDiscount = 10000;
+        if (normalizedVoucherCode.startsWith("UGEM100K")) {
+            voucherDiscount = 100000;
+            minOrder = 300000;
+        }
+        else if (normalizedVoucherCode.startsWith("UGEM50K")) {
+            voucherDiscount = 50000;
+            minOrder = 200000;
+        }
+        else if (normalizedVoucherCode.startsWith("UGEM25K")) {
+            voucherDiscount = 25000;
+            minOrder = 100000;
+        }
+        if (subtotal < minOrder) {
+            throw new AppError(400, `Đơn hàng cần đạt tối thiểu ${minOrder.toLocaleString("vi-VN")}đ để dùng voucher này`);
+        }
+    }
     const currentCustomer = await prisma.customer.findUnique({
         where: { id: customerId },
         select: { reviewerPoints: true },
@@ -284,8 +326,14 @@ export const createOrder = async (customerId, input, idempotencyKey) => {
     const requestedPoints = Math.max(0, input.pointsToRedeem ?? 0);
     const pointsToRedeem = Math.min(requestedPoints, customerAvailablePoints);
     const pointDiscount = pointsToRedeem * 1000; // 1 point = 1,000 VND
-    const totalDiscount = Math.min(discount + pointDiscount, subtotal);
+    const totalDiscount = Math.min(discount + voucherDiscount + pointDiscount, subtotal);
     const finalPrice = Math.max(0, subtotal - totalDiscount);
+    const finalOrderNotes = [
+        input.notes?.trim() || null,
+        normalizedVoucherCode ? `[Voucher:${normalizedVoucherCode}]` : null,
+    ]
+        .filter(Boolean)
+        .join(" ");
     const createOrder = (client) => client.order.create({
         data: {
             customerId,
@@ -296,7 +344,7 @@ export const createOrder = async (customerId, input, idempotencyKey) => {
             orderType: input.orderType === "Offline" ? OrderType.Offline : OrderType.Online,
             paymentMethod: input.paymentMethod,
             status: OrderStatus.Pending,
-            notes: input.notes?.trim() || null,
+            notes: finalOrderNotes || null,
             deliveryAddress: input.deliveryAddress?.trim() || null,
             deliveryLatitude: input.deliveryLatitude != null
                 ? new Prisma.Decimal(input.deliveryLatitude)

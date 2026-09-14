@@ -26,6 +26,7 @@ export const searchCustomersByPhoneNumberSchema = z.object({
   }),
 });
 
+
 export const updateCustomerPreferencesSchema = z.object({
   body: z.object({
     preferredRestaurantTypes: z
@@ -41,5 +42,16 @@ export const updateCustomerPreferencesSchema = z.object({
     preferredPriceRanges: z
       .array(z.string().trim().min(1).max(100))
       .max(10),
+  }),
+});
+
+export const redeemVoucherSchema = z.object({
+  body: z.object({
+    voucherTier: z.enum([
+      "VOUCHER_10K",
+      "VOUCHER_25K",
+      "VOUCHER_50K",
+      "VOUCHER_100K",
+    ]),
   }),
 });

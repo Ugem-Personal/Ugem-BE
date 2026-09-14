@@ -53,3 +53,20 @@ export const getReviewerProfile = asyncHandler(async (req, res) => {
         data: profile,
     });
 });
+export const redeemVoucher = asyncHandler(async (req, res) => {
+    const customerId = getCustomerId(req);
+    const { voucherTier } = req.body;
+    const result = await customerService.redeemVoucher(customerId, voucherTier);
+    return sendSuccess(res, {
+        message: "Đổi voucher giảm giá thành công",
+        data: result,
+    });
+});
+export const getMyRedeemedVouchers = asyncHandler(async (req, res) => {
+    const customerId = getCustomerId(req);
+    const vouchers = await customerService.getMyRedeemedVouchers(customerId);
+    return sendSuccess(res, {
+        message: "Lấy danh sách voucher đã đổi thành công",
+        data: vouchers,
+    });
+});

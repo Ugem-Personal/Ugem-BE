@@ -44,6 +44,9 @@ export const createOrderSchema = z.object({
             z.null(),
         ])
             .optional(),
+        voucherCode: z
+            .union([z.string().trim().max(100), z.literal(""), z.null()])
+            .optional(),
         pointsToRedeem: z.coerce.number().int().min(0).optional().default(0),
         foods: z
             .array(orderFoodSchema)

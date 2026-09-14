@@ -34,3 +34,13 @@ export const updateCustomerPreferencesSchema = z.object({
             .max(10),
     }),
 });
+export const redeemVoucherSchema = z.object({
+    body: z.object({
+        voucherTier: z.enum([
+            "VOUCHER_10K",
+            "VOUCHER_25K",
+            "VOUCHER_50K",
+            "VOUCHER_100K",
+        ]),
+    }),
+});

@@ -10,13 +10,16 @@ import { updateProfileSchema } from "../users/user.schema.js";
 
 import {
   getCustomerPreferences,
+  getMyRedeemedVouchers,
   getReviewerProfile,
+  redeemVoucher,
   searchCustomersByEmail,
   searchCustomersByPhoneNumber,
   updateCustomerPreferences,
 } from "./customer.controller.js";
 
 import {
+  redeemVoucherSchema,
   searchCustomersByEmailSchema,
   searchCustomersByPhoneNumberSchema,
   updateCustomerPreferencesSchema,
@@ -56,6 +59,19 @@ customerRouter.get(
   "/reviewer-profile",
   authorizeRoles("Customer", "Reviewer"),
   getReviewerProfile,
+);
+
+customerRouter.post(
+  "/redeem-voucher",
+  authorizeRoles("Customer", "Reviewer"),
+  validate(redeemVoucherSchema),
+  redeemVoucher,
+);
+
+customerRouter.get(
+  "/my-vouchers",
+  authorizeRoles("Customer", "Reviewer"),
+  getMyRedeemedVouchers,
 );
 
 customerRouter.patch(
