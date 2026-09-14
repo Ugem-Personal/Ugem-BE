@@ -28,10 +28,12 @@ export type AggregateFood = {
 
 export type FoodAvgAggregateOutputType = {
   price: runtime.Decimal | null
+  originalPrice: runtime.Decimal | null
 }
 
 export type FoodSumAggregateOutputType = {
   price: runtime.Decimal | null
+  originalPrice: runtime.Decimal | null
 }
 
 export type FoodMinAggregateOutputType = {
@@ -43,6 +45,9 @@ export type FoodMinAggregateOutputType = {
   price: runtime.Decimal | null
   imageUrl: string | null
   isAvailable: boolean | null
+  isCombo: boolean | null
+  originalPrice: runtime.Decimal | null
+  servingSize: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -56,6 +61,9 @@ export type FoodMaxAggregateOutputType = {
   price: runtime.Decimal | null
   imageUrl: string | null
   isAvailable: boolean | null
+  isCombo: boolean | null
+  originalPrice: runtime.Decimal | null
+  servingSize: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -69,6 +77,9 @@ export type FoodCountAggregateOutputType = {
   price: number
   imageUrl: number
   isAvailable: number
+  isCombo: number
+  originalPrice: number
+  servingSize: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -77,10 +88,12 @@ export type FoodCountAggregateOutputType = {
 
 export type FoodAvgAggregateInputType = {
   price?: true
+  originalPrice?: true
 }
 
 export type FoodSumAggregateInputType = {
   price?: true
+  originalPrice?: true
 }
 
 export type FoodMinAggregateInputType = {
@@ -92,6 +105,9 @@ export type FoodMinAggregateInputType = {
   price?: true
   imageUrl?: true
   isAvailable?: true
+  isCombo?: true
+  originalPrice?: true
+  servingSize?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -105,6 +121,9 @@ export type FoodMaxAggregateInputType = {
   price?: true
   imageUrl?: true
   isAvailable?: true
+  isCombo?: true
+  originalPrice?: true
+  servingSize?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -118,6 +137,9 @@ export type FoodCountAggregateInputType = {
   price?: true
   imageUrl?: true
   isAvailable?: true
+  isCombo?: true
+  originalPrice?: true
+  servingSize?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -218,6 +240,9 @@ export type FoodGroupByOutputType = {
   price: runtime.Decimal
   imageUrl: string | null
   isAvailable: boolean
+  isCombo: boolean
+  originalPrice: runtime.Decimal | null
+  servingSize: string | null
   createdAt: Date
   updatedAt: Date
   _count: FoodCountAggregateOutputType | null
@@ -254,12 +279,17 @@ export type FoodWhereInput = {
   price?: Prisma.DecimalFilter<"Food"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.StringNullableFilter<"Food"> | string | null
   isAvailable?: Prisma.BoolFilter<"Food"> | boolean
+  isCombo?: Prisma.BoolFilter<"Food"> | boolean
+  originalPrice?: Prisma.DecimalNullableFilter<"Food"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: Prisma.StringNullableFilter<"Food"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Food"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Food"> | Date | string
   merchant?: Prisma.XOR<Prisma.MerchantScalarRelationFilter, Prisma.MerchantWhereInput>
   categories?: Prisma.FoodCategoryListRelationFilter
   toppings?: Prisma.FoodToppingListRelationFilter
   orderDetails?: Prisma.OrderDetailListRelationFilter
+  comboItems?: Prisma.ComboItemListRelationFilter
+  includedInCombos?: Prisma.ComboItemListRelationFilter
 }
 
 export type FoodOrderByWithRelationInput = {
@@ -271,12 +301,17 @@ export type FoodOrderByWithRelationInput = {
   price?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   isAvailable?: Prisma.SortOrder
+  isCombo?: Prisma.SortOrder
+  originalPrice?: Prisma.SortOrderInput | Prisma.SortOrder
+  servingSize?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   merchant?: Prisma.MerchantOrderByWithRelationInput
   categories?: Prisma.FoodCategoryOrderByRelationAggregateInput
   toppings?: Prisma.FoodToppingOrderByRelationAggregateInput
   orderDetails?: Prisma.OrderDetailOrderByRelationAggregateInput
+  comboItems?: Prisma.ComboItemOrderByRelationAggregateInput
+  includedInCombos?: Prisma.ComboItemOrderByRelationAggregateInput
 }
 
 export type FoodWhereUniqueInput = Prisma.AtLeast<{
@@ -291,12 +326,17 @@ export type FoodWhereUniqueInput = Prisma.AtLeast<{
   price?: Prisma.DecimalFilter<"Food"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.StringNullableFilter<"Food"> | string | null
   isAvailable?: Prisma.BoolFilter<"Food"> | boolean
+  isCombo?: Prisma.BoolFilter<"Food"> | boolean
+  originalPrice?: Prisma.DecimalNullableFilter<"Food"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: Prisma.StringNullableFilter<"Food"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Food"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Food"> | Date | string
   merchant?: Prisma.XOR<Prisma.MerchantScalarRelationFilter, Prisma.MerchantWhereInput>
   categories?: Prisma.FoodCategoryListRelationFilter
   toppings?: Prisma.FoodToppingListRelationFilter
   orderDetails?: Prisma.OrderDetailListRelationFilter
+  comboItems?: Prisma.ComboItemListRelationFilter
+  includedInCombos?: Prisma.ComboItemListRelationFilter
 }, "id">
 
 export type FoodOrderByWithAggregationInput = {
@@ -308,6 +348,9 @@ export type FoodOrderByWithAggregationInput = {
   price?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   isAvailable?: Prisma.SortOrder
+  isCombo?: Prisma.SortOrder
+  originalPrice?: Prisma.SortOrderInput | Prisma.SortOrder
+  servingSize?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.FoodCountOrderByAggregateInput
@@ -329,6 +372,9 @@ export type FoodScalarWhereWithAggregatesInput = {
   price?: Prisma.DecimalWithAggregatesFilter<"Food"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.StringNullableWithAggregatesFilter<"Food"> | string | null
   isAvailable?: Prisma.BoolWithAggregatesFilter<"Food"> | boolean
+  isCombo?: Prisma.BoolWithAggregatesFilter<"Food"> | boolean
+  originalPrice?: Prisma.DecimalNullableWithAggregatesFilter<"Food"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: Prisma.StringNullableWithAggregatesFilter<"Food"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Food"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Food"> | Date | string
 }
@@ -341,12 +387,17 @@ export type FoodCreateInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: string | null
   isAvailable?: boolean
+  isCombo?: boolean
+  originalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   merchant: Prisma.MerchantCreateNestedOneWithoutFoodsInput
   categories?: Prisma.FoodCategoryCreateNestedManyWithoutFoodInput
   toppings?: Prisma.FoodToppingCreateNestedManyWithoutFoodInput
   orderDetails?: Prisma.OrderDetailCreateNestedManyWithoutFoodInput
+  comboItems?: Prisma.ComboItemCreateNestedManyWithoutComboInput
+  includedInCombos?: Prisma.ComboItemCreateNestedManyWithoutFoodInput
 }
 
 export type FoodUncheckedCreateInput = {
@@ -358,11 +409,16 @@ export type FoodUncheckedCreateInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: string | null
   isAvailable?: boolean
+  isCombo?: boolean
+  originalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   categories?: Prisma.FoodCategoryUncheckedCreateNestedManyWithoutFoodInput
   toppings?: Prisma.FoodToppingUncheckedCreateNestedManyWithoutFoodInput
   orderDetails?: Prisma.OrderDetailUncheckedCreateNestedManyWithoutFoodInput
+  comboItems?: Prisma.ComboItemUncheckedCreateNestedManyWithoutComboInput
+  includedInCombos?: Prisma.ComboItemUncheckedCreateNestedManyWithoutFoodInput
 }
 
 export type FoodUpdateInput = {
@@ -373,12 +429,17 @@ export type FoodUpdateInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCombo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  originalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutFoodsNestedInput
   categories?: Prisma.FoodCategoryUpdateManyWithoutFoodNestedInput
   toppings?: Prisma.FoodToppingUpdateManyWithoutFoodNestedInput
   orderDetails?: Prisma.OrderDetailUpdateManyWithoutFoodNestedInput
+  comboItems?: Prisma.ComboItemUpdateManyWithoutComboNestedInput
+  includedInCombos?: Prisma.ComboItemUpdateManyWithoutFoodNestedInput
 }
 
 export type FoodUncheckedUpdateInput = {
@@ -390,11 +451,16 @@ export type FoodUncheckedUpdateInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCombo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  originalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   categories?: Prisma.FoodCategoryUncheckedUpdateManyWithoutFoodNestedInput
   toppings?: Prisma.FoodToppingUncheckedUpdateManyWithoutFoodNestedInput
   orderDetails?: Prisma.OrderDetailUncheckedUpdateManyWithoutFoodNestedInput
+  comboItems?: Prisma.ComboItemUncheckedUpdateManyWithoutComboNestedInput
+  includedInCombos?: Prisma.ComboItemUncheckedUpdateManyWithoutFoodNestedInput
 }
 
 export type FoodCreateManyInput = {
@@ -406,6 +472,9 @@ export type FoodCreateManyInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: string | null
   isAvailable?: boolean
+  isCombo?: boolean
+  originalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -418,6 +487,9 @@ export type FoodUpdateManyMutationInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCombo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  originalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -431,6 +503,9 @@ export type FoodUncheckedUpdateManyInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCombo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  originalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -454,12 +529,16 @@ export type FoodCountOrderByAggregateInput = {
   price?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   isAvailable?: Prisma.SortOrder
+  isCombo?: Prisma.SortOrder
+  originalPrice?: Prisma.SortOrder
+  servingSize?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type FoodAvgOrderByAggregateInput = {
   price?: Prisma.SortOrder
+  originalPrice?: Prisma.SortOrder
 }
 
 export type FoodMaxOrderByAggregateInput = {
@@ -471,6 +550,9 @@ export type FoodMaxOrderByAggregateInput = {
   price?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   isAvailable?: Prisma.SortOrder
+  isCombo?: Prisma.SortOrder
+  originalPrice?: Prisma.SortOrder
+  servingSize?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -484,12 +566,16 @@ export type FoodMinOrderByAggregateInput = {
   price?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   isAvailable?: Prisma.SortOrder
+  isCombo?: Prisma.SortOrder
+  originalPrice?: Prisma.SortOrder
+  servingSize?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type FoodSumOrderByAggregateInput = {
   price?: Prisma.SortOrder
+  originalPrice?: Prisma.SortOrder
 }
 
 export type FoodScalarRelationFilter = {
@@ -537,6 +623,34 @@ export type FoodUncheckedUpdateManyWithoutMerchantNestedInput = {
   update?: Prisma.FoodUpdateWithWhereUniqueWithoutMerchantInput | Prisma.FoodUpdateWithWhereUniqueWithoutMerchantInput[]
   updateMany?: Prisma.FoodUpdateManyWithWhereWithoutMerchantInput | Prisma.FoodUpdateManyWithWhereWithoutMerchantInput[]
   deleteMany?: Prisma.FoodScalarWhereInput | Prisma.FoodScalarWhereInput[]
+}
+
+export type FoodCreateNestedOneWithoutComboItemsInput = {
+  create?: Prisma.XOR<Prisma.FoodCreateWithoutComboItemsInput, Prisma.FoodUncheckedCreateWithoutComboItemsInput>
+  connectOrCreate?: Prisma.FoodCreateOrConnectWithoutComboItemsInput
+  connect?: Prisma.FoodWhereUniqueInput
+}
+
+export type FoodCreateNestedOneWithoutIncludedInCombosInput = {
+  create?: Prisma.XOR<Prisma.FoodCreateWithoutIncludedInCombosInput, Prisma.FoodUncheckedCreateWithoutIncludedInCombosInput>
+  connectOrCreate?: Prisma.FoodCreateOrConnectWithoutIncludedInCombosInput
+  connect?: Prisma.FoodWhereUniqueInput
+}
+
+export type FoodUpdateOneRequiredWithoutComboItemsNestedInput = {
+  create?: Prisma.XOR<Prisma.FoodCreateWithoutComboItemsInput, Prisma.FoodUncheckedCreateWithoutComboItemsInput>
+  connectOrCreate?: Prisma.FoodCreateOrConnectWithoutComboItemsInput
+  upsert?: Prisma.FoodUpsertWithoutComboItemsInput
+  connect?: Prisma.FoodWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FoodUpdateToOneWithWhereWithoutComboItemsInput, Prisma.FoodUpdateWithoutComboItemsInput>, Prisma.FoodUncheckedUpdateWithoutComboItemsInput>
+}
+
+export type FoodUpdateOneRequiredWithoutIncludedInCombosNestedInput = {
+  create?: Prisma.XOR<Prisma.FoodCreateWithoutIncludedInCombosInput, Prisma.FoodUncheckedCreateWithoutIncludedInCombosInput>
+  connectOrCreate?: Prisma.FoodCreateOrConnectWithoutIncludedInCombosInput
+  upsert?: Prisma.FoodUpsertWithoutIncludedInCombosInput
+  connect?: Prisma.FoodWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FoodUpdateToOneWithWhereWithoutIncludedInCombosInput, Prisma.FoodUpdateWithoutIncludedInCombosInput>, Prisma.FoodUncheckedUpdateWithoutIncludedInCombosInput>
 }
 
 export type FoodCreateNestedOneWithoutCategoriesInput = {
@@ -589,11 +703,16 @@ export type FoodCreateWithoutMerchantInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: string | null
   isAvailable?: boolean
+  isCombo?: boolean
+  originalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   categories?: Prisma.FoodCategoryCreateNestedManyWithoutFoodInput
   toppings?: Prisma.FoodToppingCreateNestedManyWithoutFoodInput
   orderDetails?: Prisma.OrderDetailCreateNestedManyWithoutFoodInput
+  comboItems?: Prisma.ComboItemCreateNestedManyWithoutComboInput
+  includedInCombos?: Prisma.ComboItemCreateNestedManyWithoutFoodInput
 }
 
 export type FoodUncheckedCreateWithoutMerchantInput = {
@@ -604,11 +723,16 @@ export type FoodUncheckedCreateWithoutMerchantInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: string | null
   isAvailable?: boolean
+  isCombo?: boolean
+  originalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   categories?: Prisma.FoodCategoryUncheckedCreateNestedManyWithoutFoodInput
   toppings?: Prisma.FoodToppingUncheckedCreateNestedManyWithoutFoodInput
   orderDetails?: Prisma.OrderDetailUncheckedCreateNestedManyWithoutFoodInput
+  comboItems?: Prisma.ComboItemUncheckedCreateNestedManyWithoutComboInput
+  includedInCombos?: Prisma.ComboItemUncheckedCreateNestedManyWithoutFoodInput
 }
 
 export type FoodCreateOrConnectWithoutMerchantInput = {
@@ -649,8 +773,203 @@ export type FoodScalarWhereInput = {
   price?: Prisma.DecimalFilter<"Food"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.StringNullableFilter<"Food"> | string | null
   isAvailable?: Prisma.BoolFilter<"Food"> | boolean
+  isCombo?: Prisma.BoolFilter<"Food"> | boolean
+  originalPrice?: Prisma.DecimalNullableFilter<"Food"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: Prisma.StringNullableFilter<"Food"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Food"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Food"> | Date | string
+}
+
+export type FoodCreateWithoutComboItemsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  cuisine?: string | null
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  imageUrl?: string | null
+  isAvailable?: boolean
+  isCombo?: boolean
+  originalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  merchant: Prisma.MerchantCreateNestedOneWithoutFoodsInput
+  categories?: Prisma.FoodCategoryCreateNestedManyWithoutFoodInput
+  toppings?: Prisma.FoodToppingCreateNestedManyWithoutFoodInput
+  orderDetails?: Prisma.OrderDetailCreateNestedManyWithoutFoodInput
+  includedInCombos?: Prisma.ComboItemCreateNestedManyWithoutFoodInput
+}
+
+export type FoodUncheckedCreateWithoutComboItemsInput = {
+  id?: string
+  merchantId: string
+  name: string
+  description?: string | null
+  cuisine?: string | null
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  imageUrl?: string | null
+  isAvailable?: boolean
+  isCombo?: boolean
+  originalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  categories?: Prisma.FoodCategoryUncheckedCreateNestedManyWithoutFoodInput
+  toppings?: Prisma.FoodToppingUncheckedCreateNestedManyWithoutFoodInput
+  orderDetails?: Prisma.OrderDetailUncheckedCreateNestedManyWithoutFoodInput
+  includedInCombos?: Prisma.ComboItemUncheckedCreateNestedManyWithoutFoodInput
+}
+
+export type FoodCreateOrConnectWithoutComboItemsInput = {
+  where: Prisma.FoodWhereUniqueInput
+  create: Prisma.XOR<Prisma.FoodCreateWithoutComboItemsInput, Prisma.FoodUncheckedCreateWithoutComboItemsInput>
+}
+
+export type FoodCreateWithoutIncludedInCombosInput = {
+  id?: string
+  name: string
+  description?: string | null
+  cuisine?: string | null
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  imageUrl?: string | null
+  isAvailable?: boolean
+  isCombo?: boolean
+  originalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  merchant: Prisma.MerchantCreateNestedOneWithoutFoodsInput
+  categories?: Prisma.FoodCategoryCreateNestedManyWithoutFoodInput
+  toppings?: Prisma.FoodToppingCreateNestedManyWithoutFoodInput
+  orderDetails?: Prisma.OrderDetailCreateNestedManyWithoutFoodInput
+  comboItems?: Prisma.ComboItemCreateNestedManyWithoutComboInput
+}
+
+export type FoodUncheckedCreateWithoutIncludedInCombosInput = {
+  id?: string
+  merchantId: string
+  name: string
+  description?: string | null
+  cuisine?: string | null
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  imageUrl?: string | null
+  isAvailable?: boolean
+  isCombo?: boolean
+  originalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  categories?: Prisma.FoodCategoryUncheckedCreateNestedManyWithoutFoodInput
+  toppings?: Prisma.FoodToppingUncheckedCreateNestedManyWithoutFoodInput
+  orderDetails?: Prisma.OrderDetailUncheckedCreateNestedManyWithoutFoodInput
+  comboItems?: Prisma.ComboItemUncheckedCreateNestedManyWithoutComboInput
+}
+
+export type FoodCreateOrConnectWithoutIncludedInCombosInput = {
+  where: Prisma.FoodWhereUniqueInput
+  create: Prisma.XOR<Prisma.FoodCreateWithoutIncludedInCombosInput, Prisma.FoodUncheckedCreateWithoutIncludedInCombosInput>
+}
+
+export type FoodUpsertWithoutComboItemsInput = {
+  update: Prisma.XOR<Prisma.FoodUpdateWithoutComboItemsInput, Prisma.FoodUncheckedUpdateWithoutComboItemsInput>
+  create: Prisma.XOR<Prisma.FoodCreateWithoutComboItemsInput, Prisma.FoodUncheckedCreateWithoutComboItemsInput>
+  where?: Prisma.FoodWhereInput
+}
+
+export type FoodUpdateToOneWithWhereWithoutComboItemsInput = {
+  where?: Prisma.FoodWhereInput
+  data: Prisma.XOR<Prisma.FoodUpdateWithoutComboItemsInput, Prisma.FoodUncheckedUpdateWithoutComboItemsInput>
+}
+
+export type FoodUpdateWithoutComboItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cuisine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCombo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  originalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  merchant?: Prisma.MerchantUpdateOneRequiredWithoutFoodsNestedInput
+  categories?: Prisma.FoodCategoryUpdateManyWithoutFoodNestedInput
+  toppings?: Prisma.FoodToppingUpdateManyWithoutFoodNestedInput
+  orderDetails?: Prisma.OrderDetailUpdateManyWithoutFoodNestedInput
+  includedInCombos?: Prisma.ComboItemUpdateManyWithoutFoodNestedInput
+}
+
+export type FoodUncheckedUpdateWithoutComboItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  merchantId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cuisine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCombo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  originalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  categories?: Prisma.FoodCategoryUncheckedUpdateManyWithoutFoodNestedInput
+  toppings?: Prisma.FoodToppingUncheckedUpdateManyWithoutFoodNestedInput
+  orderDetails?: Prisma.OrderDetailUncheckedUpdateManyWithoutFoodNestedInput
+  includedInCombos?: Prisma.ComboItemUncheckedUpdateManyWithoutFoodNestedInput
+}
+
+export type FoodUpsertWithoutIncludedInCombosInput = {
+  update: Prisma.XOR<Prisma.FoodUpdateWithoutIncludedInCombosInput, Prisma.FoodUncheckedUpdateWithoutIncludedInCombosInput>
+  create: Prisma.XOR<Prisma.FoodCreateWithoutIncludedInCombosInput, Prisma.FoodUncheckedCreateWithoutIncludedInCombosInput>
+  where?: Prisma.FoodWhereInput
+}
+
+export type FoodUpdateToOneWithWhereWithoutIncludedInCombosInput = {
+  where?: Prisma.FoodWhereInput
+  data: Prisma.XOR<Prisma.FoodUpdateWithoutIncludedInCombosInput, Prisma.FoodUncheckedUpdateWithoutIncludedInCombosInput>
+}
+
+export type FoodUpdateWithoutIncludedInCombosInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cuisine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCombo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  originalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  merchant?: Prisma.MerchantUpdateOneRequiredWithoutFoodsNestedInput
+  categories?: Prisma.FoodCategoryUpdateManyWithoutFoodNestedInput
+  toppings?: Prisma.FoodToppingUpdateManyWithoutFoodNestedInput
+  orderDetails?: Prisma.OrderDetailUpdateManyWithoutFoodNestedInput
+  comboItems?: Prisma.ComboItemUpdateManyWithoutComboNestedInput
+}
+
+export type FoodUncheckedUpdateWithoutIncludedInCombosInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  merchantId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cuisine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCombo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  originalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  categories?: Prisma.FoodCategoryUncheckedUpdateManyWithoutFoodNestedInput
+  toppings?: Prisma.FoodToppingUncheckedUpdateManyWithoutFoodNestedInput
+  orderDetails?: Prisma.OrderDetailUncheckedUpdateManyWithoutFoodNestedInput
+  comboItems?: Prisma.ComboItemUncheckedUpdateManyWithoutComboNestedInput
 }
 
 export type FoodCreateWithoutCategoriesInput = {
@@ -661,11 +980,16 @@ export type FoodCreateWithoutCategoriesInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: string | null
   isAvailable?: boolean
+  isCombo?: boolean
+  originalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   merchant: Prisma.MerchantCreateNestedOneWithoutFoodsInput
   toppings?: Prisma.FoodToppingCreateNestedManyWithoutFoodInput
   orderDetails?: Prisma.OrderDetailCreateNestedManyWithoutFoodInput
+  comboItems?: Prisma.ComboItemCreateNestedManyWithoutComboInput
+  includedInCombos?: Prisma.ComboItemCreateNestedManyWithoutFoodInput
 }
 
 export type FoodUncheckedCreateWithoutCategoriesInput = {
@@ -677,10 +1001,15 @@ export type FoodUncheckedCreateWithoutCategoriesInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: string | null
   isAvailable?: boolean
+  isCombo?: boolean
+  originalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   toppings?: Prisma.FoodToppingUncheckedCreateNestedManyWithoutFoodInput
   orderDetails?: Prisma.OrderDetailUncheckedCreateNestedManyWithoutFoodInput
+  comboItems?: Prisma.ComboItemUncheckedCreateNestedManyWithoutComboInput
+  includedInCombos?: Prisma.ComboItemUncheckedCreateNestedManyWithoutFoodInput
 }
 
 export type FoodCreateOrConnectWithoutCategoriesInput = {
@@ -707,11 +1036,16 @@ export type FoodUpdateWithoutCategoriesInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCombo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  originalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutFoodsNestedInput
   toppings?: Prisma.FoodToppingUpdateManyWithoutFoodNestedInput
   orderDetails?: Prisma.OrderDetailUpdateManyWithoutFoodNestedInput
+  comboItems?: Prisma.ComboItemUpdateManyWithoutComboNestedInput
+  includedInCombos?: Prisma.ComboItemUpdateManyWithoutFoodNestedInput
 }
 
 export type FoodUncheckedUpdateWithoutCategoriesInput = {
@@ -723,10 +1057,15 @@ export type FoodUncheckedUpdateWithoutCategoriesInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCombo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  originalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   toppings?: Prisma.FoodToppingUncheckedUpdateManyWithoutFoodNestedInput
   orderDetails?: Prisma.OrderDetailUncheckedUpdateManyWithoutFoodNestedInput
+  comboItems?: Prisma.ComboItemUncheckedUpdateManyWithoutComboNestedInput
+  includedInCombos?: Prisma.ComboItemUncheckedUpdateManyWithoutFoodNestedInput
 }
 
 export type FoodCreateWithoutToppingsInput = {
@@ -737,11 +1076,16 @@ export type FoodCreateWithoutToppingsInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: string | null
   isAvailable?: boolean
+  isCombo?: boolean
+  originalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   merchant: Prisma.MerchantCreateNestedOneWithoutFoodsInput
   categories?: Prisma.FoodCategoryCreateNestedManyWithoutFoodInput
   orderDetails?: Prisma.OrderDetailCreateNestedManyWithoutFoodInput
+  comboItems?: Prisma.ComboItemCreateNestedManyWithoutComboInput
+  includedInCombos?: Prisma.ComboItemCreateNestedManyWithoutFoodInput
 }
 
 export type FoodUncheckedCreateWithoutToppingsInput = {
@@ -753,10 +1097,15 @@ export type FoodUncheckedCreateWithoutToppingsInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: string | null
   isAvailable?: boolean
+  isCombo?: boolean
+  originalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   categories?: Prisma.FoodCategoryUncheckedCreateNestedManyWithoutFoodInput
   orderDetails?: Prisma.OrderDetailUncheckedCreateNestedManyWithoutFoodInput
+  comboItems?: Prisma.ComboItemUncheckedCreateNestedManyWithoutComboInput
+  includedInCombos?: Prisma.ComboItemUncheckedCreateNestedManyWithoutFoodInput
 }
 
 export type FoodCreateOrConnectWithoutToppingsInput = {
@@ -783,11 +1132,16 @@ export type FoodUpdateWithoutToppingsInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCombo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  originalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutFoodsNestedInput
   categories?: Prisma.FoodCategoryUpdateManyWithoutFoodNestedInput
   orderDetails?: Prisma.OrderDetailUpdateManyWithoutFoodNestedInput
+  comboItems?: Prisma.ComboItemUpdateManyWithoutComboNestedInput
+  includedInCombos?: Prisma.ComboItemUpdateManyWithoutFoodNestedInput
 }
 
 export type FoodUncheckedUpdateWithoutToppingsInput = {
@@ -799,10 +1153,15 @@ export type FoodUncheckedUpdateWithoutToppingsInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCombo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  originalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   categories?: Prisma.FoodCategoryUncheckedUpdateManyWithoutFoodNestedInput
   orderDetails?: Prisma.OrderDetailUncheckedUpdateManyWithoutFoodNestedInput
+  comboItems?: Prisma.ComboItemUncheckedUpdateManyWithoutComboNestedInput
+  includedInCombos?: Prisma.ComboItemUncheckedUpdateManyWithoutFoodNestedInput
 }
 
 export type FoodCreateWithoutOrderDetailsInput = {
@@ -813,11 +1172,16 @@ export type FoodCreateWithoutOrderDetailsInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: string | null
   isAvailable?: boolean
+  isCombo?: boolean
+  originalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   merchant: Prisma.MerchantCreateNestedOneWithoutFoodsInput
   categories?: Prisma.FoodCategoryCreateNestedManyWithoutFoodInput
   toppings?: Prisma.FoodToppingCreateNestedManyWithoutFoodInput
+  comboItems?: Prisma.ComboItemCreateNestedManyWithoutComboInput
+  includedInCombos?: Prisma.ComboItemCreateNestedManyWithoutFoodInput
 }
 
 export type FoodUncheckedCreateWithoutOrderDetailsInput = {
@@ -829,10 +1193,15 @@ export type FoodUncheckedCreateWithoutOrderDetailsInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: string | null
   isAvailable?: boolean
+  isCombo?: boolean
+  originalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   categories?: Prisma.FoodCategoryUncheckedCreateNestedManyWithoutFoodInput
   toppings?: Prisma.FoodToppingUncheckedCreateNestedManyWithoutFoodInput
+  comboItems?: Prisma.ComboItemUncheckedCreateNestedManyWithoutComboInput
+  includedInCombos?: Prisma.ComboItemUncheckedCreateNestedManyWithoutFoodInput
 }
 
 export type FoodCreateOrConnectWithoutOrderDetailsInput = {
@@ -859,11 +1228,16 @@ export type FoodUpdateWithoutOrderDetailsInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCombo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  originalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutFoodsNestedInput
   categories?: Prisma.FoodCategoryUpdateManyWithoutFoodNestedInput
   toppings?: Prisma.FoodToppingUpdateManyWithoutFoodNestedInput
+  comboItems?: Prisma.ComboItemUpdateManyWithoutComboNestedInput
+  includedInCombos?: Prisma.ComboItemUpdateManyWithoutFoodNestedInput
 }
 
 export type FoodUncheckedUpdateWithoutOrderDetailsInput = {
@@ -875,10 +1249,15 @@ export type FoodUncheckedUpdateWithoutOrderDetailsInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCombo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  originalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   categories?: Prisma.FoodCategoryUncheckedUpdateManyWithoutFoodNestedInput
   toppings?: Prisma.FoodToppingUncheckedUpdateManyWithoutFoodNestedInput
+  comboItems?: Prisma.ComboItemUncheckedUpdateManyWithoutComboNestedInput
+  includedInCombos?: Prisma.ComboItemUncheckedUpdateManyWithoutFoodNestedInput
 }
 
 export type FoodCreateManyMerchantInput = {
@@ -889,6 +1268,9 @@ export type FoodCreateManyMerchantInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: string | null
   isAvailable?: boolean
+  isCombo?: boolean
+  originalPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -901,11 +1283,16 @@ export type FoodUpdateWithoutMerchantInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCombo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  originalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   categories?: Prisma.FoodCategoryUpdateManyWithoutFoodNestedInput
   toppings?: Prisma.FoodToppingUpdateManyWithoutFoodNestedInput
   orderDetails?: Prisma.OrderDetailUpdateManyWithoutFoodNestedInput
+  comboItems?: Prisma.ComboItemUpdateManyWithoutComboNestedInput
+  includedInCombos?: Prisma.ComboItemUpdateManyWithoutFoodNestedInput
 }
 
 export type FoodUncheckedUpdateWithoutMerchantInput = {
@@ -916,11 +1303,16 @@ export type FoodUncheckedUpdateWithoutMerchantInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCombo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  originalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   categories?: Prisma.FoodCategoryUncheckedUpdateManyWithoutFoodNestedInput
   toppings?: Prisma.FoodToppingUncheckedUpdateManyWithoutFoodNestedInput
   orderDetails?: Prisma.OrderDetailUncheckedUpdateManyWithoutFoodNestedInput
+  comboItems?: Prisma.ComboItemUncheckedUpdateManyWithoutComboNestedInput
+  includedInCombos?: Prisma.ComboItemUncheckedUpdateManyWithoutFoodNestedInput
 }
 
 export type FoodUncheckedUpdateManyWithoutMerchantInput = {
@@ -931,6 +1323,9 @@ export type FoodUncheckedUpdateManyWithoutMerchantInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCombo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  originalPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  servingSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -944,12 +1339,16 @@ export type FoodCountOutputType = {
   categories: number
   toppings: number
   orderDetails: number
+  comboItems: number
+  includedInCombos: number
 }
 
 export type FoodCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   categories?: boolean | FoodCountOutputTypeCountCategoriesArgs
   toppings?: boolean | FoodCountOutputTypeCountToppingsArgs
   orderDetails?: boolean | FoodCountOutputTypeCountOrderDetailsArgs
+  comboItems?: boolean | FoodCountOutputTypeCountComboItemsArgs
+  includedInCombos?: boolean | FoodCountOutputTypeCountIncludedInCombosArgs
 }
 
 /**
@@ -983,6 +1382,20 @@ export type FoodCountOutputTypeCountOrderDetailsArgs<ExtArgs extends runtime.Typ
   where?: Prisma.OrderDetailWhereInput
 }
 
+/**
+ * FoodCountOutputType without action
+ */
+export type FoodCountOutputTypeCountComboItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ComboItemWhereInput
+}
+
+/**
+ * FoodCountOutputType without action
+ */
+export type FoodCountOutputTypeCountIncludedInCombosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ComboItemWhereInput
+}
+
 
 export type FoodSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -993,12 +1406,17 @@ export type FoodSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   price?: boolean
   imageUrl?: boolean
   isAvailable?: boolean
+  isCombo?: boolean
+  originalPrice?: boolean
+  servingSize?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
   categories?: boolean | Prisma.Food$categoriesArgs<ExtArgs>
   toppings?: boolean | Prisma.Food$toppingsArgs<ExtArgs>
   orderDetails?: boolean | Prisma.Food$orderDetailsArgs<ExtArgs>
+  comboItems?: boolean | Prisma.Food$comboItemsArgs<ExtArgs>
+  includedInCombos?: boolean | Prisma.Food$includedInCombosArgs<ExtArgs>
   _count?: boolean | Prisma.FoodCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["food"]>
 
@@ -1011,6 +1429,9 @@ export type FoodSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   price?: boolean
   imageUrl?: boolean
   isAvailable?: boolean
+  isCombo?: boolean
+  originalPrice?: boolean
+  servingSize?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
@@ -1025,6 +1446,9 @@ export type FoodSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   price?: boolean
   imageUrl?: boolean
   isAvailable?: boolean
+  isCombo?: boolean
+  originalPrice?: boolean
+  servingSize?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
@@ -1039,16 +1463,21 @@ export type FoodSelectScalar = {
   price?: boolean
   imageUrl?: boolean
   isAvailable?: boolean
+  isCombo?: boolean
+  originalPrice?: boolean
+  servingSize?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type FoodOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "merchantId" | "name" | "description" | "cuisine" | "price" | "imageUrl" | "isAvailable" | "createdAt" | "updatedAt", ExtArgs["result"]["food"]>
+export type FoodOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "merchantId" | "name" | "description" | "cuisine" | "price" | "imageUrl" | "isAvailable" | "isCombo" | "originalPrice" | "servingSize" | "createdAt" | "updatedAt", ExtArgs["result"]["food"]>
 export type FoodInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
   categories?: boolean | Prisma.Food$categoriesArgs<ExtArgs>
   toppings?: boolean | Prisma.Food$toppingsArgs<ExtArgs>
   orderDetails?: boolean | Prisma.Food$orderDetailsArgs<ExtArgs>
+  comboItems?: boolean | Prisma.Food$comboItemsArgs<ExtArgs>
+  includedInCombos?: boolean | Prisma.Food$includedInCombosArgs<ExtArgs>
   _count?: boolean | Prisma.FoodCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type FoodIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1065,6 +1494,8 @@ export type $FoodPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     categories: Prisma.$FoodCategoryPayload<ExtArgs>[]
     toppings: Prisma.$FoodToppingPayload<ExtArgs>[]
     orderDetails: Prisma.$OrderDetailPayload<ExtArgs>[]
+    comboItems: Prisma.$ComboItemPayload<ExtArgs>[]
+    includedInCombos: Prisma.$ComboItemPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1075,6 +1506,9 @@ export type $FoodPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     price: runtime.Decimal
     imageUrl: string | null
     isAvailable: boolean
+    isCombo: boolean
+    originalPrice: runtime.Decimal | null
+    servingSize: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["food"]>
@@ -1475,6 +1909,8 @@ export interface Prisma__FoodClient<T, Null = never, ExtArgs extends runtime.Typ
   categories<T extends Prisma.Food$categoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Food$categoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FoodCategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   toppings<T extends Prisma.Food$toppingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Food$toppingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FoodToppingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   orderDetails<T extends Prisma.Food$orderDetailsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Food$orderDetailsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderDetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  comboItems<T extends Prisma.Food$comboItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Food$comboItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ComboItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  includedInCombos<T extends Prisma.Food$includedInCombosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Food$includedInCombosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ComboItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1512,6 +1948,9 @@ export interface FoodFieldRefs {
   readonly price: Prisma.FieldRef<"Food", 'Decimal'>
   readonly imageUrl: Prisma.FieldRef<"Food", 'String'>
   readonly isAvailable: Prisma.FieldRef<"Food", 'Boolean'>
+  readonly isCombo: Prisma.FieldRef<"Food", 'Boolean'>
+  readonly originalPrice: Prisma.FieldRef<"Food", 'Decimal'>
+  readonly servingSize: Prisma.FieldRef<"Food", 'String'>
   readonly createdAt: Prisma.FieldRef<"Food", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Food", 'DateTime'>
 }
@@ -1984,6 +2423,54 @@ export type Food$orderDetailsArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.OrderDetailScalarFieldEnum | Prisma.OrderDetailScalarFieldEnum[]
+}
+
+/**
+ * Food.comboItems
+ */
+export type Food$comboItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ComboItem
+   */
+  select?: Prisma.ComboItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ComboItem
+   */
+  omit?: Prisma.ComboItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ComboItemInclude<ExtArgs> | null
+  where?: Prisma.ComboItemWhereInput
+  orderBy?: Prisma.ComboItemOrderByWithRelationInput | Prisma.ComboItemOrderByWithRelationInput[]
+  cursor?: Prisma.ComboItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ComboItemScalarFieldEnum | Prisma.ComboItemScalarFieldEnum[]
+}
+
+/**
+ * Food.includedInCombos
+ */
+export type Food$includedInCombosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ComboItem
+   */
+  select?: Prisma.ComboItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ComboItem
+   */
+  omit?: Prisma.ComboItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ComboItemInclude<ExtArgs> | null
+  where?: Prisma.ComboItemWhereInput
+  orderBy?: Prisma.ComboItemOrderByWithRelationInput | Prisma.ComboItemOrderByWithRelationInput[]
+  cursor?: Prisma.ComboItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ComboItemScalarFieldEnum | Prisma.ComboItemScalarFieldEnum[]
 }
 
 /**

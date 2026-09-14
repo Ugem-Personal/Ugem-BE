@@ -48,6 +48,7 @@ export const ModelName = {
     Merchant: 'Merchant',
     Category: 'Category',
     Food: 'Food',
+    ComboItem: 'ComboItem',
     FoodCategory: 'FoodCategory',
     FoodTopping: 'FoodTopping',
     Order: 'Order',
@@ -202,8 +203,18 @@ export const FoodScalarFieldEnum = {
     price: 'price',
     imageUrl: 'imageUrl',
     isAvailable: 'isAvailable',
+    isCombo: 'isCombo',
+    originalPrice: 'originalPrice',
+    servingSize: 'servingSize',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
+};
+export const ComboItemScalarFieldEnum = {
+    id: 'id',
+    comboId: 'comboId',
+    foodId: 'foodId',
+    quantity: 'quantity',
+    createdAt: 'createdAt'
 };
 export const FoodCategoryScalarFieldEnum = {
     foodId: 'foodId',

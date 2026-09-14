@@ -356,21 +356,43 @@ model Food {
   cuisine     String?
   price       Decimal @db.Decimal(12, 2)
   imageUrl    String?
-  isAvailable Boolean @default(true)
+  isAvailable Boolean  @default(true)
+  isCombo     Boolean  @default(false)
+  originalPrice Decimal? @db.Decimal(12, 2)
+  servingSize   String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
 
-  categories   FoodCategory[]
-  toppings     FoodTopping[]
-  orderDetails OrderDetail[]
+  categories       FoodCategory[]
+  toppings         FoodTopping[]
+  orderDetails     OrderDetail[]
+  comboItems       ComboItem[]   @relation("ComboParent")
+  includedInCombos ComboItem[]   @relation("ComboChild")
 
   @@index([merchantId])
   @@index([isAvailable])
+  @@index([isCombo])
   @@index([name])
   @@map("foods")
+}
+
+model ComboItem {
+  id        String   @id @default(uuid())
+  comboId   String
+  foodId    String
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+
+  combo Food @relation("ComboParent", fields: [comboId], references: [id], onDelete: Cascade)
+  food  Food @relation("ComboChild", fields: [foodId], references: [id], onDelete: Cascade)
+
+  @@unique([comboId, foodId])
+  @@index([comboId])
+  @@index([foodId])
+  @@map("combo_items")
 }
 
 model FoodCategory {

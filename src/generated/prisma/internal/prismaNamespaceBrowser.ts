@@ -60,6 +60,7 @@ export const ModelName = {
   Merchant: 'Merchant',
   Category: 'Category',
   Food: 'Food',
+  ComboItem: 'ComboItem',
   FoodCategory: 'FoodCategory',
   FoodTopping: 'FoodTopping',
   Order: 'Order',
@@ -254,11 +255,25 @@ export const FoodScalarFieldEnum = {
   price: 'price',
   imageUrl: 'imageUrl',
   isAvailable: 'isAvailable',
+  isCombo: 'isCombo',
+  originalPrice: 'originalPrice',
+  servingSize: 'servingSize',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type FoodScalarFieldEnum = (typeof FoodScalarFieldEnum)[keyof typeof FoodScalarFieldEnum]
+
+
+export const ComboItemScalarFieldEnum = {
+  id: 'id',
+  comboId: 'comboId',
+  foodId: 'foodId',
+  quantity: 'quantity',
+  createdAt: 'createdAt'
+} as const
+
+export type ComboItemScalarFieldEnum = (typeof ComboItemScalarFieldEnum)[keyof typeof ComboItemScalarFieldEnum]
 
 
 export const FoodCategoryScalarFieldEnum = {

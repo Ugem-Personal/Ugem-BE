@@ -406,6 +406,7 @@ export const ModelName = {
   Merchant: 'Merchant',
   Category: 'Category',
   Food: 'Food',
+  ComboItem: 'ComboItem',
   FoodCategory: 'FoodCategory',
   FoodTopping: 'FoodTopping',
   Order: 'Order',
@@ -445,7 +446,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "customer" | "refreshToken" | "passwordResetToken" | "application" | "applicationMenu" | "merchant" | "category" | "food" | "foodCategory" | "foodTopping" | "order" | "orderDetail" | "orderDetailTopping" | "bill" | "wishlist" | "review" | "reviewDetail" | "reviewerApplication" | "affiliateLink" | "affiliateClick" | "reviewerEarningTransaction" | "affiliateTransaction" | "reviewerPointTransaction" | "campaign" | "checkIn" | "notification" | "supportTicket" | "supportMessage" | "auditLog" | "rebalancingRun" | "booking" | "merchantView"
+    modelProps: "user" | "customer" | "refreshToken" | "passwordResetToken" | "application" | "applicationMenu" | "merchant" | "category" | "food" | "comboItem" | "foodCategory" | "foodTopping" | "order" | "orderDetail" | "orderDetailTopping" | "bill" | "wishlist" | "review" | "reviewDetail" | "reviewerApplication" | "affiliateLink" | "affiliateClick" | "reviewerEarningTransaction" | "affiliateTransaction" | "reviewerPointTransaction" | "campaign" | "checkIn" | "notification" | "supportTicket" | "supportMessage" | "auditLog" | "rebalancingRun" | "booking" | "merchantView"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1112,6 +1113,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.FoodCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.FoodCountAggregateOutputType> | number
+        }
+      }
+    }
+    ComboItem: {
+      payload: Prisma.$ComboItemPayload<ExtArgs>
+      fields: Prisma.ComboItemFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ComboItemFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComboItemPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ComboItemFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComboItemPayload>
+        }
+        findFirst: {
+          args: Prisma.ComboItemFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComboItemPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ComboItemFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComboItemPayload>
+        }
+        findMany: {
+          args: Prisma.ComboItemFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComboItemPayload>[]
+        }
+        create: {
+          args: Prisma.ComboItemCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComboItemPayload>
+        }
+        createMany: {
+          args: Prisma.ComboItemCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ComboItemCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComboItemPayload>[]
+        }
+        delete: {
+          args: Prisma.ComboItemDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComboItemPayload>
+        }
+        update: {
+          args: Prisma.ComboItemUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComboItemPayload>
+        }
+        deleteMany: {
+          args: Prisma.ComboItemDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ComboItemUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ComboItemUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComboItemPayload>[]
+        }
+        upsert: {
+          args: Prisma.ComboItemUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComboItemPayload>
+        }
+        aggregate: {
+          args: Prisma.ComboItemAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateComboItem>
+        }
+        groupBy: {
+          args: Prisma.ComboItemGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ComboItemGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ComboItemCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ComboItemCountAggregateOutputType> | number
         }
       }
     }
@@ -3082,11 +3157,25 @@ export const FoodScalarFieldEnum = {
   price: 'price',
   imageUrl: 'imageUrl',
   isAvailable: 'isAvailable',
+  isCombo: 'isCombo',
+  originalPrice: 'originalPrice',
+  servingSize: 'servingSize',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type FoodScalarFieldEnum = (typeof FoodScalarFieldEnum)[keyof typeof FoodScalarFieldEnum]
+
+
+export const ComboItemScalarFieldEnum = {
+  id: 'id',
+  comboId: 'comboId',
+  foodId: 'foodId',
+  quantity: 'quantity',
+  createdAt: 'createdAt'
+} as const
+
+export type ComboItemScalarFieldEnum = (typeof ComboItemScalarFieldEnum)[keyof typeof ComboItemScalarFieldEnum]
 
 
 export const FoodCategoryScalarFieldEnum = {
@@ -4050,6 +4139,7 @@ export type GlobalOmitConfig = {
   merchant?: Prisma.MerchantOmit
   category?: Prisma.CategoryOmit
   food?: Prisma.FoodOmit
+  comboItem?: Prisma.ComboItemOmit
   foodCategory?: Prisma.FoodCategoryOmit
   foodTopping?: Prisma.FoodToppingOmit
   order?: Prisma.OrderOmit

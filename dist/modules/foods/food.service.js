@@ -15,6 +15,22 @@ const foodInclude = {
             name: "asc",
         },
     },
+    comboItems: {
+        include: {
+            food: {
+                select: {
+                    id: true,
+                    name: true,
+                    price: true,
+                    imageUrl: true,
+                    isAvailable: true,
+                },
+            },
+        },
+        orderBy: {
+            createdAt: "asc",
+        },
+    },
     merchant: {
         select: {
             id: true,
@@ -33,6 +49,9 @@ const mapFood = (food) => ({
     price: Number(food.price),
     imageUrl: food.imageUrl,
     isAvailable: food.isAvailable,
+    isCombo: food.isCombo ?? false,
+    originalPrice: food.originalPrice ? Number(food.originalPrice) : null,
+    servingSize: food.servingSize ?? null,
     merchant: food.merchant,
     categoryIds: food.categories.map((item) => item.category.id),
     categories: food.categories.map((item) => ({
@@ -46,6 +65,21 @@ const mapFood = (food) => ({
         name: topping.name,
         price: Number(topping.price),
         isActive: topping.isActive,
+    })),
+    comboItems: (food.comboItems ?? []).map((item) => ({
+        id: item.id,
+        comboId: item.comboId,
+        foodId: item.foodId,
+        quantity: item.quantity,
+        food: item.food
+            ? {
+                id: item.food.id,
+                name: item.food.name,
+                price: Number(item.food.price),
+                imageUrl: item.food.imageUrl,
+                isAvailable: item.food.isAvailable,
+            }
+            : undefined,
     })),
     createdAt: food.createdAt,
     updatedAt: food.updatedAt,
@@ -68,8 +102,56 @@ const validateCategories = async (categoryIds) => {
     }
     return uniqueIds;
 };
+const validateComboItems = async (merchantId, comboFoodId, items) => {
+    if (!items || items.length === 0) {
+        return { items: [], calculatedOriginalPrice: 0 };
+    }
+    const itemMap = new Map();
+    for (const item of items) {
+        if (comboFoodId && item.foodId === comboFoodId) {
+            throw new AppError(400, "Món combo không thể chứa chính nó làm món thành phần");
+        }
+        const currentQty = itemMap.get(item.foodId) || 0;
+        itemMap.set(item.foodId, currentQty + item.quantity);
+    }
+    const childFoodIds = Array.from(itemMap.keys());
+    const foundFoods = await prisma.food.findMany({
+        where: {
+            id: { in: childFoodIds },
+            merchantId,
+        },
+        select: {
+            id: true,
+            price: true,
+            isCombo: true,
+        },
+    });
+    if (foundFoods.length !== childFoodIds.length) {
+        throw new AppError(400, "Một hoặc nhiều món trong combo không thuộc thực đơn của quán");
+    }
+    if (foundFoods.some((f) => f.isCombo)) {
+        throw new AppError(400, "Combo không thể chứa món combo khác làm thành phần");
+    }
+    const validatedList = Array.from(itemMap.entries()).map(([foodId, quantity]) => ({
+        foodId,
+        quantity,
+    }));
+    const childPriceMap = new Map(foundFoods.map((f) => [f.id, Number(f.price)]));
+    const calculatedOriginalPrice = validatedList.reduce((sum, item) => sum + (childPriceMap.get(item.foodId) || 0) * item.quantity, 0);
+    return {
+        items: validatedList,
+        calculatedOriginalPrice,
+    };
+};
 export const createFood = async (merchantId, input) => {
     const categoryIds = await validateCategories(input.categoryIds);
+    let comboValidation = null;
+    if (input.isCombo) {
+        comboValidation = await validateComboItems(merchantId, null, input.comboItems);
+        if (!comboValidation.items.length) {
+            throw new AppError(400, "Combo phải có ít nhất một món ăn thành phần");
+        }
+    }
     const duplicate = await prisma.food.findFirst({
         where: {
             merchantId,
@@ -82,6 +164,11 @@ export const createFood = async (merchantId, input) => {
     if (duplicate) {
         throw new AppError(409, "Merchant đã có món ăn cùng tên");
     }
+    const effectiveOriginalPrice = input.originalPrice !== undefined && input.originalPrice !== null
+        ? new Prisma.Decimal(input.originalPrice)
+        : comboValidation && comboValidation.calculatedOriginalPrice > 0
+            ? new Prisma.Decimal(comboValidation.calculatedOriginalPrice)
+            : null;
     const food = await prisma.food.create({
         data: {
             merchantId,
@@ -91,11 +178,22 @@ export const createFood = async (merchantId, input) => {
             price: new Prisma.Decimal(input.price),
             imageUrl: input.imageUrl?.trim() || null,
             isAvailable: input.isAvailable ?? true,
+            isCombo: input.isCombo ?? false,
+            originalPrice: effectiveOriginalPrice,
+            servingSize: input.servingSize?.trim() || null,
             categories: {
                 create: categoryIds.map((categoryId) => ({
                     categoryId,
                 })),
             },
+            comboItems: comboValidation && comboValidation.items.length > 0
+                ? {
+                    create: comboValidation.items.map((ci) => ({
+                        foodId: ci.foodId,
+                        quantity: ci.quantity,
+                    })),
+                }
+                : undefined,
         },
         include: foodInclude,
     });
@@ -166,11 +264,33 @@ export const updateFood = async (merchantId, foodId, input) => {
     const categoryIds = input.categoryIds !== undefined
         ? await validateCategories(input.categoryIds)
         : undefined;
+    const isTargetCombo = input.isCombo !== undefined ? input.isCombo : existing.isCombo;
+    let comboValidation = null;
+    if (isTargetCombo && input.comboItems !== undefined) {
+        comboValidation = await validateComboItems(merchantId, foodId, input.comboItems);
+        if (!comboValidation.items.length) {
+            throw new AppError(400, "Combo phải có ít nhất một món ăn thành phần");
+        }
+    }
+    const effectiveOriginalPrice = input.originalPrice !== undefined
+        ? input.originalPrice !== null
+            ? new Prisma.Decimal(input.originalPrice)
+            : null
+        : comboValidation && comboValidation.calculatedOriginalPrice > 0
+            ? new Prisma.Decimal(comboValidation.calculatedOriginalPrice)
+            : undefined;
     const food = await prisma.$transaction(async (transaction) => {
         if (categoryIds) {
             await transaction.foodCategory.deleteMany({
                 where: {
                     foodId,
+                },
+            });
+        }
+        if (input.comboItems !== undefined || input.isCombo === false) {
+            await transaction.comboItem.deleteMany({
+                where: {
+                    comboId: foodId,
                 },
             });
         }
@@ -193,10 +313,23 @@ export const updateFood = async (merchantId, foodId, input) => {
                     ? input.imageUrl?.trim() || null
                     : undefined,
                 isAvailable: input.isAvailable,
+                isCombo: input.isCombo,
+                originalPrice: effectiveOriginalPrice,
+                servingSize: input.servingSize !== undefined
+                    ? input.servingSize?.trim() || null
+                    : undefined,
                 categories: categoryIds
                     ? {
                         create: categoryIds.map((categoryId) => ({
                             categoryId,
+                        })),
+                    }
+                    : undefined,
+                comboItems: comboValidation && comboValidation.items.length > 0
+                    ? {
+                        create: comboValidation.items.map((ci) => ({
+                            foodId: ci.foodId,
+                            quantity: ci.quantity,
                         })),
                     }
                     : undefined,

@@ -63,6 +63,11 @@ export type Category = Prisma.CategoryModel
  */
 export type Food = Prisma.FoodModel
 /**
+ * Model ComboItem
+ * 
+ */
+export type ComboItem = Prisma.ComboItemModel
+/**
  * Model FoodCategory
  * 
  */

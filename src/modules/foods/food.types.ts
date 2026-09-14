@@ -1,3 +1,8 @@
+export interface ComboItemInput {
+  foodId: string;
+  quantity: number;
+}
+
 export interface CreateFoodInput {
   name: string;
   description?: string | null;
@@ -6,6 +11,10 @@ export interface CreateFoodInput {
   imageUrl?: string | null;
   isAvailable?: boolean;
   categoryIds: string[];
+  isCombo?: boolean;
+  originalPrice?: number | null;
+  servingSize?: string | null;
+  comboItems?: ComboItemInput[];
 }
 
 export interface UpdateFoodInput {
@@ -16,4 +25,8 @@ export interface UpdateFoodInput {
   imageUrl?: string | null;
   isAvailable?: boolean;
   categoryIds?: string[];
+  isCombo?: boolean;
+  originalPrice?: number | null;
+  servingSize?: string | null;
+  comboItems?: ComboItemInput[];
 }
