@@ -570,6 +570,44 @@ export const merchantVerifyCustomerCode = async (merchantId, customerCode, rewar
     if (recentCheckIn) {
         throw new AppError(400, `Khách hàng ${customer.user.fullName} đã check-in tại quán trong vòng 2 giờ qua. Vui lòng không check-in trùng lặp.`);
     }
+    // Khách hàng bắt buộc phải có đơn đặt món tại quán đã được quán nhận đơn (Accepted, Preparing, Ready, Delivering, Completed)
+    const eligibleOrder = await prisma.order.findFirst({
+        where: {
+            merchantId,
+            customerId: customer.id,
+            status: {
+                in: [
+                    OrderStatus.Accepted,
+                    OrderStatus.Preparing,
+                    OrderStatus.Ready,
+                    OrderStatus.Delivering,
+                    OrderStatus.Completed,
+                ],
+            },
+            orderedAt: {
+                gte: new Date(Date.now() - 24 * 60 * 60 * 1000),
+            },
+        },
+        orderBy: {
+            orderedAt: "desc",
+        },
+        include: {
+            checkIn: true,
+        },
+    });
+    if (!eligibleOrder) {
+        const pendingOrder = await prisma.order.findFirst({
+            where: {
+                merchantId,
+                customerId: customer.id,
+                status: OrderStatus.Pending,
+            },
+        });
+        if (pendingOrder) {
+            throw new AppError(400, "Đơn hàng của khách vẫn đang ở trạng thái 'Chờ nhận'. Vui lòng bấm nhận đơn trên hệ thống trước khi tích điểm!");
+        }
+        throw new AppError(400, `Khách hàng ${customer.user.fullName} chưa có đơn đặt món được quán tiếp nhận. Chỉ tích điểm sau khi khách đặt món và quán đã nhận đơn!`);
+    }
     const CHECK_IN_REWARD_POINTS = 10;
     const appliedBenefit = rewardBenefit || "Giảm 5% cho hóa đơn tiếp theo & Tặng 1 ly nước";
     const checkedInAt = new Date();
@@ -578,6 +616,7 @@ export const merchantVerifyCustomerCode = async (merchantId, customerCode, rewar
     const [checkInRecord] = await prisma.$transaction([
         prisma.checkIn.create({
             data: {
+                orderId: eligibleOrder.checkIn ? null : eligibleOrder.id,
                 customerId: customer.id,
                 merchantId,
                 rewardBenefit: appliedBenefit,
@@ -615,6 +654,8 @@ export const merchantVerifyCustomerCode = async (merchantId, customerCode, rewar
     });
     return {
         checkInId: checkInRecord.id,
+        orderId: eligibleOrder.id,
+        orderAmount: Number(eligibleOrder.finalPrice),
         customerName: customer.user.fullName,
         customerPhone: customer.user.phoneNumber,
         customerCode: normalizedCode,
