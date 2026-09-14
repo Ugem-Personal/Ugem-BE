@@ -609,7 +609,7 @@ export const merchantVerifyCustomerCode = async (merchantId, customerCode, rewar
         throw new AppError(400, `Khách hàng ${customer.user.fullName} chưa có đơn đặt món được quán tiếp nhận. Chỉ tích điểm sau khi khách đặt món và quán đã nhận đơn!`);
     }
     const CHECK_IN_REWARD_POINTS = 10;
-    const appliedBenefit = rewardBenefit || "Giảm 5% cho hóa đơn tiếp theo & Tặng 1 ly nước";
+    const appliedBenefit = rewardBenefit?.trim() || null;
     const checkedInAt = new Date();
     const currentPoints = customer.reviewerPoints;
     const newPoints = currentPoints + CHECK_IN_REWARD_POINTS;
@@ -639,7 +639,9 @@ export const merchantVerifyCustomerCode = async (merchantId, customerCode, rewar
                 amount: CHECK_IN_REWARD_POINTS,
                 pointsAfter: newPoints,
                 type: "CHECK_IN_CODE",
-                reason: `Tích điểm check-in tại ${merchant.name} (Ưu đãi: ${appliedBenefit})`,
+                reason: appliedBenefit
+                    ? `Tích điểm check-in tại ${merchant.name} (Ưu đãi: ${appliedBenefit})`
+                    : `Tích điểm check-in tại ${merchant.name}`,
                 referenceId: merchantId,
             },
         }),
@@ -648,7 +650,9 @@ export const merchantVerifyCustomerCode = async (merchantId, customerCode, rewar
         userId: customer.userId,
         type: NotificationType.System,
         title: "Check-in thành công tại quán!",
-        message: `Bạn đã check-in thành công tại quán ${merchant.name} (+${CHECK_IN_REWARD_POINTS} điểm thưởng). Ưu đãi nhận được: ${appliedBenefit}.`,
+        message: appliedBenefit
+            ? `Bạn đã check-in thành công tại quán ${merchant.name} (+${CHECK_IN_REWARD_POINTS} điểm thưởng). Ưu đãi nhận được: ${appliedBenefit}.`
+            : `Bạn đã check-in thành công tại quán ${merchant.name} (+${CHECK_IN_REWARD_POINTS} điểm thưởng).`,
         referenceId: merchantId,
         referenceType: "Merchant",
     });
