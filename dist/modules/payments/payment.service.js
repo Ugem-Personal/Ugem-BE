@@ -486,6 +486,7 @@ export const submitBill = async (merchantId, input) => {
                 bankAccountNameSnapshot: order.merchant.bankTransferEnabled
                     ? order.merchant.bankAccountName
                     : null,
+                requestedAt: new Date(),
                 merchantConfirmedAt: new Date(),
             },
             update: {
@@ -503,6 +504,7 @@ export const submitBill = async (merchantId, input) => {
                 bankAccountNameSnapshot: order.merchant.bankTransferEnabled
                     ? order.merchant.bankAccountName
                     : null,
+                requestedAt: new Date(),
                 merchantConfirmedAt: new Date(),
                 customerConfirmedAt: null,
                 rejectedAt: null,
@@ -533,6 +535,9 @@ export const getCustomerBills = async (customerId, orderId) => {
         if (bill) {
             if (bill.order.customerId !== customerId) {
                 throw new AppError(403, "Hóa đơn không thuộc Customer này");
+            }
+            if (!bill.requestedAt) {
+                throw new AppError(404, "Merchant chưa tạo bill thanh toán");
             }
             return mapBill(bill);
         }
