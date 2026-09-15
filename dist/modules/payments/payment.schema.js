@@ -79,9 +79,12 @@ export const rejectBillSchema = z.object({
 export const sepayWebhookSchema = z.object({
     body: z
         .object({
+        id: z.coerce.number().int().positive().optional(),
         orderId: z.string().uuid().optional(),
         referenceCode: z.string().trim().optional(),
         content: z.string().trim().optional(),
+        accountNumber: z.string().trim().optional(),
+        transferType: z.enum(["in", "out"]).optional(),
         transferAmount: z.coerce.number().positive().optional(),
         amount: z.coerce.number().positive().optional(),
     })

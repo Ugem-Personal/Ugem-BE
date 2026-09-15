@@ -29,9 +29,12 @@ export interface RejectBillInput {
 }
 
 export interface SepayWebhookInput {
+  id?: number;
   orderId?: string;
   referenceCode?: string;
   content?: string;
+  accountNumber?: string;
+  transferType?: "in" | "out";
   transferAmount?: number;
   amount?: number;
 }

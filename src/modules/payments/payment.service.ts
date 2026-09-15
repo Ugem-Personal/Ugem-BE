@@ -1083,12 +1083,14 @@ const extractOrderId = async (content?: string): Promise<string | null> => {
     return uuidMatch[0];
   }
 
-  const hex8Match = content.match(/[0-9a-f]{8}/i);
-  if (hex8Match?.[0]) {
+  const hex8Match = content.match(
+    /(?:THANH\s*TOAN\s*DON|UGEM)[\s-]*([0-9a-f]{8})/i,
+  );
+  if (hex8Match?.[1]) {
     const matchedOrder = await prisma.order.findFirst({
       where: {
         id: {
-          startsWith: hex8Match[0].toLowerCase(),
+          startsWith: hex8Match[1].toLowerCase(),
         },
       },
       select: { id: true },
@@ -1102,13 +1104,18 @@ const extractOrderId = async (content?: string): Promise<string | null> => {
 };
 
 export const processSepayWebhook = async (input: SepayWebhookInput) => {
+  if (input.transferType !== "in") {
+    return null;
+  }
+
   const orderId = input.orderId ?? (await extractOrderId(input.content));
 
   if (!orderId) {
     return null;
   }
 
-  const reference = input.referenceCode?.trim();
+  const reference =
+    input.referenceCode?.trim() || (input.id ? `SEPAY-${input.id}` : "");
 
   if (!reference) {
     return null;
@@ -1142,14 +1149,56 @@ export const processSepayWebhook = async (input: SepayWebhookInput) => {
     where: {
       id: orderId,
     },
+    include: {
+      bill: true,
+      merchant: {
+        select: {
+          bankAccountNumber: true,
+          bankTransferEnabled: true,
+        },
+      },
+    },
   });
 
   if (!order) {
     throw new AppError(404, "Không tìm thấy order tương ứng");
   }
 
+  if (
+    order.paymentMethod !== PaymentMethod.BankTransfer &&
+    order.paymentMethod !== PaymentMethod.SePay
+  ) {
+    throw new AppError(409, "Order không sử dụng phương thức chuyển khoản");
+  }
+
+  const receivingAccount = input.accountNumber?.replace(/\s+/g, "");
+  const merchantAccount = order.merchant.bankAccountNumber?.replace(/\s+/g, "");
+  if (
+    !order.merchant.bankTransferEnabled ||
+    !receivingAccount ||
+    !merchantAccount ||
+    receivingAccount !== merchantAccount
+  ) {
+    throw new AppError(409, "Tài khoản nhận tiền không khớp với Merchant");
+  }
+
   if (Math.abs(amount - Number(order.finalPrice)) > 0.01) {
     throw new AppError(409, "Số tiền chuyển khoản không khớp");
+  }
+
+  if (
+    order.paymentStatus === OrderPaymentStatus.Paid ||
+    order.status === OrderStatus.Completed
+  ) {
+    if (order.bill) {
+      return mapBill(
+        await prisma.bill.findUniqueOrThrow({
+          where: { id: order.bill.id },
+          include: billInclude,
+        }),
+      );
+    }
+    return null;
   }
 
   const isOffline = order.orderType === OrderType.Offline;
