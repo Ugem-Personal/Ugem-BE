@@ -492,10 +492,10 @@ export const submitBill = async (
   }
 
   if (
-    !activeOrderStatuses.has(order.status) &&
-    order.status !== OrderStatus.Completed
+    order.status !== OrderStatus.Ready &&
+    order.status !== OrderStatus.Delivering
   ) {
-    throw new AppError(409, "Order chưa được chấp nhận");
+    throw new AppError(409, "Chỉ có thể tạo bill sau khi món đã được lên bàn");
   }
 
   if (order.paymentStatus === OrderPaymentStatus.Paid) {
@@ -713,74 +713,7 @@ export const getCustomerBills = async (
       return mapBill(bill);
     }
 
-    const order = await prisma.order.findUnique({
-      where: {
-        id: orderId,
-      },
-
-      include: {
-        merchant: {
-          select: {
-            id: true,
-            userId: true,
-            name: true,
-            logoUrl: true,
-            phone: true,
-            address: true,
-            bankCode: true,
-            bankAccountNumber: true,
-            bankAccountName: true,
-            bankTransferEnabled: true,
-          },
-        },
-
-        customer: {
-          include: {
-            user: {
-              select: {
-                id: true,
-                fullName: true,
-                email: true,
-                phoneNumber: true,
-              },
-            },
-          },
-        },
-
-        details: {
-          include: {
-            toppings: true,
-          },
-        },
-      },
-    });
-
-    if (!order) {
-      throw new AppError(404, "Không tìm thấy đơn hàng");
-    }
-
-    if (order.customerId !== customerId) {
-      throw new AppError(403, "Đơn hàng không thuộc Customer này");
-    }
-
-    return mapBill({
-      id: order.id,
-      orderId: order.id,
-      method: order.paymentMethod,
-      status: BillStatus.PendingCustomerConfirmation,
-      amount: order.finalPrice,
-      evidenceUrl: null,
-      transferContent: `UGEM-${order.id}`,
-      sepayReference: null,
-      requestedAt: order.createdAt,
-      merchantConfirmedAt: null,
-      customerConfirmedAt: null,
-      rejectedAt: null,
-      rejectionReason: null,
-      order,
-      createdAt: order.createdAt,
-      updatedAt: order.updatedAt,
-    });
+    throw new AppError(404, "Merchant chưa tạo bill thanh toán");
   }
 
   const bills = await prisma.bill.findMany({
@@ -807,90 +740,7 @@ export const confirmBill = async (
   const existingBill = await findBillOptional(input);
 
   if (!existingBill) {
-    const orderId = input.orderId;
-    if (!orderId) {
-      throw new AppError(404, "Không tìm thấy hóa đơn");
-    }
-
-    const order = await prisma.order.findUnique({
-      where: { id: orderId },
-      include: {
-        merchant: {
-          select: {
-            id: true,
-            userId: true,
-            name: true,
-            logoUrl: true,
-            phone: true,
-            address: true,
-          },
-        },
-        customer: {
-          include: {
-            user: {
-              select: {
-                id: true,
-                fullName: true,
-                email: true,
-                phoneNumber: true,
-              },
-            },
-          },
-        },
-      },
-    });
-
-    if (!order) {
-      throw new AppError(404, "Không tìm thấy đơn hàng");
-    }
-
-    if (order.customerId !== customerId) {
-      throw new AppError(403, "Đơn hàng không thuộc Customer này");
-    }
-
-    const paymentMethod = input.paymentMethod
-      ? PaymentMethod[input.paymentMethod]
-      : order.paymentMethod;
-
-    const confirmedBill = await prisma.$transaction(async (transaction) => {
-      await transaction.order.update({
-        where: { id: order.id },
-        data: {
-          paymentMethod,
-          paymentStatus: OrderPaymentStatus.Pending,
-        },
-      });
-
-      return await transaction.bill.upsert({
-        where: { orderId: order.id },
-        create: {
-          orderId: order.id,
-          method: paymentMethod,
-          amount: order.finalPrice,
-          status: BillStatus.Confirmed,
-          merchantConfirmedAt: new Date(),
-          customerConfirmedAt: new Date(),
-        },
-        update: {
-          status: BillStatus.Confirmed,
-          customerConfirmedAt: new Date(),
-          rejectedAt: null,
-          rejectionReason: null,
-        },
-        include: billInclude,
-      });
-    });
-
-    await createNotification({
-      userId: confirmedBill.order.merchant.userId,
-      type: NotificationType.Payment,
-      title: "Customer đã xác nhận hóa đơn",
-      message: "Customer đã xác nhận thông tin hóa đơn.",
-      referenceId: confirmedBill.orderId,
-      referenceType: "Order",
-    });
-
-    return mapBill(confirmedBill);
+    throw new AppError(404, "Merchant chưa tạo bill thanh toán");
   }
 
   if (existingBill.order.customerId !== customerId) {
