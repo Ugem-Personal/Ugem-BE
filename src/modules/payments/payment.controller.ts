@@ -46,9 +46,9 @@ export const requestCashConfirmation = asyncHandler(
   },
 );
 
-export const confirmCashPayment = asyncHandler(
+export const confirmManualPayment = asyncHandler(
   async (req: Request, res: Response) => {
-    const bill = await paymentService.confirmCashPayment(
+    const bill = await paymentService.confirmManualPayment(
       getMerchantId(req),
       getParam(req, "orderId"),
     );

@@ -32,6 +32,11 @@ export interface UpdateMerchantProfileInput {
   address?: string;
   openingHours?: string;
 
+  bankCode?: string | null;
+  bankAccountNumber?: string | null;
+  bankAccountName?: string | null;
+  bankTransferEnabled?: boolean;
+
   latitude?: number | null;
   longitude?: number | null;
   logoUrl?: string | null;

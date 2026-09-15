@@ -5,7 +5,7 @@ import { hydrateApprovedMerchant, requireApprovedMerchant, } from "../../common/
 import { validate } from "../../common/middleware/validate.middleware.js";
 import { acceptMerchantOrder, createMerchantOrder, createOrder, getMerchantOrders, getMyOrders, getOrderById, updateOrderStatusByRole, } from "./order.controller.js";
 import { createMerchantOrderSchema, createOrderSchema, orderIdParamSchema, orderIdSchema, orderListSchema, updateOrderStatusByRoleSchema, } from "./order.schema.js";
-import { confirmBill, confirmCashPayment, getCustomerBills, processSepayWebhook, rejectBill, requestCashConfirmation, submitBill, } from "../payments/payment.controller.js";
+import { confirmBill, confirmManualPayment, getCustomerBills, processSepayWebhook, rejectBill, requestCashConfirmation, submitBill, } from "../payments/payment.controller.js";
 import { cashOrderIdSchema, confirmBillSchema, getBillSchema, rejectBillSchema, sepayWebhookSchema, submitBillSchema, } from "../payments/payment.schema.js";
 import { authenticateSepayWebhook } from "../../common/middleware/sepay-webhook.middleware.js";
 import { webhookRateLimiter } from "../../common/middleware/rate-limit.middleware.js";
@@ -24,5 +24,6 @@ orderRouter.post("/merchant", requireApprovedMerchant, validate(createMerchantOr
 orderRouter.post("/:orderId/accept", requireApprovedMerchant, validate(orderIdParamSchema), acceptMerchantOrder);
 orderRouter.patch("/:id/status", hydrateApprovedMerchant, authorizeRoles("Merchant", "Customer", "Reviewer"), validate(updateOrderStatusByRoleSchema), updateOrderStatusByRole);
 orderRouter.patch("/:orderId/cash/request", authorizeRoles("Customer", "Reviewer"), validate(cashOrderIdSchema), requestCashConfirmation);
-orderRouter.patch("/:orderId/cash/confirm", requireApprovedMerchant, validate(cashOrderIdSchema), confirmCashPayment);
+orderRouter.patch("/:orderId/cash/confirm", requireApprovedMerchant, validate(cashOrderIdSchema), confirmManualPayment);
+orderRouter.patch("/:orderId/payment/confirm", requireApprovedMerchant, validate(cashOrderIdSchema), confirmManualPayment);
 orderRouter.get("/:id", hydrateApprovedMerchant, validate(orderIdSchema), getOrderById);

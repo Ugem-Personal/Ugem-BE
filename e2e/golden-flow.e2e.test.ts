@@ -239,6 +239,10 @@ describe.sequential("UGem golden flow", () => {
         phone: "0988000003",
         address: "1 Test Street",
         openingHours: "08:00-22:00",
+        bankCode: "MB",
+        bankAccountNumber: "0988000003",
+        bankAccountName: "MERCHANT E2E",
+        bankTransferEnabled: true,
         status: "Active",
       },
     });

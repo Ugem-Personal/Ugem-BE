@@ -43,6 +43,9 @@ export type BillMinAggregateOutputType = {
   evidenceUrl: string | null
   transferContent: string | null
   sepayReference: string | null
+  bankCodeSnapshot: string | null
+  bankAccountSnapshot: string | null
+  bankAccountNameSnapshot: string | null
   requestedAt: Date | null
   merchantConfirmedAt: Date | null
   customerConfirmedAt: Date | null
@@ -61,6 +64,9 @@ export type BillMaxAggregateOutputType = {
   evidenceUrl: string | null
   transferContent: string | null
   sepayReference: string | null
+  bankCodeSnapshot: string | null
+  bankAccountSnapshot: string | null
+  bankAccountNameSnapshot: string | null
   requestedAt: Date | null
   merchantConfirmedAt: Date | null
   customerConfirmedAt: Date | null
@@ -79,6 +85,9 @@ export type BillCountAggregateOutputType = {
   evidenceUrl: number
   transferContent: number
   sepayReference: number
+  bankCodeSnapshot: number
+  bankAccountSnapshot: number
+  bankAccountNameSnapshot: number
   requestedAt: number
   merchantConfirmedAt: number
   customerConfirmedAt: number
@@ -107,6 +116,9 @@ export type BillMinAggregateInputType = {
   evidenceUrl?: true
   transferContent?: true
   sepayReference?: true
+  bankCodeSnapshot?: true
+  bankAccountSnapshot?: true
+  bankAccountNameSnapshot?: true
   requestedAt?: true
   merchantConfirmedAt?: true
   customerConfirmedAt?: true
@@ -125,6 +137,9 @@ export type BillMaxAggregateInputType = {
   evidenceUrl?: true
   transferContent?: true
   sepayReference?: true
+  bankCodeSnapshot?: true
+  bankAccountSnapshot?: true
+  bankAccountNameSnapshot?: true
   requestedAt?: true
   merchantConfirmedAt?: true
   customerConfirmedAt?: true
@@ -143,6 +158,9 @@ export type BillCountAggregateInputType = {
   evidenceUrl?: true
   transferContent?: true
   sepayReference?: true
+  bankCodeSnapshot?: true
+  bankAccountSnapshot?: true
+  bankAccountNameSnapshot?: true
   requestedAt?: true
   merchantConfirmedAt?: true
   customerConfirmedAt?: true
@@ -248,6 +266,9 @@ export type BillGroupByOutputType = {
   evidenceUrl: string | null
   transferContent: string | null
   sepayReference: string | null
+  bankCodeSnapshot: string | null
+  bankAccountSnapshot: string | null
+  bankAccountNameSnapshot: string | null
   requestedAt: Date | null
   merchantConfirmedAt: Date | null
   customerConfirmedAt: Date | null
@@ -289,6 +310,9 @@ export type BillWhereInput = {
   evidenceUrl?: Prisma.StringNullableFilter<"Bill"> | string | null
   transferContent?: Prisma.StringNullableFilter<"Bill"> | string | null
   sepayReference?: Prisma.StringNullableFilter<"Bill"> | string | null
+  bankCodeSnapshot?: Prisma.StringNullableFilter<"Bill"> | string | null
+  bankAccountSnapshot?: Prisma.StringNullableFilter<"Bill"> | string | null
+  bankAccountNameSnapshot?: Prisma.StringNullableFilter<"Bill"> | string | null
   requestedAt?: Prisma.DateTimeNullableFilter<"Bill"> | Date | string | null
   merchantConfirmedAt?: Prisma.DateTimeNullableFilter<"Bill"> | Date | string | null
   customerConfirmedAt?: Prisma.DateTimeNullableFilter<"Bill"> | Date | string | null
@@ -308,6 +332,9 @@ export type BillOrderByWithRelationInput = {
   evidenceUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   transferContent?: Prisma.SortOrderInput | Prisma.SortOrder
   sepayReference?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankCodeSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankAccountSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankAccountNameSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
   requestedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   merchantConfirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   customerConfirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -330,6 +357,9 @@ export type BillWhereUniqueInput = Prisma.AtLeast<{
   amount?: Prisma.DecimalFilter<"Bill"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   evidenceUrl?: Prisma.StringNullableFilter<"Bill"> | string | null
   transferContent?: Prisma.StringNullableFilter<"Bill"> | string | null
+  bankCodeSnapshot?: Prisma.StringNullableFilter<"Bill"> | string | null
+  bankAccountSnapshot?: Prisma.StringNullableFilter<"Bill"> | string | null
+  bankAccountNameSnapshot?: Prisma.StringNullableFilter<"Bill"> | string | null
   requestedAt?: Prisma.DateTimeNullableFilter<"Bill"> | Date | string | null
   merchantConfirmedAt?: Prisma.DateTimeNullableFilter<"Bill"> | Date | string | null
   customerConfirmedAt?: Prisma.DateTimeNullableFilter<"Bill"> | Date | string | null
@@ -349,6 +379,9 @@ export type BillOrderByWithAggregationInput = {
   evidenceUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   transferContent?: Prisma.SortOrderInput | Prisma.SortOrder
   sepayReference?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankCodeSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankAccountSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankAccountNameSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
   requestedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   merchantConfirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   customerConfirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -375,6 +408,9 @@ export type BillScalarWhereWithAggregatesInput = {
   evidenceUrl?: Prisma.StringNullableWithAggregatesFilter<"Bill"> | string | null
   transferContent?: Prisma.StringNullableWithAggregatesFilter<"Bill"> | string | null
   sepayReference?: Prisma.StringNullableWithAggregatesFilter<"Bill"> | string | null
+  bankCodeSnapshot?: Prisma.StringNullableWithAggregatesFilter<"Bill"> | string | null
+  bankAccountSnapshot?: Prisma.StringNullableWithAggregatesFilter<"Bill"> | string | null
+  bankAccountNameSnapshot?: Prisma.StringNullableWithAggregatesFilter<"Bill"> | string | null
   requestedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Bill"> | Date | string | null
   merchantConfirmedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Bill"> | Date | string | null
   customerConfirmedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Bill"> | Date | string | null
@@ -392,6 +428,9 @@ export type BillCreateInput = {
   evidenceUrl?: string | null
   transferContent?: string | null
   sepayReference?: string | null
+  bankCodeSnapshot?: string | null
+  bankAccountSnapshot?: string | null
+  bankAccountNameSnapshot?: string | null
   requestedAt?: Date | string | null
   merchantConfirmedAt?: Date | string | null
   customerConfirmedAt?: Date | string | null
@@ -411,6 +450,9 @@ export type BillUncheckedCreateInput = {
   evidenceUrl?: string | null
   transferContent?: string | null
   sepayReference?: string | null
+  bankCodeSnapshot?: string | null
+  bankAccountSnapshot?: string | null
+  bankAccountNameSnapshot?: string | null
   requestedAt?: Date | string | null
   merchantConfirmedAt?: Date | string | null
   customerConfirmedAt?: Date | string | null
@@ -428,6 +470,9 @@ export type BillUpdateInput = {
   evidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transferContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sepayReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCodeSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNameSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   merchantConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   customerConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -447,6 +492,9 @@ export type BillUncheckedUpdateInput = {
   evidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transferContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sepayReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCodeSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNameSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   merchantConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   customerConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -465,6 +513,9 @@ export type BillCreateManyInput = {
   evidenceUrl?: string | null
   transferContent?: string | null
   sepayReference?: string | null
+  bankCodeSnapshot?: string | null
+  bankAccountSnapshot?: string | null
+  bankAccountNameSnapshot?: string | null
   requestedAt?: Date | string | null
   merchantConfirmedAt?: Date | string | null
   customerConfirmedAt?: Date | string | null
@@ -482,6 +533,9 @@ export type BillUpdateManyMutationInput = {
   evidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transferContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sepayReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCodeSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNameSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   merchantConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   customerConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -500,6 +554,9 @@ export type BillUncheckedUpdateManyInput = {
   evidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transferContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sepayReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCodeSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNameSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   merchantConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   customerConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -523,6 +580,9 @@ export type BillCountOrderByAggregateInput = {
   evidenceUrl?: Prisma.SortOrder
   transferContent?: Prisma.SortOrder
   sepayReference?: Prisma.SortOrder
+  bankCodeSnapshot?: Prisma.SortOrder
+  bankAccountSnapshot?: Prisma.SortOrder
+  bankAccountNameSnapshot?: Prisma.SortOrder
   requestedAt?: Prisma.SortOrder
   merchantConfirmedAt?: Prisma.SortOrder
   customerConfirmedAt?: Prisma.SortOrder
@@ -545,6 +605,9 @@ export type BillMaxOrderByAggregateInput = {
   evidenceUrl?: Prisma.SortOrder
   transferContent?: Prisma.SortOrder
   sepayReference?: Prisma.SortOrder
+  bankCodeSnapshot?: Prisma.SortOrder
+  bankAccountSnapshot?: Prisma.SortOrder
+  bankAccountNameSnapshot?: Prisma.SortOrder
   requestedAt?: Prisma.SortOrder
   merchantConfirmedAt?: Prisma.SortOrder
   customerConfirmedAt?: Prisma.SortOrder
@@ -563,6 +626,9 @@ export type BillMinOrderByAggregateInput = {
   evidenceUrl?: Prisma.SortOrder
   transferContent?: Prisma.SortOrder
   sepayReference?: Prisma.SortOrder
+  bankCodeSnapshot?: Prisma.SortOrder
+  bankAccountSnapshot?: Prisma.SortOrder
+  bankAccountNameSnapshot?: Prisma.SortOrder
   requestedAt?: Prisma.SortOrder
   merchantConfirmedAt?: Prisma.SortOrder
   customerConfirmedAt?: Prisma.SortOrder
@@ -620,6 +686,9 @@ export type BillCreateWithoutOrderInput = {
   evidenceUrl?: string | null
   transferContent?: string | null
   sepayReference?: string | null
+  bankCodeSnapshot?: string | null
+  bankAccountSnapshot?: string | null
+  bankAccountNameSnapshot?: string | null
   requestedAt?: Date | string | null
   merchantConfirmedAt?: Date | string | null
   customerConfirmedAt?: Date | string | null
@@ -637,6 +706,9 @@ export type BillUncheckedCreateWithoutOrderInput = {
   evidenceUrl?: string | null
   transferContent?: string | null
   sepayReference?: string | null
+  bankCodeSnapshot?: string | null
+  bankAccountSnapshot?: string | null
+  bankAccountNameSnapshot?: string | null
   requestedAt?: Date | string | null
   merchantConfirmedAt?: Date | string | null
   customerConfirmedAt?: Date | string | null
@@ -670,6 +742,9 @@ export type BillUpdateWithoutOrderInput = {
   evidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transferContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sepayReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCodeSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNameSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   merchantConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   customerConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -687,6 +762,9 @@ export type BillUncheckedUpdateWithoutOrderInput = {
   evidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transferContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sepayReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCodeSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNameSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   merchantConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   customerConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -707,6 +785,9 @@ export type BillSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   evidenceUrl?: boolean
   transferContent?: boolean
   sepayReference?: boolean
+  bankCodeSnapshot?: boolean
+  bankAccountSnapshot?: boolean
+  bankAccountNameSnapshot?: boolean
   requestedAt?: boolean
   merchantConfirmedAt?: boolean
   customerConfirmedAt?: boolean
@@ -726,6 +807,9 @@ export type BillSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   evidenceUrl?: boolean
   transferContent?: boolean
   sepayReference?: boolean
+  bankCodeSnapshot?: boolean
+  bankAccountSnapshot?: boolean
+  bankAccountNameSnapshot?: boolean
   requestedAt?: boolean
   merchantConfirmedAt?: boolean
   customerConfirmedAt?: boolean
@@ -745,6 +829,9 @@ export type BillSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   evidenceUrl?: boolean
   transferContent?: boolean
   sepayReference?: boolean
+  bankCodeSnapshot?: boolean
+  bankAccountSnapshot?: boolean
+  bankAccountNameSnapshot?: boolean
   requestedAt?: boolean
   merchantConfirmedAt?: boolean
   customerConfirmedAt?: boolean
@@ -764,6 +851,9 @@ export type BillSelectScalar = {
   evidenceUrl?: boolean
   transferContent?: boolean
   sepayReference?: boolean
+  bankCodeSnapshot?: boolean
+  bankAccountSnapshot?: boolean
+  bankAccountNameSnapshot?: boolean
   requestedAt?: boolean
   merchantConfirmedAt?: boolean
   customerConfirmedAt?: boolean
@@ -773,7 +863,7 @@ export type BillSelectScalar = {
   updatedAt?: boolean
 }
 
-export type BillOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderId" | "method" | "status" | "amount" | "evidenceUrl" | "transferContent" | "sepayReference" | "requestedAt" | "merchantConfirmedAt" | "customerConfirmedAt" | "rejectedAt" | "rejectionReason" | "createdAt" | "updatedAt", ExtArgs["result"]["bill"]>
+export type BillOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderId" | "method" | "status" | "amount" | "evidenceUrl" | "transferContent" | "sepayReference" | "bankCodeSnapshot" | "bankAccountSnapshot" | "bankAccountNameSnapshot" | "requestedAt" | "merchantConfirmedAt" | "customerConfirmedAt" | "rejectedAt" | "rejectionReason" | "createdAt" | "updatedAt", ExtArgs["result"]["bill"]>
 export type BillInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
 }
@@ -798,6 +888,9 @@ export type $BillPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     evidenceUrl: string | null
     transferContent: string | null
     sepayReference: string | null
+    bankCodeSnapshot: string | null
+    bankAccountSnapshot: string | null
+    bankAccountNameSnapshot: string | null
     requestedAt: Date | null
     merchantConfirmedAt: Date | null
     customerConfirmedAt: Date | null
@@ -1237,6 +1330,9 @@ export interface BillFieldRefs {
   readonly evidenceUrl: Prisma.FieldRef<"Bill", 'String'>
   readonly transferContent: Prisma.FieldRef<"Bill", 'String'>
   readonly sepayReference: Prisma.FieldRef<"Bill", 'String'>
+  readonly bankCodeSnapshot: Prisma.FieldRef<"Bill", 'String'>
+  readonly bankAccountSnapshot: Prisma.FieldRef<"Bill", 'String'>
+  readonly bankAccountNameSnapshot: Prisma.FieldRef<"Bill", 'String'>
   readonly requestedAt: Prisma.FieldRef<"Bill", 'DateTime'>
   readonly merchantConfirmedAt: Prisma.FieldRef<"Bill", 'DateTime'>
   readonly customerConfirmedAt: Prisma.FieldRef<"Bill", 'DateTime'>

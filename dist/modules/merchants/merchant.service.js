@@ -94,6 +94,10 @@ const mapMerchant = (merchant, customerLat, customerLng, customerPreferences) =>
         latitude: merchantLat,
         longitude: merchantLng,
         logoUrl: merchant.logoUrl,
+        bankCode: merchant.bankCode,
+        bankAccountNumber: merchant.bankAccountNumber,
+        bankAccountName: merchant.bankAccountName,
+        bankTransferEnabled: merchant.bankTransferEnabled,
         rating,
         strengthIndex,
         underratedScore,
@@ -389,6 +393,17 @@ export const updateMyMerchant = async (merchantId, input) => {
     if (!existing) {
         throw new AppError(404, "Không tìm thấy Merchant");
     }
+    const nextBankCode = input.bankCode !== undefined ? input.bankCode?.trim() || null : existing.bankCode;
+    const nextBankAccountNumber = input.bankAccountNumber !== undefined
+        ? input.bankAccountNumber?.trim() || null
+        : existing.bankAccountNumber;
+    const nextBankAccountName = input.bankAccountName !== undefined
+        ? input.bankAccountName?.trim() || null
+        : existing.bankAccountName;
+    if (input.bankTransferEnabled === true &&
+        (!nextBankCode || !nextBankAccountNumber || !nextBankAccountName)) {
+        throw new AppError(400, "Phải nhập đầy đủ ngân hàng, số tài khoản và tên chủ tài khoản trước khi bật chuyển khoản");
+    }
     const merchant = await prisma.merchant.update({
         where: {
             id: merchantId,
@@ -424,6 +439,14 @@ export const updateMyMerchant = async (merchantId, input) => {
                     : new Prisma.Decimal(input.longitude)
                 : undefined,
             logoUrl: input.logoUrl !== undefined ? input.logoUrl?.trim() || null : undefined,
+            bankCode: input.bankCode !== undefined ? input.bankCode?.trim() || null : undefined,
+            bankAccountNumber: input.bankAccountNumber !== undefined
+                ? input.bankAccountNumber?.trim() || null
+                : undefined,
+            bankAccountName: input.bankAccountName !== undefined
+                ? input.bankAccountName?.trim() || null
+                : undefined,
+            bankTransferEnabled: input.bankTransferEnabled,
         },
     });
     return mapMerchant(merchant);

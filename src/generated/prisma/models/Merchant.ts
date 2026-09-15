@@ -63,6 +63,10 @@ export type MerchantMinAggregateOutputType = {
   latitude: runtime.Decimal | null
   longitude: runtime.Decimal | null
   logoUrl: string | null
+  bankCode: string | null
+  bankAccountNumber: string | null
+  bankAccountName: string | null
+  bankTransferEnabled: boolean | null
   rating: runtime.Decimal | null
   reviewCount: number | null
   totalViews: number | null
@@ -90,6 +94,10 @@ export type MerchantMaxAggregateOutputType = {
   latitude: runtime.Decimal | null
   longitude: runtime.Decimal | null
   logoUrl: string | null
+  bankCode: string | null
+  bankAccountNumber: string | null
+  bankAccountName: string | null
+  bankTransferEnabled: boolean | null
   rating: runtime.Decimal | null
   reviewCount: number | null
   totalViews: number | null
@@ -117,6 +125,10 @@ export type MerchantCountAggregateOutputType = {
   latitude: number
   longitude: number
   logoUrl: number
+  bankCode: number
+  bankAccountNumber: number
+  bankAccountName: number
+  bankTransferEnabled: number
   rating: number
   reviewCount: number
   totalViews: number
@@ -168,6 +180,10 @@ export type MerchantMinAggregateInputType = {
   latitude?: true
   longitude?: true
   logoUrl?: true
+  bankCode?: true
+  bankAccountNumber?: true
+  bankAccountName?: true
+  bankTransferEnabled?: true
   rating?: true
   reviewCount?: true
   totalViews?: true
@@ -195,6 +211,10 @@ export type MerchantMaxAggregateInputType = {
   latitude?: true
   longitude?: true
   logoUrl?: true
+  bankCode?: true
+  bankAccountNumber?: true
+  bankAccountName?: true
+  bankTransferEnabled?: true
   rating?: true
   reviewCount?: true
   totalViews?: true
@@ -222,6 +242,10 @@ export type MerchantCountAggregateInputType = {
   latitude?: true
   longitude?: true
   logoUrl?: true
+  bankCode?: true
+  bankAccountNumber?: true
+  bankAccountName?: true
+  bankTransferEnabled?: true
   rating?: true
   reviewCount?: true
   totalViews?: true
@@ -336,6 +360,10 @@ export type MerchantGroupByOutputType = {
   latitude: runtime.Decimal | null
   longitude: runtime.Decimal | null
   logoUrl: string | null
+  bankCode: string | null
+  bankAccountNumber: string | null
+  bankAccountName: string | null
+  bankTransferEnabled: boolean
   rating: runtime.Decimal
   reviewCount: number
   totalViews: number
@@ -386,6 +414,10 @@ export type MerchantWhereInput = {
   latitude?: Prisma.DecimalNullableFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.DecimalNullableFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.StringNullableFilter<"Merchant"> | string | null
+  bankCode?: Prisma.StringNullableFilter<"Merchant"> | string | null
+  bankAccountNumber?: Prisma.StringNullableFilter<"Merchant"> | string | null
+  bankAccountName?: Prisma.StringNullableFilter<"Merchant"> | string | null
+  bankTransferEnabled?: Prisma.BoolFilter<"Merchant"> | boolean
   rating?: Prisma.DecimalFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFilter<"Merchant"> | number
   totalViews?: Prisma.IntFilter<"Merchant"> | number
@@ -424,6 +456,10 @@ export type MerchantOrderByWithRelationInput = {
   latitude?: Prisma.SortOrderInput | Prisma.SortOrder
   longitude?: Prisma.SortOrderInput | Prisma.SortOrder
   logoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankAccountNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankAccountName?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankTransferEnabled?: Prisma.SortOrder
   rating?: Prisma.SortOrder
   reviewCount?: Prisma.SortOrder
   totalViews?: Prisma.SortOrder
@@ -465,6 +501,10 @@ export type MerchantWhereUniqueInput = Prisma.AtLeast<{
   latitude?: Prisma.DecimalNullableFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.DecimalNullableFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.StringNullableFilter<"Merchant"> | string | null
+  bankCode?: Prisma.StringNullableFilter<"Merchant"> | string | null
+  bankAccountNumber?: Prisma.StringNullableFilter<"Merchant"> | string | null
+  bankAccountName?: Prisma.StringNullableFilter<"Merchant"> | string | null
+  bankTransferEnabled?: Prisma.BoolFilter<"Merchant"> | boolean
   rating?: Prisma.DecimalFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFilter<"Merchant"> | number
   totalViews?: Prisma.IntFilter<"Merchant"> | number
@@ -503,6 +543,10 @@ export type MerchantOrderByWithAggregationInput = {
   latitude?: Prisma.SortOrderInput | Prisma.SortOrder
   longitude?: Prisma.SortOrderInput | Prisma.SortOrder
   logoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankAccountNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankAccountName?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankTransferEnabled?: Prisma.SortOrder
   rating?: Prisma.SortOrder
   reviewCount?: Prisma.SortOrder
   totalViews?: Prisma.SortOrder
@@ -538,6 +582,10 @@ export type MerchantScalarWhereWithAggregatesInput = {
   latitude?: Prisma.DecimalNullableWithAggregatesFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.DecimalNullableWithAggregatesFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.StringNullableWithAggregatesFilter<"Merchant"> | string | null
+  bankCode?: Prisma.StringNullableWithAggregatesFilter<"Merchant"> | string | null
+  bankAccountNumber?: Prisma.StringNullableWithAggregatesFilter<"Merchant"> | string | null
+  bankAccountName?: Prisma.StringNullableWithAggregatesFilter<"Merchant"> | string | null
+  bankTransferEnabled?: Prisma.BoolWithAggregatesFilter<"Merchant"> | boolean
   rating?: Prisma.DecimalWithAggregatesFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntWithAggregatesFilter<"Merchant"> | number
   totalViews?: Prisma.IntWithAggregatesFilter<"Merchant"> | number
@@ -564,6 +612,10 @@ export type MerchantCreateInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
@@ -602,6 +654,10 @@ export type MerchantUncheckedCreateInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
@@ -638,6 +694,10 @@ export type MerchantUpdateInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -676,6 +736,10 @@ export type MerchantUncheckedUpdateInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -713,6 +777,10 @@ export type MerchantCreateManyInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
@@ -739,6 +807,10 @@ export type MerchantUpdateManyMutationInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -766,6 +838,10 @@ export type MerchantUncheckedUpdateManyInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -798,6 +874,10 @@ export type MerchantCountOrderByAggregateInput = {
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
+  bankCode?: Prisma.SortOrder
+  bankAccountNumber?: Prisma.SortOrder
+  bankAccountName?: Prisma.SortOrder
+  bankTransferEnabled?: Prisma.SortOrder
   rating?: Prisma.SortOrder
   reviewCount?: Prisma.SortOrder
   totalViews?: Prisma.SortOrder
@@ -836,6 +916,10 @@ export type MerchantMaxOrderByAggregateInput = {
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
+  bankCode?: Prisma.SortOrder
+  bankAccountNumber?: Prisma.SortOrder
+  bankAccountName?: Prisma.SortOrder
+  bankTransferEnabled?: Prisma.SortOrder
   rating?: Prisma.SortOrder
   reviewCount?: Prisma.SortOrder
   totalViews?: Prisma.SortOrder
@@ -863,6 +947,10 @@ export type MerchantMinOrderByAggregateInput = {
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
+  bankCode?: Prisma.SortOrder
+  bankAccountNumber?: Prisma.SortOrder
+  bankAccountName?: Prisma.SortOrder
+  bankTransferEnabled?: Prisma.SortOrder
   rating?: Prisma.SortOrder
   reviewCount?: Prisma.SortOrder
   totalViews?: Prisma.SortOrder
@@ -1089,6 +1177,10 @@ export type MerchantCreateWithoutUserInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
@@ -1125,6 +1217,10 @@ export type MerchantUncheckedCreateWithoutUserInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
@@ -1177,6 +1273,10 @@ export type MerchantUpdateWithoutUserInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1213,6 +1313,10 @@ export type MerchantUncheckedUpdateWithoutUserInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1249,6 +1353,10 @@ export type MerchantCreateWithoutFoodsInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
@@ -1286,6 +1394,10 @@ export type MerchantUncheckedCreateWithoutFoodsInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
@@ -1337,6 +1449,10 @@ export type MerchantUpdateWithoutFoodsInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1374,6 +1490,10 @@ export type MerchantUncheckedUpdateWithoutFoodsInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1409,6 +1529,10 @@ export type MerchantCreateWithoutOrdersInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
@@ -1446,6 +1570,10 @@ export type MerchantUncheckedCreateWithoutOrdersInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
@@ -1497,6 +1625,10 @@ export type MerchantUpdateWithoutOrdersInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1534,6 +1666,10 @@ export type MerchantUncheckedUpdateWithoutOrdersInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1569,6 +1705,10 @@ export type MerchantCreateWithoutWishlistsInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
@@ -1606,6 +1746,10 @@ export type MerchantUncheckedCreateWithoutWishlistsInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
@@ -1657,6 +1801,10 @@ export type MerchantUpdateWithoutWishlistsInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1694,6 +1842,10 @@ export type MerchantUncheckedUpdateWithoutWishlistsInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1729,6 +1881,10 @@ export type MerchantCreateWithoutReviewsInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
@@ -1766,6 +1922,10 @@ export type MerchantUncheckedCreateWithoutReviewsInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
@@ -1817,6 +1977,10 @@ export type MerchantUpdateWithoutReviewsInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1854,6 +2018,10 @@ export type MerchantUncheckedUpdateWithoutReviewsInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1889,6 +2057,10 @@ export type MerchantCreateWithoutAffiliateLinksInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
@@ -1926,6 +2098,10 @@ export type MerchantUncheckedCreateWithoutAffiliateLinksInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
@@ -1977,6 +2153,10 @@ export type MerchantUpdateWithoutAffiliateLinksInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2014,6 +2194,10 @@ export type MerchantUncheckedUpdateWithoutAffiliateLinksInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2049,6 +2233,10 @@ export type MerchantCreateWithoutCampaignsInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
@@ -2086,6 +2274,10 @@ export type MerchantUncheckedCreateWithoutCampaignsInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
@@ -2137,6 +2329,10 @@ export type MerchantUpdateWithoutCampaignsInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2174,6 +2370,10 @@ export type MerchantUncheckedUpdateWithoutCampaignsInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2209,6 +2409,10 @@ export type MerchantCreateWithoutCheckInsInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
@@ -2246,6 +2450,10 @@ export type MerchantUncheckedCreateWithoutCheckInsInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
@@ -2297,6 +2505,10 @@ export type MerchantUpdateWithoutCheckInsInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2334,6 +2546,10 @@ export type MerchantUncheckedUpdateWithoutCheckInsInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2369,6 +2585,10 @@ export type MerchantCreateWithoutSupportTicketsInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
@@ -2406,6 +2626,10 @@ export type MerchantUncheckedCreateWithoutSupportTicketsInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
@@ -2457,6 +2681,10 @@ export type MerchantUpdateWithoutSupportTicketsInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2494,6 +2722,10 @@ export type MerchantUncheckedUpdateWithoutSupportTicketsInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2529,6 +2761,10 @@ export type MerchantCreateWithoutBookingsInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
@@ -2566,6 +2802,10 @@ export type MerchantUncheckedCreateWithoutBookingsInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
@@ -2617,6 +2857,10 @@ export type MerchantUpdateWithoutBookingsInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2654,6 +2898,10 @@ export type MerchantUncheckedUpdateWithoutBookingsInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2689,6 +2937,10 @@ export type MerchantCreateWithoutViewsInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
@@ -2726,6 +2978,10 @@ export type MerchantUncheckedCreateWithoutViewsInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
   rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: number
   totalViews?: number
@@ -2777,6 +3033,10 @@ export type MerchantUpdateWithoutViewsInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2814,6 +3074,10 @@ export type MerchantUncheckedUpdateWithoutViewsInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalViews?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2962,6 +3226,10 @@ export type MerchantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   latitude?: boolean
   longitude?: boolean
   logoUrl?: boolean
+  bankCode?: boolean
+  bankAccountNumber?: boolean
+  bankAccountName?: boolean
+  bankTransferEnabled?: boolean
   rating?: boolean
   reviewCount?: boolean
   totalViews?: boolean
@@ -3001,6 +3269,10 @@ export type MerchantSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   latitude?: boolean
   longitude?: boolean
   logoUrl?: boolean
+  bankCode?: boolean
+  bankAccountNumber?: boolean
+  bankAccountName?: boolean
+  bankTransferEnabled?: boolean
   rating?: boolean
   reviewCount?: boolean
   totalViews?: boolean
@@ -3029,6 +3301,10 @@ export type MerchantSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   latitude?: boolean
   longitude?: boolean
   logoUrl?: boolean
+  bankCode?: boolean
+  bankAccountNumber?: boolean
+  bankAccountName?: boolean
+  bankTransferEnabled?: boolean
   rating?: boolean
   reviewCount?: boolean
   totalViews?: boolean
@@ -3057,6 +3333,10 @@ export type MerchantSelectScalar = {
   latitude?: boolean
   longitude?: boolean
   logoUrl?: boolean
+  bankCode?: boolean
+  bankAccountNumber?: boolean
+  bankAccountName?: boolean
+  bankTransferEnabled?: boolean
   rating?: boolean
   reviewCount?: boolean
   totalViews?: boolean
@@ -3069,7 +3349,7 @@ export type MerchantSelectScalar = {
   updatedAt?: boolean
 }
 
-export type MerchantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "description" | "restaurantType" | "mainDishType" | "priceRange" | "email" | "phone" | "address" | "openingHours" | "latitude" | "longitude" | "logoUrl" | "rating" | "reviewCount" | "totalViews" | "strengthIndex" | "underratedScore" | "recommendationRank" | "lastRebalancedAt" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["merchant"]>
+export type MerchantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "description" | "restaurantType" | "mainDishType" | "priceRange" | "email" | "phone" | "address" | "openingHours" | "latitude" | "longitude" | "logoUrl" | "bankCode" | "bankAccountNumber" | "bankAccountName" | "bankTransferEnabled" | "rating" | "reviewCount" | "totalViews" | "strengthIndex" | "underratedScore" | "recommendationRank" | "lastRebalancedAt" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["merchant"]>
 export type MerchantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   foods?: boolean | Prisma.Merchant$foodsArgs<ExtArgs>
   orders?: boolean | Prisma.Merchant$ordersArgs<ExtArgs>
@@ -3121,6 +3401,10 @@ export type $MerchantPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     latitude: runtime.Decimal | null
     longitude: runtime.Decimal | null
     logoUrl: string | null
+    bankCode: string | null
+    bankAccountNumber: string | null
+    bankAccountName: string | null
+    bankTransferEnabled: boolean
     rating: runtime.Decimal
     reviewCount: number
     totalViews: number
@@ -3579,6 +3863,10 @@ export interface MerchantFieldRefs {
   readonly latitude: Prisma.FieldRef<"Merchant", 'Decimal'>
   readonly longitude: Prisma.FieldRef<"Merchant", 'Decimal'>
   readonly logoUrl: Prisma.FieldRef<"Merchant", 'String'>
+  readonly bankCode: Prisma.FieldRef<"Merchant", 'String'>
+  readonly bankAccountNumber: Prisma.FieldRef<"Merchant", 'String'>
+  readonly bankAccountName: Prisma.FieldRef<"Merchant", 'String'>
+  readonly bankTransferEnabled: Prisma.FieldRef<"Merchant", 'Boolean'>
   readonly rating: Prisma.FieldRef<"Merchant", 'Decimal'>
   readonly reviewCount: Prisma.FieldRef<"Merchant", 'Int'>
   readonly totalViews: Prisma.FieldRef<"Merchant", 'Int'>

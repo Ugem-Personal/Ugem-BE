@@ -28,8 +28,8 @@ export const requestCashConfirmation = asyncHandler(async (req, res) => {
         data: bill,
     });
 });
-export const confirmCashPayment = asyncHandler(async (req, res) => {
-    const bill = await paymentService.confirmCashPayment(getMerchantId(req), getParam(req, "orderId"));
+export const confirmManualPayment = asyncHandler(async (req, res) => {
+    const bill = await paymentService.confirmManualPayment(getMerchantId(req), getParam(req, "orderId"));
     return sendSuccess(res, {
         message: "Xác nhận thanh toán tiền mặt thành công",
         data: bill,

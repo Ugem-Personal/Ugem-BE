@@ -30,7 +30,7 @@ import {
 } from "./order.schema.js";
 import {
   confirmBill,
-  confirmCashPayment,
+  confirmManualPayment,
   getCustomerBills,
   processSepayWebhook,
   rejectBill,
@@ -149,7 +149,13 @@ orderRouter.patch(
   "/:orderId/cash/confirm",
   requireApprovedMerchant,
   validate(cashOrderIdSchema),
-  confirmCashPayment,
+  confirmManualPayment,
+);
+orderRouter.patch(
+  "/:orderId/payment/confirm",
+  requireApprovedMerchant,
+  validate(cashOrderIdSchema),
+  confirmManualPayment,
 );
 orderRouter.get(
   "/:id",

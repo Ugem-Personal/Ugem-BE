@@ -1,6 +1,5 @@
 import { AffiliateTransactionStatus, BillStatus, NotificationType, OrderPaymentStatus, OrderStatus, OrderType, PaymentMethod, } from "../../generated/prisma/client.js";
 import { prisma } from "../../config/prisma.js";
-import { env } from "../../config/env.js";
 import { AppError } from "../../common/errors/app-error.js";
 import { createReviewerCommission } from "../affiliate-links/affiliate-earning.service.js";
 import { createNotification } from "../notifications/notification.service.js";
@@ -94,6 +93,10 @@ const billInclude = {
                     logoUrl: true,
                     phone: true,
                     address: true,
+                    bankCode: true,
+                    bankAccountNumber: true,
+                    bankAccountName: true,
+                    bankTransferEnabled: true,
                 },
             },
             customer: {
@@ -132,8 +135,18 @@ const mapBill = (bill) => ({
     customerConfirmedAt: bill.customerConfirmedAt,
     rejectedAt: bill.rejectedAt,
     rejectionReason: bill.rejectionReason,
-    bankName: env.BANK_CODE,
-    bankAccount: env.BANK_ACCOUNT_NUMBER,
+    bankName: bill.bankCodeSnapshot ??
+        (bill.order?.merchant?.bankTransferEnabled
+            ? bill.order.merchant.bankCode
+            : null),
+    bankAccount: bill.bankAccountSnapshot ??
+        (bill.order?.merchant?.bankTransferEnabled
+            ? bill.order.merchant.bankAccountNumber
+            : null),
+    bankAccountName: bill.bankAccountNameSnapshot ??
+        (bill.order?.merchant?.bankTransferEnabled
+            ? bill.order.merchant.bankAccountName
+            : null),
     paymentMethod: bill.order?.paymentMethod ?? bill.method,
     orderType: bill.order?.orderType,
     checkInStatus: bill.order?.checkIn?.status ?? null,
@@ -256,7 +269,7 @@ export const requestCashConfirmation = async (customerId, orderId) => {
     });
     return mapBill(bill);
 };
-export const confirmCashPayment = async (merchantId, orderId) => {
+export const confirmManualPayment = async (merchantId, orderId) => {
     const order = await prisma.order.findUnique({
         where: {
             id: orderId,
@@ -319,8 +332,10 @@ export const confirmCashPayment = async (merchantId, orderId) => {
     await createNotification({
         userId: order.customer.userId,
         type: NotificationType.Payment,
-        title: "Thanh toán tiền mặt đã được xác nhận",
-        message: "Merchant đã xác nhận nhận được tiền mặt của bạn.",
+        title: "Thanh toán đã được xác nhận",
+        message: order.paymentMethod === PaymentMethod.BankTransfer
+            ? "Merchant đã xác nhận nhận được tiền chuyển khoản của bạn."
+            : "Merchant đã xác nhận nhận được tiền mặt của bạn.",
         referenceId: order.id,
         referenceType: "Order",
     });
@@ -347,6 +362,14 @@ export const submitBill = async (merchantId, input) => {
         },
         include: {
             details: true,
+            merchant: {
+                select: {
+                    bankCode: true,
+                    bankAccountNumber: true,
+                    bankAccountName: true,
+                    bankTransferEnabled: true,
+                },
+            },
         },
     });
     if (!order) {
@@ -454,6 +477,15 @@ export const submitBill = async (merchantId, input) => {
                 amount: finalPrice,
                 evidenceUrl: input.evidenceUrl?.trim() || null,
                 transferContent: input.transferContent?.trim() || `UGEM-${order.id}`,
+                bankCodeSnapshot: order.merchant.bankTransferEnabled
+                    ? order.merchant.bankCode
+                    : null,
+                bankAccountSnapshot: order.merchant.bankTransferEnabled
+                    ? order.merchant.bankAccountNumber
+                    : null,
+                bankAccountNameSnapshot: order.merchant.bankTransferEnabled
+                    ? order.merchant.bankAccountName
+                    : null,
                 merchantConfirmedAt: new Date(),
             },
             update: {
@@ -462,6 +494,15 @@ export const submitBill = async (merchantId, input) => {
                 amount: finalPrice,
                 evidenceUrl: input.evidenceUrl?.trim() || null,
                 transferContent: input.transferContent?.trim() || `UGEM-${order.id}`,
+                bankCodeSnapshot: order.merchant.bankTransferEnabled
+                    ? order.merchant.bankCode
+                    : null,
+                bankAccountSnapshot: order.merchant.bankTransferEnabled
+                    ? order.merchant.bankAccountNumber
+                    : null,
+                bankAccountNameSnapshot: order.merchant.bankTransferEnabled
+                    ? order.merchant.bankAccountName
+                    : null,
                 merchantConfirmedAt: new Date(),
                 customerConfirmedAt: null,
                 rejectedAt: null,

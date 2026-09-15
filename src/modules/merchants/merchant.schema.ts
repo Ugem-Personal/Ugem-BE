@@ -106,6 +106,20 @@ export const updateMerchantSchema = z.object({
 
       openingHours: z.string().trim().min(1).max(300).optional(),
 
+      bankCode: z
+        .union([z.string().trim().min(2).max(20), z.literal(""), z.null()])
+        .optional(),
+
+      bankAccountNumber: z
+        .union([z.string().trim().regex(/^\d{6,30}$/, "Số tài khoản ngân hàng không hợp lệ"), z.literal(""), z.null()])
+        .optional(),
+
+      bankAccountName: z
+        .union([z.string().trim().min(2).max(200), z.literal(""), z.null()])
+        .optional(),
+
+      bankTransferEnabled: z.boolean().optional(),
+
       latitude: z
         .union([z.coerce.number().min(-90).max(90), z.literal(""), z.null()])
         .optional(),

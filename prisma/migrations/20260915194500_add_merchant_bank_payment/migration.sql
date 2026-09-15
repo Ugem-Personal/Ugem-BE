@@ -1,0 +1,11 @@
+ALTER TABLE "merchants"
+ADD COLUMN IF NOT EXISTS "bankCode" TEXT,
+ADD COLUMN IF NOT EXISTS "bankAccountNumber" TEXT,
+ADD COLUMN IF NOT EXISTS "bankAccountName" TEXT,
+ADD COLUMN IF NOT EXISTS "bankTransferEnabled" BOOLEAN NOT NULL DEFAULT false;
+
+ALTER TABLE "bills"
+ADD COLUMN IF NOT EXISTS "bankCodeSnapshot" TEXT,
+ADD COLUMN IF NOT EXISTS "bankAccountSnapshot" TEXT,
+ADD COLUMN IF NOT EXISTS "bankAccountNameSnapshot" TEXT;
+

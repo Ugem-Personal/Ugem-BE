@@ -294,6 +294,11 @@ model Merchant {
 
   logoUrl String?
 
+  bankCode            String?
+  bankAccountNumber   String?
+  bankAccountName     String?
+  bankTransferEnabled Boolean @default(false)
+
   rating      Decimal @default(0) @db.Decimal(3, 2)
   reviewCount Int     @default(0)
   totalViews  Int     @default(0)
@@ -547,6 +552,10 @@ model Bill {
   evidenceUrl     String?
   transferContent String?
   sepayReference  String? @unique
+
+  bankCodeSnapshot        String?
+  bankAccountSnapshot     String?
+  bankAccountNameSnapshot String?
 
   requestedAt         DateTime?
   merchantConfirmedAt DateTime?

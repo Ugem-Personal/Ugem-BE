@@ -278,6 +278,33 @@ export const createOrder = async (
     throw new AppError(400, "Khong xac dinh duoc Merchant cho order");
   }
 
+  if (
+    input.paymentMethod === "BankTransfer" ||
+    input.paymentMethod === "SePay"
+  ) {
+    const merchantPaymentConfig = await prisma.merchant.findUnique({
+      where: { id: merchantId },
+      select: {
+        bankCode: true,
+        bankAccountNumber: true,
+        bankAccountName: true,
+        bankTransferEnabled: true,
+      },
+    });
+
+    if (
+      !merchantPaymentConfig?.bankTransferEnabled ||
+      !merchantPaymentConfig.bankCode ||
+      !merchantPaymentConfig.bankAccountNumber ||
+      !merchantPaymentConfig.bankAccountName
+    ) {
+      throw new AppError(
+        409,
+        "Quán chưa cấu hình tài khoản nhận chuyển khoản",
+      );
+    }
+  }
+
   const calculatedItems = input.foods.map((inputItem) => {
     const food = foods.find((item) => item.id === inputItem.foodId);
 

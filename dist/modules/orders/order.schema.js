@@ -16,7 +16,8 @@ const orderFoodSchema = z.object({
         .default([]),
 });
 export const createOrderSchema = z.object({
-    body: z.object({
+    body: z
+        .object({
         name: z
             .string()
             .trim()
