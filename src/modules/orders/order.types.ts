@@ -48,11 +48,6 @@ export interface OrderListQuery {
   pageSize: number;
 }
 
-export interface MerchantRejectOrderInput {
-  orderId: string;
-  reason: string;
-}
-
 export interface CustomerUpdateOrderStatusInput {
   status: "Completed" | "NotReceived";
 }

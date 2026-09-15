@@ -175,24 +175,6 @@ export const acceptMerchantOrder = asyncHandler(
   },
 );
 
-export const rejectMerchantOrder = asyncHandler(
-  async (req: Request, res: Response) => {
-    const order = await orderService.updateOrderStatus(
-      getMerchantId(req),
-      req.body.orderId,
-      {
-        status: "Rejected",
-        rejectionReason: req.body.rejectionReason ?? req.body.reason,
-      },
-    );
-
-    return sendSuccess(res, {
-      message: "Từ chối order thành công",
-      data: order,
-    });
-  },
-);
-
 export const updateOrderStatusByRole = asyncHandler(
   async (req: Request, res: Response) => {
     const role = req.user?.Role;

@@ -8,10 +8,17 @@ import {
 } from "./order-state-machine.js";
 
 describe("merchant order state machine", () => {
-  it("allows a pending order to be accepted or rejected", () => {
+  it("allows a pending order to be accepted or marked ready", () => {
     expect(
       getMerchantOrderTransitions(OrderStatus.Pending),
-    ).toEqual([OrderStatus.Accepted, OrderStatus.Ready, OrderStatus.Rejected]);
+    ).toEqual([OrderStatus.Accepted, OrderStatus.Ready]);
+    expect(
+      canMerchantTransitionOrder(
+        OrderStatus.Pending,
+        OrderStatus.Rejected,
+        OrderType.Online,
+      ),
+    ).toBe(false);
   });
 
   it("rejects invalid and repeated transitions", () => {

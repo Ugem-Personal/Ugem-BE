@@ -3,8 +3,8 @@ import { authenticate } from "../../common/middleware/auth.middleware.js";
 import { authorizeRoles } from "../../common/middleware/role.middleware.js";
 import { hydrateApprovedMerchant, requireApprovedMerchant, } from "../../common/middleware/merchant.middleware.js";
 import { validate } from "../../common/middleware/validate.middleware.js";
-import { acceptMerchantOrder, createMerchantOrder, createOrder, getMerchantOrders, getMyOrders, getOrderById, rejectMerchantOrder, updateOrderStatusByRole, } from "./order.controller.js";
-import { createMerchantOrderSchema, createOrderSchema, orderIdParamSchema, orderIdSchema, orderListSchema, rejectMerchantOrderSchema, updateOrderStatusByRoleSchema, } from "./order.schema.js";
+import { acceptMerchantOrder, createMerchantOrder, createOrder, getMerchantOrders, getMyOrders, getOrderById, updateOrderStatusByRole, } from "./order.controller.js";
+import { createMerchantOrderSchema, createOrderSchema, orderIdParamSchema, orderIdSchema, orderListSchema, updateOrderStatusByRoleSchema, } from "./order.schema.js";
 import { confirmBill, confirmCashPayment, getCustomerBills, processSepayWebhook, rejectBill, requestCashConfirmation, submitBill, } from "../payments/payment.controller.js";
 import { cashOrderIdSchema, confirmBillSchema, getBillSchema, rejectBillSchema, sepayWebhookSchema, submitBillSchema, } from "../payments/payment.schema.js";
 import { authenticateSepayWebhook } from "../../common/middleware/sepay-webhook.middleware.js";
@@ -21,7 +21,6 @@ orderRouter.patch("/bill", requireApprovedMerchant, validate(submitBillSchema), 
 orderRouter.post("/bill/confirm", authorizeRoles("Customer", "Reviewer"), validate(confirmBillSchema), confirmBill);
 orderRouter.post("/bill/reject", authorizeRoles("Customer", "Reviewer"), validate(rejectBillSchema), rejectBill);
 orderRouter.post("/merchant", requireApprovedMerchant, validate(createMerchantOrderSchema), createMerchantOrder);
-orderRouter.post("/reject", requireApprovedMerchant, validate(rejectMerchantOrderSchema), rejectMerchantOrder);
 orderRouter.post("/:orderId/accept", requireApprovedMerchant, validate(orderIdParamSchema), acceptMerchantOrder);
 orderRouter.patch("/:id/status", hydrateApprovedMerchant, authorizeRoles("Merchant", "Customer", "Reviewer"), validate(updateOrderStatusByRoleSchema), updateOrderStatusByRole);
 orderRouter.patch("/:orderId/cash/request", authorizeRoles("Customer", "Reviewer"), validate(cashOrderIdSchema), requestCashConfirmation);

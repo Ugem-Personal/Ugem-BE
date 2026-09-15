@@ -1,6 +1,6 @@
 import { OrderStatus, OrderType, } from "../../generated/prisma/client.js";
 const merchantTransitions = {
-    [OrderStatus.Pending]: [OrderStatus.Accepted, OrderStatus.Ready, OrderStatus.Rejected],
+    [OrderStatus.Pending]: [OrderStatus.Accepted, OrderStatus.Ready],
     [OrderStatus.Accepted]: [OrderStatus.Preparing, OrderStatus.Ready],
     [OrderStatus.Preparing]: [OrderStatus.Ready],
     [OrderStatus.Ready]: [OrderStatus.Delivering],

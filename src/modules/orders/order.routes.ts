@@ -15,7 +15,6 @@ import {
   getMerchantOrders,
   getMyOrders,
   getOrderById,
-  rejectMerchantOrder,
   updateOrderStatus,
   updateOrderStatusByRole,
 } from "./order.controller.js";
@@ -26,7 +25,6 @@ import {
   orderIdParamSchema,
   orderIdSchema,
   orderListSchema,
-  rejectMerchantOrderSchema,
   updateOrderStatusByRoleSchema,
   updateOrderStatusSchema,
 } from "./order.schema.js";
@@ -125,12 +123,6 @@ orderRouter.post(
   createMerchantOrder,
 );
 
-orderRouter.post(
-  "/reject",
-  requireApprovedMerchant,
-  validate(rejectMerchantOrderSchema),
-  rejectMerchantOrder,
-);
 orderRouter.post(
   "/:orderId/accept",
   requireApprovedMerchant,

@@ -16,8 +16,7 @@ const orderFoodSchema = z.object({
         .default([]),
 });
 export const createOrderSchema = z.object({
-    body: z
-        .object({
+    body: z.object({
         name: z
             .string()
             .trim()
@@ -129,16 +128,6 @@ export const orderIdParamSchema = z.object({
         orderId: z.string().uuid("Order ID không hợp lệ"),
     }),
 });
-export const rejectMerchantOrderSchema = z.object({
-    body: z.object({
-        orderId: z.string().uuid("Order ID không hợp lệ"),
-        reason: z
-            .string()
-            .trim()
-            .min(1, "Lý do từ chối không được để trống")
-            .max(1000, "Lý do từ chối không được vượt quá 1000 ký tự"),
-    }),
-});
 export const customerUpdateOrderStatusSchema = z.object({
     params: z.object({
         id: z.string().uuid("Order ID không hợp lệ"),
@@ -158,7 +147,6 @@ export const updateOrderStatusByRoleSchema = z.object({
             "Preparing",
             "Ready",
             "Delivering",
-            "Rejected",
             "Completed",
             "NotReceived",
         ]),
@@ -168,16 +156,5 @@ export const updateOrderStatusByRoleSchema = z.object({
         reason: z
             .union([z.string().trim().max(1000), z.literal(""), z.null()])
             .optional(),
-    })
-        .superRefine((body, context) => {
-        if (body.status === "Rejected" &&
-            !body.rejectionReason?.trim() &&
-            !body.reason?.trim()) {
-            context.addIssue({
-                code: z.ZodIssueCode.custom,
-                path: ["rejectionReason"],
-                message: "Phải nhập lý do khi từ chối order",
-            });
-        }
     }),
 });
