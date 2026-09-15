@@ -727,6 +727,10 @@ export const getCustomerBills = async (
             logoUrl: true,
             phone: true,
             address: true,
+            bankCode: true,
+            bankAccountNumber: true,
+            bankAccountName: true,
+            bankTransferEnabled: true,
           },
         },
 
