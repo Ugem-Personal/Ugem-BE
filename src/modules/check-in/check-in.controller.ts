@@ -75,12 +75,21 @@ export const getCurrentCheckIns = asyncHandler(
   },
 );
 
-export const disputeCheckIn = asyncHandler(async (req: Request, res: Response) => {
-  const checkInId = typeof req.params.id === "string" ? req.params.id : "";
-  if (!checkInId) throw new AppError(400, "Thiếu Check-in ID");
-  const result = await checkInService.disputeCheckIn(getCustomerId(req), checkInId, req.body?.reason);
-  return sendSuccess(res, { message: "Đã tiếp nhận dispute check-in", data: result });
-});
+export const disputeCheckIn = asyncHandler(
+  async (req: Request, res: Response) => {
+    const checkInId = typeof req.params.id === "string" ? req.params.id : "";
+    if (!checkInId) throw new AppError(400, "Thiếu Check-in ID");
+    const result = await checkInService.disputeCheckIn(
+      getCustomerId(req),
+      checkInId,
+      req.body?.reason,
+    );
+    return sendSuccess(res, {
+      message: "Đã tiếp nhận dispute check-in",
+      data: result,
+    });
+  },
+);
 
 export const getMerchantCheckInStatistics = asyncHandler(
   async (req: Request, res: Response) => {
@@ -142,4 +151,3 @@ export const merchantVerifyCustomerCode = asyncHandler(
     });
   },
 );
-

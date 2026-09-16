@@ -156,7 +156,9 @@ export const createCampaign = async (
     input.code?.trim().toUpperCase() ??
     `CMP-${randomUUID().slice(0, 8).toUpperCase()}`;
 
-  if (await prisma.campaign.findUnique({ where: { code }, select: { id: true } })) {
+  if (
+    await prisma.campaign.findUnique({ where: { code }, select: { id: true } })
+  ) {
     throw new AppError(409, "Mã Campaign đã tồn tại");
   }
 

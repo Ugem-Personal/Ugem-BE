@@ -148,15 +148,13 @@ const mapMerchant = (
       ),
     ),
   ];
-  const {
-    hasPreferences: hasUserPreferences,
-    score: preferenceScore,
-  } = calculatePreferenceScore(customerPreferences ?? null, {
-    restaurantType: merchant.restaurantType,
-    mainDishType: merchant.mainDishType,
-    priceRange: merchant.priceRange,
-    categoryIds,
-  });
+  const { hasPreferences: hasUserPreferences, score: preferenceScore } =
+    calculatePreferenceScore(customerPreferences ?? null, {
+      restaurantType: merchant.restaurantType,
+      mainDishType: merchant.mainDishType,
+      priceRange: merchant.priceRange,
+      categoryIds,
+    });
 
   const checkInCount = (merchant as any)._count?.checkIns ?? 0;
   // Ranking logic: Lượt check-in thực tế quyết định độ yêu thích của quán
@@ -179,14 +177,17 @@ const mapMerchant = (
   // Chuẩn hóa underratedScore lên thang 0 - 100 để đóng góp công bằng 10% (tối đa 10 điểm)
   const underratedScore100 = Math.min(100, Math.max(0, underratedScore * 100));
 
-  const recommendationScore = Math.round(
-    (checkInScore * 0.40 +
-      ratingScore * 0.20 +
-      distanceScore * 0.20 +
-      (hasUserPreferences ? preferenceScore * 0.10 : underratedScore100 * 0.10) +
-      boostBonus) *
-      100,
-  ) / 100;
+  const recommendationScore =
+    Math.round(
+      (checkInScore * 0.4 +
+        ratingScore * 0.2 +
+        distanceScore * 0.2 +
+        (hasUserPreferences
+          ? preferenceScore * 0.1
+          : underratedScore100 * 0.1) +
+        boostBonus) *
+        100,
+    ) / 100;
 
   const featuredFoods = merchant.foods
     ? merchant.foods.slice(0, 3).map((f) => f.name)
@@ -299,7 +300,6 @@ export const getMerchants = async (query: MerchantListQuery) => {
         },
       })
     : null;
-
 
   const where: Prisma.MerchantWhereInput = {
     status: MerchantStatus.Active,
@@ -513,37 +513,6 @@ export const getMerchants = async (query: MerchantListQuery) => {
   return result;
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export const getMerchantById = async (merchantId: string) => {
   const merchant = await prisma.merchant.findFirst({
     where: {
@@ -624,7 +593,9 @@ export const updateMyMerchant = async (
   }
 
   const nextBankCode =
-    input.bankCode !== undefined ? input.bankCode?.trim() || null : existing.bankCode;
+    input.bankCode !== undefined
+      ? input.bankCode?.trim() || null
+      : existing.bankCode;
   const nextBankAccountNumber =
     input.bankAccountNumber !== undefined
       ? input.bankAccountNumber?.trim() || null
@@ -705,7 +676,9 @@ export const updateMyMerchant = async (
         input.logoUrl !== undefined ? input.logoUrl?.trim() || null : undefined,
 
       bankCode:
-        input.bankCode !== undefined ? input.bankCode?.trim() || null : undefined,
+        input.bankCode !== undefined
+          ? input.bankCode?.trim() || null
+          : undefined,
       bankAccountNumber:
         input.bankAccountNumber !== undefined
           ? input.bankAccountNumber?.trim() || null
@@ -852,7 +825,6 @@ export const incrementMerchantView = async (params: {
       source: params.source ?? MerchantTrafficSource.Recommendation,
     },
   });
-
 
   const updatedMerchant = await prisma.merchant.update({
     where: {

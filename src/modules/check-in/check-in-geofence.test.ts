@@ -29,32 +29,36 @@ describe("verifyCheckIn Geo-fencing", () => {
   it("accepts check-in when customer is within 100 meters", async () => {
     // ~30 meters away from merchant
     const customerLat = 10.7771;
-    const customerLng = 106.7010;
+    const customerLng = 106.701;
 
     vi.spyOn(prisma.order, "findUnique").mockResolvedValue(mockOrder as any);
     vi.spyOn(prisma.checkIn, "count").mockResolvedValue(0);
-    vi.spyOn(prisma.customer, "findUnique").mockResolvedValue({ reviewerPoints: 50 } as any);
-    vi.spyOn(prisma, "$transaction").mockImplementation(async (operation: any) => {
-      if (Array.isArray(operation)) return [{}, {}] as any;
-      return operation({
-        checkIn: {
-          updateMany: vi.fn().mockResolvedValue({ count: 1 }),
-          findUniqueOrThrow: vi.fn().mockResolvedValue({
-            id: "checkin-1",
-            customerId: "cust-1",
-            merchantId: "merch-1",
-            campaignId: null,
-            orderId: "order-checkin-1",
-            bookingId: null,
-            affiliateLinkId: null,
-            source: "OrderQr",
-            checkInMethod: "OrderQr",
-            checkedInAt: new Date(),
-          }),
-        },
-        merchantAcquisitionEvent: { create: vi.fn().mockResolvedValue({}) },
-      });
-    });
+    vi.spyOn(prisma.customer, "findUnique").mockResolvedValue({
+      reviewerPoints: 50,
+    } as any);
+    vi.spyOn(prisma, "$transaction").mockImplementation(
+      async (operation: any) => {
+        if (Array.isArray(operation)) return [{}, {}] as any;
+        return operation({
+          checkIn: {
+            updateMany: vi.fn().mockResolvedValue({ count: 1 }),
+            findUniqueOrThrow: vi.fn().mockResolvedValue({
+              id: "checkin-1",
+              customerId: "cust-1",
+              merchantId: "merch-1",
+              campaignId: null,
+              orderId: "order-checkin-1",
+              bookingId: null,
+              affiliateLinkId: null,
+              source: "OrderQr",
+              checkInMethod: "OrderQr",
+              checkedInAt: new Date(),
+            }),
+          },
+          merchantAcquisitionEvent: { create: vi.fn().mockResolvedValue({}) },
+        });
+      },
+    );
     vi.spyOn(prisma.notification, "create").mockResolvedValue({} as any);
 
     const result = await verifyCheckIn(
@@ -72,12 +76,16 @@ describe("verifyCheckIn Geo-fencing", () => {
 
   it("rejects check-in when customer is farther than 100 meters (e.g. 500 meters away)", async () => {
     // Far away (~1.5 km away)
-    const customerLat = 10.7900;
+    const customerLat = 10.79;
     const customerLng = 106.7009;
 
     vi.spyOn(prisma.order, "findUnique").mockResolvedValue(mockOrder as any);
-    const checkInUpdateSpy = vi.spyOn(prisma.checkIn, "updateMany").mockResolvedValue({ count: 1 });
-    const auditLogSpy = vi.spyOn(prisma.auditLog, "create").mockResolvedValue({} as any);
+    const checkInUpdateSpy = vi
+      .spyOn(prisma.checkIn, "updateMany")
+      .mockResolvedValue({ count: 1 });
+    const auditLogSpy = vi
+      .spyOn(prisma.auditLog, "create")
+      .mockResolvedValue({} as any);
 
     await expect(
       verifyCheckIn(

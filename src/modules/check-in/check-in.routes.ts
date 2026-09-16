@@ -82,4 +82,3 @@ checkInRouter.get(
   requireApprovedMerchant,
   getMerchantCheckInHistory,
 );
-
