@@ -615,6 +615,11 @@ export const submitBill = async (
       },
     });
 
+    const requiresCustomerConfirmation = order.orderType !== OrderType.Offline;
+    const billStatus = requiresCustomerConfirmation
+      ? BillStatus.PendingCustomerConfirmation
+      : BillStatus.Confirmed;
+
     const savedBill = await transaction.bill.upsert({
       where: {
         orderId: order.id,
@@ -624,7 +629,7 @@ export const submitBill = async (
         orderId: order.id,
         method: order.paymentMethod,
 
-        status: BillStatus.PendingCustomerConfirmation,
+        status: billStatus,
 
         amount: finalPrice,
 
@@ -649,7 +654,7 @@ export const submitBill = async (
       update: {
         method: order.paymentMethod,
 
-        status: BillStatus.PendingCustomerConfirmation,
+        status: billStatus,
 
         amount: finalPrice,
 
@@ -684,9 +689,11 @@ export const submitBill = async (
   await createNotification({
     userId: result.order.customer.user.id,
     type: NotificationType.Payment,
-    title: "Merchant đã gửi hóa đơn",
+    title: "Merchant đã xuất hóa đơn",
     message:
-      "Merchant đã gửi hoặc cập nhật hóa đơn. Vui lòng kiểm tra và xác nhận.",
+      result.order.orderType === OrderType.Offline
+        ? "Quán đã xuất hóa đơn. Vui lòng kiểm tra bill tại quán và thanh toán cho nhân viên."
+        : "Merchant đã gửi hoặc cập nhật hóa đơn. Vui lòng kiểm tra và xác nhận.",
     referenceId: result.orderId,
     referenceType: "Order",
   });
