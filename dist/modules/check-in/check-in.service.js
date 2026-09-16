@@ -27,11 +27,14 @@ const getOrderForCheckIn = async (orderId) => {
             customerId: true,
             merchantId: true,
             orderType: true,
+            campaignId: true,
+            affiliateLinkId: true,
             status: true,
             paymentStatus: true,
             merchant: {
                 select: {
                     id: true,
+                    userId: true,
                     name: true,
                     logoUrl: true,
                     latitude: true,
@@ -54,6 +57,26 @@ const getOrderForCheckIn = async (orderId) => {
     return order;
 };
 const hashQrToken = (token) => createHash("sha256").update(token).digest("hex");
+const MAX_HOURLY_CHECK_INS = 5;
+const createAcquisitionEvent = async (transaction, checkIn) => {
+    if (!checkIn.checkedInAt) {
+        throw new AppError(409, "Check-in chưa có thời điểm xác nhận");
+    }
+    return transaction.merchantAcquisitionEvent.create({
+        data: {
+            merchantId: checkIn.merchantId,
+            customerId: checkIn.customerId,
+            checkInId: checkIn.id,
+            campaignId: checkIn.campaignId,
+            orderId: checkIn.orderId,
+            bookingId: checkIn.bookingId,
+            affiliateLinkId: checkIn.affiliateLinkId,
+            source: checkIn.source,
+            verificationMethod: checkIn.checkInMethod,
+            occurredAt: checkIn.checkedInAt,
+        },
+    });
+};
 export const generateCheckInQr = async (merchantId, orderId) => {
     const order = await getOrderForCheckIn(orderId);
     if (order.merchantId !== merchantId) {
@@ -86,6 +109,14 @@ export const generateCheckInQr = async (merchantId, orderId) => {
             orderId: order.id,
             customerId: order.customerId,
             merchantId: order.merchantId,
+            campaignId: order.campaignId,
+            affiliateLinkId: order.affiliateLinkId,
+            source: order.affiliateLinkId
+                ? "Affiliate"
+                : order.campaignId
+                    ? "Campaign"
+                    : "OrderQr",
+            checkInMethod: "OrderQr",
             qrToken: hashQrToken(qrToken),
             generatedAt,
             expiresAt,
@@ -94,6 +125,14 @@ export const generateCheckInQr = async (merchantId, orderId) => {
             qrToken: hashQrToken(qrToken),
             generatedAt,
             expiresAt,
+            campaignId: order.campaignId,
+            affiliateLinkId: order.affiliateLinkId,
+            source: order.affiliateLinkId
+                ? "Affiliate"
+                : order.campaignId
+                    ? "Campaign"
+                    : "OrderQr",
+            checkInMethod: "OrderQr",
         },
     });
     const checkInUrl = `${env.FRONTEND_URL.replace(/\/$/, "")}` +
@@ -110,6 +149,9 @@ export const verifyCheckIn = async (customerId, orderId, checkInToken, latitude,
     const order = await getOrderForCheckIn(orderId);
     if (order.customerId !== customerId) {
         throw new AppError(403, "Order không thuộc Customer này");
+    }
+    if (order.customer.userId === order.merchant.userId) {
+        throw new AppError(403, "Merchant không thể tự check-in cho chính mình");
     }
     if (order.orderType !== OrderType.Offline) {
         throw new AppError(400, "Order này không phải order Offline");
@@ -158,25 +200,66 @@ export const verifyCheckIn = async (customerId, orderId, checkInToken, latitude,
             .catch(() => null);
         throw new AppError(400, `Bạn đang ở quá xa quán (${Math.round(distanceMeters)}m). Vui lòng check-in trực tiếp tại quán (bán kính tối đa ${MAX_CHECK_IN_DISTANCE_METERS}m)`);
     }
-    const checkedInAt = new Date();
-    const updated = await prisma.checkIn.updateMany({
+    const hourlyCheckIns = await prisma.checkIn.count({
         where: {
-            orderId: order.id,
             customerId,
-            qrToken: hashQrToken(checkInToken),
-            checkedInAt: null,
-            expiresAt: {
-                gt: checkedInAt,
-            },
-        },
-        data: {
-            checkedInAt,
-            verifiedAt: checkedInAt,
-            latitude,
-            longitude,
+            checkedInAt: { gte: new Date(Date.now() - 60 * 60 * 1000) },
             status: CheckInStatus.Verified,
         },
     });
+    if (hourlyCheckIns >= MAX_HOURLY_CHECK_INS) {
+        await prisma.checkIn.updateMany({
+            where: { orderId: order.id },
+            data: {
+                status: CheckInStatus.Rejected,
+                suspicious: true,
+                suspiciousReason: "Abnormal check-in velocity",
+            },
+        });
+        throw new AppError(429, "Tần suất check-in bất thường, vui lòng thử lại sau");
+    }
+    const checkedInAt = new Date();
+    const verification = await prisma.$transaction(async (transaction) => {
+        const updated = await transaction.checkIn.updateMany({
+            where: {
+                orderId: order.id,
+                customerId,
+                qrToken: hashQrToken(checkInToken),
+                checkedInAt: null,
+                expiresAt: { gt: checkedInAt },
+            },
+            data: {
+                checkedInAt,
+                verifiedAt: checkedInAt,
+                latitude,
+                longitude,
+                checkInMethod: "OrderQr",
+                source: "OrderQr",
+                status: CheckInStatus.Verified,
+            },
+        });
+        if (updated.count === 0) {
+            return { updated, checkIn: null };
+        }
+        const checkIn = await transaction.checkIn.findUniqueOrThrow({
+            where: { orderId: order.id },
+            select: {
+                id: true,
+                customerId: true,
+                merchantId: true,
+                campaignId: true,
+                orderId: true,
+                bookingId: true,
+                affiliateLinkId: true,
+                source: true,
+                checkInMethod: true,
+                checkedInAt: true,
+            },
+        });
+        await createAcquisitionEvent(transaction, checkIn);
+        return { updated, checkIn };
+    });
+    const updated = verification.updated;
     if (updated.count === 0) {
         const existing = await prisma.checkIn.findUnique({
             where: { orderId: order.id },
@@ -274,16 +357,27 @@ export const verifyCheckIn = async (customerId, orderId, checkInToken, latitude,
     };
 };
 export const getCurrentCheckIns = async (customerId) => {
+    await prisma.checkIn.updateMany({
+        where: {
+            customerId,
+            status: CheckInStatus.Pending,
+            expiresAt: { lte: new Date() },
+        },
+        data: { status: CheckInStatus.Expired },
+    });
     const checkIns = await prisma.checkIn.findMany({
         where: {
             customerId,
-            checkedInAt: { not: null },
         },
         select: {
             id: true,
             orderId: true,
             checkedInAt: true,
             verifiedAt: true,
+            generatedAt: true,
+            disputedAt: true,
+            suspicious: true,
+            suspiciousReason: true,
             status: true,
             merchant: {
                 select: {
@@ -298,7 +392,7 @@ export const getCurrentCheckIns = async (customerId) => {
             },
         },
         orderBy: {
-            checkedInAt: "desc",
+            generatedAt: "desc",
         },
         take: 50,
     });
@@ -309,8 +403,59 @@ export const getCurrentCheckIns = async (customerId) => {
         amount: checkIn.order ? Number(checkIn.order.finalPrice) : 0,
         checkedInAt: checkIn.checkedInAt,
         verifiedAt: checkIn.verifiedAt,
+        disputedAt: checkIn.disputedAt,
+        suspicious: checkIn.suspicious,
+        suspiciousReason: checkIn.suspiciousReason,
         status: checkIn.status,
     }));
+};
+export const disputeCheckIn = async (customerId, checkInId, reason) => {
+    const checkIn = await prisma.checkIn.findFirst({
+        where: { id: checkInId, customerId, status: CheckInStatus.Verified },
+        select: {
+            id: true,
+            merchantId: true,
+            status: true,
+            customer: { select: { userId: true } },
+            acquisitionEvent: { select: { id: true, status: true } },
+        },
+    });
+    if (!checkIn)
+        throw new AppError(404, "Không tìm thấy Verified Check-in có thể dispute");
+    const result = await prisma.$transaction(async (transaction) => {
+        const updated = await transaction.checkIn.update({
+            where: { id: checkInId },
+            data: {
+                status: CheckInStatus.Disputed,
+                disputedAt: new Date(),
+                suspiciousReason: reason?.trim() || "Customer disputed verification",
+            },
+        });
+        if (checkIn.acquisitionEvent) {
+            await transaction.merchantAcquisitionEvent.update({
+                where: { id: checkIn.acquisitionEvent.id },
+                data: { status: "Disputed" },
+            });
+        }
+        await transaction.auditLog.create({
+            data: {
+                actorUserId: checkIn.customer.userId,
+                action: "MERCHANT_ACQUISITION_DISPUTED",
+                entityType: "MerchantAcquisitionEvent",
+                entityId: checkInId,
+                metadata: {
+                    merchantId: checkIn.merchantId,
+                    reason: reason?.trim() || null,
+                    oldStatus: checkIn.acquisitionEvent?.status ?? null,
+                    newStatus: checkIn.acquisitionEvent ? "Disputed" : null,
+                    checkInOldStatus: checkIn.status,
+                    checkInNewStatus: updated.status,
+                },
+            },
+        });
+        return updated;
+    });
+    return result;
 };
 export const getMerchantCheckInStatistics = async (merchantId) => {
     const startOfToday = new Date();
@@ -613,39 +758,56 @@ export const merchantVerifyCustomerCode = async (merchantId, customerCode, rewar
     const checkedInAt = new Date();
     const currentPoints = customer.reviewerPoints;
     const newPoints = currentPoints + CHECK_IN_REWARD_POINTS;
-    const [checkInRecord] = await prisma.$transaction([
-        prisma.checkIn.create({
+    const [checkInRecord] = await prisma.$transaction(async (transaction) => {
+        const checkInRecord = await transaction.checkIn.create({
             data: {
                 orderId: eligibleOrder.checkIn ? null : eligibleOrder.id,
                 customerId: customer.id,
                 merchantId,
                 rewardBenefit: appliedBenefit,
                 notes: notes || null,
+                source: "CustomerCode",
+                campaignId: eligibleOrder.campaignId,
+                affiliateLinkId: eligibleOrder.affiliateLinkId,
+                checkInMethod: "CustomerCode",
                 status: CheckInStatus.Verified,
                 checkedInAt,
                 verifiedAt: checkedInAt,
                 generatedAt: checkedInAt,
             },
-        }),
-        prisma.customer.update({
-            where: { id: customer.id },
-            data: {
-                reviewerPoints: { increment: CHECK_IN_REWARD_POINTS },
-            },
-        }),
-        prisma.reviewerPointTransaction.create({
-            data: {
-                reviewerId: customer.id,
-                amount: CHECK_IN_REWARD_POINTS,
-                pointsAfter: newPoints,
-                type: "CHECK_IN_CODE",
-                reason: appliedBenefit
-                    ? `Tích điểm check-in tại ${merchant.name} (Ưu đãi: ${appliedBenefit})`
-                    : `Tích điểm check-in tại ${merchant.name}`,
-                referenceId: merchantId,
-            },
-        }),
-    ]);
+        });
+        await createAcquisitionEvent(transaction, {
+            id: checkInRecord.id,
+            customerId: customer.id,
+            merchantId,
+            campaignId: eligibleOrder.campaignId,
+            orderId: eligibleOrder.id,
+            bookingId: null,
+            affiliateLinkId: eligibleOrder.affiliateLinkId,
+            source: "CustomerCode",
+            checkInMethod: "CustomerCode",
+            checkedInAt,
+        });
+        return [
+            checkInRecord,
+            await transaction.customer.update({
+                where: { id: customer.id },
+                data: { reviewerPoints: { increment: CHECK_IN_REWARD_POINTS } },
+            }),
+            await transaction.reviewerPointTransaction.create({
+                data: {
+                    reviewerId: customer.id,
+                    amount: CHECK_IN_REWARD_POINTS,
+                    pointsAfter: newPoints,
+                    type: "CHECK_IN_CODE",
+                    reason: appliedBenefit
+                        ? `Tích điểm check-in tại ${merchant.name} (Ưu đãi: ${appliedBenefit})`
+                        : `Tích điểm check-in tại ${merchant.name}`,
+                    referenceId: merchantId,
+                },
+            }),
+        ];
+    });
     await createNotification({
         userId: customer.userId,
         type: NotificationType.System,

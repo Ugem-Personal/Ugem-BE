@@ -528,6 +528,23 @@ export type EnumCheckInStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumCheckInStatusFilter<$PrismaModel>
 }
 
+export type EnumMerchantAcquisitionEventStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.MerchantAcquisitionEventStatus | Prisma.EnumMerchantAcquisitionEventStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.MerchantAcquisitionEventStatus[] | Prisma.ListEnumMerchantAcquisitionEventStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.MerchantAcquisitionEventStatus[] | Prisma.ListEnumMerchantAcquisitionEventStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumMerchantAcquisitionEventStatusFilter<$PrismaModel> | $Enums.MerchantAcquisitionEventStatus
+}
+
+export type EnumMerchantAcquisitionEventStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.MerchantAcquisitionEventStatus | Prisma.EnumMerchantAcquisitionEventStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.MerchantAcquisitionEventStatus[] | Prisma.ListEnumMerchantAcquisitionEventStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.MerchantAcquisitionEventStatus[] | Prisma.ListEnumMerchantAcquisitionEventStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumMerchantAcquisitionEventStatusWithAggregatesFilter<$PrismaModel> | $Enums.MerchantAcquisitionEventStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumMerchantAcquisitionEventStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumMerchantAcquisitionEventStatusFilter<$PrismaModel>
+}
+
 export type EnumIncidentTypeFilter<$PrismaModel = never> = {
   equals?: $Enums.IncidentType | Prisma.EnumIncidentTypeFieldRefInput<$PrismaModel>
   in?: $Enums.IncidentType[] | Prisma.ListEnumIncidentTypeFieldRefInput<$PrismaModel>
@@ -1376,6 +1393,23 @@ export type NestedEnumCheckInStatusWithAggregatesFilter<$PrismaModel = never> = 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumCheckInStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumCheckInStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumMerchantAcquisitionEventStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.MerchantAcquisitionEventStatus | Prisma.EnumMerchantAcquisitionEventStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.MerchantAcquisitionEventStatus[] | Prisma.ListEnumMerchantAcquisitionEventStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.MerchantAcquisitionEventStatus[] | Prisma.ListEnumMerchantAcquisitionEventStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumMerchantAcquisitionEventStatusFilter<$PrismaModel> | $Enums.MerchantAcquisitionEventStatus
+}
+
+export type NestedEnumMerchantAcquisitionEventStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.MerchantAcquisitionEventStatus | Prisma.EnumMerchantAcquisitionEventStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.MerchantAcquisitionEventStatus[] | Prisma.ListEnumMerchantAcquisitionEventStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.MerchantAcquisitionEventStatus[] | Prisma.ListEnumMerchantAcquisitionEventStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumMerchantAcquisitionEventStatusWithAggregatesFilter<$PrismaModel> | $Enums.MerchantAcquisitionEventStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumMerchantAcquisitionEventStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumMerchantAcquisitionEventStatusFilter<$PrismaModel>
 }
 
 export type NestedEnumIncidentTypeFilter<$PrismaModel = never> = {

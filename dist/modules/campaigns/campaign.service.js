@@ -81,6 +81,8 @@ export const createCampaign = async (merchantId, input) => {
         where: {
             id: merchantId,
             status: MerchantStatus.Active,
+            listingVisibility: "Public",
+            safetySuppressed: false,
         },
     });
     if (!merchant) {

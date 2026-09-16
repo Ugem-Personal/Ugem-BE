@@ -180,6 +180,15 @@ export const CheckInMethod = {
 export type CheckInMethod = (typeof CheckInMethod)[keyof typeof CheckInMethod]
 
 
+export const MerchantAcquisitionEventStatus = {
+  Valid: 'Valid',
+  Disputed: 'Disputed',
+  Cancelled: 'Cancelled'
+} as const
+
+export type MerchantAcquisitionEventStatus = (typeof MerchantAcquisitionEventStatus)[keyof typeof MerchantAcquisitionEventStatus]
+
+
 export const MerchantVerificationStatus = {
   Unverified: 'Unverified',
   PendingVerification: 'PendingVerification',

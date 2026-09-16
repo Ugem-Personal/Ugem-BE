@@ -127,6 +127,12 @@ enum CheckInMethod {
   CustomerCode
 }
 
+enum MerchantAcquisitionEventStatus {
+  Valid
+  Disputed
+  Cancelled
+}
+
 enum MerchantVerificationStatus {
   Unverified
   PendingVerification
@@ -966,6 +972,7 @@ model MerchantAcquisitionEvent {
   affiliateLinkId String?
   source          String?
   verificationMethod CheckInMethod
+  status          MerchantAcquisitionEventStatus @default(Valid)
   occurredAt      DateTime @default(now())
   createdAt       DateTime @default(now())
 
@@ -978,6 +985,7 @@ model MerchantAcquisitionEvent {
   affiliateLink AffiliateLink? @relation(fields: [affiliateLinkId], references: [id], onDelete: SetNull)
 
   @@index([merchantId, occurredAt])
+  @@index([merchantId, status, occurredAt])
   @@index([customerId, occurredAt])
   @@index([source])
   @@map("merchant_acquisition_events")

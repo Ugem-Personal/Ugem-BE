@@ -1054,6 +1054,12 @@ export const processSepayWebhook = async (input: SepayWebhookInput) => {
     order.status === OrderStatus.Completed
   ) {
     if (order.bill) {
+      if (!order.bill.sepayReference && reference) {
+        await prisma.bill.update({
+          where: { id: order.bill.id },
+          data: { sepayReference: reference },
+        });
+      }
       return mapBill(
         await prisma.bill.findUniqueOrThrow({
           where: { id: order.bill.id },

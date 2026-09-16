@@ -594,6 +594,7 @@ export const MerchantAcquisitionEventScalarFieldEnum = {
   affiliateLinkId: 'affiliateLinkId',
   source: 'source',
   verificationMethod: 'verificationMethod',
+  status: 'status',
   occurredAt: 'occurredAt',
   createdAt: 'createdAt'
 } as const

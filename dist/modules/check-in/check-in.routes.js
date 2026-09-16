@@ -3,7 +3,7 @@ import { authenticate } from "../../common/middleware/auth.middleware.js";
 import { requireApprovedMerchant } from "../../common/middleware/merchant.middleware.js";
 import { authorizeRoles } from "../../common/middleware/role.middleware.js";
 import { validate } from "../../common/middleware/validate.middleware.js";
-import { generateCheckInQr, getCurrentCheckIns, getMerchantCheckInHistory, getMerchantCheckInStatistics, getMyCheckInCode, merchantVerifyCustomerCode, verifyCheckIn, } from "./check-in.controller.js";
+import { generateCheckInQr, getCurrentCheckIns, getMerchantCheckInHistory, getMerchantCheckInStatistics, getMyCheckInCode, merchantVerifyCustomerCode, disputeCheckIn, verifyCheckIn, } from "./check-in.controller.js";
 import { generateCheckInQrSchema, merchantVerifyCustomerCodeSchema, verifyCheckInSchema, } from "./check-in.schema.js";
 export const checkInRouter = Router();
 checkInRouter.get("/my-code", authenticate, authorizeRoles("Customer", "Reviewer"), getMyCheckInCode);
@@ -11,5 +11,6 @@ checkInRouter.post("/merchant/verify-customer-code", authenticate, requireApprov
 checkInRouter.get("/generate-qr", authenticate, requireApprovedMerchant, validate(generateCheckInQrSchema), generateCheckInQr);
 checkInRouter.post("/verify", authenticate, authorizeRoles("Customer", "Reviewer"), validate(verifyCheckInSchema), verifyCheckIn);
 checkInRouter.get("/current", authenticate, authorizeRoles("Customer", "Reviewer"), getCurrentCheckIns);
+checkInRouter.post("/:id/dispute", authenticate, authorizeRoles("Customer", "Reviewer"), disputeCheckIn);
 checkInRouter.get("/merchant/statistics", authenticate, requireApprovedMerchant, getMerchantCheckInStatistics);
 checkInRouter.get("/merchant/history", authenticate, requireApprovedMerchant, getMerchantCheckInHistory);

@@ -35,6 +35,7 @@ export type MerchantAcquisitionEventMinAggregateOutputType = {
   affiliateLinkId: string | null
   source: string | null
   verificationMethod: $Enums.CheckInMethod | null
+  status: $Enums.MerchantAcquisitionEventStatus | null
   occurredAt: Date | null
   createdAt: Date | null
 }
@@ -50,6 +51,7 @@ export type MerchantAcquisitionEventMaxAggregateOutputType = {
   affiliateLinkId: string | null
   source: string | null
   verificationMethod: $Enums.CheckInMethod | null
+  status: $Enums.MerchantAcquisitionEventStatus | null
   occurredAt: Date | null
   createdAt: Date | null
 }
@@ -65,6 +67,7 @@ export type MerchantAcquisitionEventCountAggregateOutputType = {
   affiliateLinkId: number
   source: number
   verificationMethod: number
+  status: number
   occurredAt: number
   createdAt: number
   _all: number
@@ -82,6 +85,7 @@ export type MerchantAcquisitionEventMinAggregateInputType = {
   affiliateLinkId?: true
   source?: true
   verificationMethod?: true
+  status?: true
   occurredAt?: true
   createdAt?: true
 }
@@ -97,6 +101,7 @@ export type MerchantAcquisitionEventMaxAggregateInputType = {
   affiliateLinkId?: true
   source?: true
   verificationMethod?: true
+  status?: true
   occurredAt?: true
   createdAt?: true
 }
@@ -112,6 +117,7 @@ export type MerchantAcquisitionEventCountAggregateInputType = {
   affiliateLinkId?: true
   source?: true
   verificationMethod?: true
+  status?: true
   occurredAt?: true
   createdAt?: true
   _all?: true
@@ -200,6 +206,7 @@ export type MerchantAcquisitionEventGroupByOutputType = {
   affiliateLinkId: string | null
   source: string | null
   verificationMethod: $Enums.CheckInMethod
+  status: $Enums.MerchantAcquisitionEventStatus
   occurredAt: Date
   createdAt: Date
   _count: MerchantAcquisitionEventCountAggregateOutputType | null
@@ -236,6 +243,7 @@ export type MerchantAcquisitionEventWhereInput = {
   affiliateLinkId?: Prisma.StringNullableFilter<"MerchantAcquisitionEvent"> | string | null
   source?: Prisma.StringNullableFilter<"MerchantAcquisitionEvent"> | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFilter<"MerchantAcquisitionEvent"> | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFilter<"MerchantAcquisitionEvent"> | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFilter<"MerchantAcquisitionEvent"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"MerchantAcquisitionEvent"> | Date | string
   merchant?: Prisma.XOR<Prisma.MerchantScalarRelationFilter, Prisma.MerchantWhereInput>
@@ -258,6 +266,7 @@ export type MerchantAcquisitionEventOrderByWithRelationInput = {
   affiliateLinkId?: Prisma.SortOrderInput | Prisma.SortOrder
   source?: Prisma.SortOrderInput | Prisma.SortOrder
   verificationMethod?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   occurredAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   merchant?: Prisma.MerchantOrderByWithRelationInput
@@ -283,6 +292,7 @@ export type MerchantAcquisitionEventWhereUniqueInput = Prisma.AtLeast<{
   affiliateLinkId?: Prisma.StringNullableFilter<"MerchantAcquisitionEvent"> | string | null
   source?: Prisma.StringNullableFilter<"MerchantAcquisitionEvent"> | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFilter<"MerchantAcquisitionEvent"> | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFilter<"MerchantAcquisitionEvent"> | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFilter<"MerchantAcquisitionEvent"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"MerchantAcquisitionEvent"> | Date | string
   merchant?: Prisma.XOR<Prisma.MerchantScalarRelationFilter, Prisma.MerchantWhereInput>
@@ -305,6 +315,7 @@ export type MerchantAcquisitionEventOrderByWithAggregationInput = {
   affiliateLinkId?: Prisma.SortOrderInput | Prisma.SortOrder
   source?: Prisma.SortOrderInput | Prisma.SortOrder
   verificationMethod?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   occurredAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.MerchantAcquisitionEventCountOrderByAggregateInput
@@ -326,6 +337,7 @@ export type MerchantAcquisitionEventScalarWhereWithAggregatesInput = {
   affiliateLinkId?: Prisma.StringNullableWithAggregatesFilter<"MerchantAcquisitionEvent"> | string | null
   source?: Prisma.StringNullableWithAggregatesFilter<"MerchantAcquisitionEvent"> | string | null
   verificationMethod?: Prisma.EnumCheckInMethodWithAggregatesFilter<"MerchantAcquisitionEvent"> | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusWithAggregatesFilter<"MerchantAcquisitionEvent"> | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeWithAggregatesFilter<"MerchantAcquisitionEvent"> | Date | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"MerchantAcquisitionEvent"> | Date | string
 }
@@ -334,6 +346,7 @@ export type MerchantAcquisitionEventCreateInput = {
   id?: string
   source?: string | null
   verificationMethod: $Enums.CheckInMethod
+  status?: $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Date | string
   createdAt?: Date | string
   merchant: Prisma.MerchantCreateNestedOneWithoutAcquisitionEventsInput
@@ -356,6 +369,7 @@ export type MerchantAcquisitionEventUncheckedCreateInput = {
   affiliateLinkId?: string | null
   source?: string | null
   verificationMethod: $Enums.CheckInMethod
+  status?: $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Date | string
   createdAt?: Date | string
 }
@@ -364,6 +378,7 @@ export type MerchantAcquisitionEventUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFieldUpdateOperationsInput | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutAcquisitionEventsNestedInput
@@ -386,6 +401,7 @@ export type MerchantAcquisitionEventUncheckedUpdateInput = {
   affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFieldUpdateOperationsInput | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -401,6 +417,7 @@ export type MerchantAcquisitionEventCreateManyInput = {
   affiliateLinkId?: string | null
   source?: string | null
   verificationMethod: $Enums.CheckInMethod
+  status?: $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Date | string
   createdAt?: Date | string
 }
@@ -409,6 +426,7 @@ export type MerchantAcquisitionEventUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFieldUpdateOperationsInput | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -424,6 +442,7 @@ export type MerchantAcquisitionEventUncheckedUpdateManyInput = {
   affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFieldUpdateOperationsInput | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -454,6 +473,7 @@ export type MerchantAcquisitionEventCountOrderByAggregateInput = {
   affiliateLinkId?: Prisma.SortOrder
   source?: Prisma.SortOrder
   verificationMethod?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   occurredAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -469,6 +489,7 @@ export type MerchantAcquisitionEventMaxOrderByAggregateInput = {
   affiliateLinkId?: Prisma.SortOrder
   source?: Prisma.SortOrder
   verificationMethod?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   occurredAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -484,6 +505,7 @@ export type MerchantAcquisitionEventMinOrderByAggregateInput = {
   affiliateLinkId?: Prisma.SortOrder
   source?: Prisma.SortOrder
   verificationMethod?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   occurredAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -730,6 +752,10 @@ export type MerchantAcquisitionEventUncheckedUpdateOneWithoutCheckInNestedInput 
   update?: Prisma.XOR<Prisma.XOR<Prisma.MerchantAcquisitionEventUpdateToOneWithWhereWithoutCheckInInput, Prisma.MerchantAcquisitionEventUpdateWithoutCheckInInput>, Prisma.MerchantAcquisitionEventUncheckedUpdateWithoutCheckInInput>
 }
 
+export type EnumMerchantAcquisitionEventStatusFieldUpdateOperationsInput = {
+  set?: $Enums.MerchantAcquisitionEventStatus
+}
+
 export type MerchantAcquisitionEventCreateNestedManyWithoutBookingInput = {
   create?: Prisma.XOR<Prisma.MerchantAcquisitionEventCreateWithoutBookingInput, Prisma.MerchantAcquisitionEventUncheckedCreateWithoutBookingInput> | Prisma.MerchantAcquisitionEventCreateWithoutBookingInput[] | Prisma.MerchantAcquisitionEventUncheckedCreateWithoutBookingInput[]
   connectOrCreate?: Prisma.MerchantAcquisitionEventCreateOrConnectWithoutBookingInput | Prisma.MerchantAcquisitionEventCreateOrConnectWithoutBookingInput[]
@@ -776,6 +802,7 @@ export type MerchantAcquisitionEventCreateWithoutCustomerInput = {
   id?: string
   source?: string | null
   verificationMethod: $Enums.CheckInMethod
+  status?: $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Date | string
   createdAt?: Date | string
   merchant: Prisma.MerchantCreateNestedOneWithoutAcquisitionEventsInput
@@ -796,6 +823,7 @@ export type MerchantAcquisitionEventUncheckedCreateWithoutCustomerInput = {
   affiliateLinkId?: string | null
   source?: string | null
   verificationMethod: $Enums.CheckInMethod
+  status?: $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Date | string
   createdAt?: Date | string
 }
@@ -840,6 +868,7 @@ export type MerchantAcquisitionEventScalarWhereInput = {
   affiliateLinkId?: Prisma.StringNullableFilter<"MerchantAcquisitionEvent"> | string | null
   source?: Prisma.StringNullableFilter<"MerchantAcquisitionEvent"> | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFilter<"MerchantAcquisitionEvent"> | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFilter<"MerchantAcquisitionEvent"> | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFilter<"MerchantAcquisitionEvent"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"MerchantAcquisitionEvent"> | Date | string
 }
@@ -848,6 +877,7 @@ export type MerchantAcquisitionEventCreateWithoutMerchantInput = {
   id?: string
   source?: string | null
   verificationMethod: $Enums.CheckInMethod
+  status?: $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Date | string
   createdAt?: Date | string
   customer: Prisma.CustomerCreateNestedOneWithoutAcquisitionEventsInput
@@ -868,6 +898,7 @@ export type MerchantAcquisitionEventUncheckedCreateWithoutMerchantInput = {
   affiliateLinkId?: string | null
   source?: string | null
   verificationMethod: $Enums.CheckInMethod
+  status?: $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Date | string
   createdAt?: Date | string
 }
@@ -902,6 +933,7 @@ export type MerchantAcquisitionEventCreateWithoutOrderInput = {
   id?: string
   source?: string | null
   verificationMethod: $Enums.CheckInMethod
+  status?: $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Date | string
   createdAt?: Date | string
   merchant: Prisma.MerchantCreateNestedOneWithoutAcquisitionEventsInput
@@ -922,6 +954,7 @@ export type MerchantAcquisitionEventUncheckedCreateWithoutOrderInput = {
   affiliateLinkId?: string | null
   source?: string | null
   verificationMethod: $Enums.CheckInMethod
+  status?: $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Date | string
   createdAt?: Date | string
 }
@@ -956,6 +989,7 @@ export type MerchantAcquisitionEventCreateWithoutAffiliateLinkInput = {
   id?: string
   source?: string | null
   verificationMethod: $Enums.CheckInMethod
+  status?: $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Date | string
   createdAt?: Date | string
   merchant: Prisma.MerchantCreateNestedOneWithoutAcquisitionEventsInput
@@ -976,6 +1010,7 @@ export type MerchantAcquisitionEventUncheckedCreateWithoutAffiliateLinkInput = {
   bookingId?: string | null
   source?: string | null
   verificationMethod: $Enums.CheckInMethod
+  status?: $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Date | string
   createdAt?: Date | string
 }
@@ -1010,6 +1045,7 @@ export type MerchantAcquisitionEventCreateWithoutCampaignInput = {
   id?: string
   source?: string | null
   verificationMethod: $Enums.CheckInMethod
+  status?: $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Date | string
   createdAt?: Date | string
   merchant: Prisma.MerchantCreateNestedOneWithoutAcquisitionEventsInput
@@ -1030,6 +1066,7 @@ export type MerchantAcquisitionEventUncheckedCreateWithoutCampaignInput = {
   affiliateLinkId?: string | null
   source?: string | null
   verificationMethod: $Enums.CheckInMethod
+  status?: $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Date | string
   createdAt?: Date | string
 }
@@ -1064,6 +1101,7 @@ export type MerchantAcquisitionEventCreateWithoutCheckInInput = {
   id?: string
   source?: string | null
   verificationMethod: $Enums.CheckInMethod
+  status?: $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Date | string
   createdAt?: Date | string
   merchant: Prisma.MerchantCreateNestedOneWithoutAcquisitionEventsInput
@@ -1084,6 +1122,7 @@ export type MerchantAcquisitionEventUncheckedCreateWithoutCheckInInput = {
   affiliateLinkId?: string | null
   source?: string | null
   verificationMethod: $Enums.CheckInMethod
+  status?: $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Date | string
   createdAt?: Date | string
 }
@@ -1108,6 +1147,7 @@ export type MerchantAcquisitionEventUpdateWithoutCheckInInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFieldUpdateOperationsInput | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutAcquisitionEventsNestedInput
@@ -1128,6 +1168,7 @@ export type MerchantAcquisitionEventUncheckedUpdateWithoutCheckInInput = {
   affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFieldUpdateOperationsInput | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1136,6 +1177,7 @@ export type MerchantAcquisitionEventCreateWithoutBookingInput = {
   id?: string
   source?: string | null
   verificationMethod: $Enums.CheckInMethod
+  status?: $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Date | string
   createdAt?: Date | string
   merchant: Prisma.MerchantCreateNestedOneWithoutAcquisitionEventsInput
@@ -1156,6 +1198,7 @@ export type MerchantAcquisitionEventUncheckedCreateWithoutBookingInput = {
   affiliateLinkId?: string | null
   source?: string | null
   verificationMethod: $Enums.CheckInMethod
+  status?: $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Date | string
   createdAt?: Date | string
 }
@@ -1196,6 +1239,7 @@ export type MerchantAcquisitionEventCreateManyCustomerInput = {
   affiliateLinkId?: string | null
   source?: string | null
   verificationMethod: $Enums.CheckInMethod
+  status?: $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Date | string
   createdAt?: Date | string
 }
@@ -1204,6 +1248,7 @@ export type MerchantAcquisitionEventUpdateWithoutCustomerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFieldUpdateOperationsInput | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutAcquisitionEventsNestedInput
@@ -1224,6 +1269,7 @@ export type MerchantAcquisitionEventUncheckedUpdateWithoutCustomerInput = {
   affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFieldUpdateOperationsInput | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1238,6 +1284,7 @@ export type MerchantAcquisitionEventUncheckedUpdateManyWithoutCustomerInput = {
   affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFieldUpdateOperationsInput | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1252,6 +1299,7 @@ export type MerchantAcquisitionEventCreateManyMerchantInput = {
   affiliateLinkId?: string | null
   source?: string | null
   verificationMethod: $Enums.CheckInMethod
+  status?: $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Date | string
   createdAt?: Date | string
 }
@@ -1260,6 +1308,7 @@ export type MerchantAcquisitionEventUpdateWithoutMerchantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFieldUpdateOperationsInput | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   customer?: Prisma.CustomerUpdateOneRequiredWithoutAcquisitionEventsNestedInput
@@ -1280,6 +1329,7 @@ export type MerchantAcquisitionEventUncheckedUpdateWithoutMerchantInput = {
   affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFieldUpdateOperationsInput | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1294,6 +1344,7 @@ export type MerchantAcquisitionEventUncheckedUpdateManyWithoutMerchantInput = {
   affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFieldUpdateOperationsInput | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1308,6 +1359,7 @@ export type MerchantAcquisitionEventCreateManyOrderInput = {
   affiliateLinkId?: string | null
   source?: string | null
   verificationMethod: $Enums.CheckInMethod
+  status?: $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Date | string
   createdAt?: Date | string
 }
@@ -1316,6 +1368,7 @@ export type MerchantAcquisitionEventUpdateWithoutOrderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFieldUpdateOperationsInput | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutAcquisitionEventsNestedInput
@@ -1336,6 +1389,7 @@ export type MerchantAcquisitionEventUncheckedUpdateWithoutOrderInput = {
   affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFieldUpdateOperationsInput | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1350,6 +1404,7 @@ export type MerchantAcquisitionEventUncheckedUpdateManyWithoutOrderInput = {
   affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFieldUpdateOperationsInput | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1364,6 +1419,7 @@ export type MerchantAcquisitionEventCreateManyAffiliateLinkInput = {
   bookingId?: string | null
   source?: string | null
   verificationMethod: $Enums.CheckInMethod
+  status?: $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Date | string
   createdAt?: Date | string
 }
@@ -1372,6 +1428,7 @@ export type MerchantAcquisitionEventUpdateWithoutAffiliateLinkInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFieldUpdateOperationsInput | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutAcquisitionEventsNestedInput
@@ -1392,6 +1449,7 @@ export type MerchantAcquisitionEventUncheckedUpdateWithoutAffiliateLinkInput = {
   bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFieldUpdateOperationsInput | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1406,6 +1464,7 @@ export type MerchantAcquisitionEventUncheckedUpdateManyWithoutAffiliateLinkInput
   bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFieldUpdateOperationsInput | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1420,6 +1479,7 @@ export type MerchantAcquisitionEventCreateManyCampaignInput = {
   affiliateLinkId?: string | null
   source?: string | null
   verificationMethod: $Enums.CheckInMethod
+  status?: $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Date | string
   createdAt?: Date | string
 }
@@ -1428,6 +1488,7 @@ export type MerchantAcquisitionEventUpdateWithoutCampaignInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFieldUpdateOperationsInput | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutAcquisitionEventsNestedInput
@@ -1448,6 +1509,7 @@ export type MerchantAcquisitionEventUncheckedUpdateWithoutCampaignInput = {
   affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFieldUpdateOperationsInput | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1462,6 +1524,7 @@ export type MerchantAcquisitionEventUncheckedUpdateManyWithoutCampaignInput = {
   affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFieldUpdateOperationsInput | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1476,6 +1539,7 @@ export type MerchantAcquisitionEventCreateManyBookingInput = {
   affiliateLinkId?: string | null
   source?: string | null
   verificationMethod: $Enums.CheckInMethod
+  status?: $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Date | string
   createdAt?: Date | string
 }
@@ -1484,6 +1548,7 @@ export type MerchantAcquisitionEventUpdateWithoutBookingInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFieldUpdateOperationsInput | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutAcquisitionEventsNestedInput
@@ -1504,6 +1569,7 @@ export type MerchantAcquisitionEventUncheckedUpdateWithoutBookingInput = {
   affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFieldUpdateOperationsInput | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1518,6 +1584,7 @@ export type MerchantAcquisitionEventUncheckedUpdateManyWithoutBookingInput = {
   affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  status?: Prisma.EnumMerchantAcquisitionEventStatusFieldUpdateOperationsInput | $Enums.MerchantAcquisitionEventStatus
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1535,6 +1602,7 @@ export type MerchantAcquisitionEventSelect<ExtArgs extends runtime.Types.Extensi
   affiliateLinkId?: boolean
   source?: boolean
   verificationMethod?: boolean
+  status?: boolean
   occurredAt?: boolean
   createdAt?: boolean
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
@@ -1557,6 +1625,7 @@ export type MerchantAcquisitionEventSelectCreateManyAndReturn<ExtArgs extends ru
   affiliateLinkId?: boolean
   source?: boolean
   verificationMethod?: boolean
+  status?: boolean
   occurredAt?: boolean
   createdAt?: boolean
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
@@ -1579,6 +1648,7 @@ export type MerchantAcquisitionEventSelectUpdateManyAndReturn<ExtArgs extends ru
   affiliateLinkId?: boolean
   source?: boolean
   verificationMethod?: boolean
+  status?: boolean
   occurredAt?: boolean
   createdAt?: boolean
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
@@ -1601,11 +1671,12 @@ export type MerchantAcquisitionEventSelectScalar = {
   affiliateLinkId?: boolean
   source?: boolean
   verificationMethod?: boolean
+  status?: boolean
   occurredAt?: boolean
   createdAt?: boolean
 }
 
-export type MerchantAcquisitionEventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "merchantId" | "customerId" | "checkInId" | "campaignId" | "orderId" | "bookingId" | "affiliateLinkId" | "source" | "verificationMethod" | "occurredAt" | "createdAt", ExtArgs["result"]["merchantAcquisitionEvent"]>
+export type MerchantAcquisitionEventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "merchantId" | "customerId" | "checkInId" | "campaignId" | "orderId" | "bookingId" | "affiliateLinkId" | "source" | "verificationMethod" | "status" | "occurredAt" | "createdAt", ExtArgs["result"]["merchantAcquisitionEvent"]>
 export type MerchantAcquisitionEventInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
@@ -1656,6 +1727,7 @@ export type $MerchantAcquisitionEventPayload<ExtArgs extends runtime.Types.Exten
     affiliateLinkId: string | null
     source: string | null
     verificationMethod: $Enums.CheckInMethod
+    status: $Enums.MerchantAcquisitionEventStatus
     occurredAt: Date
     createdAt: Date
   }, ExtArgs["result"]["merchantAcquisitionEvent"]>
@@ -2098,6 +2170,7 @@ export interface MerchantAcquisitionEventFieldRefs {
   readonly affiliateLinkId: Prisma.FieldRef<"MerchantAcquisitionEvent", 'String'>
   readonly source: Prisma.FieldRef<"MerchantAcquisitionEvent", 'String'>
   readonly verificationMethod: Prisma.FieldRef<"MerchantAcquisitionEvent", 'CheckInMethod'>
+  readonly status: Prisma.FieldRef<"MerchantAcquisitionEvent", 'MerchantAcquisitionEventStatus'>
   readonly occurredAt: Prisma.FieldRef<"MerchantAcquisitionEvent", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"MerchantAcquisitionEvent", 'DateTime'>
 }

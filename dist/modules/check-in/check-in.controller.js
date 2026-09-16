@@ -38,6 +38,16 @@ export const getCurrentCheckIns = asyncHandler(async (req, res) => {
         data: checkIns,
     });
 });
+export const disputeCheckIn = asyncHandler(async (req, res) => {
+    const checkInId = typeof req.params.id === "string" ? req.params.id : "";
+    if (!checkInId)
+        throw new AppError(400, "Thiếu Check-in ID");
+    const result = await checkInService.disputeCheckIn(getCustomerId(req), checkInId, req.body?.reason);
+    return sendSuccess(res, {
+        message: "Đã tiếp nhận dispute check-in",
+        data: result,
+    });
+});
 export const getMerchantCheckInStatistics = asyncHandler(async (req, res) => {
     const stats = await checkInService.getMerchantCheckInStatistics(getMerchantId(req));
     return sendSuccess(res, {

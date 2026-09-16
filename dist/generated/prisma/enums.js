@@ -103,7 +103,84 @@ export const CheckInStatus = {
     Pending: 'Pending',
     Verified: 'Verified',
     Rejected: 'Rejected',
-    Expired: 'Expired'
+    Expired: 'Expired',
+    Disputed: 'Disputed'
+};
+export const CheckInMethod = {
+    OrderQr: 'OrderQr',
+    CustomerCode: 'CustomerCode'
+};
+export const MerchantAcquisitionEventStatus = {
+    Valid: 'Valid',
+    Disputed: 'Disputed',
+    Cancelled: 'Cancelled'
+};
+export const MerchantVerificationStatus = {
+    Unverified: 'Unverified',
+    PendingVerification: 'PendingVerification',
+    VerifiedBusiness: 'VerifiedBusiness',
+    UnderReview: 'UnderReview',
+    Suspended: 'Suspended',
+    Removed: 'Removed'
+};
+export const MerchantListingVisibility = {
+    Public: 'Public',
+    Hidden: 'Hidden'
+};
+export const IncidentType = {
+    FoodSafety: 'FoodSafety',
+    Hygiene: 'Hygiene',
+    Fraud: 'Fraud',
+    WrongInformation: 'WrongInformation',
+    BadService: 'BadService',
+    Other: 'Other'
+};
+export const IncidentSeverity = {
+    Low: 'Low',
+    Medium: 'Medium',
+    High: 'High',
+    Critical: 'Critical'
+};
+export const IncidentStatus = {
+    Open: 'Open',
+    UnderReview: 'UnderReview',
+    Resolved: 'Resolved',
+    Rejected: 'Rejected'
+};
+export const MerchantClaimStatus = {
+    Pending: 'Pending',
+    UnderReview: 'UnderReview',
+    Approved: 'Approved',
+    Rejected: 'Rejected'
+};
+export const MerchantRemovalStatus = {
+    Pending: 'Pending',
+    UnderReview: 'UnderReview',
+    Approved: 'Approved',
+    Rejected: 'Rejected'
+};
+export const RestaurantSuggestionStatus = {
+    Pending: 'Pending',
+    UnderReview: 'UnderReview',
+    Approved: 'Approved',
+    Rejected: 'Rejected',
+    Published: 'Published'
+};
+export const FunnelEventType = {
+    Register: 'Register',
+    ActiveUser: 'ActiveUser',
+    RestaurantView: 'RestaurantView',
+    Save: 'Save',
+    Visit: 'Visit',
+    CheckIn: 'CheckIn',
+    VerifiedVisit: 'VerifiedVisit',
+    RepeatVisit: 'RepeatVisit'
+};
+export const MonetizationFeeType = {
+    VerifiedVisitFee: 'VerifiedVisitFee',
+    CampaignFee: 'CampaignFee',
+    PremiumAnalytics: 'PremiumAnalytics',
+    OptionalOrderFee: 'OptionalOrderFee'
 };
 export const RebalancingStatus = {
     Running: 'Running',

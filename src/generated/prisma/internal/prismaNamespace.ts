@@ -80,11 +80,11 @@ export type PrismaVersion = {
 }
 
 /**
- * Prisma Client JS version: 7.9.1
+ * Prisma Client JS version: 7.9.0
  * Query Engine version: e922089b7d7502aff4249d5da3420f6fa55fc6ad
  */
 export const prismaVersion: PrismaVersion = {
-  client: "7.9.1",
+  client: "7.9.0",
   engine: "e922089b7d7502aff4249d5da3420f6fa55fc6ad"
 }
 
@@ -4014,6 +4014,7 @@ export const MerchantAcquisitionEventScalarFieldEnum = {
   affiliateLinkId: 'affiliateLinkId',
   source: 'source',
   verificationMethod: 'verificationMethod',
+  status: 'status',
   occurredAt: 'occurredAt',
   createdAt: 'createdAt'
 } as const
@@ -4560,6 +4561,20 @@ export type EnumCheckInStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
  * Reference to a field of type 'CheckInStatus[]'
  */
 export type ListEnumCheckInStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CheckInStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'MerchantAcquisitionEventStatus'
+ */
+export type EnumMerchantAcquisitionEventStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MerchantAcquisitionEventStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'MerchantAcquisitionEventStatus[]'
+ */
+export type ListEnumMerchantAcquisitionEventStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MerchantAcquisitionEventStatus[]'>
     
 
 

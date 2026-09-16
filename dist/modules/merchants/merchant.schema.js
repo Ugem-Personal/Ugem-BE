@@ -15,6 +15,9 @@ export const merchantListSchema = z.object({
         restaurantType: z.string().trim().optional(),
         mainDishType: z.string().trim().optional(),
         priceRange: z.string().trim().optional(),
+        country: z.string().trim().max(100).optional(),
+        city: z.string().trim().max(150).optional(),
+        area: z.string().trim().max(150).optional(),
         latitude: z.coerce.number().min(-90).max(90).optional(),
         longitude: z.coerce.number().min(-180).max(180).optional(),
         radiusKm: z.coerce.number().positive().max(100).optional(),
@@ -40,6 +43,9 @@ export const merchantListSchema = z.object({
         restaurantType: query.restaurantType ?? query.RestaurantType,
         mainDishType: query.mainDishType ?? query.MainDishType,
         priceRange: query.priceRange ?? query.PriceRange,
+        country: query.country,
+        city: query.city,
+        area: query.area,
         latitude: query.latitude ?? query.Latitude,
         longitude: query.longitude ?? query.Longitude,
         radiusKm: query.radiusKm ?? query.RadiusKm,
@@ -69,11 +75,25 @@ export const updateMerchantSchema = z.object({
             .optional(),
         address: z.string().trim().min(5).max(500).optional(),
         openingHours: z.string().trim().min(1).max(300).optional(),
+        country: z.string().trim().min(2).max(100).optional(),
+        city: z
+            .union([z.string().trim().max(150), z.literal(""), z.null()])
+            .optional(),
+        area: z
+            .union([z.string().trim().max(150), z.literal(""), z.null()])
+            .optional(),
         bankCode: z
             .union([z.string().trim().min(2).max(20), z.literal(""), z.null()])
             .optional(),
         bankAccountNumber: z
-            .union([z.string().trim().regex(/^\d{6,30}$/, "Số tài khoản ngân hàng không hợp lệ"), z.literal(""), z.null()])
+            .union([
+            z
+                .string()
+                .trim()
+                .regex(/^\d{6,30}$/, "Số tài khoản ngân hàng không hợp lệ"),
+            z.literal(""),
+            z.null(),
+        ])
             .optional(),
         bankAccountName: z
             .union([z.string().trim().min(2).max(200), z.literal(""), z.null()])

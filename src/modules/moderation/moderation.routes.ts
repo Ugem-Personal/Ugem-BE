@@ -18,6 +18,25 @@ moderationRouter.get(
   authorizeRoles("Customer", "Reviewer", "Merchant"),
   controller.listMyIncidents,
 );
+moderationRouter.get(
+  "/claims/mine",
+  authenticate,
+  authorizeRoles("Customer", "Reviewer", "Merchant"),
+  controller.listMyClaims,
+);
+moderationRouter.get(
+  "/removal-requests/mine",
+  authenticate,
+  authorizeRoles("Merchant"),
+  controller.listMyRemovalRequests,
+);
+moderationRouter.get(
+  "/merchant/incidents",
+  authenticate,
+  authorizeRoles("Merchant"),
+  requireApprovedMerchant,
+  controller.listMerchantIncidents,
+);
 moderationRouter.post(
   "/claims",
   authenticate,
@@ -56,6 +75,9 @@ moderationRouter.get(
 );
 
 moderationRouter.use("/admin", authenticate, authorizeRoles("Admin", "Staff"));
+moderationRouter.get("/admin/suspicious-check-ins", controller.listSuspiciousCheckIns);
+moderationRouter.get("/admin/merchants", controller.listModeratedMerchants);
+moderationRouter.patch("/admin/merchants/:id", controller.updateMerchantModeration);
 moderationRouter.get(
   "/admin/incidents",
   controller.listModeration("incidents"),

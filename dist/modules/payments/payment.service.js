@@ -466,6 +466,10 @@ export const submitBill = async (merchantId, input) => {
                 paymentStatus: OrderPaymentStatus.Pending,
             },
         });
+        const requiresCustomerConfirmation = order.orderType !== OrderType.Offline;
+        const billStatus = requiresCustomerConfirmation
+            ? BillStatus.PendingCustomerConfirmation
+            : BillStatus.Confirmed;
         const savedBill = await transaction.bill.upsert({
             where: {
                 orderId: order.id,
@@ -473,7 +477,7 @@ export const submitBill = async (merchantId, input) => {
             create: {
                 orderId: order.id,
                 method: order.paymentMethod,
-                status: BillStatus.PendingCustomerConfirmation,
+                status: billStatus,
                 amount: finalPrice,
                 evidenceUrl: input.evidenceUrl?.trim() || null,
                 transferContent: input.transferContent?.trim() || `UGEM-${order.id}`,
@@ -491,7 +495,7 @@ export const submitBill = async (merchantId, input) => {
             },
             update: {
                 method: order.paymentMethod,
-                status: BillStatus.PendingCustomerConfirmation,
+                status: billStatus,
                 amount: finalPrice,
                 evidenceUrl: input.evidenceUrl?.trim() || null,
                 transferContent: input.transferContent?.trim() || `UGEM-${order.id}`,
@@ -517,8 +521,10 @@ export const submitBill = async (merchantId, input) => {
     await createNotification({
         userId: result.order.customer.user.id,
         type: NotificationType.Payment,
-        title: "Merchant đã gửi hóa đơn",
-        message: "Merchant đã gửi hoặc cập nhật hóa đơn. Vui lòng kiểm tra và xác nhận.",
+        title: "Merchant đã xuất hóa đơn",
+        message: result.order.orderType === OrderType.Offline
+            ? "Quán đã xuất hóa đơn. Vui lòng kiểm tra bill tại quán và thanh toán cho nhân viên."
+            : "Merchant đã gửi hoặc cập nhật hóa đơn. Vui lòng kiểm tra và xác nhận.",
         referenceId: result.orderId,
         referenceType: "Order",
     });
@@ -789,6 +795,12 @@ export const processSepayWebhook = async (input) => {
     if (order.paymentStatus === OrderPaymentStatus.Paid ||
         order.status === OrderStatus.Completed) {
         if (order.bill) {
+            if (!order.bill.sepayReference && reference) {
+                await prisma.bill.update({
+                    where: { id: order.bill.id },
+                    data: { sepayReference: reference },
+                });
+            }
             return mapBill(await prisma.bill.findUniqueOrThrow({
                 where: { id: order.bill.id },
                 include: billInclude,

@@ -479,16 +479,27 @@ export const verifyCheckIn = async (
 };
 
 export const getCurrentCheckIns = async (customerId: string) => {
+  await prisma.checkIn.updateMany({
+    where: {
+      customerId,
+      status: CheckInStatus.Pending,
+      expiresAt: { lte: new Date() },
+    },
+    data: { status: CheckInStatus.Expired },
+  });
   const checkIns = await prisma.checkIn.findMany({
     where: {
       customerId,
-      checkedInAt: { not: null },
     },
     select: {
       id: true,
       orderId: true,
       checkedInAt: true,
       verifiedAt: true,
+      generatedAt: true,
+      disputedAt: true,
+      suspicious: true,
+      suspiciousReason: true,
       status: true,
       merchant: {
         select: {
@@ -503,7 +514,7 @@ export const getCurrentCheckIns = async (customerId: string) => {
       },
     },
     orderBy: {
-      checkedInAt: "desc",
+      generatedAt: "desc",
     },
     take: 50,
   });
@@ -515,6 +526,9 @@ export const getCurrentCheckIns = async (customerId: string) => {
     amount: checkIn.order ? Number(checkIn.order.finalPrice) : 0,
     checkedInAt: checkIn.checkedInAt,
     verifiedAt: checkIn.verifiedAt,
+    disputedAt: checkIn.disputedAt,
+    suspicious: checkIn.suspicious,
+    suspiciousReason: checkIn.suspiciousReason,
     status: checkIn.status,
   }));
 };
@@ -529,7 +543,9 @@ export const disputeCheckIn = async (
     select: {
       id: true,
       merchantId: true,
+      status: true,
       customer: { select: { userId: true } },
+      acquisitionEvent: { select: { id: true, status: true } },
     },
   });
   if (!checkIn)
@@ -543,22 +559,29 @@ export const disputeCheckIn = async (
         suspiciousReason: reason?.trim() || "Customer disputed verification",
       },
     });
-    await transaction.merchantAcquisitionEvent.deleteMany({
-      where: { checkInId },
+    if (checkIn.acquisitionEvent) {
+      await transaction.merchantAcquisitionEvent.update({
+        where: { id: checkIn.acquisitionEvent.id },
+        data: { status: "Disputed" },
+      });
+    }
+    await transaction.auditLog.create({
+      data: {
+        actorUserId: checkIn.customer.userId,
+        action: "MERCHANT_ACQUISITION_DISPUTED",
+        entityType: "MerchantAcquisitionEvent",
+        entityId: checkInId,
+        metadata: {
+          merchantId: checkIn.merchantId,
+          reason: reason?.trim() || null,
+          oldStatus: checkIn.acquisitionEvent?.status ?? null,
+          newStatus: checkIn.acquisitionEvent ? "Disputed" : null,
+          checkInOldStatus: checkIn.status,
+          checkInNewStatus: updated.status,
+        },
+      },
     });
     return updated;
-  });
-  await prisma.auditLog.create({
-    data: {
-      actorUserId: checkIn.customer.userId,
-      action: "CHECKIN_DISPUTED",
-      entityType: "CheckIn",
-      entityId: checkInId,
-      metadata: {
-        merchantId: checkIn.merchantId,
-        reason: reason?.trim() || null,
-      },
-    },
   });
   return result;
 };

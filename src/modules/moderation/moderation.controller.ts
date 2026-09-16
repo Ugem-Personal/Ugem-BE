@@ -33,6 +33,25 @@ export const listMyIncidents = asyncHandler(async (req, res) =>
     await service.listIncidents({ reporterUserId: req.user?.UserId }),
   ),
 );
+export const listMyClaims = asyncHandler(async (req, res) =>
+  ok(
+    res,
+    "Lấy yêu cầu claim thành công",
+    await service.listMyClaims(req.user?.UserId ?? ""),
+  ),
+);
+export const listMyRemovalRequests = asyncHandler(async (req, res) =>
+  ok(
+    res,
+    "Lấy yêu cầu gỡ listing thành công",
+    await service.listMyRemovalRequests(req.user?.UserId ?? ""),
+  ),
+);
+export const listMerchantIncidents = asyncHandler(async (req, res) => {
+  const merchantId = req.user?.MerchantId;
+  if (!merchantId) throw new AppError(403, "TÃ i khoáº£n khÃ´ng cÃ³ MerchantId");
+  return ok(res, "Láº¥y incident cá»§a merchant thÃ nh cÃ´ng", await service.listMerchantIncidents(merchantId));
+});
 export const listIncidents = asyncHandler(async (req, res) =>
   ok(
     res,
@@ -124,6 +143,19 @@ export const createFunnelEvent = asyncHandler(async (req, res) => {
 });
 export const getFunnelSummary = asyncHandler(async (_req, res) =>
   ok(res, "Lấy funnel summary thành công", await service.getFunnelSummary()),
+);
+export const listSuspiciousCheckIns = asyncHandler(async (_req, res) =>
+  ok(
+    res,
+    "Lấy suspicious check-in queue thành công",
+    await service.listSuspiciousCheckIns(),
+  ),
+);
+export const listModeratedMerchants = asyncHandler(async (_req, res) =>
+  ok(res, "Láº¥y merchant moderation thÃ nh cÃ´ng", await service.listModeratedMerchants()),
+);
+export const updateMerchantModeration = asyncHandler(async (req, res) =>
+  ok(res, "Cáº­p nháº­t merchant moderation thÃ nh cÃ´ng", await service.updateMerchantModeration(actor(req), id(req), req.body)),
 );
 export const listFeePolicies = asyncHandler(async (_req, res) =>
   ok(res, "Lấy fee policies thành công", await service.listFeePolicies()),

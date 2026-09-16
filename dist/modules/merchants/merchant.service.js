@@ -47,7 +47,7 @@ const mapMerchant = (merchant, customerLat, customerLng, customerPreferences) =>
             ? [category.categoryId, category.category.parentId]
             : [category.categoryId]))),
     ];
-    const { hasPreferences: hasUserPreferences, score: preferenceScore, } = calculatePreferenceScore(customerPreferences ?? null, {
+    const { hasPreferences: hasUserPreferences, score: preferenceScore } = calculatePreferenceScore(customerPreferences ?? null, {
         restaurantType: merchant.restaurantType,
         mainDishType: merchant.mainDishType,
         priceRange: merchant.priceRange,
@@ -69,10 +69,12 @@ const mapMerchant = (merchant, customerLat, customerLng, customerPreferences) =>
     // preferenceScore là 0 - 100, underratedScore là 0 - 1.
     // Chuẩn hóa underratedScore lên thang 0 - 100 để đóng góp công bằng 10% (tối đa 10 điểm)
     const underratedScore100 = Math.min(100, Math.max(0, underratedScore * 100));
-    const recommendationScore = Math.round((checkInScore * 0.40 +
-        ratingScore * 0.20 +
-        distanceScore * 0.20 +
-        (hasUserPreferences ? preferenceScore * 0.10 : underratedScore100 * 0.10) +
+    const recommendationScore = Math.round((checkInScore * 0.4 +
+        ratingScore * 0.2 +
+        distanceScore * 0.2 +
+        (hasUserPreferences
+            ? preferenceScore * 0.1
+            : underratedScore100 * 0.1) +
         boostBonus) *
         100) / 100;
     const featuredFoods = merchant.foods
@@ -168,6 +170,8 @@ export const getMerchants = async (query) => {
         : null;
     const where = {
         status: MerchantStatus.Active,
+        listingVisibility: "Public",
+        safetySuppressed: false,
         NOT: [
             { openingHours: { contains: "nghỉ", mode: "insensitive" } },
             { openingHours: { contains: "tạm đóng", mode: "insensitive" } },
@@ -190,6 +194,15 @@ export const getMerchants = async (query) => {
                 contains: query.priceRange,
                 mode: "insensitive",
             }
+            : undefined,
+        country: query.country
+            ? { equals: query.country, mode: "insensitive" }
+            : undefined,
+        city: query.city
+            ? { contains: query.city, mode: "insensitive" }
+            : undefined,
+        area: query.area
+            ? { contains: query.area, mode: "insensitive" }
             : undefined,
         // Spatial Bounding Box Pre-filtering at Database Layer
         latitude: query.latitude !== undefined
@@ -332,6 +345,8 @@ export const getMerchantById = async (merchantId) => {
         where: {
             id: merchantId,
             status: MerchantStatus.Active,
+            listingVisibility: "Public",
+            safetySuppressed: false,
         },
         include: {
             _count: {
@@ -393,7 +408,9 @@ export const updateMyMerchant = async (merchantId, input) => {
     if (!existing) {
         throw new AppError(404, "Không tìm thấy Merchant");
     }
-    const nextBankCode = input.bankCode !== undefined ? input.bankCode?.trim() || null : existing.bankCode;
+    const nextBankCode = input.bankCode !== undefined
+        ? input.bankCode?.trim() || null
+        : existing.bankCode;
     const nextBankAccountNumber = input.bankAccountNumber !== undefined
         ? input.bankAccountNumber?.trim() || null
         : existing.bankAccountNumber;
@@ -425,6 +442,9 @@ export const updateMyMerchant = async (merchantId, input) => {
                 : undefined,
             phone: input.phone !== undefined ? input.phone.trim() : undefined,
             address: input.address !== undefined ? input.address.trim() : undefined,
+            country: input.country !== undefined ? input.country.trim() : undefined,
+            city: input.city !== undefined ? input.city?.trim() || null : undefined,
+            area: input.area !== undefined ? input.area?.trim() || null : undefined,
             openingHours: input.openingHours !== undefined
                 ? input.openingHours.trim()
                 : undefined,
@@ -439,7 +459,9 @@ export const updateMyMerchant = async (merchantId, input) => {
                     : new Prisma.Decimal(input.longitude)
                 : undefined,
             logoUrl: input.logoUrl !== undefined ? input.logoUrl?.trim() || null : undefined,
-            bankCode: input.bankCode !== undefined ? input.bankCode?.trim() || null : undefined,
+            bankCode: input.bankCode !== undefined
+                ? input.bankCode?.trim() || null
+                : undefined,
             bankAccountNumber: input.bankAccountNumber !== undefined
                 ? input.bankAccountNumber?.trim() || null
                 : undefined,
@@ -455,6 +477,8 @@ export const getMerchantsForMap = async (query) => {
     const merchants = await prisma.merchant.findMany({
         where: {
             status: MerchantStatus.Active,
+            listingVisibility: "Public",
+            safetySuppressed: false,
             NOT: [
                 { openingHours: { contains: "nghỉ", mode: "insensitive" } },
                 { openingHours: { contains: "tạm đóng", mode: "insensitive" } },
@@ -528,6 +552,8 @@ export const incrementMerchantView = async (params) => {
         where: {
             id: params.merchantId,
             status: MerchantStatus.Active,
+            listingVisibility: "Public",
+            safetySuppressed: false,
         },
         select: {
             id: true,

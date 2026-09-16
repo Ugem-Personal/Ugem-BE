@@ -36,11 +36,11 @@ export const Sql = runtime.Sql;
 export const Decimal = runtime.Decimal;
 export const getExtensionContext = runtime.Extensions.getExtensionContext;
 /**
- * Prisma Client JS version: 7.9.1
+ * Prisma Client JS version: 7.9.0
  * Query Engine version: e922089b7d7502aff4249d5da3420f6fa55fc6ad
  */
 export const prismaVersion = {
-    client: "7.9.1",
+    client: "7.9.0",
     engine: "e922089b7d7502aff4249d5da3420f6fa55fc6ad"
 };
 export const NullTypes = {
@@ -94,6 +94,13 @@ export const ModelName = {
     ReviewerPointTransaction: 'ReviewerPointTransaction',
     Campaign: 'Campaign',
     CheckIn: 'CheckIn',
+    MerchantAcquisitionEvent: 'MerchantAcquisitionEvent',
+    MerchantIncident: 'MerchantIncident',
+    MerchantClaim: 'MerchantClaim',
+    MerchantRemovalRequest: 'MerchantRemovalRequest',
+    RestaurantSuggestion: 'RestaurantSuggestion',
+    FunnelEvent: 'FunnelEvent',
+    MonetizationFeePolicy: 'MonetizationFeePolicy',
     Notification: 'Notification',
     SupportTicket: 'SupportTicket',
     SupportMessage: 'SupportMessage',
@@ -198,6 +205,9 @@ export const MerchantScalarFieldEnum = {
     email: 'email',
     phone: 'phone',
     address: 'address',
+    country: 'country',
+    city: 'city',
+    area: 'area',
     openingHours: 'openingHours',
     latitude: 'latitude',
     longitude: 'longitude',
@@ -214,6 +224,11 @@ export const MerchantScalarFieldEnum = {
     recommendationRank: 'recommendationRank',
     lastRebalancedAt: 'lastRebalancedAt',
     status: 'status',
+    verificationStatus: 'verificationStatus',
+    listingVisibility: 'listingVisibility',
+    safetySuppressed: 'safetySuppressed',
+    safetySuppressedUntil: 'safetySuppressedUntil',
+    safetyRiskScore: 'safetyRiskScore',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };
@@ -452,6 +467,14 @@ export const CheckInScalarFieldEnum = {
     qrToken: 'qrToken',
     rewardBenefit: 'rewardBenefit',
     notes: 'notes',
+    source: 'source',
+    campaignId: 'campaignId',
+    bookingId: 'bookingId',
+    affiliateLinkId: 'affiliateLinkId',
+    checkInMethod: 'checkInMethod',
+    suspicious: 'suspicious',
+    suspiciousReason: 'suspiciousReason',
+    disputedAt: 'disputedAt',
     generatedAt: 'generatedAt',
     expiresAt: 'expiresAt',
     checkedInAt: 'checkedInAt',
@@ -459,6 +482,98 @@ export const CheckInScalarFieldEnum = {
     latitude: 'latitude',
     longitude: 'longitude',
     status: 'status'
+};
+export const MerchantAcquisitionEventScalarFieldEnum = {
+    id: 'id',
+    merchantId: 'merchantId',
+    customerId: 'customerId',
+    checkInId: 'checkInId',
+    campaignId: 'campaignId',
+    orderId: 'orderId',
+    bookingId: 'bookingId',
+    affiliateLinkId: 'affiliateLinkId',
+    source: 'source',
+    verificationMethod: 'verificationMethod',
+    status: 'status',
+    occurredAt: 'occurredAt',
+    createdAt: 'createdAt'
+};
+export const MerchantIncidentScalarFieldEnum = {
+    id: 'id',
+    merchantId: 'merchantId',
+    reporterUserId: 'reporterUserId',
+    type: 'type',
+    severity: 'severity',
+    status: 'status',
+    description: 'description',
+    evidenceUrls: 'evidenceUrls',
+    adminDecision: 'adminDecision',
+    resolution: 'resolution',
+    reviewedByUserId: 'reviewedByUserId',
+    reviewedAt: 'reviewedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const MerchantClaimScalarFieldEnum = {
+    id: 'id',
+    merchantId: 'merchantId',
+    submittedByUserId: 'submittedByUserId',
+    status: 'status',
+    evidenceUrls: 'evidenceUrls',
+    decision: 'decision',
+    reviewedByUserId: 'reviewedByUserId',
+    reviewedAt: 'reviewedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const MerchantRemovalRequestScalarFieldEnum = {
+    id: 'id',
+    merchantId: 'merchantId',
+    submittedByUserId: 'submittedByUserId',
+    status: 'status',
+    reason: 'reason',
+    decision: 'decision',
+    reviewedByUserId: 'reviewedByUserId',
+    reviewedAt: 'reviewedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const RestaurantSuggestionScalarFieldEnum = {
+    id: 'id',
+    name: 'name',
+    address: 'address',
+    category: 'category',
+    recommendedDish: 'recommendedDish',
+    description: 'description',
+    images: 'images',
+    reason: 'reason',
+    submittedByUserId: 'submittedByUserId',
+    status: 'status',
+    reviewedByUserId: 'reviewedByUserId',
+    publishedMerchantId: 'publishedMerchantId',
+    reviewedAt: 'reviewedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const FunnelEventScalarFieldEnum = {
+    id: 'id',
+    eventType: 'eventType',
+    userId: 'userId',
+    merchantId: 'merchantId',
+    sessionKey: 'sessionKey',
+    metadata: 'metadata',
+    occurredAt: 'occurredAt'
+};
+export const MonetizationFeePolicyScalarFieldEnum = {
+    id: 'id',
+    feeType: 'feeType',
+    amount: 'amount',
+    currency: 'currency',
+    isActive: 'isActive',
+    effectiveAt: 'effectiveAt',
+    metadata: 'metadata',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
 };
 export const NotificationScalarFieldEnum = {
     id: 'id',

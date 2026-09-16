@@ -5,12 +5,14 @@ import {
   MerchantClaimStatus,
   MerchantListingVisibility,
   MerchantRemovalStatus,
+  MerchantStatus,
   MerchantVerificationStatus,
   FunnelEventType,
   MonetizationFeeType,
   RestaurantSuggestionStatus,
   UserRole,
 } from "../../generated/prisma/client.js";
+import type { Prisma } from "../../generated/prisma/client.js";
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
 
@@ -108,6 +110,27 @@ export const listIncidents = async (filters: {
     },
     orderBy: { createdAt: "desc" },
     take: 200,
+  });
+
+export const listMyClaims = (userId: string) =>
+  prisma.merchantClaim.findMany({
+    where: { submittedByUserId: userId },
+    orderBy: { createdAt: "desc" },
+    take: 100,
+  });
+
+export const listMyRemovalRequests = (userId: string) =>
+  prisma.merchantRemovalRequest.findMany({
+    where: { submittedByUserId: userId },
+    orderBy: { createdAt: "desc" },
+    take: 100,
+  });
+
+export const listMerchantIncidents = (merchantId: string) =>
+  prisma.merchantIncident.findMany({
+    where: { merchantId },
+    orderBy: { createdAt: "desc" },
+    take: 100,
   });
 
 export const reviewIncident = async (
@@ -264,6 +287,16 @@ export const reviewClaim = async (
     "status",
   );
   const updated = await prisma.$transaction(async (transaction) => {
+    const claimant = await transaction.user.findUnique({
+      where: { id: claim.submittedByUserId },
+      select: { id: true, role: true, merchant: { select: { id: true } } },
+    });
+    if (!claimant) throw new AppError(404, "KhÃ´ng tÃ¬m tháº¥y tÃ i khoáº£n claim");
+    if (claimant.merchant && claimant.merchant.id !== claim.merchantId)
+      throw new AppError(409, "TÃ i khoáº£n Ä‘Ã£ liÃªn káº¿t vá»›i merchant khÃ¡c");
+    const merchantBefore = await transaction.merchant.findUniqueOrThrow({
+      where: { id: claim.merchantId }, select: { userId: true },
+    });
     const result = await transaction.merchantClaim.update({
       where: { id },
       data: {
@@ -278,15 +311,30 @@ export const reviewClaim = async (
       await transaction.merchant.update({
         where: { id: claim.merchantId },
         data: {
+          userId: claim.submittedByUserId,
           verificationStatus: MerchantVerificationStatus.VerifiedBusiness,
           listingVisibility: MerchantListingVisibility.Public,
         },
+      });
+    if (status === MerchantClaimStatus.Approved) {
+      const previousOwner = await transaction.user.findUnique({
+        where: { id: merchantBefore.userId },
+        select: { id: true, role: true },
+      });
+      if (previousOwner && previousOwner.id !== claimant.id && previousOwner.role === UserRole.Merchant)
+        await transaction.user.update({ where: { id: previousOwner.id }, data: { role: UserRole.Customer } });
+    }
+    if (status === MerchantClaimStatus.Approved && claimant.role !== UserRole.Merchant)
+      await transaction.user.update({
+        where: { id: claimant.id },
+        data: { role: UserRole.Merchant },
       });
     return result;
   });
   await audit(actor, "MERCHANT_CLAIM_REVIEWED", "MerchantClaim", id, {
     status,
     merchantId: claim.merchantId,
+    submittedByUserId: claim.submittedByUserId,
   });
   return updated;
 };
@@ -416,10 +464,12 @@ export const getMerchantAnalytics = async (merchantId: string) => {
     prisma.checkIn.count({ where: { merchantId } }),
     prisma.checkIn.count({ where: { merchantId, status: "Verified" } }),
     prisma.review.count({ where: { merchantId } }),
-    prisma.merchantAcquisitionEvent.count({ where: { merchantId } }),
+    prisma.merchantAcquisitionEvent.count({
+      where: { merchantId, status: "Valid" },
+    }),
     prisma.merchantAcquisitionEvent.groupBy({
       by: ["customerId"],
-      where: { merchantId },
+      where: { merchantId, status: "Valid" },
       _count: { customerId: true },
       having: { customerId: { _count: { gt: 1 } } },
     }),
@@ -461,6 +511,97 @@ export const listModeration = async (
     take: 200,
   });
 };
+
+export const listModeratedMerchants = () =>
+  prisma.merchant.findMany({
+    select: {
+      id: true,
+      name: true,
+      address: true,
+      status: true,
+      verificationStatus: true,
+      listingVisibility: true,
+      safetySuppressed: true,
+      safetyRiskScore: true,
+    },
+    orderBy: { updatedAt: "desc" },
+    take: 300,
+  });
+
+export const updateMerchantModeration = async (
+  actor: AuditActor,
+  merchantId: string,
+  input: Record<string, unknown>,
+) => {
+  const merchant = await prisma.merchant.findUnique({ where: { id: merchantId } });
+  if (!merchant) throw new AppError(404, "KhÃ´ng tÃ¬m tháº¥y Merchant");
+  const allowedStatus = Object.values(MerchantStatus);
+  const allowedVerification = Object.values(MerchantVerificationStatus);
+  const allowedVisibility = Object.values(MerchantListingVisibility);
+  const data: Prisma.MerchantUpdateInput = {};
+  if (input.status !== undefined)
+    data.status = enumValue(input.status, allowedStatus, "status");
+  if (input.verificationStatus !== undefined)
+    data.verificationStatus = enumValue(input.verificationStatus, allowedVerification, "verificationStatus");
+  if (input.listingVisibility !== undefined)
+    data.listingVisibility = enumValue(input.listingVisibility, allowedVisibility, "listingVisibility");
+  if (input.safetySuppressed !== undefined) {
+    if (typeof input.safetySuppressed !== "boolean")
+      throw new AppError(400, "safetySuppressed pháº£i lÃ  boolean");
+    if (!input.safetySuppressed) {
+      const activeRisks = await prisma.merchantIncident.count({
+        where: {
+          merchantId,
+          status: { in: [IncidentStatus.Open, IncidentStatus.UnderReview] },
+          severity: { in: [IncidentSeverity.High, IncidentSeverity.Critical] },
+        },
+      });
+      if (activeRisks > 0)
+        throw new AppError(409, "Merchant cÃ²n incident High/Critical Ä‘ang xá»­ lÃ½");
+      data.safetyRiskScore = 0;
+    }
+    data.safetySuppressed = input.safetySuppressed;
+  }
+  if (!Object.keys(data).length) throw new AppError(400, "KhÃ´ng cÃ³ thay Ä‘á»•i há»£p lá»‡");
+  const updated = await prisma.$transaction(async (transaction) => {
+    const next = await transaction.merchant.update({ where: { id: merchantId }, data });
+    await transaction.auditLog.create({
+      data: {
+        actorUserId: actor.userId,
+        actorRole: actor.role,
+        action: "MERCHANT_MODERATION_UPDATED",
+        entityType: "Merchant",
+        entityId: merchantId,
+        metadata: {
+          oldStatus: merchant.status,
+          oldVerificationStatus: merchant.verificationStatus,
+          oldListingVisibility: merchant.listingVisibility,
+          oldSafetySuppressed: merchant.safetySuppressed,
+          changes: input as Prisma.InputJsonObject,
+        },
+      },
+    });
+    if (data.status === "Suspended" || data.listingVisibility === MerchantListingVisibility.Hidden)
+      await transaction.campaign.updateMany({
+        where: { merchantId, isActive: true },
+        data: { isActive: false },
+      });
+    return next;
+  });
+  return updated;
+};
+
+export const listSuspiciousCheckIns = () =>
+  prisma.checkIn.findMany({
+    where: { suspicious: true },
+    include: {
+      merchant: { select: { id: true, name: true } },
+      customer: { include: { user: { select: { id: true, fullName: true, email: true } } } },
+      acquisitionEvent: { select: { id: true, status: true } },
+    },
+    orderBy: { generatedAt: "desc" },
+    take: 200,
+  });
 
 export const createFunnelEvent = async (input: {
   eventType: string;
