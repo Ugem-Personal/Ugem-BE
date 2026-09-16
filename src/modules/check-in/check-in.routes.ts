@@ -12,6 +12,7 @@ import {
   getMerchantCheckInStatistics,
   getMyCheckInCode,
   merchantVerifyCustomerCode,
+  disputeCheckIn,
   verifyCheckIn,
 } from "./check-in.controller.js";
 
@@ -59,6 +60,13 @@ checkInRouter.get(
   authenticate,
   authorizeRoles("Customer", "Reviewer"),
   getCurrentCheckIns,
+);
+
+checkInRouter.post(
+  "/:id/dispute",
+  authenticate,
+  authorizeRoles("Customer", "Reviewer"),
+  disputeCheckIn,
 );
 
 checkInRouter.get(

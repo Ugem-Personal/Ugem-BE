@@ -39,6 +39,7 @@ import {
   staffSupportRouter,
 } from "./modules/support/support.routes.js";
 import { realtimeRouter } from "./modules/realtime/realtime.routes.js";
+import { moderationRouter } from "./modules/moderation/moderation.routes.js";
 
 export const app = express();
 
@@ -104,5 +105,6 @@ app.use("/api/v1/media", mediaRouter);
 app.use("/api/v1/merchant/support", merchantSupportRouter);
 app.use("/api/v1/staff/support", staffSupportRouter);
 app.use("/api/v1/realtime", realtimeRouter);
+app.use("/api/v1/moderation", moderationRouter);
 app.use(notFoundHandler);
 app.use(errorHandler);

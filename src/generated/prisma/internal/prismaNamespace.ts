@@ -424,6 +424,13 @@ export const ModelName = {
   ReviewerPointTransaction: 'ReviewerPointTransaction',
   Campaign: 'Campaign',
   CheckIn: 'CheckIn',
+  MerchantAcquisitionEvent: 'MerchantAcquisitionEvent',
+  MerchantIncident: 'MerchantIncident',
+  MerchantClaim: 'MerchantClaim',
+  MerchantRemovalRequest: 'MerchantRemovalRequest',
+  RestaurantSuggestion: 'RestaurantSuggestion',
+  FunnelEvent: 'FunnelEvent',
+  MonetizationFeePolicy: 'MonetizationFeePolicy',
   Notification: 'Notification',
   SupportTicket: 'SupportTicket',
   SupportMessage: 'SupportMessage',
@@ -446,7 +453,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "customer" | "refreshToken" | "passwordResetToken" | "application" | "applicationMenu" | "merchant" | "category" | "food" | "comboItem" | "foodCategory" | "foodTopping" | "order" | "orderDetail" | "orderDetailTopping" | "bill" | "wishlist" | "review" | "reviewDetail" | "reviewerApplication" | "affiliateLink" | "affiliateClick" | "reviewerEarningTransaction" | "affiliateTransaction" | "reviewerPointTransaction" | "campaign" | "checkIn" | "notification" | "supportTicket" | "supportMessage" | "auditLog" | "rebalancingRun" | "booking" | "merchantView"
+    modelProps: "user" | "customer" | "refreshToken" | "passwordResetToken" | "application" | "applicationMenu" | "merchant" | "category" | "food" | "comboItem" | "foodCategory" | "foodTopping" | "order" | "orderDetail" | "orderDetailTopping" | "bill" | "wishlist" | "review" | "reviewDetail" | "reviewerApplication" | "affiliateLink" | "affiliateClick" | "reviewerEarningTransaction" | "affiliateTransaction" | "reviewerPointTransaction" | "campaign" | "checkIn" | "merchantAcquisitionEvent" | "merchantIncident" | "merchantClaim" | "merchantRemovalRequest" | "restaurantSuggestion" | "funnelEvent" | "monetizationFeePolicy" | "notification" | "supportTicket" | "supportMessage" | "auditLog" | "rebalancingRun" | "booking" | "merchantView"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2448,6 +2455,524 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    MerchantAcquisitionEvent: {
+      payload: Prisma.$MerchantAcquisitionEventPayload<ExtArgs>
+      fields: Prisma.MerchantAcquisitionEventFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MerchantAcquisitionEventFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantAcquisitionEventPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MerchantAcquisitionEventFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantAcquisitionEventPayload>
+        }
+        findFirst: {
+          args: Prisma.MerchantAcquisitionEventFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantAcquisitionEventPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MerchantAcquisitionEventFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantAcquisitionEventPayload>
+        }
+        findMany: {
+          args: Prisma.MerchantAcquisitionEventFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantAcquisitionEventPayload>[]
+        }
+        create: {
+          args: Prisma.MerchantAcquisitionEventCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantAcquisitionEventPayload>
+        }
+        createMany: {
+          args: Prisma.MerchantAcquisitionEventCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MerchantAcquisitionEventCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantAcquisitionEventPayload>[]
+        }
+        delete: {
+          args: Prisma.MerchantAcquisitionEventDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantAcquisitionEventPayload>
+        }
+        update: {
+          args: Prisma.MerchantAcquisitionEventUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantAcquisitionEventPayload>
+        }
+        deleteMany: {
+          args: Prisma.MerchantAcquisitionEventDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MerchantAcquisitionEventUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MerchantAcquisitionEventUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantAcquisitionEventPayload>[]
+        }
+        upsert: {
+          args: Prisma.MerchantAcquisitionEventUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantAcquisitionEventPayload>
+        }
+        aggregate: {
+          args: Prisma.MerchantAcquisitionEventAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMerchantAcquisitionEvent>
+        }
+        groupBy: {
+          args: Prisma.MerchantAcquisitionEventGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MerchantAcquisitionEventGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MerchantAcquisitionEventCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MerchantAcquisitionEventCountAggregateOutputType> | number
+        }
+      }
+    }
+    MerchantIncident: {
+      payload: Prisma.$MerchantIncidentPayload<ExtArgs>
+      fields: Prisma.MerchantIncidentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MerchantIncidentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantIncidentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MerchantIncidentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantIncidentPayload>
+        }
+        findFirst: {
+          args: Prisma.MerchantIncidentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantIncidentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MerchantIncidentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantIncidentPayload>
+        }
+        findMany: {
+          args: Prisma.MerchantIncidentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantIncidentPayload>[]
+        }
+        create: {
+          args: Prisma.MerchantIncidentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantIncidentPayload>
+        }
+        createMany: {
+          args: Prisma.MerchantIncidentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MerchantIncidentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantIncidentPayload>[]
+        }
+        delete: {
+          args: Prisma.MerchantIncidentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantIncidentPayload>
+        }
+        update: {
+          args: Prisma.MerchantIncidentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantIncidentPayload>
+        }
+        deleteMany: {
+          args: Prisma.MerchantIncidentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MerchantIncidentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MerchantIncidentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantIncidentPayload>[]
+        }
+        upsert: {
+          args: Prisma.MerchantIncidentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantIncidentPayload>
+        }
+        aggregate: {
+          args: Prisma.MerchantIncidentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMerchantIncident>
+        }
+        groupBy: {
+          args: Prisma.MerchantIncidentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MerchantIncidentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MerchantIncidentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MerchantIncidentCountAggregateOutputType> | number
+        }
+      }
+    }
+    MerchantClaim: {
+      payload: Prisma.$MerchantClaimPayload<ExtArgs>
+      fields: Prisma.MerchantClaimFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MerchantClaimFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantClaimPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MerchantClaimFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantClaimPayload>
+        }
+        findFirst: {
+          args: Prisma.MerchantClaimFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantClaimPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MerchantClaimFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantClaimPayload>
+        }
+        findMany: {
+          args: Prisma.MerchantClaimFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantClaimPayload>[]
+        }
+        create: {
+          args: Prisma.MerchantClaimCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantClaimPayload>
+        }
+        createMany: {
+          args: Prisma.MerchantClaimCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MerchantClaimCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantClaimPayload>[]
+        }
+        delete: {
+          args: Prisma.MerchantClaimDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantClaimPayload>
+        }
+        update: {
+          args: Prisma.MerchantClaimUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantClaimPayload>
+        }
+        deleteMany: {
+          args: Prisma.MerchantClaimDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MerchantClaimUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MerchantClaimUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantClaimPayload>[]
+        }
+        upsert: {
+          args: Prisma.MerchantClaimUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantClaimPayload>
+        }
+        aggregate: {
+          args: Prisma.MerchantClaimAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMerchantClaim>
+        }
+        groupBy: {
+          args: Prisma.MerchantClaimGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MerchantClaimGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MerchantClaimCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MerchantClaimCountAggregateOutputType> | number
+        }
+      }
+    }
+    MerchantRemovalRequest: {
+      payload: Prisma.$MerchantRemovalRequestPayload<ExtArgs>
+      fields: Prisma.MerchantRemovalRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MerchantRemovalRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantRemovalRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MerchantRemovalRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantRemovalRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.MerchantRemovalRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantRemovalRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MerchantRemovalRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantRemovalRequestPayload>
+        }
+        findMany: {
+          args: Prisma.MerchantRemovalRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantRemovalRequestPayload>[]
+        }
+        create: {
+          args: Prisma.MerchantRemovalRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantRemovalRequestPayload>
+        }
+        createMany: {
+          args: Prisma.MerchantRemovalRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MerchantRemovalRequestCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantRemovalRequestPayload>[]
+        }
+        delete: {
+          args: Prisma.MerchantRemovalRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantRemovalRequestPayload>
+        }
+        update: {
+          args: Prisma.MerchantRemovalRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantRemovalRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.MerchantRemovalRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MerchantRemovalRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MerchantRemovalRequestUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantRemovalRequestPayload>[]
+        }
+        upsert: {
+          args: Prisma.MerchantRemovalRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantRemovalRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.MerchantRemovalRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMerchantRemovalRequest>
+        }
+        groupBy: {
+          args: Prisma.MerchantRemovalRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MerchantRemovalRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MerchantRemovalRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MerchantRemovalRequestCountAggregateOutputType> | number
+        }
+      }
+    }
+    RestaurantSuggestion: {
+      payload: Prisma.$RestaurantSuggestionPayload<ExtArgs>
+      fields: Prisma.RestaurantSuggestionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RestaurantSuggestionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RestaurantSuggestionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RestaurantSuggestionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RestaurantSuggestionPayload>
+        }
+        findFirst: {
+          args: Prisma.RestaurantSuggestionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RestaurantSuggestionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RestaurantSuggestionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RestaurantSuggestionPayload>
+        }
+        findMany: {
+          args: Prisma.RestaurantSuggestionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RestaurantSuggestionPayload>[]
+        }
+        create: {
+          args: Prisma.RestaurantSuggestionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RestaurantSuggestionPayload>
+        }
+        createMany: {
+          args: Prisma.RestaurantSuggestionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RestaurantSuggestionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RestaurantSuggestionPayload>[]
+        }
+        delete: {
+          args: Prisma.RestaurantSuggestionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RestaurantSuggestionPayload>
+        }
+        update: {
+          args: Prisma.RestaurantSuggestionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RestaurantSuggestionPayload>
+        }
+        deleteMany: {
+          args: Prisma.RestaurantSuggestionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RestaurantSuggestionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RestaurantSuggestionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RestaurantSuggestionPayload>[]
+        }
+        upsert: {
+          args: Prisma.RestaurantSuggestionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RestaurantSuggestionPayload>
+        }
+        aggregate: {
+          args: Prisma.RestaurantSuggestionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRestaurantSuggestion>
+        }
+        groupBy: {
+          args: Prisma.RestaurantSuggestionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RestaurantSuggestionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RestaurantSuggestionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RestaurantSuggestionCountAggregateOutputType> | number
+        }
+      }
+    }
+    FunnelEvent: {
+      payload: Prisma.$FunnelEventPayload<ExtArgs>
+      fields: Prisma.FunnelEventFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FunnelEventFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelEventPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FunnelEventFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelEventPayload>
+        }
+        findFirst: {
+          args: Prisma.FunnelEventFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelEventPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FunnelEventFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelEventPayload>
+        }
+        findMany: {
+          args: Prisma.FunnelEventFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelEventPayload>[]
+        }
+        create: {
+          args: Prisma.FunnelEventCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelEventPayload>
+        }
+        createMany: {
+          args: Prisma.FunnelEventCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FunnelEventCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelEventPayload>[]
+        }
+        delete: {
+          args: Prisma.FunnelEventDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelEventPayload>
+        }
+        update: {
+          args: Prisma.FunnelEventUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelEventPayload>
+        }
+        deleteMany: {
+          args: Prisma.FunnelEventDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FunnelEventUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FunnelEventUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelEventPayload>[]
+        }
+        upsert: {
+          args: Prisma.FunnelEventUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelEventPayload>
+        }
+        aggregate: {
+          args: Prisma.FunnelEventAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFunnelEvent>
+        }
+        groupBy: {
+          args: Prisma.FunnelEventGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FunnelEventGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FunnelEventCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FunnelEventCountAggregateOutputType> | number
+        }
+      }
+    }
+    MonetizationFeePolicy: {
+      payload: Prisma.$MonetizationFeePolicyPayload<ExtArgs>
+      fields: Prisma.MonetizationFeePolicyFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MonetizationFeePolicyFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonetizationFeePolicyPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MonetizationFeePolicyFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonetizationFeePolicyPayload>
+        }
+        findFirst: {
+          args: Prisma.MonetizationFeePolicyFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonetizationFeePolicyPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MonetizationFeePolicyFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonetizationFeePolicyPayload>
+        }
+        findMany: {
+          args: Prisma.MonetizationFeePolicyFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonetizationFeePolicyPayload>[]
+        }
+        create: {
+          args: Prisma.MonetizationFeePolicyCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonetizationFeePolicyPayload>
+        }
+        createMany: {
+          args: Prisma.MonetizationFeePolicyCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MonetizationFeePolicyCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonetizationFeePolicyPayload>[]
+        }
+        delete: {
+          args: Prisma.MonetizationFeePolicyDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonetizationFeePolicyPayload>
+        }
+        update: {
+          args: Prisma.MonetizationFeePolicyUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonetizationFeePolicyPayload>
+        }
+        deleteMany: {
+          args: Prisma.MonetizationFeePolicyDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MonetizationFeePolicyUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MonetizationFeePolicyUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonetizationFeePolicyPayload>[]
+        }
+        upsert: {
+          args: Prisma.MonetizationFeePolicyUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonetizationFeePolicyPayload>
+        }
+        aggregate: {
+          args: Prisma.MonetizationFeePolicyAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMonetizationFeePolicy>
+        }
+        groupBy: {
+          args: Prisma.MonetizationFeePolicyGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MonetizationFeePolicyGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MonetizationFeePolicyCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MonetizationFeePolicyCountAggregateOutputType> | number
+        }
+      }
+    }
     Notification: {
       payload: Prisma.$NotificationPayload<ExtArgs>
       fields: Prisma.NotificationFieldRefs
@@ -3116,6 +3641,9 @@ export const MerchantScalarFieldEnum = {
   email: 'email',
   phone: 'phone',
   address: 'address',
+  country: 'country',
+  city: 'city',
+  area: 'area',
   openingHours: 'openingHours',
   latitude: 'latitude',
   longitude: 'longitude',
@@ -3132,6 +3660,11 @@ export const MerchantScalarFieldEnum = {
   recommendationRank: 'recommendationRank',
   lastRebalancedAt: 'lastRebalancedAt',
   status: 'status',
+  verificationStatus: 'verificationStatus',
+  listingVisibility: 'listingVisibility',
+  safetySuppressed: 'safetySuppressed',
+  safetySuppressedUntil: 'safetySuppressedUntil',
+  safetyRiskScore: 'safetyRiskScore',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -3450,6 +3983,14 @@ export const CheckInScalarFieldEnum = {
   qrToken: 'qrToken',
   rewardBenefit: 'rewardBenefit',
   notes: 'notes',
+  source: 'source',
+  campaignId: 'campaignId',
+  bookingId: 'bookingId',
+  affiliateLinkId: 'affiliateLinkId',
+  checkInMethod: 'checkInMethod',
+  suspicious: 'suspicious',
+  suspiciousReason: 'suspiciousReason',
+  disputedAt: 'disputedAt',
   generatedAt: 'generatedAt',
   expiresAt: 'expiresAt',
   checkedInAt: 'checkedInAt',
@@ -3460,6 +4001,125 @@ export const CheckInScalarFieldEnum = {
 } as const
 
 export type CheckInScalarFieldEnum = (typeof CheckInScalarFieldEnum)[keyof typeof CheckInScalarFieldEnum]
+
+
+export const MerchantAcquisitionEventScalarFieldEnum = {
+  id: 'id',
+  merchantId: 'merchantId',
+  customerId: 'customerId',
+  checkInId: 'checkInId',
+  campaignId: 'campaignId',
+  orderId: 'orderId',
+  bookingId: 'bookingId',
+  affiliateLinkId: 'affiliateLinkId',
+  source: 'source',
+  verificationMethod: 'verificationMethod',
+  occurredAt: 'occurredAt',
+  createdAt: 'createdAt'
+} as const
+
+export type MerchantAcquisitionEventScalarFieldEnum = (typeof MerchantAcquisitionEventScalarFieldEnum)[keyof typeof MerchantAcquisitionEventScalarFieldEnum]
+
+
+export const MerchantIncidentScalarFieldEnum = {
+  id: 'id',
+  merchantId: 'merchantId',
+  reporterUserId: 'reporterUserId',
+  type: 'type',
+  severity: 'severity',
+  status: 'status',
+  description: 'description',
+  evidenceUrls: 'evidenceUrls',
+  adminDecision: 'adminDecision',
+  resolution: 'resolution',
+  reviewedByUserId: 'reviewedByUserId',
+  reviewedAt: 'reviewedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MerchantIncidentScalarFieldEnum = (typeof MerchantIncidentScalarFieldEnum)[keyof typeof MerchantIncidentScalarFieldEnum]
+
+
+export const MerchantClaimScalarFieldEnum = {
+  id: 'id',
+  merchantId: 'merchantId',
+  submittedByUserId: 'submittedByUserId',
+  status: 'status',
+  evidenceUrls: 'evidenceUrls',
+  decision: 'decision',
+  reviewedByUserId: 'reviewedByUserId',
+  reviewedAt: 'reviewedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MerchantClaimScalarFieldEnum = (typeof MerchantClaimScalarFieldEnum)[keyof typeof MerchantClaimScalarFieldEnum]
+
+
+export const MerchantRemovalRequestScalarFieldEnum = {
+  id: 'id',
+  merchantId: 'merchantId',
+  submittedByUserId: 'submittedByUserId',
+  status: 'status',
+  reason: 'reason',
+  decision: 'decision',
+  reviewedByUserId: 'reviewedByUserId',
+  reviewedAt: 'reviewedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MerchantRemovalRequestScalarFieldEnum = (typeof MerchantRemovalRequestScalarFieldEnum)[keyof typeof MerchantRemovalRequestScalarFieldEnum]
+
+
+export const RestaurantSuggestionScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  address: 'address',
+  category: 'category',
+  recommendedDish: 'recommendedDish',
+  description: 'description',
+  images: 'images',
+  reason: 'reason',
+  submittedByUserId: 'submittedByUserId',
+  status: 'status',
+  reviewedByUserId: 'reviewedByUserId',
+  publishedMerchantId: 'publishedMerchantId',
+  reviewedAt: 'reviewedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RestaurantSuggestionScalarFieldEnum = (typeof RestaurantSuggestionScalarFieldEnum)[keyof typeof RestaurantSuggestionScalarFieldEnum]
+
+
+export const FunnelEventScalarFieldEnum = {
+  id: 'id',
+  eventType: 'eventType',
+  userId: 'userId',
+  merchantId: 'merchantId',
+  sessionKey: 'sessionKey',
+  metadata: 'metadata',
+  occurredAt: 'occurredAt'
+} as const
+
+export type FunnelEventScalarFieldEnum = (typeof FunnelEventScalarFieldEnum)[keyof typeof FunnelEventScalarFieldEnum]
+
+
+export const MonetizationFeePolicyScalarFieldEnum = {
+  id: 'id',
+  feeType: 'feeType',
+  amount: 'amount',
+  currency: 'currency',
+  isActive: 'isActive',
+  effectiveAt: 'effectiveAt',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MonetizationFeePolicyScalarFieldEnum = (typeof MonetizationFeePolicyScalarFieldEnum)[keyof typeof MonetizationFeePolicyScalarFieldEnum]
 
 
 export const NotificationScalarFieldEnum = {
@@ -3736,6 +4396,34 @@ export type ListEnumMerchantStatusFieldRefInput<$PrismaModel> = FieldRefInputTyp
 
 
 /**
+ * Reference to a field of type 'MerchantVerificationStatus'
+ */
+export type EnumMerchantVerificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MerchantVerificationStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'MerchantVerificationStatus[]'
+ */
+export type ListEnumMerchantVerificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MerchantVerificationStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'MerchantListingVisibility'
+ */
+export type EnumMerchantListingVisibilityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MerchantListingVisibility'>
+    
+
+
+/**
+ * Reference to a field of type 'MerchantListingVisibility[]'
+ */
+export type ListEnumMerchantListingVisibilityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MerchantListingVisibility[]'>
+    
+
+
+/**
  * Reference to a field of type 'OrderType'
  */
 export type EnumOrderTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrderType'>
@@ -3848,6 +4536,20 @@ export type ListEnumCampaignDiscountTypeFieldRefInput<$PrismaModel> = FieldRefIn
 
 
 /**
+ * Reference to a field of type 'CheckInMethod'
+ */
+export type EnumCheckInMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CheckInMethod'>
+    
+
+
+/**
+ * Reference to a field of type 'CheckInMethod[]'
+ */
+export type ListEnumCheckInMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CheckInMethod[]'>
+    
+
+
+/**
  * Reference to a field of type 'CheckInStatus'
  */
 export type EnumCheckInStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CheckInStatus'>
@@ -3858,6 +4560,132 @@ export type EnumCheckInStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
  * Reference to a field of type 'CheckInStatus[]'
  */
 export type ListEnumCheckInStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CheckInStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'IncidentType'
+ */
+export type EnumIncidentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IncidentType'>
+    
+
+
+/**
+ * Reference to a field of type 'IncidentType[]'
+ */
+export type ListEnumIncidentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IncidentType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'IncidentSeverity'
+ */
+export type EnumIncidentSeverityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IncidentSeverity'>
+    
+
+
+/**
+ * Reference to a field of type 'IncidentSeverity[]'
+ */
+export type ListEnumIncidentSeverityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IncidentSeverity[]'>
+    
+
+
+/**
+ * Reference to a field of type 'IncidentStatus'
+ */
+export type EnumIncidentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IncidentStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'IncidentStatus[]'
+ */
+export type ListEnumIncidentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IncidentStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'MerchantClaimStatus'
+ */
+export type EnumMerchantClaimStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MerchantClaimStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'MerchantClaimStatus[]'
+ */
+export type ListEnumMerchantClaimStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MerchantClaimStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'MerchantRemovalStatus'
+ */
+export type EnumMerchantRemovalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MerchantRemovalStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'MerchantRemovalStatus[]'
+ */
+export type ListEnumMerchantRemovalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MerchantRemovalStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'RestaurantSuggestionStatus'
+ */
+export type EnumRestaurantSuggestionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RestaurantSuggestionStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'RestaurantSuggestionStatus[]'
+ */
+export type ListEnumRestaurantSuggestionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RestaurantSuggestionStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'FunnelEventType'
+ */
+export type EnumFunnelEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FunnelEventType'>
+    
+
+
+/**
+ * Reference to a field of type 'FunnelEventType[]'
+ */
+export type ListEnumFunnelEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FunnelEventType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'MonetizationFeeType'
+ */
+export type EnumMonetizationFeeTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MonetizationFeeType'>
+    
+
+
+/**
+ * Reference to a field of type 'MonetizationFeeType[]'
+ */
+export type ListEnumMonetizationFeeTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MonetizationFeeType[]'>
     
 
 
@@ -3914,20 +4742,6 @@ export type EnumSupportTicketStatusFieldRefInput<$PrismaModel> = FieldRefInputTy
  * Reference to a field of type 'SupportTicketStatus[]'
  */
 export type ListEnumSupportTicketStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SupportTicketStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'Json'
- */
-export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-/**
- * Reference to a field of type 'QueryMode'
- */
-export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -4164,6 +4978,13 @@ export type GlobalOmitConfig = {
   reviewerPointTransaction?: Prisma.ReviewerPointTransactionOmit
   campaign?: Prisma.CampaignOmit
   checkIn?: Prisma.CheckInOmit
+  merchantAcquisitionEvent?: Prisma.MerchantAcquisitionEventOmit
+  merchantIncident?: Prisma.MerchantIncidentOmit
+  merchantClaim?: Prisma.MerchantClaimOmit
+  merchantRemovalRequest?: Prisma.MerchantRemovalRequestOmit
+  restaurantSuggestion?: Prisma.RestaurantSuggestionOmit
+  funnelEvent?: Prisma.FunnelEventOmit
+  monetizationFeePolicy?: Prisma.MonetizationFeePolicyOmit
   notification?: Prisma.NotificationOmit
   supportTicket?: Prisma.SupportTicketOmit
   supportMessage?: Prisma.SupportMessageOmit

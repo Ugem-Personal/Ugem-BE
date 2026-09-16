@@ -270,6 +270,8 @@ export type AffiliateLinkWhereInput = {
   orders?: Prisma.OrderListRelationFilter
   bookings?: Prisma.BookingListRelationFilter
   affiliateTransactions?: Prisma.AffiliateTransactionListRelationFilter
+  checkIns?: Prisma.CheckInListRelationFilter
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventListRelationFilter
 }
 
 export type AffiliateLinkOrderByWithRelationInput = {
@@ -289,6 +291,8 @@ export type AffiliateLinkOrderByWithRelationInput = {
   orders?: Prisma.OrderOrderByRelationAggregateInput
   bookings?: Prisma.BookingOrderByRelationAggregateInput
   affiliateTransactions?: Prisma.AffiliateTransactionOrderByRelationAggregateInput
+  checkIns?: Prisma.CheckInOrderByRelationAggregateInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventOrderByRelationAggregateInput
 }
 
 export type AffiliateLinkWhereUniqueInput = Prisma.AtLeast<{
@@ -312,6 +316,8 @@ export type AffiliateLinkWhereUniqueInput = Prisma.AtLeast<{
   orders?: Prisma.OrderListRelationFilter
   bookings?: Prisma.BookingListRelationFilter
   affiliateTransactions?: Prisma.AffiliateTransactionListRelationFilter
+  checkIns?: Prisma.CheckInListRelationFilter
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventListRelationFilter
 }, "id" | "linkCode" | "reviewerId_merchantId">
 
 export type AffiliateLinkOrderByWithAggregationInput = {
@@ -363,6 +369,8 @@ export type AffiliateLinkCreateInput = {
   orders?: Prisma.OrderCreateNestedManyWithoutAffiliateLinkInput
   bookings?: Prisma.BookingCreateNestedManyWithoutAffiliateLinkInput
   affiliateTransactions?: Prisma.AffiliateTransactionCreateNestedManyWithoutAffiliateLinkInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutAffiliateLinkInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventCreateNestedManyWithoutAffiliateLinkInput
 }
 
 export type AffiliateLinkUncheckedCreateInput = {
@@ -380,6 +388,8 @@ export type AffiliateLinkUncheckedCreateInput = {
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutAffiliateLinkInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutAffiliateLinkInput
   affiliateTransactions?: Prisma.AffiliateTransactionUncheckedCreateNestedManyWithoutAffiliateLinkInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutAffiliateLinkInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedManyWithoutAffiliateLinkInput
 }
 
 export type AffiliateLinkUpdateInput = {
@@ -397,6 +407,8 @@ export type AffiliateLinkUpdateInput = {
   orders?: Prisma.OrderUpdateManyWithoutAffiliateLinkNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutAffiliateLinkNestedInput
   affiliateTransactions?: Prisma.AffiliateTransactionUpdateManyWithoutAffiliateLinkNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutAffiliateLinkNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUpdateManyWithoutAffiliateLinkNestedInput
 }
 
 export type AffiliateLinkUncheckedUpdateInput = {
@@ -414,6 +426,8 @@ export type AffiliateLinkUncheckedUpdateInput = {
   orders?: Prisma.OrderUncheckedUpdateManyWithoutAffiliateLinkNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutAffiliateLinkNestedInput
   affiliateTransactions?: Prisma.AffiliateTransactionUncheckedUpdateManyWithoutAffiliateLinkNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutAffiliateLinkNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedUpdateManyWithoutAffiliateLinkNestedInput
 }
 
 export type AffiliateLinkCreateManyInput = {
@@ -657,6 +671,38 @@ export type AffiliateLinkUpdateOneRequiredWithoutAffiliateTransactionsNestedInpu
   update?: Prisma.XOR<Prisma.XOR<Prisma.AffiliateLinkUpdateToOneWithWhereWithoutAffiliateTransactionsInput, Prisma.AffiliateLinkUpdateWithoutAffiliateTransactionsInput>, Prisma.AffiliateLinkUncheckedUpdateWithoutAffiliateTransactionsInput>
 }
 
+export type AffiliateLinkCreateNestedOneWithoutCheckInsInput = {
+  create?: Prisma.XOR<Prisma.AffiliateLinkCreateWithoutCheckInsInput, Prisma.AffiliateLinkUncheckedCreateWithoutCheckInsInput>
+  connectOrCreate?: Prisma.AffiliateLinkCreateOrConnectWithoutCheckInsInput
+  connect?: Prisma.AffiliateLinkWhereUniqueInput
+}
+
+export type AffiliateLinkUpdateOneWithoutCheckInsNestedInput = {
+  create?: Prisma.XOR<Prisma.AffiliateLinkCreateWithoutCheckInsInput, Prisma.AffiliateLinkUncheckedCreateWithoutCheckInsInput>
+  connectOrCreate?: Prisma.AffiliateLinkCreateOrConnectWithoutCheckInsInput
+  upsert?: Prisma.AffiliateLinkUpsertWithoutCheckInsInput
+  disconnect?: Prisma.AffiliateLinkWhereInput | boolean
+  delete?: Prisma.AffiliateLinkWhereInput | boolean
+  connect?: Prisma.AffiliateLinkWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AffiliateLinkUpdateToOneWithWhereWithoutCheckInsInput, Prisma.AffiliateLinkUpdateWithoutCheckInsInput>, Prisma.AffiliateLinkUncheckedUpdateWithoutCheckInsInput>
+}
+
+export type AffiliateLinkCreateNestedOneWithoutAcquisitionEventsInput = {
+  create?: Prisma.XOR<Prisma.AffiliateLinkCreateWithoutAcquisitionEventsInput, Prisma.AffiliateLinkUncheckedCreateWithoutAcquisitionEventsInput>
+  connectOrCreate?: Prisma.AffiliateLinkCreateOrConnectWithoutAcquisitionEventsInput
+  connect?: Prisma.AffiliateLinkWhereUniqueInput
+}
+
+export type AffiliateLinkUpdateOneWithoutAcquisitionEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.AffiliateLinkCreateWithoutAcquisitionEventsInput, Prisma.AffiliateLinkUncheckedCreateWithoutAcquisitionEventsInput>
+  connectOrCreate?: Prisma.AffiliateLinkCreateOrConnectWithoutAcquisitionEventsInput
+  upsert?: Prisma.AffiliateLinkUpsertWithoutAcquisitionEventsInput
+  disconnect?: Prisma.AffiliateLinkWhereInput | boolean
+  delete?: Prisma.AffiliateLinkWhereInput | boolean
+  connect?: Prisma.AffiliateLinkWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AffiliateLinkUpdateToOneWithWhereWithoutAcquisitionEventsInput, Prisma.AffiliateLinkUpdateWithoutAcquisitionEventsInput>, Prisma.AffiliateLinkUncheckedUpdateWithoutAcquisitionEventsInput>
+}
+
 export type AffiliateLinkCreateNestedOneWithoutBookingsInput = {
   create?: Prisma.XOR<Prisma.AffiliateLinkCreateWithoutBookingsInput, Prisma.AffiliateLinkUncheckedCreateWithoutBookingsInput>
   connectOrCreate?: Prisma.AffiliateLinkCreateOrConnectWithoutBookingsInput
@@ -687,6 +733,8 @@ export type AffiliateLinkCreateWithoutReviewerInput = {
   orders?: Prisma.OrderCreateNestedManyWithoutAffiliateLinkInput
   bookings?: Prisma.BookingCreateNestedManyWithoutAffiliateLinkInput
   affiliateTransactions?: Prisma.AffiliateTransactionCreateNestedManyWithoutAffiliateLinkInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutAffiliateLinkInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventCreateNestedManyWithoutAffiliateLinkInput
 }
 
 export type AffiliateLinkUncheckedCreateWithoutReviewerInput = {
@@ -703,6 +751,8 @@ export type AffiliateLinkUncheckedCreateWithoutReviewerInput = {
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutAffiliateLinkInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutAffiliateLinkInput
   affiliateTransactions?: Prisma.AffiliateTransactionUncheckedCreateNestedManyWithoutAffiliateLinkInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutAffiliateLinkInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedManyWithoutAffiliateLinkInput
 }
 
 export type AffiliateLinkCreateOrConnectWithoutReviewerInput = {
@@ -761,6 +811,8 @@ export type AffiliateLinkCreateWithoutMerchantInput = {
   orders?: Prisma.OrderCreateNestedManyWithoutAffiliateLinkInput
   bookings?: Prisma.BookingCreateNestedManyWithoutAffiliateLinkInput
   affiliateTransactions?: Prisma.AffiliateTransactionCreateNestedManyWithoutAffiliateLinkInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutAffiliateLinkInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventCreateNestedManyWithoutAffiliateLinkInput
 }
 
 export type AffiliateLinkUncheckedCreateWithoutMerchantInput = {
@@ -777,6 +829,8 @@ export type AffiliateLinkUncheckedCreateWithoutMerchantInput = {
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutAffiliateLinkInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutAffiliateLinkInput
   affiliateTransactions?: Prisma.AffiliateTransactionUncheckedCreateNestedManyWithoutAffiliateLinkInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutAffiliateLinkInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedManyWithoutAffiliateLinkInput
 }
 
 export type AffiliateLinkCreateOrConnectWithoutMerchantInput = {
@@ -819,6 +873,8 @@ export type AffiliateLinkCreateWithoutOrdersInput = {
   clicks?: Prisma.AffiliateClickCreateNestedManyWithoutAffiliateLinkInput
   bookings?: Prisma.BookingCreateNestedManyWithoutAffiliateLinkInput
   affiliateTransactions?: Prisma.AffiliateTransactionCreateNestedManyWithoutAffiliateLinkInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutAffiliateLinkInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventCreateNestedManyWithoutAffiliateLinkInput
 }
 
 export type AffiliateLinkUncheckedCreateWithoutOrdersInput = {
@@ -835,6 +891,8 @@ export type AffiliateLinkUncheckedCreateWithoutOrdersInput = {
   clicks?: Prisma.AffiliateClickUncheckedCreateNestedManyWithoutAffiliateLinkInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutAffiliateLinkInput
   affiliateTransactions?: Prisma.AffiliateTransactionUncheckedCreateNestedManyWithoutAffiliateLinkInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutAffiliateLinkInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedManyWithoutAffiliateLinkInput
 }
 
 export type AffiliateLinkCreateOrConnectWithoutOrdersInput = {
@@ -867,6 +925,8 @@ export type AffiliateLinkUpdateWithoutOrdersInput = {
   clicks?: Prisma.AffiliateClickUpdateManyWithoutAffiliateLinkNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutAffiliateLinkNestedInput
   affiliateTransactions?: Prisma.AffiliateTransactionUpdateManyWithoutAffiliateLinkNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutAffiliateLinkNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUpdateManyWithoutAffiliateLinkNestedInput
 }
 
 export type AffiliateLinkUncheckedUpdateWithoutOrdersInput = {
@@ -883,6 +943,8 @@ export type AffiliateLinkUncheckedUpdateWithoutOrdersInput = {
   clicks?: Prisma.AffiliateClickUncheckedUpdateManyWithoutAffiliateLinkNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutAffiliateLinkNestedInput
   affiliateTransactions?: Prisma.AffiliateTransactionUncheckedUpdateManyWithoutAffiliateLinkNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutAffiliateLinkNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedUpdateManyWithoutAffiliateLinkNestedInput
 }
 
 export type AffiliateLinkCreateWithoutClicksInput = {
@@ -899,6 +961,8 @@ export type AffiliateLinkCreateWithoutClicksInput = {
   orders?: Prisma.OrderCreateNestedManyWithoutAffiliateLinkInput
   bookings?: Prisma.BookingCreateNestedManyWithoutAffiliateLinkInput
   affiliateTransactions?: Prisma.AffiliateTransactionCreateNestedManyWithoutAffiliateLinkInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutAffiliateLinkInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventCreateNestedManyWithoutAffiliateLinkInput
 }
 
 export type AffiliateLinkUncheckedCreateWithoutClicksInput = {
@@ -915,6 +979,8 @@ export type AffiliateLinkUncheckedCreateWithoutClicksInput = {
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutAffiliateLinkInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutAffiliateLinkInput
   affiliateTransactions?: Prisma.AffiliateTransactionUncheckedCreateNestedManyWithoutAffiliateLinkInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutAffiliateLinkInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedManyWithoutAffiliateLinkInput
 }
 
 export type AffiliateLinkCreateOrConnectWithoutClicksInput = {
@@ -947,6 +1013,8 @@ export type AffiliateLinkUpdateWithoutClicksInput = {
   orders?: Prisma.OrderUpdateManyWithoutAffiliateLinkNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutAffiliateLinkNestedInput
   affiliateTransactions?: Prisma.AffiliateTransactionUpdateManyWithoutAffiliateLinkNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutAffiliateLinkNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUpdateManyWithoutAffiliateLinkNestedInput
 }
 
 export type AffiliateLinkUncheckedUpdateWithoutClicksInput = {
@@ -963,6 +1031,8 @@ export type AffiliateLinkUncheckedUpdateWithoutClicksInput = {
   orders?: Prisma.OrderUncheckedUpdateManyWithoutAffiliateLinkNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutAffiliateLinkNestedInput
   affiliateTransactions?: Prisma.AffiliateTransactionUncheckedUpdateManyWithoutAffiliateLinkNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutAffiliateLinkNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedUpdateManyWithoutAffiliateLinkNestedInput
 }
 
 export type AffiliateLinkCreateWithoutAffiliateTransactionsInput = {
@@ -979,6 +1049,8 @@ export type AffiliateLinkCreateWithoutAffiliateTransactionsInput = {
   clicks?: Prisma.AffiliateClickCreateNestedManyWithoutAffiliateLinkInput
   orders?: Prisma.OrderCreateNestedManyWithoutAffiliateLinkInput
   bookings?: Prisma.BookingCreateNestedManyWithoutAffiliateLinkInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutAffiliateLinkInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventCreateNestedManyWithoutAffiliateLinkInput
 }
 
 export type AffiliateLinkUncheckedCreateWithoutAffiliateTransactionsInput = {
@@ -995,6 +1067,8 @@ export type AffiliateLinkUncheckedCreateWithoutAffiliateTransactionsInput = {
   clicks?: Prisma.AffiliateClickUncheckedCreateNestedManyWithoutAffiliateLinkInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutAffiliateLinkInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutAffiliateLinkInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutAffiliateLinkInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedManyWithoutAffiliateLinkInput
 }
 
 export type AffiliateLinkCreateOrConnectWithoutAffiliateTransactionsInput = {
@@ -1027,6 +1101,8 @@ export type AffiliateLinkUpdateWithoutAffiliateTransactionsInput = {
   clicks?: Prisma.AffiliateClickUpdateManyWithoutAffiliateLinkNestedInput
   orders?: Prisma.OrderUpdateManyWithoutAffiliateLinkNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutAffiliateLinkNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutAffiliateLinkNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUpdateManyWithoutAffiliateLinkNestedInput
 }
 
 export type AffiliateLinkUncheckedUpdateWithoutAffiliateTransactionsInput = {
@@ -1043,6 +1119,184 @@ export type AffiliateLinkUncheckedUpdateWithoutAffiliateTransactionsInput = {
   clicks?: Prisma.AffiliateClickUncheckedUpdateManyWithoutAffiliateLinkNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutAffiliateLinkNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutAffiliateLinkNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutAffiliateLinkNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedUpdateManyWithoutAffiliateLinkNestedInput
+}
+
+export type AffiliateLinkCreateWithoutCheckInsInput = {
+  id?: string
+  linkCode: string
+  clickCount?: number
+  successfulOrders?: number
+  totalEarnings?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  reviewer: Prisma.CustomerCreateNestedOneWithoutAffiliateLinksInput
+  merchant: Prisma.MerchantCreateNestedOneWithoutAffiliateLinksInput
+  clicks?: Prisma.AffiliateClickCreateNestedManyWithoutAffiliateLinkInput
+  orders?: Prisma.OrderCreateNestedManyWithoutAffiliateLinkInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutAffiliateLinkInput
+  affiliateTransactions?: Prisma.AffiliateTransactionCreateNestedManyWithoutAffiliateLinkInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventCreateNestedManyWithoutAffiliateLinkInput
+}
+
+export type AffiliateLinkUncheckedCreateWithoutCheckInsInput = {
+  id?: string
+  reviewerId: string
+  merchantId: string
+  linkCode: string
+  clickCount?: number
+  successfulOrders?: number
+  totalEarnings?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clicks?: Prisma.AffiliateClickUncheckedCreateNestedManyWithoutAffiliateLinkInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutAffiliateLinkInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutAffiliateLinkInput
+  affiliateTransactions?: Prisma.AffiliateTransactionUncheckedCreateNestedManyWithoutAffiliateLinkInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedManyWithoutAffiliateLinkInput
+}
+
+export type AffiliateLinkCreateOrConnectWithoutCheckInsInput = {
+  where: Prisma.AffiliateLinkWhereUniqueInput
+  create: Prisma.XOR<Prisma.AffiliateLinkCreateWithoutCheckInsInput, Prisma.AffiliateLinkUncheckedCreateWithoutCheckInsInput>
+}
+
+export type AffiliateLinkUpsertWithoutCheckInsInput = {
+  update: Prisma.XOR<Prisma.AffiliateLinkUpdateWithoutCheckInsInput, Prisma.AffiliateLinkUncheckedUpdateWithoutCheckInsInput>
+  create: Prisma.XOR<Prisma.AffiliateLinkCreateWithoutCheckInsInput, Prisma.AffiliateLinkUncheckedCreateWithoutCheckInsInput>
+  where?: Prisma.AffiliateLinkWhereInput
+}
+
+export type AffiliateLinkUpdateToOneWithWhereWithoutCheckInsInput = {
+  where?: Prisma.AffiliateLinkWhereInput
+  data: Prisma.XOR<Prisma.AffiliateLinkUpdateWithoutCheckInsInput, Prisma.AffiliateLinkUncheckedUpdateWithoutCheckInsInput>
+}
+
+export type AffiliateLinkUpdateWithoutCheckInsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  linkCode?: Prisma.StringFieldUpdateOperationsInput | string
+  clickCount?: Prisma.IntFieldUpdateOperationsInput | number
+  successfulOrders?: Prisma.IntFieldUpdateOperationsInput | number
+  totalEarnings?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reviewer?: Prisma.CustomerUpdateOneRequiredWithoutAffiliateLinksNestedInput
+  merchant?: Prisma.MerchantUpdateOneRequiredWithoutAffiliateLinksNestedInput
+  clicks?: Prisma.AffiliateClickUpdateManyWithoutAffiliateLinkNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutAffiliateLinkNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutAffiliateLinkNestedInput
+  affiliateTransactions?: Prisma.AffiliateTransactionUpdateManyWithoutAffiliateLinkNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUpdateManyWithoutAffiliateLinkNestedInput
+}
+
+export type AffiliateLinkUncheckedUpdateWithoutCheckInsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewerId?: Prisma.StringFieldUpdateOperationsInput | string
+  merchantId?: Prisma.StringFieldUpdateOperationsInput | string
+  linkCode?: Prisma.StringFieldUpdateOperationsInput | string
+  clickCount?: Prisma.IntFieldUpdateOperationsInput | number
+  successfulOrders?: Prisma.IntFieldUpdateOperationsInput | number
+  totalEarnings?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clicks?: Prisma.AffiliateClickUncheckedUpdateManyWithoutAffiliateLinkNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutAffiliateLinkNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutAffiliateLinkNestedInput
+  affiliateTransactions?: Prisma.AffiliateTransactionUncheckedUpdateManyWithoutAffiliateLinkNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedUpdateManyWithoutAffiliateLinkNestedInput
+}
+
+export type AffiliateLinkCreateWithoutAcquisitionEventsInput = {
+  id?: string
+  linkCode: string
+  clickCount?: number
+  successfulOrders?: number
+  totalEarnings?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  reviewer: Prisma.CustomerCreateNestedOneWithoutAffiliateLinksInput
+  merchant: Prisma.MerchantCreateNestedOneWithoutAffiliateLinksInput
+  clicks?: Prisma.AffiliateClickCreateNestedManyWithoutAffiliateLinkInput
+  orders?: Prisma.OrderCreateNestedManyWithoutAffiliateLinkInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutAffiliateLinkInput
+  affiliateTransactions?: Prisma.AffiliateTransactionCreateNestedManyWithoutAffiliateLinkInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutAffiliateLinkInput
+}
+
+export type AffiliateLinkUncheckedCreateWithoutAcquisitionEventsInput = {
+  id?: string
+  reviewerId: string
+  merchantId: string
+  linkCode: string
+  clickCount?: number
+  successfulOrders?: number
+  totalEarnings?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clicks?: Prisma.AffiliateClickUncheckedCreateNestedManyWithoutAffiliateLinkInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutAffiliateLinkInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutAffiliateLinkInput
+  affiliateTransactions?: Prisma.AffiliateTransactionUncheckedCreateNestedManyWithoutAffiliateLinkInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutAffiliateLinkInput
+}
+
+export type AffiliateLinkCreateOrConnectWithoutAcquisitionEventsInput = {
+  where: Prisma.AffiliateLinkWhereUniqueInput
+  create: Prisma.XOR<Prisma.AffiliateLinkCreateWithoutAcquisitionEventsInput, Prisma.AffiliateLinkUncheckedCreateWithoutAcquisitionEventsInput>
+}
+
+export type AffiliateLinkUpsertWithoutAcquisitionEventsInput = {
+  update: Prisma.XOR<Prisma.AffiliateLinkUpdateWithoutAcquisitionEventsInput, Prisma.AffiliateLinkUncheckedUpdateWithoutAcquisitionEventsInput>
+  create: Prisma.XOR<Prisma.AffiliateLinkCreateWithoutAcquisitionEventsInput, Prisma.AffiliateLinkUncheckedCreateWithoutAcquisitionEventsInput>
+  where?: Prisma.AffiliateLinkWhereInput
+}
+
+export type AffiliateLinkUpdateToOneWithWhereWithoutAcquisitionEventsInput = {
+  where?: Prisma.AffiliateLinkWhereInput
+  data: Prisma.XOR<Prisma.AffiliateLinkUpdateWithoutAcquisitionEventsInput, Prisma.AffiliateLinkUncheckedUpdateWithoutAcquisitionEventsInput>
+}
+
+export type AffiliateLinkUpdateWithoutAcquisitionEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  linkCode?: Prisma.StringFieldUpdateOperationsInput | string
+  clickCount?: Prisma.IntFieldUpdateOperationsInput | number
+  successfulOrders?: Prisma.IntFieldUpdateOperationsInput | number
+  totalEarnings?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reviewer?: Prisma.CustomerUpdateOneRequiredWithoutAffiliateLinksNestedInput
+  merchant?: Prisma.MerchantUpdateOneRequiredWithoutAffiliateLinksNestedInput
+  clicks?: Prisma.AffiliateClickUpdateManyWithoutAffiliateLinkNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutAffiliateLinkNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutAffiliateLinkNestedInput
+  affiliateTransactions?: Prisma.AffiliateTransactionUpdateManyWithoutAffiliateLinkNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutAffiliateLinkNestedInput
+}
+
+export type AffiliateLinkUncheckedUpdateWithoutAcquisitionEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewerId?: Prisma.StringFieldUpdateOperationsInput | string
+  merchantId?: Prisma.StringFieldUpdateOperationsInput | string
+  linkCode?: Prisma.StringFieldUpdateOperationsInput | string
+  clickCount?: Prisma.IntFieldUpdateOperationsInput | number
+  successfulOrders?: Prisma.IntFieldUpdateOperationsInput | number
+  totalEarnings?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clicks?: Prisma.AffiliateClickUncheckedUpdateManyWithoutAffiliateLinkNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutAffiliateLinkNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutAffiliateLinkNestedInput
+  affiliateTransactions?: Prisma.AffiliateTransactionUncheckedUpdateManyWithoutAffiliateLinkNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutAffiliateLinkNestedInput
 }
 
 export type AffiliateLinkCreateWithoutBookingsInput = {
@@ -1059,6 +1313,8 @@ export type AffiliateLinkCreateWithoutBookingsInput = {
   clicks?: Prisma.AffiliateClickCreateNestedManyWithoutAffiliateLinkInput
   orders?: Prisma.OrderCreateNestedManyWithoutAffiliateLinkInput
   affiliateTransactions?: Prisma.AffiliateTransactionCreateNestedManyWithoutAffiliateLinkInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutAffiliateLinkInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventCreateNestedManyWithoutAffiliateLinkInput
 }
 
 export type AffiliateLinkUncheckedCreateWithoutBookingsInput = {
@@ -1075,6 +1331,8 @@ export type AffiliateLinkUncheckedCreateWithoutBookingsInput = {
   clicks?: Prisma.AffiliateClickUncheckedCreateNestedManyWithoutAffiliateLinkInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutAffiliateLinkInput
   affiliateTransactions?: Prisma.AffiliateTransactionUncheckedCreateNestedManyWithoutAffiliateLinkInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutAffiliateLinkInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedManyWithoutAffiliateLinkInput
 }
 
 export type AffiliateLinkCreateOrConnectWithoutBookingsInput = {
@@ -1107,6 +1365,8 @@ export type AffiliateLinkUpdateWithoutBookingsInput = {
   clicks?: Prisma.AffiliateClickUpdateManyWithoutAffiliateLinkNestedInput
   orders?: Prisma.OrderUpdateManyWithoutAffiliateLinkNestedInput
   affiliateTransactions?: Prisma.AffiliateTransactionUpdateManyWithoutAffiliateLinkNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutAffiliateLinkNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUpdateManyWithoutAffiliateLinkNestedInput
 }
 
 export type AffiliateLinkUncheckedUpdateWithoutBookingsInput = {
@@ -1123,6 +1383,8 @@ export type AffiliateLinkUncheckedUpdateWithoutBookingsInput = {
   clicks?: Prisma.AffiliateClickUncheckedUpdateManyWithoutAffiliateLinkNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutAffiliateLinkNestedInput
   affiliateTransactions?: Prisma.AffiliateTransactionUncheckedUpdateManyWithoutAffiliateLinkNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutAffiliateLinkNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedUpdateManyWithoutAffiliateLinkNestedInput
 }
 
 export type AffiliateLinkCreateManyReviewerInput = {
@@ -1151,6 +1413,8 @@ export type AffiliateLinkUpdateWithoutReviewerInput = {
   orders?: Prisma.OrderUpdateManyWithoutAffiliateLinkNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutAffiliateLinkNestedInput
   affiliateTransactions?: Prisma.AffiliateTransactionUpdateManyWithoutAffiliateLinkNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutAffiliateLinkNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUpdateManyWithoutAffiliateLinkNestedInput
 }
 
 export type AffiliateLinkUncheckedUpdateWithoutReviewerInput = {
@@ -1167,6 +1431,8 @@ export type AffiliateLinkUncheckedUpdateWithoutReviewerInput = {
   orders?: Prisma.OrderUncheckedUpdateManyWithoutAffiliateLinkNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutAffiliateLinkNestedInput
   affiliateTransactions?: Prisma.AffiliateTransactionUncheckedUpdateManyWithoutAffiliateLinkNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutAffiliateLinkNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedUpdateManyWithoutAffiliateLinkNestedInput
 }
 
 export type AffiliateLinkUncheckedUpdateManyWithoutReviewerInput = {
@@ -1207,6 +1473,8 @@ export type AffiliateLinkUpdateWithoutMerchantInput = {
   orders?: Prisma.OrderUpdateManyWithoutAffiliateLinkNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutAffiliateLinkNestedInput
   affiliateTransactions?: Prisma.AffiliateTransactionUpdateManyWithoutAffiliateLinkNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutAffiliateLinkNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUpdateManyWithoutAffiliateLinkNestedInput
 }
 
 export type AffiliateLinkUncheckedUpdateWithoutMerchantInput = {
@@ -1223,6 +1491,8 @@ export type AffiliateLinkUncheckedUpdateWithoutMerchantInput = {
   orders?: Prisma.OrderUncheckedUpdateManyWithoutAffiliateLinkNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutAffiliateLinkNestedInput
   affiliateTransactions?: Prisma.AffiliateTransactionUncheckedUpdateManyWithoutAffiliateLinkNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutAffiliateLinkNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedUpdateManyWithoutAffiliateLinkNestedInput
 }
 
 export type AffiliateLinkUncheckedUpdateManyWithoutMerchantInput = {
@@ -1247,6 +1517,8 @@ export type AffiliateLinkCountOutputType = {
   orders: number
   bookings: number
   affiliateTransactions: number
+  checkIns: number
+  acquisitionEvents: number
 }
 
 export type AffiliateLinkCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1254,6 +1526,8 @@ export type AffiliateLinkCountOutputTypeSelect<ExtArgs extends runtime.Types.Ext
   orders?: boolean | AffiliateLinkCountOutputTypeCountOrdersArgs
   bookings?: boolean | AffiliateLinkCountOutputTypeCountBookingsArgs
   affiliateTransactions?: boolean | AffiliateLinkCountOutputTypeCountAffiliateTransactionsArgs
+  checkIns?: boolean | AffiliateLinkCountOutputTypeCountCheckInsArgs
+  acquisitionEvents?: boolean | AffiliateLinkCountOutputTypeCountAcquisitionEventsArgs
 }
 
 /**
@@ -1294,6 +1568,20 @@ export type AffiliateLinkCountOutputTypeCountAffiliateTransactionsArgs<ExtArgs e
   where?: Prisma.AffiliateTransactionWhereInput
 }
 
+/**
+ * AffiliateLinkCountOutputType without action
+ */
+export type AffiliateLinkCountOutputTypeCountCheckInsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CheckInWhereInput
+}
+
+/**
+ * AffiliateLinkCountOutputType without action
+ */
+export type AffiliateLinkCountOutputTypeCountAcquisitionEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MerchantAcquisitionEventWhereInput
+}
+
 
 export type AffiliateLinkSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1312,6 +1600,8 @@ export type AffiliateLinkSelect<ExtArgs extends runtime.Types.Extensions.Interna
   orders?: boolean | Prisma.AffiliateLink$ordersArgs<ExtArgs>
   bookings?: boolean | Prisma.AffiliateLink$bookingsArgs<ExtArgs>
   affiliateTransactions?: boolean | Prisma.AffiliateLink$affiliateTransactionsArgs<ExtArgs>
+  checkIns?: boolean | Prisma.AffiliateLink$checkInsArgs<ExtArgs>
+  acquisitionEvents?: boolean | Prisma.AffiliateLink$acquisitionEventsArgs<ExtArgs>
   _count?: boolean | Prisma.AffiliateLinkCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["affiliateLink"]>
 
@@ -1366,6 +1656,8 @@ export type AffiliateLinkInclude<ExtArgs extends runtime.Types.Extensions.Intern
   orders?: boolean | Prisma.AffiliateLink$ordersArgs<ExtArgs>
   bookings?: boolean | Prisma.AffiliateLink$bookingsArgs<ExtArgs>
   affiliateTransactions?: boolean | Prisma.AffiliateLink$affiliateTransactionsArgs<ExtArgs>
+  checkIns?: boolean | Prisma.AffiliateLink$checkInsArgs<ExtArgs>
+  acquisitionEvents?: boolean | Prisma.AffiliateLink$acquisitionEventsArgs<ExtArgs>
   _count?: boolean | Prisma.AffiliateLinkCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AffiliateLinkIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1386,6 +1678,8 @@ export type $AffiliateLinkPayload<ExtArgs extends runtime.Types.Extensions.Inter
     orders: Prisma.$OrderPayload<ExtArgs>[]
     bookings: Prisma.$BookingPayload<ExtArgs>[]
     affiliateTransactions: Prisma.$AffiliateTransactionPayload<ExtArgs>[]
+    checkIns: Prisma.$CheckInPayload<ExtArgs>[]
+    acquisitionEvents: Prisma.$MerchantAcquisitionEventPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1798,6 +2092,8 @@ export interface Prisma__AffiliateLinkClient<T, Null = never, ExtArgs extends ru
   orders<T extends Prisma.AffiliateLink$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AffiliateLink$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   bookings<T extends Prisma.AffiliateLink$bookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AffiliateLink$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   affiliateTransactions<T extends Prisma.AffiliateLink$affiliateTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AffiliateLink$affiliateTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AffiliateTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  checkIns<T extends Prisma.AffiliateLink$checkInsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AffiliateLink$checkInsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CheckInPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  acquisitionEvents<T extends Prisma.AffiliateLink$acquisitionEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AffiliateLink$acquisitionEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MerchantAcquisitionEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2331,6 +2627,54 @@ export type AffiliateLink$affiliateTransactionsArgs<ExtArgs extends runtime.Type
   take?: number
   skip?: number
   distinct?: Prisma.AffiliateTransactionScalarFieldEnum | Prisma.AffiliateTransactionScalarFieldEnum[]
+}
+
+/**
+ * AffiliateLink.checkIns
+ */
+export type AffiliateLink$checkInsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CheckIn
+   */
+  select?: Prisma.CheckInSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CheckIn
+   */
+  omit?: Prisma.CheckInOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CheckInInclude<ExtArgs> | null
+  where?: Prisma.CheckInWhereInput
+  orderBy?: Prisma.CheckInOrderByWithRelationInput | Prisma.CheckInOrderByWithRelationInput[]
+  cursor?: Prisma.CheckInWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CheckInScalarFieldEnum | Prisma.CheckInScalarFieldEnum[]
+}
+
+/**
+ * AffiliateLink.acquisitionEvents
+ */
+export type AffiliateLink$acquisitionEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MerchantAcquisitionEvent
+   */
+  select?: Prisma.MerchantAcquisitionEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MerchantAcquisitionEvent
+   */
+  omit?: Prisma.MerchantAcquisitionEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MerchantAcquisitionEventInclude<ExtArgs> | null
+  where?: Prisma.MerchantAcquisitionEventWhereInput
+  orderBy?: Prisma.MerchantAcquisitionEventOrderByWithRelationInput | Prisma.MerchantAcquisitionEventOrderByWithRelationInput[]
+  cursor?: Prisma.MerchantAcquisitionEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MerchantAcquisitionEventScalarFieldEnum | Prisma.MerchantAcquisitionEventScalarFieldEnum[]
 }
 
 /**

@@ -303,6 +303,8 @@ export const getMerchants = async (query: MerchantListQuery) => {
 
   const where: Prisma.MerchantWhereInput = {
     status: MerchantStatus.Active,
+    listingVisibility: "Public",
+    safetySuppressed: false,
 
     NOT: [
       { openingHours: { contains: "nghỉ", mode: "insensitive" } },
@@ -329,6 +331,16 @@ export const getMerchants = async (query: MerchantListQuery) => {
           contains: query.priceRange,
           mode: "insensitive",
         }
+      : undefined,
+
+    country: query.country
+      ? { equals: query.country, mode: "insensitive" }
+      : undefined,
+    city: query.city
+      ? { contains: query.city, mode: "insensitive" }
+      : undefined,
+    area: query.area
+      ? { contains: query.area, mode: "insensitive" }
       : undefined,
 
     // Spatial Bounding Box Pre-filtering at Database Layer
@@ -537,6 +549,8 @@ export const getMerchantById = async (merchantId: string) => {
     where: {
       id: merchantId,
       status: MerchantStatus.Active,
+      listingVisibility: "Public",
+      safetySuppressed: false,
     },
     include: {
       _count: {
@@ -664,6 +678,10 @@ export const updateMyMerchant = async (
 
       address: input.address !== undefined ? input.address.trim() : undefined,
 
+      country: input.country !== undefined ? input.country.trim() : undefined,
+      city: input.city !== undefined ? input.city?.trim() || null : undefined,
+      area: input.area !== undefined ? input.area?.trim() || null : undefined,
+
       openingHours:
         input.openingHours !== undefined
           ? input.openingHours.trim()
@@ -707,6 +725,8 @@ export const getMerchantsForMap = async (query: MerchantMapQuery) => {
   const merchants = await prisma.merchant.findMany({
     where: {
       status: MerchantStatus.Active,
+      listingVisibility: "Public",
+      safetySuppressed: false,
 
       NOT: [
         { openingHours: { contains: "nghỉ", mode: "insensitive" } },
@@ -812,6 +832,8 @@ export const incrementMerchantView = async (params: {
     where: {
       id: params.merchantId,
       status: MerchantStatus.Active,
+      listingVisibility: "Public",
+      safetySuppressed: false,
     },
 
     select: {

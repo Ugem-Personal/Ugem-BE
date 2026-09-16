@@ -350,6 +350,8 @@ export type CampaignWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Campaign"> | Date | string
   merchant?: Prisma.XOR<Prisma.MerchantScalarRelationFilter, Prisma.MerchantWhereInput>
   orders?: Prisma.OrderListRelationFilter
+  checkIns?: Prisma.CheckInListRelationFilter
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventListRelationFilter
 }
 
 export type CampaignOrderByWithRelationInput = {
@@ -374,6 +376,8 @@ export type CampaignOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   merchant?: Prisma.MerchantOrderByWithRelationInput
   orders?: Prisma.OrderOrderByRelationAggregateInput
+  checkIns?: Prisma.CheckInOrderByRelationAggregateInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventOrderByRelationAggregateInput
 }
 
 export type CampaignWhereUniqueInput = Prisma.AtLeast<{
@@ -401,6 +405,8 @@ export type CampaignWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Campaign"> | Date | string
   merchant?: Prisma.XOR<Prisma.MerchantScalarRelationFilter, Prisma.MerchantWhereInput>
   orders?: Prisma.OrderListRelationFilter
+  checkIns?: Prisma.CheckInListRelationFilter
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventListRelationFilter
 }, "id" | "code">
 
 export type CampaignOrderByWithAggregationInput = {
@@ -476,6 +482,8 @@ export type CampaignCreateInput = {
   updatedAt?: Date | string
   merchant: Prisma.MerchantCreateNestedOneWithoutCampaignsInput
   orders?: Prisma.OrderCreateNestedManyWithoutCampaignInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutCampaignInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignUncheckedCreateInput = {
@@ -499,6 +507,8 @@ export type CampaignUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCampaignInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutCampaignInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignUpdateInput = {
@@ -522,6 +532,8 @@ export type CampaignUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutCampaignsNestedInput
   orders?: Prisma.OrderUpdateManyWithoutCampaignNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutCampaignNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignUncheckedUpdateInput = {
@@ -545,6 +557,8 @@ export type CampaignUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCampaignNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutCampaignNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignCreateManyInput = {
@@ -773,6 +787,38 @@ export type EnumCampaignDiscountTypeFieldUpdateOperationsInput = {
   set?: $Enums.CampaignDiscountType
 }
 
+export type CampaignCreateNestedOneWithoutCheckInsInput = {
+  create?: Prisma.XOR<Prisma.CampaignCreateWithoutCheckInsInput, Prisma.CampaignUncheckedCreateWithoutCheckInsInput>
+  connectOrCreate?: Prisma.CampaignCreateOrConnectWithoutCheckInsInput
+  connect?: Prisma.CampaignWhereUniqueInput
+}
+
+export type CampaignUpdateOneWithoutCheckInsNestedInput = {
+  create?: Prisma.XOR<Prisma.CampaignCreateWithoutCheckInsInput, Prisma.CampaignUncheckedCreateWithoutCheckInsInput>
+  connectOrCreate?: Prisma.CampaignCreateOrConnectWithoutCheckInsInput
+  upsert?: Prisma.CampaignUpsertWithoutCheckInsInput
+  disconnect?: Prisma.CampaignWhereInput | boolean
+  delete?: Prisma.CampaignWhereInput | boolean
+  connect?: Prisma.CampaignWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CampaignUpdateToOneWithWhereWithoutCheckInsInput, Prisma.CampaignUpdateWithoutCheckInsInput>, Prisma.CampaignUncheckedUpdateWithoutCheckInsInput>
+}
+
+export type CampaignCreateNestedOneWithoutAcquisitionEventsInput = {
+  create?: Prisma.XOR<Prisma.CampaignCreateWithoutAcquisitionEventsInput, Prisma.CampaignUncheckedCreateWithoutAcquisitionEventsInput>
+  connectOrCreate?: Prisma.CampaignCreateOrConnectWithoutAcquisitionEventsInput
+  connect?: Prisma.CampaignWhereUniqueInput
+}
+
+export type CampaignUpdateOneWithoutAcquisitionEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.CampaignCreateWithoutAcquisitionEventsInput, Prisma.CampaignUncheckedCreateWithoutAcquisitionEventsInput>
+  connectOrCreate?: Prisma.CampaignCreateOrConnectWithoutAcquisitionEventsInput
+  upsert?: Prisma.CampaignUpsertWithoutAcquisitionEventsInput
+  disconnect?: Prisma.CampaignWhereInput | boolean
+  delete?: Prisma.CampaignWhereInput | boolean
+  connect?: Prisma.CampaignWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CampaignUpdateToOneWithWhereWithoutAcquisitionEventsInput, Prisma.CampaignUpdateWithoutAcquisitionEventsInput>, Prisma.CampaignUncheckedUpdateWithoutAcquisitionEventsInput>
+}
+
 export type CampaignCreateWithoutMerchantInput = {
   id?: string
   name: string
@@ -793,6 +839,8 @@ export type CampaignCreateWithoutMerchantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   orders?: Prisma.OrderCreateNestedManyWithoutCampaignInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutCampaignInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignUncheckedCreateWithoutMerchantInput = {
@@ -815,6 +863,8 @@ export type CampaignUncheckedCreateWithoutMerchantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCampaignInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutCampaignInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignCreateOrConnectWithoutMerchantInput = {
@@ -888,6 +938,8 @@ export type CampaignCreateWithoutOrdersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   merchant: Prisma.MerchantCreateNestedOneWithoutCampaignsInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutCampaignInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignUncheckedCreateWithoutOrdersInput = {
@@ -910,6 +962,8 @@ export type CampaignUncheckedCreateWithoutOrdersInput = {
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutCampaignInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignCreateOrConnectWithoutOrdersInput = {
@@ -948,6 +1002,8 @@ export type CampaignUpdateWithoutOrdersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutCampaignsNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutCampaignNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignUncheckedUpdateWithoutOrdersInput = {
@@ -970,6 +1026,232 @@ export type CampaignUncheckedUpdateWithoutOrdersInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutCampaignNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedUpdateManyWithoutCampaignNestedInput
+}
+
+export type CampaignCreateWithoutCheckInsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  code: string
+  discountType: $Enums.CampaignDiscountType
+  discountValue: runtime.Decimal | runtime.DecimalJsLike | number | string
+  minimumOrderAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  maximumDiscount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  startAt: Date | string
+  endAt: Date | string
+  usageLimit?: number | null
+  usedCount?: number
+  maxUsagePerUser?: number
+  isGlobal?: boolean
+  isNewUserOnly?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  merchant: Prisma.MerchantCreateNestedOneWithoutCampaignsInput
+  orders?: Prisma.OrderCreateNestedManyWithoutCampaignInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventCreateNestedManyWithoutCampaignInput
+}
+
+export type CampaignUncheckedCreateWithoutCheckInsInput = {
+  id?: string
+  merchantId: string
+  name: string
+  description?: string | null
+  code: string
+  discountType: $Enums.CampaignDiscountType
+  discountValue: runtime.Decimal | runtime.DecimalJsLike | number | string
+  minimumOrderAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  maximumDiscount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  startAt: Date | string
+  endAt: Date | string
+  usageLimit?: number | null
+  usedCount?: number
+  maxUsagePerUser?: number
+  isGlobal?: boolean
+  isNewUserOnly?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCampaignInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedManyWithoutCampaignInput
+}
+
+export type CampaignCreateOrConnectWithoutCheckInsInput = {
+  where: Prisma.CampaignWhereUniqueInput
+  create: Prisma.XOR<Prisma.CampaignCreateWithoutCheckInsInput, Prisma.CampaignUncheckedCreateWithoutCheckInsInput>
+}
+
+export type CampaignUpsertWithoutCheckInsInput = {
+  update: Prisma.XOR<Prisma.CampaignUpdateWithoutCheckInsInput, Prisma.CampaignUncheckedUpdateWithoutCheckInsInput>
+  create: Prisma.XOR<Prisma.CampaignCreateWithoutCheckInsInput, Prisma.CampaignUncheckedCreateWithoutCheckInsInput>
+  where?: Prisma.CampaignWhereInput
+}
+
+export type CampaignUpdateToOneWithWhereWithoutCheckInsInput = {
+  where?: Prisma.CampaignWhereInput
+  data: Prisma.XOR<Prisma.CampaignUpdateWithoutCheckInsInput, Prisma.CampaignUncheckedUpdateWithoutCheckInsInput>
+}
+
+export type CampaignUpdateWithoutCheckInsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  discountType?: Prisma.EnumCampaignDiscountTypeFieldUpdateOperationsInput | $Enums.CampaignDiscountType
+  discountValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  minimumOrderAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  maximumDiscount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  startAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  usageLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  usedCount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxUsagePerUser?: Prisma.IntFieldUpdateOperationsInput | number
+  isGlobal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isNewUserOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  merchant?: Prisma.MerchantUpdateOneRequiredWithoutCampaignsNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutCampaignNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUpdateManyWithoutCampaignNestedInput
+}
+
+export type CampaignUncheckedUpdateWithoutCheckInsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  merchantId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  discountType?: Prisma.EnumCampaignDiscountTypeFieldUpdateOperationsInput | $Enums.CampaignDiscountType
+  discountValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  minimumOrderAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  maximumDiscount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  startAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  usageLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  usedCount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxUsagePerUser?: Prisma.IntFieldUpdateOperationsInput | number
+  isGlobal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isNewUserOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutCampaignNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedUpdateManyWithoutCampaignNestedInput
+}
+
+export type CampaignCreateWithoutAcquisitionEventsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  code: string
+  discountType: $Enums.CampaignDiscountType
+  discountValue: runtime.Decimal | runtime.DecimalJsLike | number | string
+  minimumOrderAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  maximumDiscount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  startAt: Date | string
+  endAt: Date | string
+  usageLimit?: number | null
+  usedCount?: number
+  maxUsagePerUser?: number
+  isGlobal?: boolean
+  isNewUserOnly?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  merchant: Prisma.MerchantCreateNestedOneWithoutCampaignsInput
+  orders?: Prisma.OrderCreateNestedManyWithoutCampaignInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutCampaignInput
+}
+
+export type CampaignUncheckedCreateWithoutAcquisitionEventsInput = {
+  id?: string
+  merchantId: string
+  name: string
+  description?: string | null
+  code: string
+  discountType: $Enums.CampaignDiscountType
+  discountValue: runtime.Decimal | runtime.DecimalJsLike | number | string
+  minimumOrderAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  maximumDiscount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  startAt: Date | string
+  endAt: Date | string
+  usageLimit?: number | null
+  usedCount?: number
+  maxUsagePerUser?: number
+  isGlobal?: boolean
+  isNewUserOnly?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCampaignInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutCampaignInput
+}
+
+export type CampaignCreateOrConnectWithoutAcquisitionEventsInput = {
+  where: Prisma.CampaignWhereUniqueInput
+  create: Prisma.XOR<Prisma.CampaignCreateWithoutAcquisitionEventsInput, Prisma.CampaignUncheckedCreateWithoutAcquisitionEventsInput>
+}
+
+export type CampaignUpsertWithoutAcquisitionEventsInput = {
+  update: Prisma.XOR<Prisma.CampaignUpdateWithoutAcquisitionEventsInput, Prisma.CampaignUncheckedUpdateWithoutAcquisitionEventsInput>
+  create: Prisma.XOR<Prisma.CampaignCreateWithoutAcquisitionEventsInput, Prisma.CampaignUncheckedCreateWithoutAcquisitionEventsInput>
+  where?: Prisma.CampaignWhereInput
+}
+
+export type CampaignUpdateToOneWithWhereWithoutAcquisitionEventsInput = {
+  where?: Prisma.CampaignWhereInput
+  data: Prisma.XOR<Prisma.CampaignUpdateWithoutAcquisitionEventsInput, Prisma.CampaignUncheckedUpdateWithoutAcquisitionEventsInput>
+}
+
+export type CampaignUpdateWithoutAcquisitionEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  discountType?: Prisma.EnumCampaignDiscountTypeFieldUpdateOperationsInput | $Enums.CampaignDiscountType
+  discountValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  minimumOrderAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  maximumDiscount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  startAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  usageLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  usedCount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxUsagePerUser?: Prisma.IntFieldUpdateOperationsInput | number
+  isGlobal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isNewUserOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  merchant?: Prisma.MerchantUpdateOneRequiredWithoutCampaignsNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutCampaignNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutCampaignNestedInput
+}
+
+export type CampaignUncheckedUpdateWithoutAcquisitionEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  merchantId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  discountType?: Prisma.EnumCampaignDiscountTypeFieldUpdateOperationsInput | $Enums.CampaignDiscountType
+  discountValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  minimumOrderAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  maximumDiscount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  startAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  usageLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  usedCount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxUsagePerUser?: Prisma.IntFieldUpdateOperationsInput | number
+  isGlobal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isNewUserOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutCampaignNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignCreateManyMerchantInput = {
@@ -1013,6 +1295,8 @@ export type CampaignUpdateWithoutMerchantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   orders?: Prisma.OrderUpdateManyWithoutCampaignNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutCampaignNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignUncheckedUpdateWithoutMerchantInput = {
@@ -1035,6 +1319,8 @@ export type CampaignUncheckedUpdateWithoutMerchantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCampaignNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutCampaignNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignUncheckedUpdateManyWithoutMerchantInput = {
@@ -1065,10 +1351,14 @@ export type CampaignUncheckedUpdateManyWithoutMerchantInput = {
 
 export type CampaignCountOutputType = {
   orders: number
+  checkIns: number
+  acquisitionEvents: number
 }
 
 export type CampaignCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   orders?: boolean | CampaignCountOutputTypeCountOrdersArgs
+  checkIns?: boolean | CampaignCountOutputTypeCountCheckInsArgs
+  acquisitionEvents?: boolean | CampaignCountOutputTypeCountAcquisitionEventsArgs
 }
 
 /**
@@ -1086,6 +1376,20 @@ export type CampaignCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ext
  */
 export type CampaignCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.OrderWhereInput
+}
+
+/**
+ * CampaignCountOutputType without action
+ */
+export type CampaignCountOutputTypeCountCheckInsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CheckInWhereInput
+}
+
+/**
+ * CampaignCountOutputType without action
+ */
+export type CampaignCountOutputTypeCountAcquisitionEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MerchantAcquisitionEventWhereInput
 }
 
 
@@ -1111,6 +1415,8 @@ export type CampaignSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   updatedAt?: boolean
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
   orders?: boolean | Prisma.Campaign$ordersArgs<ExtArgs>
+  checkIns?: boolean | Prisma.Campaign$checkInsArgs<ExtArgs>
+  acquisitionEvents?: boolean | Prisma.Campaign$acquisitionEventsArgs<ExtArgs>
   _count?: boolean | Prisma.CampaignCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["campaign"]>
 
@@ -1186,6 +1492,8 @@ export type CampaignOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 export type CampaignInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
   orders?: boolean | Prisma.Campaign$ordersArgs<ExtArgs>
+  checkIns?: boolean | Prisma.Campaign$checkInsArgs<ExtArgs>
+  acquisitionEvents?: boolean | Prisma.Campaign$acquisitionEventsArgs<ExtArgs>
   _count?: boolean | Prisma.CampaignCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CampaignIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1200,6 +1508,8 @@ export type $CampaignPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   objects: {
     merchant: Prisma.$MerchantPayload<ExtArgs>
     orders: Prisma.$OrderPayload<ExtArgs>[]
+    checkIns: Prisma.$CheckInPayload<ExtArgs>[]
+    acquisitionEvents: Prisma.$MerchantAcquisitionEventPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1617,6 +1927,8 @@ export interface Prisma__CampaignClient<T, Null = never, ExtArgs extends runtime
   readonly [Symbol.toStringTag]: "PrismaPromise"
   merchant<T extends Prisma.MerchantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MerchantDefaultArgs<ExtArgs>>): Prisma.Prisma__MerchantClient<runtime.Types.Result.GetResult<Prisma.$MerchantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   orders<T extends Prisma.Campaign$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Campaign$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  checkIns<T extends Prisma.Campaign$checkInsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Campaign$checkInsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CheckInPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  acquisitionEvents<T extends Prisma.Campaign$acquisitionEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Campaign$acquisitionEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MerchantAcquisitionEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2087,6 +2399,54 @@ export type Campaign$ordersArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[]
+}
+
+/**
+ * Campaign.checkIns
+ */
+export type Campaign$checkInsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CheckIn
+   */
+  select?: Prisma.CheckInSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CheckIn
+   */
+  omit?: Prisma.CheckInOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CheckInInclude<ExtArgs> | null
+  where?: Prisma.CheckInWhereInput
+  orderBy?: Prisma.CheckInOrderByWithRelationInput | Prisma.CheckInOrderByWithRelationInput[]
+  cursor?: Prisma.CheckInWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CheckInScalarFieldEnum | Prisma.CheckInScalarFieldEnum[]
+}
+
+/**
+ * Campaign.acquisitionEvents
+ */
+export type Campaign$acquisitionEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MerchantAcquisitionEvent
+   */
+  select?: Prisma.MerchantAcquisitionEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MerchantAcquisitionEvent
+   */
+  omit?: Prisma.MerchantAcquisitionEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MerchantAcquisitionEventInclude<ExtArgs> | null
+  where?: Prisma.MerchantAcquisitionEventWhereInput
+  orderBy?: Prisma.MerchantAcquisitionEventOrderByWithRelationInput | Prisma.MerchantAcquisitionEventOrderByWithRelationInput[]
+  cursor?: Prisma.MerchantAcquisitionEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MerchantAcquisitionEventScalarFieldEnum | Prisma.MerchantAcquisitionEventScalarFieldEnum[]
 }
 
 /**

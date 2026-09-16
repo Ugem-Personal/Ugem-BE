@@ -177,6 +177,41 @@ export type Campaign = Prisma.CampaignModel
  */
 export type CheckIn = Prisma.CheckInModel
 /**
+ * Model MerchantAcquisitionEvent
+ * 
+ */
+export type MerchantAcquisitionEvent = Prisma.MerchantAcquisitionEventModel
+/**
+ * Model MerchantIncident
+ * 
+ */
+export type MerchantIncident = Prisma.MerchantIncidentModel
+/**
+ * Model MerchantClaim
+ * 
+ */
+export type MerchantClaim = Prisma.MerchantClaimModel
+/**
+ * Model MerchantRemovalRequest
+ * 
+ */
+export type MerchantRemovalRequest = Prisma.MerchantRemovalRequestModel
+/**
+ * Model RestaurantSuggestion
+ * 
+ */
+export type RestaurantSuggestion = Prisma.RestaurantSuggestionModel
+/**
+ * Model FunnelEvent
+ * 
+ */
+export type FunnelEvent = Prisma.FunnelEventModel
+/**
+ * Model MonetizationFeePolicy
+ * 
+ */
+export type MonetizationFeePolicy = Prisma.MonetizationFeePolicyModel
+/**
  * Model Notification
  * 
  */

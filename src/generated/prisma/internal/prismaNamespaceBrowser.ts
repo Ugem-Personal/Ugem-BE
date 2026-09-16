@@ -78,6 +78,13 @@ export const ModelName = {
   ReviewerPointTransaction: 'ReviewerPointTransaction',
   Campaign: 'Campaign',
   CheckIn: 'CheckIn',
+  MerchantAcquisitionEvent: 'MerchantAcquisitionEvent',
+  MerchantIncident: 'MerchantIncident',
+  MerchantClaim: 'MerchantClaim',
+  MerchantRemovalRequest: 'MerchantRemovalRequest',
+  RestaurantSuggestion: 'RestaurantSuggestion',
+  FunnelEvent: 'FunnelEvent',
+  MonetizationFeePolicy: 'MonetizationFeePolicy',
   Notification: 'Notification',
   SupportTicket: 'SupportTicket',
   SupportMessage: 'SupportMessage',
@@ -214,6 +221,9 @@ export const MerchantScalarFieldEnum = {
   email: 'email',
   phone: 'phone',
   address: 'address',
+  country: 'country',
+  city: 'city',
+  area: 'area',
   openingHours: 'openingHours',
   latitude: 'latitude',
   longitude: 'longitude',
@@ -230,6 +240,11 @@ export const MerchantScalarFieldEnum = {
   recommendationRank: 'recommendationRank',
   lastRebalancedAt: 'lastRebalancedAt',
   status: 'status',
+  verificationStatus: 'verificationStatus',
+  listingVisibility: 'listingVisibility',
+  safetySuppressed: 'safetySuppressed',
+  safetySuppressedUntil: 'safetySuppressedUntil',
+  safetyRiskScore: 'safetyRiskScore',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -548,6 +563,14 @@ export const CheckInScalarFieldEnum = {
   qrToken: 'qrToken',
   rewardBenefit: 'rewardBenefit',
   notes: 'notes',
+  source: 'source',
+  campaignId: 'campaignId',
+  bookingId: 'bookingId',
+  affiliateLinkId: 'affiliateLinkId',
+  checkInMethod: 'checkInMethod',
+  suspicious: 'suspicious',
+  suspiciousReason: 'suspiciousReason',
+  disputedAt: 'disputedAt',
   generatedAt: 'generatedAt',
   expiresAt: 'expiresAt',
   checkedInAt: 'checkedInAt',
@@ -558,6 +581,125 @@ export const CheckInScalarFieldEnum = {
 } as const
 
 export type CheckInScalarFieldEnum = (typeof CheckInScalarFieldEnum)[keyof typeof CheckInScalarFieldEnum]
+
+
+export const MerchantAcquisitionEventScalarFieldEnum = {
+  id: 'id',
+  merchantId: 'merchantId',
+  customerId: 'customerId',
+  checkInId: 'checkInId',
+  campaignId: 'campaignId',
+  orderId: 'orderId',
+  bookingId: 'bookingId',
+  affiliateLinkId: 'affiliateLinkId',
+  source: 'source',
+  verificationMethod: 'verificationMethod',
+  occurredAt: 'occurredAt',
+  createdAt: 'createdAt'
+} as const
+
+export type MerchantAcquisitionEventScalarFieldEnum = (typeof MerchantAcquisitionEventScalarFieldEnum)[keyof typeof MerchantAcquisitionEventScalarFieldEnum]
+
+
+export const MerchantIncidentScalarFieldEnum = {
+  id: 'id',
+  merchantId: 'merchantId',
+  reporterUserId: 'reporterUserId',
+  type: 'type',
+  severity: 'severity',
+  status: 'status',
+  description: 'description',
+  evidenceUrls: 'evidenceUrls',
+  adminDecision: 'adminDecision',
+  resolution: 'resolution',
+  reviewedByUserId: 'reviewedByUserId',
+  reviewedAt: 'reviewedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MerchantIncidentScalarFieldEnum = (typeof MerchantIncidentScalarFieldEnum)[keyof typeof MerchantIncidentScalarFieldEnum]
+
+
+export const MerchantClaimScalarFieldEnum = {
+  id: 'id',
+  merchantId: 'merchantId',
+  submittedByUserId: 'submittedByUserId',
+  status: 'status',
+  evidenceUrls: 'evidenceUrls',
+  decision: 'decision',
+  reviewedByUserId: 'reviewedByUserId',
+  reviewedAt: 'reviewedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MerchantClaimScalarFieldEnum = (typeof MerchantClaimScalarFieldEnum)[keyof typeof MerchantClaimScalarFieldEnum]
+
+
+export const MerchantRemovalRequestScalarFieldEnum = {
+  id: 'id',
+  merchantId: 'merchantId',
+  submittedByUserId: 'submittedByUserId',
+  status: 'status',
+  reason: 'reason',
+  decision: 'decision',
+  reviewedByUserId: 'reviewedByUserId',
+  reviewedAt: 'reviewedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MerchantRemovalRequestScalarFieldEnum = (typeof MerchantRemovalRequestScalarFieldEnum)[keyof typeof MerchantRemovalRequestScalarFieldEnum]
+
+
+export const RestaurantSuggestionScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  address: 'address',
+  category: 'category',
+  recommendedDish: 'recommendedDish',
+  description: 'description',
+  images: 'images',
+  reason: 'reason',
+  submittedByUserId: 'submittedByUserId',
+  status: 'status',
+  reviewedByUserId: 'reviewedByUserId',
+  publishedMerchantId: 'publishedMerchantId',
+  reviewedAt: 'reviewedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RestaurantSuggestionScalarFieldEnum = (typeof RestaurantSuggestionScalarFieldEnum)[keyof typeof RestaurantSuggestionScalarFieldEnum]
+
+
+export const FunnelEventScalarFieldEnum = {
+  id: 'id',
+  eventType: 'eventType',
+  userId: 'userId',
+  merchantId: 'merchantId',
+  sessionKey: 'sessionKey',
+  metadata: 'metadata',
+  occurredAt: 'occurredAt'
+} as const
+
+export type FunnelEventScalarFieldEnum = (typeof FunnelEventScalarFieldEnum)[keyof typeof FunnelEventScalarFieldEnum]
+
+
+export const MonetizationFeePolicyScalarFieldEnum = {
+  id: 'id',
+  feeType: 'feeType',
+  amount: 'amount',
+  currency: 'currency',
+  isActive: 'isActive',
+  effectiveAt: 'effectiveAt',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MonetizationFeePolicyScalarFieldEnum = (typeof MonetizationFeePolicyScalarFieldEnum)[keyof typeof MonetizationFeePolicyScalarFieldEnum]
 
 
 export const NotificationScalarFieldEnum = {

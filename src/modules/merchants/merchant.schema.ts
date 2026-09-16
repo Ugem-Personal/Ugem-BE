@@ -18,6 +18,9 @@ export const merchantListSchema = z.object({
       restaurantType: z.string().trim().optional(),
       mainDishType: z.string().trim().optional(),
       priceRange: z.string().trim().optional(),
+      country: z.string().trim().max(100).optional(),
+      city: z.string().trim().max(150).optional(),
+      area: z.string().trim().max(150).optional(),
 
       latitude: z.coerce.number().min(-90).max(90).optional(),
 
@@ -60,6 +63,9 @@ export const merchantListSchema = z.object({
       mainDishType: query.mainDishType ?? query.MainDishType,
 
       priceRange: query.priceRange ?? query.PriceRange,
+      country: query.country,
+      city: query.city,
+      area: query.area,
 
       latitude: query.latitude ?? query.Latitude,
 
@@ -105,6 +111,10 @@ export const updateMerchantSchema = z.object({
       address: z.string().trim().min(5).max(500).optional(),
 
       openingHours: z.string().trim().min(1).max(300).optional(),
+
+      country: z.string().trim().min(2).max(100).optional(),
+      city: z.union([z.string().trim().max(150), z.literal(""), z.null()]).optional(),
+      area: z.union([z.string().trim().max(150), z.literal(""), z.null()]).optional(),
 
       bankCode: z
         .union([z.string().trim().min(2).max(20), z.literal(""), z.null()])

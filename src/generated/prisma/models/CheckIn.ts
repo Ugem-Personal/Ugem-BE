@@ -44,6 +44,14 @@ export type CheckInMinAggregateOutputType = {
   qrToken: string | null
   rewardBenefit: string | null
   notes: string | null
+  source: string | null
+  campaignId: string | null
+  bookingId: string | null
+  affiliateLinkId: string | null
+  checkInMethod: $Enums.CheckInMethod | null
+  suspicious: boolean | null
+  suspiciousReason: string | null
+  disputedAt: Date | null
   generatedAt: Date | null
   expiresAt: Date | null
   checkedInAt: Date | null
@@ -61,6 +69,14 @@ export type CheckInMaxAggregateOutputType = {
   qrToken: string | null
   rewardBenefit: string | null
   notes: string | null
+  source: string | null
+  campaignId: string | null
+  bookingId: string | null
+  affiliateLinkId: string | null
+  checkInMethod: $Enums.CheckInMethod | null
+  suspicious: boolean | null
+  suspiciousReason: string | null
+  disputedAt: Date | null
   generatedAt: Date | null
   expiresAt: Date | null
   checkedInAt: Date | null
@@ -78,6 +94,14 @@ export type CheckInCountAggregateOutputType = {
   qrToken: number
   rewardBenefit: number
   notes: number
+  source: number
+  campaignId: number
+  bookingId: number
+  affiliateLinkId: number
+  checkInMethod: number
+  suspicious: number
+  suspiciousReason: number
+  disputedAt: number
   generatedAt: number
   expiresAt: number
   checkedInAt: number
@@ -107,6 +131,14 @@ export type CheckInMinAggregateInputType = {
   qrToken?: true
   rewardBenefit?: true
   notes?: true
+  source?: true
+  campaignId?: true
+  bookingId?: true
+  affiliateLinkId?: true
+  checkInMethod?: true
+  suspicious?: true
+  suspiciousReason?: true
+  disputedAt?: true
   generatedAt?: true
   expiresAt?: true
   checkedInAt?: true
@@ -124,6 +156,14 @@ export type CheckInMaxAggregateInputType = {
   qrToken?: true
   rewardBenefit?: true
   notes?: true
+  source?: true
+  campaignId?: true
+  bookingId?: true
+  affiliateLinkId?: true
+  checkInMethod?: true
+  suspicious?: true
+  suspiciousReason?: true
+  disputedAt?: true
   generatedAt?: true
   expiresAt?: true
   checkedInAt?: true
@@ -141,6 +181,14 @@ export type CheckInCountAggregateInputType = {
   qrToken?: true
   rewardBenefit?: true
   notes?: true
+  source?: true
+  campaignId?: true
+  bookingId?: true
+  affiliateLinkId?: true
+  checkInMethod?: true
+  suspicious?: true
+  suspiciousReason?: true
+  disputedAt?: true
   generatedAt?: true
   expiresAt?: true
   checkedInAt?: true
@@ -245,6 +293,14 @@ export type CheckInGroupByOutputType = {
   qrToken: string | null
   rewardBenefit: string | null
   notes: string | null
+  source: string | null
+  campaignId: string | null
+  bookingId: string | null
+  affiliateLinkId: string | null
+  checkInMethod: $Enums.CheckInMethod
+  suspicious: boolean
+  suspiciousReason: string | null
+  disputedAt: Date | null
   generatedAt: Date
   expiresAt: Date | null
   checkedInAt: Date | null
@@ -285,6 +341,14 @@ export type CheckInWhereInput = {
   qrToken?: Prisma.StringNullableFilter<"CheckIn"> | string | null
   rewardBenefit?: Prisma.StringNullableFilter<"CheckIn"> | string | null
   notes?: Prisma.StringNullableFilter<"CheckIn"> | string | null
+  source?: Prisma.StringNullableFilter<"CheckIn"> | string | null
+  campaignId?: Prisma.StringNullableFilter<"CheckIn"> | string | null
+  bookingId?: Prisma.StringNullableFilter<"CheckIn"> | string | null
+  affiliateLinkId?: Prisma.StringNullableFilter<"CheckIn"> | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFilter<"CheckIn"> | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFilter<"CheckIn"> | boolean
+  suspiciousReason?: Prisma.StringNullableFilter<"CheckIn"> | string | null
+  disputedAt?: Prisma.DateTimeNullableFilter<"CheckIn"> | Date | string | null
   generatedAt?: Prisma.DateTimeFilter<"CheckIn"> | Date | string
   expiresAt?: Prisma.DateTimeNullableFilter<"CheckIn"> | Date | string | null
   checkedInAt?: Prisma.DateTimeNullableFilter<"CheckIn"> | Date | string | null
@@ -295,6 +359,10 @@ export type CheckInWhereInput = {
   order?: Prisma.XOR<Prisma.OrderNullableScalarRelationFilter, Prisma.OrderWhereInput> | null
   customer?: Prisma.XOR<Prisma.CustomerScalarRelationFilter, Prisma.CustomerWhereInput>
   merchant?: Prisma.XOR<Prisma.MerchantScalarRelationFilter, Prisma.MerchantWhereInput>
+  campaign?: Prisma.XOR<Prisma.CampaignNullableScalarRelationFilter, Prisma.CampaignWhereInput> | null
+  booking?: Prisma.XOR<Prisma.BookingNullableScalarRelationFilter, Prisma.BookingWhereInput> | null
+  affiliateLink?: Prisma.XOR<Prisma.AffiliateLinkNullableScalarRelationFilter, Prisma.AffiliateLinkWhereInput> | null
+  acquisitionEvent?: Prisma.XOR<Prisma.MerchantAcquisitionEventNullableScalarRelationFilter, Prisma.MerchantAcquisitionEventWhereInput> | null
 }
 
 export type CheckInOrderByWithRelationInput = {
@@ -305,6 +373,14 @@ export type CheckInOrderByWithRelationInput = {
   qrToken?: Prisma.SortOrderInput | Prisma.SortOrder
   rewardBenefit?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  source?: Prisma.SortOrderInput | Prisma.SortOrder
+  campaignId?: Prisma.SortOrderInput | Prisma.SortOrder
+  bookingId?: Prisma.SortOrderInput | Prisma.SortOrder
+  affiliateLinkId?: Prisma.SortOrderInput | Prisma.SortOrder
+  checkInMethod?: Prisma.SortOrder
+  suspicious?: Prisma.SortOrder
+  suspiciousReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  disputedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   generatedAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   checkedInAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -315,6 +391,10 @@ export type CheckInOrderByWithRelationInput = {
   order?: Prisma.OrderOrderByWithRelationInput
   customer?: Prisma.CustomerOrderByWithRelationInput
   merchant?: Prisma.MerchantOrderByWithRelationInput
+  campaign?: Prisma.CampaignOrderByWithRelationInput
+  booking?: Prisma.BookingOrderByWithRelationInput
+  affiliateLink?: Prisma.AffiliateLinkOrderByWithRelationInput
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventOrderByWithRelationInput
 }
 
 export type CheckInWhereUniqueInput = Prisma.AtLeast<{
@@ -328,6 +408,14 @@ export type CheckInWhereUniqueInput = Prisma.AtLeast<{
   merchantId?: Prisma.StringFilter<"CheckIn"> | string
   rewardBenefit?: Prisma.StringNullableFilter<"CheckIn"> | string | null
   notes?: Prisma.StringNullableFilter<"CheckIn"> | string | null
+  source?: Prisma.StringNullableFilter<"CheckIn"> | string | null
+  campaignId?: Prisma.StringNullableFilter<"CheckIn"> | string | null
+  bookingId?: Prisma.StringNullableFilter<"CheckIn"> | string | null
+  affiliateLinkId?: Prisma.StringNullableFilter<"CheckIn"> | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFilter<"CheckIn"> | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFilter<"CheckIn"> | boolean
+  suspiciousReason?: Prisma.StringNullableFilter<"CheckIn"> | string | null
+  disputedAt?: Prisma.DateTimeNullableFilter<"CheckIn"> | Date | string | null
   generatedAt?: Prisma.DateTimeFilter<"CheckIn"> | Date | string
   expiresAt?: Prisma.DateTimeNullableFilter<"CheckIn"> | Date | string | null
   checkedInAt?: Prisma.DateTimeNullableFilter<"CheckIn"> | Date | string | null
@@ -338,6 +426,10 @@ export type CheckInWhereUniqueInput = Prisma.AtLeast<{
   order?: Prisma.XOR<Prisma.OrderNullableScalarRelationFilter, Prisma.OrderWhereInput> | null
   customer?: Prisma.XOR<Prisma.CustomerScalarRelationFilter, Prisma.CustomerWhereInput>
   merchant?: Prisma.XOR<Prisma.MerchantScalarRelationFilter, Prisma.MerchantWhereInput>
+  campaign?: Prisma.XOR<Prisma.CampaignNullableScalarRelationFilter, Prisma.CampaignWhereInput> | null
+  booking?: Prisma.XOR<Prisma.BookingNullableScalarRelationFilter, Prisma.BookingWhereInput> | null
+  affiliateLink?: Prisma.XOR<Prisma.AffiliateLinkNullableScalarRelationFilter, Prisma.AffiliateLinkWhereInput> | null
+  acquisitionEvent?: Prisma.XOR<Prisma.MerchantAcquisitionEventNullableScalarRelationFilter, Prisma.MerchantAcquisitionEventWhereInput> | null
 }, "id" | "orderId" | "qrToken">
 
 export type CheckInOrderByWithAggregationInput = {
@@ -348,6 +440,14 @@ export type CheckInOrderByWithAggregationInput = {
   qrToken?: Prisma.SortOrderInput | Prisma.SortOrder
   rewardBenefit?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  source?: Prisma.SortOrderInput | Prisma.SortOrder
+  campaignId?: Prisma.SortOrderInput | Prisma.SortOrder
+  bookingId?: Prisma.SortOrderInput | Prisma.SortOrder
+  affiliateLinkId?: Prisma.SortOrderInput | Prisma.SortOrder
+  checkInMethod?: Prisma.SortOrder
+  suspicious?: Prisma.SortOrder
+  suspiciousReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  disputedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   generatedAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   checkedInAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -373,6 +473,14 @@ export type CheckInScalarWhereWithAggregatesInput = {
   qrToken?: Prisma.StringNullableWithAggregatesFilter<"CheckIn"> | string | null
   rewardBenefit?: Prisma.StringNullableWithAggregatesFilter<"CheckIn"> | string | null
   notes?: Prisma.StringNullableWithAggregatesFilter<"CheckIn"> | string | null
+  source?: Prisma.StringNullableWithAggregatesFilter<"CheckIn"> | string | null
+  campaignId?: Prisma.StringNullableWithAggregatesFilter<"CheckIn"> | string | null
+  bookingId?: Prisma.StringNullableWithAggregatesFilter<"CheckIn"> | string | null
+  affiliateLinkId?: Prisma.StringNullableWithAggregatesFilter<"CheckIn"> | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodWithAggregatesFilter<"CheckIn"> | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolWithAggregatesFilter<"CheckIn"> | boolean
+  suspiciousReason?: Prisma.StringNullableWithAggregatesFilter<"CheckIn"> | string | null
+  disputedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CheckIn"> | Date | string | null
   generatedAt?: Prisma.DateTimeWithAggregatesFilter<"CheckIn"> | Date | string
   expiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CheckIn"> | Date | string | null
   checkedInAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CheckIn"> | Date | string | null
@@ -387,6 +495,11 @@ export type CheckInCreateInput = {
   qrToken?: string | null
   rewardBenefit?: string | null
   notes?: string | null
+  source?: string | null
+  checkInMethod?: $Enums.CheckInMethod
+  suspicious?: boolean
+  suspiciousReason?: string | null
+  disputedAt?: Date | string | null
   generatedAt?: Date | string
   expiresAt?: Date | string | null
   checkedInAt?: Date | string | null
@@ -397,6 +510,10 @@ export type CheckInCreateInput = {
   order?: Prisma.OrderCreateNestedOneWithoutCheckInInput
   customer: Prisma.CustomerCreateNestedOneWithoutCheckInsInput
   merchant: Prisma.MerchantCreateNestedOneWithoutCheckInsInput
+  campaign?: Prisma.CampaignCreateNestedOneWithoutCheckInsInput
+  booking?: Prisma.BookingCreateNestedOneWithoutCheckInsInput
+  affiliateLink?: Prisma.AffiliateLinkCreateNestedOneWithoutCheckInsInput
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventCreateNestedOneWithoutCheckInInput
 }
 
 export type CheckInUncheckedCreateInput = {
@@ -407,6 +524,14 @@ export type CheckInUncheckedCreateInput = {
   qrToken?: string | null
   rewardBenefit?: string | null
   notes?: string | null
+  source?: string | null
+  campaignId?: string | null
+  bookingId?: string | null
+  affiliateLinkId?: string | null
+  checkInMethod?: $Enums.CheckInMethod
+  suspicious?: boolean
+  suspiciousReason?: string | null
+  disputedAt?: Date | string | null
   generatedAt?: Date | string
   expiresAt?: Date | string | null
   checkedInAt?: Date | string | null
@@ -414,6 +539,7 @@ export type CheckInUncheckedCreateInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   status?: $Enums.CheckInStatus
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedOneWithoutCheckInInput
 }
 
 export type CheckInUpdateInput = {
@@ -421,6 +547,11 @@ export type CheckInUpdateInput = {
   qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardBenefit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspiciousReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -431,6 +562,10 @@ export type CheckInUpdateInput = {
   order?: Prisma.OrderUpdateOneWithoutCheckInNestedInput
   customer?: Prisma.CustomerUpdateOneRequiredWithoutCheckInsNestedInput
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutCheckInsNestedInput
+  campaign?: Prisma.CampaignUpdateOneWithoutCheckInsNestedInput
+  booking?: Prisma.BookingUpdateOneWithoutCheckInsNestedInput
+  affiliateLink?: Prisma.AffiliateLinkUpdateOneWithoutCheckInsNestedInput
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventUpdateOneWithoutCheckInNestedInput
 }
 
 export type CheckInUncheckedUpdateInput = {
@@ -441,6 +576,14 @@ export type CheckInUncheckedUpdateInput = {
   qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardBenefit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  campaignId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspiciousReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -448,6 +591,7 @@ export type CheckInUncheckedUpdateInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventUncheckedUpdateOneWithoutCheckInNestedInput
 }
 
 export type CheckInCreateManyInput = {
@@ -458,6 +602,14 @@ export type CheckInCreateManyInput = {
   qrToken?: string | null
   rewardBenefit?: string | null
   notes?: string | null
+  source?: string | null
+  campaignId?: string | null
+  bookingId?: string | null
+  affiliateLinkId?: string | null
+  checkInMethod?: $Enums.CheckInMethod
+  suspicious?: boolean
+  suspiciousReason?: string | null
+  disputedAt?: Date | string | null
   generatedAt?: Date | string
   expiresAt?: Date | string | null
   checkedInAt?: Date | string | null
@@ -472,6 +624,11 @@ export type CheckInUpdateManyMutationInput = {
   qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardBenefit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspiciousReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -489,6 +646,14 @@ export type CheckInUncheckedUpdateManyInput = {
   qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardBenefit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  campaignId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspiciousReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -521,6 +686,14 @@ export type CheckInCountOrderByAggregateInput = {
   qrToken?: Prisma.SortOrder
   rewardBenefit?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  source?: Prisma.SortOrder
+  campaignId?: Prisma.SortOrder
+  bookingId?: Prisma.SortOrder
+  affiliateLinkId?: Prisma.SortOrder
+  checkInMethod?: Prisma.SortOrder
+  suspicious?: Prisma.SortOrder
+  suspiciousReason?: Prisma.SortOrder
+  disputedAt?: Prisma.SortOrder
   generatedAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   checkedInAt?: Prisma.SortOrder
@@ -543,6 +716,14 @@ export type CheckInMaxOrderByAggregateInput = {
   qrToken?: Prisma.SortOrder
   rewardBenefit?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  source?: Prisma.SortOrder
+  campaignId?: Prisma.SortOrder
+  bookingId?: Prisma.SortOrder
+  affiliateLinkId?: Prisma.SortOrder
+  checkInMethod?: Prisma.SortOrder
+  suspicious?: Prisma.SortOrder
+  suspiciousReason?: Prisma.SortOrder
+  disputedAt?: Prisma.SortOrder
   generatedAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   checkedInAt?: Prisma.SortOrder
@@ -560,6 +741,14 @@ export type CheckInMinOrderByAggregateInput = {
   qrToken?: Prisma.SortOrder
   rewardBenefit?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  source?: Prisma.SortOrder
+  campaignId?: Prisma.SortOrder
+  bookingId?: Prisma.SortOrder
+  affiliateLinkId?: Prisma.SortOrder
+  checkInMethod?: Prisma.SortOrder
+  suspicious?: Prisma.SortOrder
+  suspiciousReason?: Prisma.SortOrder
+  disputedAt?: Prisma.SortOrder
   generatedAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   checkedInAt?: Prisma.SortOrder
@@ -572,6 +761,11 @@ export type CheckInMinOrderByAggregateInput = {
 export type CheckInSumOrderByAggregateInput = {
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
+}
+
+export type CheckInScalarRelationFilter = {
+  is?: Prisma.CheckInWhereInput
+  isNot?: Prisma.CheckInWhereInput
 }
 
 export type CheckInCreateNestedManyWithoutCustomerInput = {
@@ -690,8 +884,152 @@ export type CheckInUncheckedUpdateOneWithoutOrderNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CheckInUpdateToOneWithWhereWithoutOrderInput, Prisma.CheckInUpdateWithoutOrderInput>, Prisma.CheckInUncheckedUpdateWithoutOrderInput>
 }
 
+export type CheckInCreateNestedManyWithoutAffiliateLinkInput = {
+  create?: Prisma.XOR<Prisma.CheckInCreateWithoutAffiliateLinkInput, Prisma.CheckInUncheckedCreateWithoutAffiliateLinkInput> | Prisma.CheckInCreateWithoutAffiliateLinkInput[] | Prisma.CheckInUncheckedCreateWithoutAffiliateLinkInput[]
+  connectOrCreate?: Prisma.CheckInCreateOrConnectWithoutAffiliateLinkInput | Prisma.CheckInCreateOrConnectWithoutAffiliateLinkInput[]
+  createMany?: Prisma.CheckInCreateManyAffiliateLinkInputEnvelope
+  connect?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+}
+
+export type CheckInUncheckedCreateNestedManyWithoutAffiliateLinkInput = {
+  create?: Prisma.XOR<Prisma.CheckInCreateWithoutAffiliateLinkInput, Prisma.CheckInUncheckedCreateWithoutAffiliateLinkInput> | Prisma.CheckInCreateWithoutAffiliateLinkInput[] | Prisma.CheckInUncheckedCreateWithoutAffiliateLinkInput[]
+  connectOrCreate?: Prisma.CheckInCreateOrConnectWithoutAffiliateLinkInput | Prisma.CheckInCreateOrConnectWithoutAffiliateLinkInput[]
+  createMany?: Prisma.CheckInCreateManyAffiliateLinkInputEnvelope
+  connect?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+}
+
+export type CheckInUpdateManyWithoutAffiliateLinkNestedInput = {
+  create?: Prisma.XOR<Prisma.CheckInCreateWithoutAffiliateLinkInput, Prisma.CheckInUncheckedCreateWithoutAffiliateLinkInput> | Prisma.CheckInCreateWithoutAffiliateLinkInput[] | Prisma.CheckInUncheckedCreateWithoutAffiliateLinkInput[]
+  connectOrCreate?: Prisma.CheckInCreateOrConnectWithoutAffiliateLinkInput | Prisma.CheckInCreateOrConnectWithoutAffiliateLinkInput[]
+  upsert?: Prisma.CheckInUpsertWithWhereUniqueWithoutAffiliateLinkInput | Prisma.CheckInUpsertWithWhereUniqueWithoutAffiliateLinkInput[]
+  createMany?: Prisma.CheckInCreateManyAffiliateLinkInputEnvelope
+  set?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+  disconnect?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+  delete?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+  connect?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+  update?: Prisma.CheckInUpdateWithWhereUniqueWithoutAffiliateLinkInput | Prisma.CheckInUpdateWithWhereUniqueWithoutAffiliateLinkInput[]
+  updateMany?: Prisma.CheckInUpdateManyWithWhereWithoutAffiliateLinkInput | Prisma.CheckInUpdateManyWithWhereWithoutAffiliateLinkInput[]
+  deleteMany?: Prisma.CheckInScalarWhereInput | Prisma.CheckInScalarWhereInput[]
+}
+
+export type CheckInUncheckedUpdateManyWithoutAffiliateLinkNestedInput = {
+  create?: Prisma.XOR<Prisma.CheckInCreateWithoutAffiliateLinkInput, Prisma.CheckInUncheckedCreateWithoutAffiliateLinkInput> | Prisma.CheckInCreateWithoutAffiliateLinkInput[] | Prisma.CheckInUncheckedCreateWithoutAffiliateLinkInput[]
+  connectOrCreate?: Prisma.CheckInCreateOrConnectWithoutAffiliateLinkInput | Prisma.CheckInCreateOrConnectWithoutAffiliateLinkInput[]
+  upsert?: Prisma.CheckInUpsertWithWhereUniqueWithoutAffiliateLinkInput | Prisma.CheckInUpsertWithWhereUniqueWithoutAffiliateLinkInput[]
+  createMany?: Prisma.CheckInCreateManyAffiliateLinkInputEnvelope
+  set?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+  disconnect?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+  delete?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+  connect?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+  update?: Prisma.CheckInUpdateWithWhereUniqueWithoutAffiliateLinkInput | Prisma.CheckInUpdateWithWhereUniqueWithoutAffiliateLinkInput[]
+  updateMany?: Prisma.CheckInUpdateManyWithWhereWithoutAffiliateLinkInput | Prisma.CheckInUpdateManyWithWhereWithoutAffiliateLinkInput[]
+  deleteMany?: Prisma.CheckInScalarWhereInput | Prisma.CheckInScalarWhereInput[]
+}
+
+export type CheckInCreateNestedManyWithoutCampaignInput = {
+  create?: Prisma.XOR<Prisma.CheckInCreateWithoutCampaignInput, Prisma.CheckInUncheckedCreateWithoutCampaignInput> | Prisma.CheckInCreateWithoutCampaignInput[] | Prisma.CheckInUncheckedCreateWithoutCampaignInput[]
+  connectOrCreate?: Prisma.CheckInCreateOrConnectWithoutCampaignInput | Prisma.CheckInCreateOrConnectWithoutCampaignInput[]
+  createMany?: Prisma.CheckInCreateManyCampaignInputEnvelope
+  connect?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+}
+
+export type CheckInUncheckedCreateNestedManyWithoutCampaignInput = {
+  create?: Prisma.XOR<Prisma.CheckInCreateWithoutCampaignInput, Prisma.CheckInUncheckedCreateWithoutCampaignInput> | Prisma.CheckInCreateWithoutCampaignInput[] | Prisma.CheckInUncheckedCreateWithoutCampaignInput[]
+  connectOrCreate?: Prisma.CheckInCreateOrConnectWithoutCampaignInput | Prisma.CheckInCreateOrConnectWithoutCampaignInput[]
+  createMany?: Prisma.CheckInCreateManyCampaignInputEnvelope
+  connect?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+}
+
+export type CheckInUpdateManyWithoutCampaignNestedInput = {
+  create?: Prisma.XOR<Prisma.CheckInCreateWithoutCampaignInput, Prisma.CheckInUncheckedCreateWithoutCampaignInput> | Prisma.CheckInCreateWithoutCampaignInput[] | Prisma.CheckInUncheckedCreateWithoutCampaignInput[]
+  connectOrCreate?: Prisma.CheckInCreateOrConnectWithoutCampaignInput | Prisma.CheckInCreateOrConnectWithoutCampaignInput[]
+  upsert?: Prisma.CheckInUpsertWithWhereUniqueWithoutCampaignInput | Prisma.CheckInUpsertWithWhereUniqueWithoutCampaignInput[]
+  createMany?: Prisma.CheckInCreateManyCampaignInputEnvelope
+  set?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+  disconnect?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+  delete?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+  connect?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+  update?: Prisma.CheckInUpdateWithWhereUniqueWithoutCampaignInput | Prisma.CheckInUpdateWithWhereUniqueWithoutCampaignInput[]
+  updateMany?: Prisma.CheckInUpdateManyWithWhereWithoutCampaignInput | Prisma.CheckInUpdateManyWithWhereWithoutCampaignInput[]
+  deleteMany?: Prisma.CheckInScalarWhereInput | Prisma.CheckInScalarWhereInput[]
+}
+
+export type CheckInUncheckedUpdateManyWithoutCampaignNestedInput = {
+  create?: Prisma.XOR<Prisma.CheckInCreateWithoutCampaignInput, Prisma.CheckInUncheckedCreateWithoutCampaignInput> | Prisma.CheckInCreateWithoutCampaignInput[] | Prisma.CheckInUncheckedCreateWithoutCampaignInput[]
+  connectOrCreate?: Prisma.CheckInCreateOrConnectWithoutCampaignInput | Prisma.CheckInCreateOrConnectWithoutCampaignInput[]
+  upsert?: Prisma.CheckInUpsertWithWhereUniqueWithoutCampaignInput | Prisma.CheckInUpsertWithWhereUniqueWithoutCampaignInput[]
+  createMany?: Prisma.CheckInCreateManyCampaignInputEnvelope
+  set?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+  disconnect?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+  delete?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+  connect?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+  update?: Prisma.CheckInUpdateWithWhereUniqueWithoutCampaignInput | Prisma.CheckInUpdateWithWhereUniqueWithoutCampaignInput[]
+  updateMany?: Prisma.CheckInUpdateManyWithWhereWithoutCampaignInput | Prisma.CheckInUpdateManyWithWhereWithoutCampaignInput[]
+  deleteMany?: Prisma.CheckInScalarWhereInput | Prisma.CheckInScalarWhereInput[]
+}
+
+export type EnumCheckInMethodFieldUpdateOperationsInput = {
+  set?: $Enums.CheckInMethod
+}
+
 export type EnumCheckInStatusFieldUpdateOperationsInput = {
   set?: $Enums.CheckInStatus
+}
+
+export type CheckInCreateNestedOneWithoutAcquisitionEventInput = {
+  create?: Prisma.XOR<Prisma.CheckInCreateWithoutAcquisitionEventInput, Prisma.CheckInUncheckedCreateWithoutAcquisitionEventInput>
+  connectOrCreate?: Prisma.CheckInCreateOrConnectWithoutAcquisitionEventInput
+  connect?: Prisma.CheckInWhereUniqueInput
+}
+
+export type CheckInUpdateOneRequiredWithoutAcquisitionEventNestedInput = {
+  create?: Prisma.XOR<Prisma.CheckInCreateWithoutAcquisitionEventInput, Prisma.CheckInUncheckedCreateWithoutAcquisitionEventInput>
+  connectOrCreate?: Prisma.CheckInCreateOrConnectWithoutAcquisitionEventInput
+  upsert?: Prisma.CheckInUpsertWithoutAcquisitionEventInput
+  connect?: Prisma.CheckInWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CheckInUpdateToOneWithWhereWithoutAcquisitionEventInput, Prisma.CheckInUpdateWithoutAcquisitionEventInput>, Prisma.CheckInUncheckedUpdateWithoutAcquisitionEventInput>
+}
+
+export type CheckInCreateNestedManyWithoutBookingInput = {
+  create?: Prisma.XOR<Prisma.CheckInCreateWithoutBookingInput, Prisma.CheckInUncheckedCreateWithoutBookingInput> | Prisma.CheckInCreateWithoutBookingInput[] | Prisma.CheckInUncheckedCreateWithoutBookingInput[]
+  connectOrCreate?: Prisma.CheckInCreateOrConnectWithoutBookingInput | Prisma.CheckInCreateOrConnectWithoutBookingInput[]
+  createMany?: Prisma.CheckInCreateManyBookingInputEnvelope
+  connect?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+}
+
+export type CheckInUncheckedCreateNestedManyWithoutBookingInput = {
+  create?: Prisma.XOR<Prisma.CheckInCreateWithoutBookingInput, Prisma.CheckInUncheckedCreateWithoutBookingInput> | Prisma.CheckInCreateWithoutBookingInput[] | Prisma.CheckInUncheckedCreateWithoutBookingInput[]
+  connectOrCreate?: Prisma.CheckInCreateOrConnectWithoutBookingInput | Prisma.CheckInCreateOrConnectWithoutBookingInput[]
+  createMany?: Prisma.CheckInCreateManyBookingInputEnvelope
+  connect?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+}
+
+export type CheckInUpdateManyWithoutBookingNestedInput = {
+  create?: Prisma.XOR<Prisma.CheckInCreateWithoutBookingInput, Prisma.CheckInUncheckedCreateWithoutBookingInput> | Prisma.CheckInCreateWithoutBookingInput[] | Prisma.CheckInUncheckedCreateWithoutBookingInput[]
+  connectOrCreate?: Prisma.CheckInCreateOrConnectWithoutBookingInput | Prisma.CheckInCreateOrConnectWithoutBookingInput[]
+  upsert?: Prisma.CheckInUpsertWithWhereUniqueWithoutBookingInput | Prisma.CheckInUpsertWithWhereUniqueWithoutBookingInput[]
+  createMany?: Prisma.CheckInCreateManyBookingInputEnvelope
+  set?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+  disconnect?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+  delete?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+  connect?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+  update?: Prisma.CheckInUpdateWithWhereUniqueWithoutBookingInput | Prisma.CheckInUpdateWithWhereUniqueWithoutBookingInput[]
+  updateMany?: Prisma.CheckInUpdateManyWithWhereWithoutBookingInput | Prisma.CheckInUpdateManyWithWhereWithoutBookingInput[]
+  deleteMany?: Prisma.CheckInScalarWhereInput | Prisma.CheckInScalarWhereInput[]
+}
+
+export type CheckInUncheckedUpdateManyWithoutBookingNestedInput = {
+  create?: Prisma.XOR<Prisma.CheckInCreateWithoutBookingInput, Prisma.CheckInUncheckedCreateWithoutBookingInput> | Prisma.CheckInCreateWithoutBookingInput[] | Prisma.CheckInUncheckedCreateWithoutBookingInput[]
+  connectOrCreate?: Prisma.CheckInCreateOrConnectWithoutBookingInput | Prisma.CheckInCreateOrConnectWithoutBookingInput[]
+  upsert?: Prisma.CheckInUpsertWithWhereUniqueWithoutBookingInput | Prisma.CheckInUpsertWithWhereUniqueWithoutBookingInput[]
+  createMany?: Prisma.CheckInCreateManyBookingInputEnvelope
+  set?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+  disconnect?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+  delete?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+  connect?: Prisma.CheckInWhereUniqueInput | Prisma.CheckInWhereUniqueInput[]
+  update?: Prisma.CheckInUpdateWithWhereUniqueWithoutBookingInput | Prisma.CheckInUpdateWithWhereUniqueWithoutBookingInput[]
+  updateMany?: Prisma.CheckInUpdateManyWithWhereWithoutBookingInput | Prisma.CheckInUpdateManyWithWhereWithoutBookingInput[]
+  deleteMany?: Prisma.CheckInScalarWhereInput | Prisma.CheckInScalarWhereInput[]
 }
 
 export type CheckInCreateWithoutCustomerInput = {
@@ -699,6 +1037,11 @@ export type CheckInCreateWithoutCustomerInput = {
   qrToken?: string | null
   rewardBenefit?: string | null
   notes?: string | null
+  source?: string | null
+  checkInMethod?: $Enums.CheckInMethod
+  suspicious?: boolean
+  suspiciousReason?: string | null
+  disputedAt?: Date | string | null
   generatedAt?: Date | string
   expiresAt?: Date | string | null
   checkedInAt?: Date | string | null
@@ -708,6 +1051,10 @@ export type CheckInCreateWithoutCustomerInput = {
   status?: $Enums.CheckInStatus
   order?: Prisma.OrderCreateNestedOneWithoutCheckInInput
   merchant: Prisma.MerchantCreateNestedOneWithoutCheckInsInput
+  campaign?: Prisma.CampaignCreateNestedOneWithoutCheckInsInput
+  booking?: Prisma.BookingCreateNestedOneWithoutCheckInsInput
+  affiliateLink?: Prisma.AffiliateLinkCreateNestedOneWithoutCheckInsInput
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventCreateNestedOneWithoutCheckInInput
 }
 
 export type CheckInUncheckedCreateWithoutCustomerInput = {
@@ -717,6 +1064,14 @@ export type CheckInUncheckedCreateWithoutCustomerInput = {
   qrToken?: string | null
   rewardBenefit?: string | null
   notes?: string | null
+  source?: string | null
+  campaignId?: string | null
+  bookingId?: string | null
+  affiliateLinkId?: string | null
+  checkInMethod?: $Enums.CheckInMethod
+  suspicious?: boolean
+  suspiciousReason?: string | null
+  disputedAt?: Date | string | null
   generatedAt?: Date | string
   expiresAt?: Date | string | null
   checkedInAt?: Date | string | null
@@ -724,6 +1079,7 @@ export type CheckInUncheckedCreateWithoutCustomerInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   status?: $Enums.CheckInStatus
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedOneWithoutCheckInInput
 }
 
 export type CheckInCreateOrConnectWithoutCustomerInput = {
@@ -763,6 +1119,14 @@ export type CheckInScalarWhereInput = {
   qrToken?: Prisma.StringNullableFilter<"CheckIn"> | string | null
   rewardBenefit?: Prisma.StringNullableFilter<"CheckIn"> | string | null
   notes?: Prisma.StringNullableFilter<"CheckIn"> | string | null
+  source?: Prisma.StringNullableFilter<"CheckIn"> | string | null
+  campaignId?: Prisma.StringNullableFilter<"CheckIn"> | string | null
+  bookingId?: Prisma.StringNullableFilter<"CheckIn"> | string | null
+  affiliateLinkId?: Prisma.StringNullableFilter<"CheckIn"> | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFilter<"CheckIn"> | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFilter<"CheckIn"> | boolean
+  suspiciousReason?: Prisma.StringNullableFilter<"CheckIn"> | string | null
+  disputedAt?: Prisma.DateTimeNullableFilter<"CheckIn"> | Date | string | null
   generatedAt?: Prisma.DateTimeFilter<"CheckIn"> | Date | string
   expiresAt?: Prisma.DateTimeNullableFilter<"CheckIn"> | Date | string | null
   checkedInAt?: Prisma.DateTimeNullableFilter<"CheckIn"> | Date | string | null
@@ -777,6 +1141,11 @@ export type CheckInCreateWithoutMerchantInput = {
   qrToken?: string | null
   rewardBenefit?: string | null
   notes?: string | null
+  source?: string | null
+  checkInMethod?: $Enums.CheckInMethod
+  suspicious?: boolean
+  suspiciousReason?: string | null
+  disputedAt?: Date | string | null
   generatedAt?: Date | string
   expiresAt?: Date | string | null
   checkedInAt?: Date | string | null
@@ -786,6 +1155,10 @@ export type CheckInCreateWithoutMerchantInput = {
   status?: $Enums.CheckInStatus
   order?: Prisma.OrderCreateNestedOneWithoutCheckInInput
   customer: Prisma.CustomerCreateNestedOneWithoutCheckInsInput
+  campaign?: Prisma.CampaignCreateNestedOneWithoutCheckInsInput
+  booking?: Prisma.BookingCreateNestedOneWithoutCheckInsInput
+  affiliateLink?: Prisma.AffiliateLinkCreateNestedOneWithoutCheckInsInput
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventCreateNestedOneWithoutCheckInInput
 }
 
 export type CheckInUncheckedCreateWithoutMerchantInput = {
@@ -795,6 +1168,14 @@ export type CheckInUncheckedCreateWithoutMerchantInput = {
   qrToken?: string | null
   rewardBenefit?: string | null
   notes?: string | null
+  source?: string | null
+  campaignId?: string | null
+  bookingId?: string | null
+  affiliateLinkId?: string | null
+  checkInMethod?: $Enums.CheckInMethod
+  suspicious?: boolean
+  suspiciousReason?: string | null
+  disputedAt?: Date | string | null
   generatedAt?: Date | string
   expiresAt?: Date | string | null
   checkedInAt?: Date | string | null
@@ -802,6 +1183,7 @@ export type CheckInUncheckedCreateWithoutMerchantInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   status?: $Enums.CheckInStatus
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedOneWithoutCheckInInput
 }
 
 export type CheckInCreateOrConnectWithoutMerchantInput = {
@@ -835,6 +1217,11 @@ export type CheckInCreateWithoutOrderInput = {
   qrToken?: string | null
   rewardBenefit?: string | null
   notes?: string | null
+  source?: string | null
+  checkInMethod?: $Enums.CheckInMethod
+  suspicious?: boolean
+  suspiciousReason?: string | null
+  disputedAt?: Date | string | null
   generatedAt?: Date | string
   expiresAt?: Date | string | null
   checkedInAt?: Date | string | null
@@ -844,6 +1231,10 @@ export type CheckInCreateWithoutOrderInput = {
   status?: $Enums.CheckInStatus
   customer: Prisma.CustomerCreateNestedOneWithoutCheckInsInput
   merchant: Prisma.MerchantCreateNestedOneWithoutCheckInsInput
+  campaign?: Prisma.CampaignCreateNestedOneWithoutCheckInsInput
+  booking?: Prisma.BookingCreateNestedOneWithoutCheckInsInput
+  affiliateLink?: Prisma.AffiliateLinkCreateNestedOneWithoutCheckInsInput
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventCreateNestedOneWithoutCheckInInput
 }
 
 export type CheckInUncheckedCreateWithoutOrderInput = {
@@ -853,6 +1244,14 @@ export type CheckInUncheckedCreateWithoutOrderInput = {
   qrToken?: string | null
   rewardBenefit?: string | null
   notes?: string | null
+  source?: string | null
+  campaignId?: string | null
+  bookingId?: string | null
+  affiliateLinkId?: string | null
+  checkInMethod?: $Enums.CheckInMethod
+  suspicious?: boolean
+  suspiciousReason?: string | null
+  disputedAt?: Date | string | null
   generatedAt?: Date | string
   expiresAt?: Date | string | null
   checkedInAt?: Date | string | null
@@ -860,6 +1259,7 @@ export type CheckInUncheckedCreateWithoutOrderInput = {
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   status?: $Enums.CheckInStatus
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedOneWithoutCheckInInput
 }
 
 export type CheckInCreateOrConnectWithoutOrderInput = {
@@ -883,6 +1283,11 @@ export type CheckInUpdateWithoutOrderInput = {
   qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardBenefit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspiciousReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -892,6 +1297,10 @@ export type CheckInUpdateWithoutOrderInput = {
   status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
   customer?: Prisma.CustomerUpdateOneRequiredWithoutCheckInsNestedInput
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutCheckInsNestedInput
+  campaign?: Prisma.CampaignUpdateOneWithoutCheckInsNestedInput
+  booking?: Prisma.BookingUpdateOneWithoutCheckInsNestedInput
+  affiliateLink?: Prisma.AffiliateLinkUpdateOneWithoutCheckInsNestedInput
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventUpdateOneWithoutCheckInNestedInput
 }
 
 export type CheckInUncheckedUpdateWithoutOrderInput = {
@@ -901,6 +1310,283 @@ export type CheckInUncheckedUpdateWithoutOrderInput = {
   qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardBenefit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  campaignId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspiciousReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventUncheckedUpdateOneWithoutCheckInNestedInput
+}
+
+export type CheckInCreateWithoutAffiliateLinkInput = {
+  id?: string
+  qrToken?: string | null
+  rewardBenefit?: string | null
+  notes?: string | null
+  source?: string | null
+  checkInMethod?: $Enums.CheckInMethod
+  suspicious?: boolean
+  suspiciousReason?: string | null
+  disputedAt?: Date | string | null
+  generatedAt?: Date | string
+  expiresAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: $Enums.CheckInStatus
+  order?: Prisma.OrderCreateNestedOneWithoutCheckInInput
+  customer: Prisma.CustomerCreateNestedOneWithoutCheckInsInput
+  merchant: Prisma.MerchantCreateNestedOneWithoutCheckInsInput
+  campaign?: Prisma.CampaignCreateNestedOneWithoutCheckInsInput
+  booking?: Prisma.BookingCreateNestedOneWithoutCheckInsInput
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventCreateNestedOneWithoutCheckInInput
+}
+
+export type CheckInUncheckedCreateWithoutAffiliateLinkInput = {
+  id?: string
+  orderId?: string | null
+  customerId: string
+  merchantId: string
+  qrToken?: string | null
+  rewardBenefit?: string | null
+  notes?: string | null
+  source?: string | null
+  campaignId?: string | null
+  bookingId?: string | null
+  checkInMethod?: $Enums.CheckInMethod
+  suspicious?: boolean
+  suspiciousReason?: string | null
+  disputedAt?: Date | string | null
+  generatedAt?: Date | string
+  expiresAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: $Enums.CheckInStatus
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedOneWithoutCheckInInput
+}
+
+export type CheckInCreateOrConnectWithoutAffiliateLinkInput = {
+  where: Prisma.CheckInWhereUniqueInput
+  create: Prisma.XOR<Prisma.CheckInCreateWithoutAffiliateLinkInput, Prisma.CheckInUncheckedCreateWithoutAffiliateLinkInput>
+}
+
+export type CheckInCreateManyAffiliateLinkInputEnvelope = {
+  data: Prisma.CheckInCreateManyAffiliateLinkInput | Prisma.CheckInCreateManyAffiliateLinkInput[]
+  skipDuplicates?: boolean
+}
+
+export type CheckInUpsertWithWhereUniqueWithoutAffiliateLinkInput = {
+  where: Prisma.CheckInWhereUniqueInput
+  update: Prisma.XOR<Prisma.CheckInUpdateWithoutAffiliateLinkInput, Prisma.CheckInUncheckedUpdateWithoutAffiliateLinkInput>
+  create: Prisma.XOR<Prisma.CheckInCreateWithoutAffiliateLinkInput, Prisma.CheckInUncheckedCreateWithoutAffiliateLinkInput>
+}
+
+export type CheckInUpdateWithWhereUniqueWithoutAffiliateLinkInput = {
+  where: Prisma.CheckInWhereUniqueInput
+  data: Prisma.XOR<Prisma.CheckInUpdateWithoutAffiliateLinkInput, Prisma.CheckInUncheckedUpdateWithoutAffiliateLinkInput>
+}
+
+export type CheckInUpdateManyWithWhereWithoutAffiliateLinkInput = {
+  where: Prisma.CheckInScalarWhereInput
+  data: Prisma.XOR<Prisma.CheckInUpdateManyMutationInput, Prisma.CheckInUncheckedUpdateManyWithoutAffiliateLinkInput>
+}
+
+export type CheckInCreateWithoutCampaignInput = {
+  id?: string
+  qrToken?: string | null
+  rewardBenefit?: string | null
+  notes?: string | null
+  source?: string | null
+  checkInMethod?: $Enums.CheckInMethod
+  suspicious?: boolean
+  suspiciousReason?: string | null
+  disputedAt?: Date | string | null
+  generatedAt?: Date | string
+  expiresAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: $Enums.CheckInStatus
+  order?: Prisma.OrderCreateNestedOneWithoutCheckInInput
+  customer: Prisma.CustomerCreateNestedOneWithoutCheckInsInput
+  merchant: Prisma.MerchantCreateNestedOneWithoutCheckInsInput
+  booking?: Prisma.BookingCreateNestedOneWithoutCheckInsInput
+  affiliateLink?: Prisma.AffiliateLinkCreateNestedOneWithoutCheckInsInput
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventCreateNestedOneWithoutCheckInInput
+}
+
+export type CheckInUncheckedCreateWithoutCampaignInput = {
+  id?: string
+  orderId?: string | null
+  customerId: string
+  merchantId: string
+  qrToken?: string | null
+  rewardBenefit?: string | null
+  notes?: string | null
+  source?: string | null
+  bookingId?: string | null
+  affiliateLinkId?: string | null
+  checkInMethod?: $Enums.CheckInMethod
+  suspicious?: boolean
+  suspiciousReason?: string | null
+  disputedAt?: Date | string | null
+  generatedAt?: Date | string
+  expiresAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: $Enums.CheckInStatus
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedOneWithoutCheckInInput
+}
+
+export type CheckInCreateOrConnectWithoutCampaignInput = {
+  where: Prisma.CheckInWhereUniqueInput
+  create: Prisma.XOR<Prisma.CheckInCreateWithoutCampaignInput, Prisma.CheckInUncheckedCreateWithoutCampaignInput>
+}
+
+export type CheckInCreateManyCampaignInputEnvelope = {
+  data: Prisma.CheckInCreateManyCampaignInput | Prisma.CheckInCreateManyCampaignInput[]
+  skipDuplicates?: boolean
+}
+
+export type CheckInUpsertWithWhereUniqueWithoutCampaignInput = {
+  where: Prisma.CheckInWhereUniqueInput
+  update: Prisma.XOR<Prisma.CheckInUpdateWithoutCampaignInput, Prisma.CheckInUncheckedUpdateWithoutCampaignInput>
+  create: Prisma.XOR<Prisma.CheckInCreateWithoutCampaignInput, Prisma.CheckInUncheckedCreateWithoutCampaignInput>
+}
+
+export type CheckInUpdateWithWhereUniqueWithoutCampaignInput = {
+  where: Prisma.CheckInWhereUniqueInput
+  data: Prisma.XOR<Prisma.CheckInUpdateWithoutCampaignInput, Prisma.CheckInUncheckedUpdateWithoutCampaignInput>
+}
+
+export type CheckInUpdateManyWithWhereWithoutCampaignInput = {
+  where: Prisma.CheckInScalarWhereInput
+  data: Prisma.XOR<Prisma.CheckInUpdateManyMutationInput, Prisma.CheckInUncheckedUpdateManyWithoutCampaignInput>
+}
+
+export type CheckInCreateWithoutAcquisitionEventInput = {
+  id?: string
+  qrToken?: string | null
+  rewardBenefit?: string | null
+  notes?: string | null
+  source?: string | null
+  checkInMethod?: $Enums.CheckInMethod
+  suspicious?: boolean
+  suspiciousReason?: string | null
+  disputedAt?: Date | string | null
+  generatedAt?: Date | string
+  expiresAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: $Enums.CheckInStatus
+  order?: Prisma.OrderCreateNestedOneWithoutCheckInInput
+  customer: Prisma.CustomerCreateNestedOneWithoutCheckInsInput
+  merchant: Prisma.MerchantCreateNestedOneWithoutCheckInsInput
+  campaign?: Prisma.CampaignCreateNestedOneWithoutCheckInsInput
+  booking?: Prisma.BookingCreateNestedOneWithoutCheckInsInput
+  affiliateLink?: Prisma.AffiliateLinkCreateNestedOneWithoutCheckInsInput
+}
+
+export type CheckInUncheckedCreateWithoutAcquisitionEventInput = {
+  id?: string
+  orderId?: string | null
+  customerId: string
+  merchantId: string
+  qrToken?: string | null
+  rewardBenefit?: string | null
+  notes?: string | null
+  source?: string | null
+  campaignId?: string | null
+  bookingId?: string | null
+  affiliateLinkId?: string | null
+  checkInMethod?: $Enums.CheckInMethod
+  suspicious?: boolean
+  suspiciousReason?: string | null
+  disputedAt?: Date | string | null
+  generatedAt?: Date | string
+  expiresAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: $Enums.CheckInStatus
+}
+
+export type CheckInCreateOrConnectWithoutAcquisitionEventInput = {
+  where: Prisma.CheckInWhereUniqueInput
+  create: Prisma.XOR<Prisma.CheckInCreateWithoutAcquisitionEventInput, Prisma.CheckInUncheckedCreateWithoutAcquisitionEventInput>
+}
+
+export type CheckInUpsertWithoutAcquisitionEventInput = {
+  update: Prisma.XOR<Prisma.CheckInUpdateWithoutAcquisitionEventInput, Prisma.CheckInUncheckedUpdateWithoutAcquisitionEventInput>
+  create: Prisma.XOR<Prisma.CheckInCreateWithoutAcquisitionEventInput, Prisma.CheckInUncheckedCreateWithoutAcquisitionEventInput>
+  where?: Prisma.CheckInWhereInput
+}
+
+export type CheckInUpdateToOneWithWhereWithoutAcquisitionEventInput = {
+  where?: Prisma.CheckInWhereInput
+  data: Prisma.XOR<Prisma.CheckInUpdateWithoutAcquisitionEventInput, Prisma.CheckInUncheckedUpdateWithoutAcquisitionEventInput>
+}
+
+export type CheckInUpdateWithoutAcquisitionEventInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardBenefit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspiciousReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
+  order?: Prisma.OrderUpdateOneWithoutCheckInNestedInput
+  customer?: Prisma.CustomerUpdateOneRequiredWithoutCheckInsNestedInput
+  merchant?: Prisma.MerchantUpdateOneRequiredWithoutCheckInsNestedInput
+  campaign?: Prisma.CampaignUpdateOneWithoutCheckInsNestedInput
+  booking?: Prisma.BookingUpdateOneWithoutCheckInsNestedInput
+  affiliateLink?: Prisma.AffiliateLinkUpdateOneWithoutCheckInsNestedInput
+}
+
+export type CheckInUncheckedUpdateWithoutAcquisitionEventInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerId?: Prisma.StringFieldUpdateOperationsInput | string
+  merchantId?: Prisma.StringFieldUpdateOperationsInput | string
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardBenefit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  campaignId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspiciousReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -910,6 +1596,82 @@ export type CheckInUncheckedUpdateWithoutOrderInput = {
   status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
 }
 
+export type CheckInCreateWithoutBookingInput = {
+  id?: string
+  qrToken?: string | null
+  rewardBenefit?: string | null
+  notes?: string | null
+  source?: string | null
+  checkInMethod?: $Enums.CheckInMethod
+  suspicious?: boolean
+  suspiciousReason?: string | null
+  disputedAt?: Date | string | null
+  generatedAt?: Date | string
+  expiresAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: $Enums.CheckInStatus
+  order?: Prisma.OrderCreateNestedOneWithoutCheckInInput
+  customer: Prisma.CustomerCreateNestedOneWithoutCheckInsInput
+  merchant: Prisma.MerchantCreateNestedOneWithoutCheckInsInput
+  campaign?: Prisma.CampaignCreateNestedOneWithoutCheckInsInput
+  affiliateLink?: Prisma.AffiliateLinkCreateNestedOneWithoutCheckInsInput
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventCreateNestedOneWithoutCheckInInput
+}
+
+export type CheckInUncheckedCreateWithoutBookingInput = {
+  id?: string
+  orderId?: string | null
+  customerId: string
+  merchantId: string
+  qrToken?: string | null
+  rewardBenefit?: string | null
+  notes?: string | null
+  source?: string | null
+  campaignId?: string | null
+  affiliateLinkId?: string | null
+  checkInMethod?: $Enums.CheckInMethod
+  suspicious?: boolean
+  suspiciousReason?: string | null
+  disputedAt?: Date | string | null
+  generatedAt?: Date | string
+  expiresAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: $Enums.CheckInStatus
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedOneWithoutCheckInInput
+}
+
+export type CheckInCreateOrConnectWithoutBookingInput = {
+  where: Prisma.CheckInWhereUniqueInput
+  create: Prisma.XOR<Prisma.CheckInCreateWithoutBookingInput, Prisma.CheckInUncheckedCreateWithoutBookingInput>
+}
+
+export type CheckInCreateManyBookingInputEnvelope = {
+  data: Prisma.CheckInCreateManyBookingInput | Prisma.CheckInCreateManyBookingInput[]
+  skipDuplicates?: boolean
+}
+
+export type CheckInUpsertWithWhereUniqueWithoutBookingInput = {
+  where: Prisma.CheckInWhereUniqueInput
+  update: Prisma.XOR<Prisma.CheckInUpdateWithoutBookingInput, Prisma.CheckInUncheckedUpdateWithoutBookingInput>
+  create: Prisma.XOR<Prisma.CheckInCreateWithoutBookingInput, Prisma.CheckInUncheckedCreateWithoutBookingInput>
+}
+
+export type CheckInUpdateWithWhereUniqueWithoutBookingInput = {
+  where: Prisma.CheckInWhereUniqueInput
+  data: Prisma.XOR<Prisma.CheckInUpdateWithoutBookingInput, Prisma.CheckInUncheckedUpdateWithoutBookingInput>
+}
+
+export type CheckInUpdateManyWithWhereWithoutBookingInput = {
+  where: Prisma.CheckInScalarWhereInput
+  data: Prisma.XOR<Prisma.CheckInUpdateManyMutationInput, Prisma.CheckInUncheckedUpdateManyWithoutBookingInput>
+}
+
 export type CheckInCreateManyCustomerInput = {
   id?: string
   orderId?: string | null
@@ -917,6 +1679,14 @@ export type CheckInCreateManyCustomerInput = {
   qrToken?: string | null
   rewardBenefit?: string | null
   notes?: string | null
+  source?: string | null
+  campaignId?: string | null
+  bookingId?: string | null
+  affiliateLinkId?: string | null
+  checkInMethod?: $Enums.CheckInMethod
+  suspicious?: boolean
+  suspiciousReason?: string | null
+  disputedAt?: Date | string | null
   generatedAt?: Date | string
   expiresAt?: Date | string | null
   checkedInAt?: Date | string | null
@@ -931,6 +1701,11 @@ export type CheckInUpdateWithoutCustomerInput = {
   qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardBenefit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspiciousReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -940,6 +1715,10 @@ export type CheckInUpdateWithoutCustomerInput = {
   status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
   order?: Prisma.OrderUpdateOneWithoutCheckInNestedInput
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutCheckInsNestedInput
+  campaign?: Prisma.CampaignUpdateOneWithoutCheckInsNestedInput
+  booking?: Prisma.BookingUpdateOneWithoutCheckInsNestedInput
+  affiliateLink?: Prisma.AffiliateLinkUpdateOneWithoutCheckInsNestedInput
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventUpdateOneWithoutCheckInNestedInput
 }
 
 export type CheckInUncheckedUpdateWithoutCustomerInput = {
@@ -949,6 +1728,14 @@ export type CheckInUncheckedUpdateWithoutCustomerInput = {
   qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardBenefit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  campaignId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspiciousReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -956,6 +1743,7 @@ export type CheckInUncheckedUpdateWithoutCustomerInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventUncheckedUpdateOneWithoutCheckInNestedInput
 }
 
 export type CheckInUncheckedUpdateManyWithoutCustomerInput = {
@@ -965,6 +1753,14 @@ export type CheckInUncheckedUpdateManyWithoutCustomerInput = {
   qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardBenefit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  campaignId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspiciousReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -981,6 +1777,14 @@ export type CheckInCreateManyMerchantInput = {
   qrToken?: string | null
   rewardBenefit?: string | null
   notes?: string | null
+  source?: string | null
+  campaignId?: string | null
+  bookingId?: string | null
+  affiliateLinkId?: string | null
+  checkInMethod?: $Enums.CheckInMethod
+  suspicious?: boolean
+  suspiciousReason?: string | null
+  disputedAt?: Date | string | null
   generatedAt?: Date | string
   expiresAt?: Date | string | null
   checkedInAt?: Date | string | null
@@ -995,6 +1799,11 @@ export type CheckInUpdateWithoutMerchantInput = {
   qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardBenefit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspiciousReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1004,6 +1813,10 @@ export type CheckInUpdateWithoutMerchantInput = {
   status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
   order?: Prisma.OrderUpdateOneWithoutCheckInNestedInput
   customer?: Prisma.CustomerUpdateOneRequiredWithoutCheckInsNestedInput
+  campaign?: Prisma.CampaignUpdateOneWithoutCheckInsNestedInput
+  booking?: Prisma.BookingUpdateOneWithoutCheckInsNestedInput
+  affiliateLink?: Prisma.AffiliateLinkUpdateOneWithoutCheckInsNestedInput
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventUpdateOneWithoutCheckInNestedInput
 }
 
 export type CheckInUncheckedUpdateWithoutMerchantInput = {
@@ -1013,6 +1826,14 @@ export type CheckInUncheckedUpdateWithoutMerchantInput = {
   qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardBenefit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  campaignId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspiciousReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1020,6 +1841,7 @@ export type CheckInUncheckedUpdateWithoutMerchantInput = {
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventUncheckedUpdateOneWithoutCheckInNestedInput
 }
 
 export type CheckInUncheckedUpdateManyWithoutMerchantInput = {
@@ -1029,6 +1851,308 @@ export type CheckInUncheckedUpdateManyWithoutMerchantInput = {
   qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardBenefit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  campaignId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspiciousReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
+}
+
+export type CheckInCreateManyAffiliateLinkInput = {
+  id?: string
+  orderId?: string | null
+  customerId: string
+  merchantId: string
+  qrToken?: string | null
+  rewardBenefit?: string | null
+  notes?: string | null
+  source?: string | null
+  campaignId?: string | null
+  bookingId?: string | null
+  checkInMethod?: $Enums.CheckInMethod
+  suspicious?: boolean
+  suspiciousReason?: string | null
+  disputedAt?: Date | string | null
+  generatedAt?: Date | string
+  expiresAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: $Enums.CheckInStatus
+}
+
+export type CheckInUpdateWithoutAffiliateLinkInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardBenefit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspiciousReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
+  order?: Prisma.OrderUpdateOneWithoutCheckInNestedInput
+  customer?: Prisma.CustomerUpdateOneRequiredWithoutCheckInsNestedInput
+  merchant?: Prisma.MerchantUpdateOneRequiredWithoutCheckInsNestedInput
+  campaign?: Prisma.CampaignUpdateOneWithoutCheckInsNestedInput
+  booking?: Prisma.BookingUpdateOneWithoutCheckInsNestedInput
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventUpdateOneWithoutCheckInNestedInput
+}
+
+export type CheckInUncheckedUpdateWithoutAffiliateLinkInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerId?: Prisma.StringFieldUpdateOperationsInput | string
+  merchantId?: Prisma.StringFieldUpdateOperationsInput | string
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardBenefit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  campaignId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspiciousReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventUncheckedUpdateOneWithoutCheckInNestedInput
+}
+
+export type CheckInUncheckedUpdateManyWithoutAffiliateLinkInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerId?: Prisma.StringFieldUpdateOperationsInput | string
+  merchantId?: Prisma.StringFieldUpdateOperationsInput | string
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardBenefit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  campaignId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspiciousReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
+}
+
+export type CheckInCreateManyCampaignInput = {
+  id?: string
+  orderId?: string | null
+  customerId: string
+  merchantId: string
+  qrToken?: string | null
+  rewardBenefit?: string | null
+  notes?: string | null
+  source?: string | null
+  bookingId?: string | null
+  affiliateLinkId?: string | null
+  checkInMethod?: $Enums.CheckInMethod
+  suspicious?: boolean
+  suspiciousReason?: string | null
+  disputedAt?: Date | string | null
+  generatedAt?: Date | string
+  expiresAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: $Enums.CheckInStatus
+}
+
+export type CheckInUpdateWithoutCampaignInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardBenefit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspiciousReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
+  order?: Prisma.OrderUpdateOneWithoutCheckInNestedInput
+  customer?: Prisma.CustomerUpdateOneRequiredWithoutCheckInsNestedInput
+  merchant?: Prisma.MerchantUpdateOneRequiredWithoutCheckInsNestedInput
+  booking?: Prisma.BookingUpdateOneWithoutCheckInsNestedInput
+  affiliateLink?: Prisma.AffiliateLinkUpdateOneWithoutCheckInsNestedInput
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventUpdateOneWithoutCheckInNestedInput
+}
+
+export type CheckInUncheckedUpdateWithoutCampaignInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerId?: Prisma.StringFieldUpdateOperationsInput | string
+  merchantId?: Prisma.StringFieldUpdateOperationsInput | string
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardBenefit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspiciousReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventUncheckedUpdateOneWithoutCheckInNestedInput
+}
+
+export type CheckInUncheckedUpdateManyWithoutCampaignInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerId?: Prisma.StringFieldUpdateOperationsInput | string
+  merchantId?: Prisma.StringFieldUpdateOperationsInput | string
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardBenefit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspiciousReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
+}
+
+export type CheckInCreateManyBookingInput = {
+  id?: string
+  orderId?: string | null
+  customerId: string
+  merchantId: string
+  qrToken?: string | null
+  rewardBenefit?: string | null
+  notes?: string | null
+  source?: string | null
+  campaignId?: string | null
+  affiliateLinkId?: string | null
+  checkInMethod?: $Enums.CheckInMethod
+  suspicious?: boolean
+  suspiciousReason?: string | null
+  disputedAt?: Date | string | null
+  generatedAt?: Date | string
+  expiresAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: $Enums.CheckInStatus
+}
+
+export type CheckInUpdateWithoutBookingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardBenefit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspiciousReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
+  order?: Prisma.OrderUpdateOneWithoutCheckInNestedInput
+  customer?: Prisma.CustomerUpdateOneRequiredWithoutCheckInsNestedInput
+  merchant?: Prisma.MerchantUpdateOneRequiredWithoutCheckInsNestedInput
+  campaign?: Prisma.CampaignUpdateOneWithoutCheckInsNestedInput
+  affiliateLink?: Prisma.AffiliateLinkUpdateOneWithoutCheckInsNestedInput
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventUpdateOneWithoutCheckInNestedInput
+}
+
+export type CheckInUncheckedUpdateWithoutBookingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerId?: Prisma.StringFieldUpdateOperationsInput | string
+  merchantId?: Prisma.StringFieldUpdateOperationsInput | string
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardBenefit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  campaignId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspiciousReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumCheckInStatusFieldUpdateOperationsInput | $Enums.CheckInStatus
+  acquisitionEvent?: Prisma.MerchantAcquisitionEventUncheckedUpdateOneWithoutCheckInNestedInput
+}
+
+export type CheckInUncheckedUpdateManyWithoutBookingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerId?: Prisma.StringFieldUpdateOperationsInput | string
+  merchantId?: Prisma.StringFieldUpdateOperationsInput | string
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardBenefit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  campaignId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  affiliateLinkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkInMethod?: Prisma.EnumCheckInMethodFieldUpdateOperationsInput | $Enums.CheckInMethod
+  suspicious?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspiciousReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1048,6 +2172,14 @@ export type CheckInSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   qrToken?: boolean
   rewardBenefit?: boolean
   notes?: boolean
+  source?: boolean
+  campaignId?: boolean
+  bookingId?: boolean
+  affiliateLinkId?: boolean
+  checkInMethod?: boolean
+  suspicious?: boolean
+  suspiciousReason?: boolean
+  disputedAt?: boolean
   generatedAt?: boolean
   expiresAt?: boolean
   checkedInAt?: boolean
@@ -1058,6 +2190,10 @@ export type CheckInSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   order?: boolean | Prisma.CheckIn$orderArgs<ExtArgs>
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
+  campaign?: boolean | Prisma.CheckIn$campaignArgs<ExtArgs>
+  booking?: boolean | Prisma.CheckIn$bookingArgs<ExtArgs>
+  affiliateLink?: boolean | Prisma.CheckIn$affiliateLinkArgs<ExtArgs>
+  acquisitionEvent?: boolean | Prisma.CheckIn$acquisitionEventArgs<ExtArgs>
 }, ExtArgs["result"]["checkIn"]>
 
 export type CheckInSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1068,6 +2204,14 @@ export type CheckInSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   qrToken?: boolean
   rewardBenefit?: boolean
   notes?: boolean
+  source?: boolean
+  campaignId?: boolean
+  bookingId?: boolean
+  affiliateLinkId?: boolean
+  checkInMethod?: boolean
+  suspicious?: boolean
+  suspiciousReason?: boolean
+  disputedAt?: boolean
   generatedAt?: boolean
   expiresAt?: boolean
   checkedInAt?: boolean
@@ -1078,6 +2222,9 @@ export type CheckInSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   order?: boolean | Prisma.CheckIn$orderArgs<ExtArgs>
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
+  campaign?: boolean | Prisma.CheckIn$campaignArgs<ExtArgs>
+  booking?: boolean | Prisma.CheckIn$bookingArgs<ExtArgs>
+  affiliateLink?: boolean | Prisma.CheckIn$affiliateLinkArgs<ExtArgs>
 }, ExtArgs["result"]["checkIn"]>
 
 export type CheckInSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1088,6 +2235,14 @@ export type CheckInSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   qrToken?: boolean
   rewardBenefit?: boolean
   notes?: boolean
+  source?: boolean
+  campaignId?: boolean
+  bookingId?: boolean
+  affiliateLinkId?: boolean
+  checkInMethod?: boolean
+  suspicious?: boolean
+  suspiciousReason?: boolean
+  disputedAt?: boolean
   generatedAt?: boolean
   expiresAt?: boolean
   checkedInAt?: boolean
@@ -1098,6 +2253,9 @@ export type CheckInSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   order?: boolean | Prisma.CheckIn$orderArgs<ExtArgs>
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
+  campaign?: boolean | Prisma.CheckIn$campaignArgs<ExtArgs>
+  booking?: boolean | Prisma.CheckIn$bookingArgs<ExtArgs>
+  affiliateLink?: boolean | Prisma.CheckIn$affiliateLinkArgs<ExtArgs>
 }, ExtArgs["result"]["checkIn"]>
 
 export type CheckInSelectScalar = {
@@ -1108,6 +2266,14 @@ export type CheckInSelectScalar = {
   qrToken?: boolean
   rewardBenefit?: boolean
   notes?: boolean
+  source?: boolean
+  campaignId?: boolean
+  bookingId?: boolean
+  affiliateLinkId?: boolean
+  checkInMethod?: boolean
+  suspicious?: boolean
+  suspiciousReason?: boolean
+  disputedAt?: boolean
   generatedAt?: boolean
   expiresAt?: boolean
   checkedInAt?: boolean
@@ -1117,21 +2283,31 @@ export type CheckInSelectScalar = {
   status?: boolean
 }
 
-export type CheckInOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderId" | "customerId" | "merchantId" | "qrToken" | "rewardBenefit" | "notes" | "generatedAt" | "expiresAt" | "checkedInAt" | "verifiedAt" | "latitude" | "longitude" | "status", ExtArgs["result"]["checkIn"]>
+export type CheckInOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderId" | "customerId" | "merchantId" | "qrToken" | "rewardBenefit" | "notes" | "source" | "campaignId" | "bookingId" | "affiliateLinkId" | "checkInMethod" | "suspicious" | "suspiciousReason" | "disputedAt" | "generatedAt" | "expiresAt" | "checkedInAt" | "verifiedAt" | "latitude" | "longitude" | "status", ExtArgs["result"]["checkIn"]>
 export type CheckInInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   order?: boolean | Prisma.CheckIn$orderArgs<ExtArgs>
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
+  campaign?: boolean | Prisma.CheckIn$campaignArgs<ExtArgs>
+  booking?: boolean | Prisma.CheckIn$bookingArgs<ExtArgs>
+  affiliateLink?: boolean | Prisma.CheckIn$affiliateLinkArgs<ExtArgs>
+  acquisitionEvent?: boolean | Prisma.CheckIn$acquisitionEventArgs<ExtArgs>
 }
 export type CheckInIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   order?: boolean | Prisma.CheckIn$orderArgs<ExtArgs>
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
+  campaign?: boolean | Prisma.CheckIn$campaignArgs<ExtArgs>
+  booking?: boolean | Prisma.CheckIn$bookingArgs<ExtArgs>
+  affiliateLink?: boolean | Prisma.CheckIn$affiliateLinkArgs<ExtArgs>
 }
 export type CheckInIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   order?: boolean | Prisma.CheckIn$orderArgs<ExtArgs>
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
+  campaign?: boolean | Prisma.CheckIn$campaignArgs<ExtArgs>
+  booking?: boolean | Prisma.CheckIn$bookingArgs<ExtArgs>
+  affiliateLink?: boolean | Prisma.CheckIn$affiliateLinkArgs<ExtArgs>
 }
 
 export type $CheckInPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1140,6 +2316,10 @@ export type $CheckInPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     order: Prisma.$OrderPayload<ExtArgs> | null
     customer: Prisma.$CustomerPayload<ExtArgs>
     merchant: Prisma.$MerchantPayload<ExtArgs>
+    campaign: Prisma.$CampaignPayload<ExtArgs> | null
+    booking: Prisma.$BookingPayload<ExtArgs> | null
+    affiliateLink: Prisma.$AffiliateLinkPayload<ExtArgs> | null
+    acquisitionEvent: Prisma.$MerchantAcquisitionEventPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1149,6 +2329,14 @@ export type $CheckInPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     qrToken: string | null
     rewardBenefit: string | null
     notes: string | null
+    source: string | null
+    campaignId: string | null
+    bookingId: string | null
+    affiliateLinkId: string | null
+    checkInMethod: $Enums.CheckInMethod
+    suspicious: boolean
+    suspiciousReason: string | null
+    disputedAt: Date | null
     generatedAt: Date
     expiresAt: Date | null
     checkedInAt: Date | null
@@ -1553,6 +2741,10 @@ export interface Prisma__CheckInClient<T, Null = never, ExtArgs extends runtime.
   order<T extends Prisma.CheckIn$orderArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CheckIn$orderArgs<ExtArgs>>): Prisma.Prisma__OrderClient<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   customer<T extends Prisma.CustomerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CustomerDefaultArgs<ExtArgs>>): Prisma.Prisma__CustomerClient<runtime.Types.Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   merchant<T extends Prisma.MerchantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MerchantDefaultArgs<ExtArgs>>): Prisma.Prisma__MerchantClient<runtime.Types.Result.GetResult<Prisma.$MerchantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  campaign<T extends Prisma.CheckIn$campaignArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CheckIn$campaignArgs<ExtArgs>>): Prisma.Prisma__CampaignClient<runtime.Types.Result.GetResult<Prisma.$CampaignPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  booking<T extends Prisma.CheckIn$bookingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CheckIn$bookingArgs<ExtArgs>>): Prisma.Prisma__BookingClient<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  affiliateLink<T extends Prisma.CheckIn$affiliateLinkArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CheckIn$affiliateLinkArgs<ExtArgs>>): Prisma.Prisma__AffiliateLinkClient<runtime.Types.Result.GetResult<Prisma.$AffiliateLinkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  acquisitionEvent<T extends Prisma.CheckIn$acquisitionEventArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CheckIn$acquisitionEventArgs<ExtArgs>>): Prisma.Prisma__MerchantAcquisitionEventClient<runtime.Types.Result.GetResult<Prisma.$MerchantAcquisitionEventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1589,6 +2781,14 @@ export interface CheckInFieldRefs {
   readonly qrToken: Prisma.FieldRef<"CheckIn", 'String'>
   readonly rewardBenefit: Prisma.FieldRef<"CheckIn", 'String'>
   readonly notes: Prisma.FieldRef<"CheckIn", 'String'>
+  readonly source: Prisma.FieldRef<"CheckIn", 'String'>
+  readonly campaignId: Prisma.FieldRef<"CheckIn", 'String'>
+  readonly bookingId: Prisma.FieldRef<"CheckIn", 'String'>
+  readonly affiliateLinkId: Prisma.FieldRef<"CheckIn", 'String'>
+  readonly checkInMethod: Prisma.FieldRef<"CheckIn", 'CheckInMethod'>
+  readonly suspicious: Prisma.FieldRef<"CheckIn", 'Boolean'>
+  readonly suspiciousReason: Prisma.FieldRef<"CheckIn", 'String'>
+  readonly disputedAt: Prisma.FieldRef<"CheckIn", 'DateTime'>
   readonly generatedAt: Prisma.FieldRef<"CheckIn", 'DateTime'>
   readonly expiresAt: Prisma.FieldRef<"CheckIn", 'DateTime'>
   readonly checkedInAt: Prisma.FieldRef<"CheckIn", 'DateTime'>
@@ -2013,6 +3213,82 @@ export type CheckIn$orderArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    */
   include?: Prisma.OrderInclude<ExtArgs> | null
   where?: Prisma.OrderWhereInput
+}
+
+/**
+ * CheckIn.campaign
+ */
+export type CheckIn$campaignArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Campaign
+   */
+  select?: Prisma.CampaignSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Campaign
+   */
+  omit?: Prisma.CampaignOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CampaignInclude<ExtArgs> | null
+  where?: Prisma.CampaignWhereInput
+}
+
+/**
+ * CheckIn.booking
+ */
+export type CheckIn$bookingArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Booking
+   */
+  select?: Prisma.BookingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Booking
+   */
+  omit?: Prisma.BookingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookingInclude<ExtArgs> | null
+  where?: Prisma.BookingWhereInput
+}
+
+/**
+ * CheckIn.affiliateLink
+ */
+export type CheckIn$affiliateLinkArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AffiliateLink
+   */
+  select?: Prisma.AffiliateLinkSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AffiliateLink
+   */
+  omit?: Prisma.AffiliateLinkOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AffiliateLinkInclude<ExtArgs> | null
+  where?: Prisma.AffiliateLinkWhereInput
+}
+
+/**
+ * CheckIn.acquisitionEvent
+ */
+export type CheckIn$acquisitionEventArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MerchantAcquisitionEvent
+   */
+  select?: Prisma.MerchantAcquisitionEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MerchantAcquisitionEvent
+   */
+  omit?: Prisma.MerchantAcquisitionEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MerchantAcquisitionEventInclude<ExtArgs> | null
+  where?: Prisma.MerchantAcquisitionEventWhereInput
 }
 
 /**

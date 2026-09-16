@@ -35,6 +35,7 @@ export type MerchantAvgAggregateOutputType = {
   strengthIndex: runtime.Decimal | null
   underratedScore: runtime.Decimal | null
   recommendationRank: number | null
+  safetyRiskScore: runtime.Decimal | null
 }
 
 export type MerchantSumAggregateOutputType = {
@@ -46,6 +47,7 @@ export type MerchantSumAggregateOutputType = {
   strengthIndex: runtime.Decimal | null
   underratedScore: runtime.Decimal | null
   recommendationRank: number | null
+  safetyRiskScore: runtime.Decimal | null
 }
 
 export type MerchantMinAggregateOutputType = {
@@ -59,6 +61,9 @@ export type MerchantMinAggregateOutputType = {
   email: string | null
   phone: string | null
   address: string | null
+  country: string | null
+  city: string | null
+  area: string | null
   openingHours: string | null
   latitude: runtime.Decimal | null
   longitude: runtime.Decimal | null
@@ -75,6 +80,11 @@ export type MerchantMinAggregateOutputType = {
   recommendationRank: number | null
   lastRebalancedAt: Date | null
   status: $Enums.MerchantStatus | null
+  verificationStatus: $Enums.MerchantVerificationStatus | null
+  listingVisibility: $Enums.MerchantListingVisibility | null
+  safetySuppressed: boolean | null
+  safetySuppressedUntil: Date | null
+  safetyRiskScore: runtime.Decimal | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -90,6 +100,9 @@ export type MerchantMaxAggregateOutputType = {
   email: string | null
   phone: string | null
   address: string | null
+  country: string | null
+  city: string | null
+  area: string | null
   openingHours: string | null
   latitude: runtime.Decimal | null
   longitude: runtime.Decimal | null
@@ -106,6 +119,11 @@ export type MerchantMaxAggregateOutputType = {
   recommendationRank: number | null
   lastRebalancedAt: Date | null
   status: $Enums.MerchantStatus | null
+  verificationStatus: $Enums.MerchantVerificationStatus | null
+  listingVisibility: $Enums.MerchantListingVisibility | null
+  safetySuppressed: boolean | null
+  safetySuppressedUntil: Date | null
+  safetyRiskScore: runtime.Decimal | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -121,6 +139,9 @@ export type MerchantCountAggregateOutputType = {
   email: number
   phone: number
   address: number
+  country: number
+  city: number
+  area: number
   openingHours: number
   latitude: number
   longitude: number
@@ -137,6 +158,11 @@ export type MerchantCountAggregateOutputType = {
   recommendationRank: number
   lastRebalancedAt: number
   status: number
+  verificationStatus: number
+  listingVisibility: number
+  safetySuppressed: number
+  safetySuppressedUntil: number
+  safetyRiskScore: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -152,6 +178,7 @@ export type MerchantAvgAggregateInputType = {
   strengthIndex?: true
   underratedScore?: true
   recommendationRank?: true
+  safetyRiskScore?: true
 }
 
 export type MerchantSumAggregateInputType = {
@@ -163,6 +190,7 @@ export type MerchantSumAggregateInputType = {
   strengthIndex?: true
   underratedScore?: true
   recommendationRank?: true
+  safetyRiskScore?: true
 }
 
 export type MerchantMinAggregateInputType = {
@@ -176,6 +204,9 @@ export type MerchantMinAggregateInputType = {
   email?: true
   phone?: true
   address?: true
+  country?: true
+  city?: true
+  area?: true
   openingHours?: true
   latitude?: true
   longitude?: true
@@ -192,6 +223,11 @@ export type MerchantMinAggregateInputType = {
   recommendationRank?: true
   lastRebalancedAt?: true
   status?: true
+  verificationStatus?: true
+  listingVisibility?: true
+  safetySuppressed?: true
+  safetySuppressedUntil?: true
+  safetyRiskScore?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -207,6 +243,9 @@ export type MerchantMaxAggregateInputType = {
   email?: true
   phone?: true
   address?: true
+  country?: true
+  city?: true
+  area?: true
   openingHours?: true
   latitude?: true
   longitude?: true
@@ -223,6 +262,11 @@ export type MerchantMaxAggregateInputType = {
   recommendationRank?: true
   lastRebalancedAt?: true
   status?: true
+  verificationStatus?: true
+  listingVisibility?: true
+  safetySuppressed?: true
+  safetySuppressedUntil?: true
+  safetyRiskScore?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -238,6 +282,9 @@ export type MerchantCountAggregateInputType = {
   email?: true
   phone?: true
   address?: true
+  country?: true
+  city?: true
+  area?: true
   openingHours?: true
   latitude?: true
   longitude?: true
@@ -254,6 +301,11 @@ export type MerchantCountAggregateInputType = {
   recommendationRank?: true
   lastRebalancedAt?: true
   status?: true
+  verificationStatus?: true
+  listingVisibility?: true
+  safetySuppressed?: true
+  safetySuppressedUntil?: true
+  safetyRiskScore?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -356,6 +408,9 @@ export type MerchantGroupByOutputType = {
   email: string
   phone: string
   address: string
+  country: string
+  city: string | null
+  area: string | null
   openingHours: string
   latitude: runtime.Decimal | null
   longitude: runtime.Decimal | null
@@ -372,6 +427,11 @@ export type MerchantGroupByOutputType = {
   recommendationRank: number | null
   lastRebalancedAt: Date | null
   status: $Enums.MerchantStatus
+  verificationStatus: $Enums.MerchantVerificationStatus
+  listingVisibility: $Enums.MerchantListingVisibility
+  safetySuppressed: boolean
+  safetySuppressedUntil: Date | null
+  safetyRiskScore: runtime.Decimal
   createdAt: Date
   updatedAt: Date
   _count: MerchantCountAggregateOutputType | null
@@ -410,6 +470,9 @@ export type MerchantWhereInput = {
   email?: Prisma.StringFilter<"Merchant"> | string
   phone?: Prisma.StringFilter<"Merchant"> | string
   address?: Prisma.StringFilter<"Merchant"> | string
+  country?: Prisma.StringFilter<"Merchant"> | string
+  city?: Prisma.StringNullableFilter<"Merchant"> | string | null
+  area?: Prisma.StringNullableFilter<"Merchant"> | string | null
   openingHours?: Prisma.StringFilter<"Merchant"> | string
   latitude?: Prisma.DecimalNullableFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.DecimalNullableFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -426,6 +489,11 @@ export type MerchantWhereInput = {
   recommendationRank?: Prisma.IntNullableFilter<"Merchant"> | number | null
   lastRebalancedAt?: Prisma.DateTimeNullableFilter<"Merchant"> | Date | string | null
   status?: Prisma.EnumMerchantStatusFilter<"Merchant"> | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFilter<"Merchant"> | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFilter<"Merchant"> | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFilter<"Merchant"> | boolean
+  safetySuppressedUntil?: Prisma.DateTimeNullableFilter<"Merchant"> | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFilter<"Merchant"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Merchant"> | Date | string
   foods?: Prisma.FoodListRelationFilter
@@ -435,6 +503,7 @@ export type MerchantWhereInput = {
   affiliateLinks?: Prisma.AffiliateLinkListRelationFilter
   campaigns?: Prisma.CampaignListRelationFilter
   checkIns?: Prisma.CheckInListRelationFilter
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventListRelationFilter
   bookings?: Prisma.BookingListRelationFilter
   views?: Prisma.MerchantViewListRelationFilter
   supportTickets?: Prisma.SupportTicketListRelationFilter
@@ -452,6 +521,9 @@ export type MerchantOrderByWithRelationInput = {
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  country?: Prisma.SortOrder
+  city?: Prisma.SortOrderInput | Prisma.SortOrder
+  area?: Prisma.SortOrderInput | Prisma.SortOrder
   openingHours?: Prisma.SortOrder
   latitude?: Prisma.SortOrderInput | Prisma.SortOrder
   longitude?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -468,6 +540,11 @@ export type MerchantOrderByWithRelationInput = {
   recommendationRank?: Prisma.SortOrderInput | Prisma.SortOrder
   lastRebalancedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  verificationStatus?: Prisma.SortOrder
+  listingVisibility?: Prisma.SortOrder
+  safetySuppressed?: Prisma.SortOrder
+  safetySuppressedUntil?: Prisma.SortOrderInput | Prisma.SortOrder
+  safetyRiskScore?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   foods?: Prisma.FoodOrderByRelationAggregateInput
@@ -477,6 +554,7 @@ export type MerchantOrderByWithRelationInput = {
   affiliateLinks?: Prisma.AffiliateLinkOrderByRelationAggregateInput
   campaigns?: Prisma.CampaignOrderByRelationAggregateInput
   checkIns?: Prisma.CheckInOrderByRelationAggregateInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventOrderByRelationAggregateInput
   bookings?: Prisma.BookingOrderByRelationAggregateInput
   views?: Prisma.MerchantViewOrderByRelationAggregateInput
   supportTickets?: Prisma.SupportTicketOrderByRelationAggregateInput
@@ -497,6 +575,9 @@ export type MerchantWhereUniqueInput = Prisma.AtLeast<{
   email?: Prisma.StringFilter<"Merchant"> | string
   phone?: Prisma.StringFilter<"Merchant"> | string
   address?: Prisma.StringFilter<"Merchant"> | string
+  country?: Prisma.StringFilter<"Merchant"> | string
+  city?: Prisma.StringNullableFilter<"Merchant"> | string | null
+  area?: Prisma.StringNullableFilter<"Merchant"> | string | null
   openingHours?: Prisma.StringFilter<"Merchant"> | string
   latitude?: Prisma.DecimalNullableFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.DecimalNullableFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -513,6 +594,11 @@ export type MerchantWhereUniqueInput = Prisma.AtLeast<{
   recommendationRank?: Prisma.IntNullableFilter<"Merchant"> | number | null
   lastRebalancedAt?: Prisma.DateTimeNullableFilter<"Merchant"> | Date | string | null
   status?: Prisma.EnumMerchantStatusFilter<"Merchant"> | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFilter<"Merchant"> | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFilter<"Merchant"> | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFilter<"Merchant"> | boolean
+  safetySuppressedUntil?: Prisma.DateTimeNullableFilter<"Merchant"> | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFilter<"Merchant"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Merchant"> | Date | string
   foods?: Prisma.FoodListRelationFilter
@@ -522,6 +608,7 @@ export type MerchantWhereUniqueInput = Prisma.AtLeast<{
   affiliateLinks?: Prisma.AffiliateLinkListRelationFilter
   campaigns?: Prisma.CampaignListRelationFilter
   checkIns?: Prisma.CheckInListRelationFilter
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventListRelationFilter
   bookings?: Prisma.BookingListRelationFilter
   views?: Prisma.MerchantViewListRelationFilter
   supportTickets?: Prisma.SupportTicketListRelationFilter
@@ -539,6 +626,9 @@ export type MerchantOrderByWithAggregationInput = {
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  country?: Prisma.SortOrder
+  city?: Prisma.SortOrderInput | Prisma.SortOrder
+  area?: Prisma.SortOrderInput | Prisma.SortOrder
   openingHours?: Prisma.SortOrder
   latitude?: Prisma.SortOrderInput | Prisma.SortOrder
   longitude?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -555,6 +645,11 @@ export type MerchantOrderByWithAggregationInput = {
   recommendationRank?: Prisma.SortOrderInput | Prisma.SortOrder
   lastRebalancedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  verificationStatus?: Prisma.SortOrder
+  listingVisibility?: Prisma.SortOrder
+  safetySuppressed?: Prisma.SortOrder
+  safetySuppressedUntil?: Prisma.SortOrderInput | Prisma.SortOrder
+  safetyRiskScore?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.MerchantCountOrderByAggregateInput
@@ -578,6 +673,9 @@ export type MerchantScalarWhereWithAggregatesInput = {
   email?: Prisma.StringWithAggregatesFilter<"Merchant"> | string
   phone?: Prisma.StringWithAggregatesFilter<"Merchant"> | string
   address?: Prisma.StringWithAggregatesFilter<"Merchant"> | string
+  country?: Prisma.StringWithAggregatesFilter<"Merchant"> | string
+  city?: Prisma.StringNullableWithAggregatesFilter<"Merchant"> | string | null
+  area?: Prisma.StringNullableWithAggregatesFilter<"Merchant"> | string | null
   openingHours?: Prisma.StringWithAggregatesFilter<"Merchant"> | string
   latitude?: Prisma.DecimalNullableWithAggregatesFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.DecimalNullableWithAggregatesFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -594,6 +692,11 @@ export type MerchantScalarWhereWithAggregatesInput = {
   recommendationRank?: Prisma.IntNullableWithAggregatesFilter<"Merchant"> | number | null
   lastRebalancedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Merchant"> | Date | string | null
   status?: Prisma.EnumMerchantStatusWithAggregatesFilter<"Merchant"> | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusWithAggregatesFilter<"Merchant"> | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityWithAggregatesFilter<"Merchant"> | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolWithAggregatesFilter<"Merchant"> | boolean
+  safetySuppressedUntil?: Prisma.DateTimeNullableWithAggregatesFilter<"Merchant"> | Date | string | null
+  safetyRiskScore?: Prisma.DecimalWithAggregatesFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Merchant"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Merchant"> | Date | string
 }
@@ -608,6 +711,9 @@ export type MerchantCreateInput = {
   email: string
   phone: string
   address: string
+  country?: string
+  city?: string | null
+  area?: string | null
   openingHours: string
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -624,6 +730,11 @@ export type MerchantCreateInput = {
   recommendationRank?: number | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   foods?: Prisma.FoodCreateNestedManyWithoutMerchantInput
@@ -633,6 +744,7 @@ export type MerchantCreateInput = {
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutMerchantInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventCreateNestedManyWithoutMerchantInput
   bookings?: Prisma.BookingCreateNestedManyWithoutMerchantInput
   views?: Prisma.MerchantViewCreateNestedManyWithoutMerchantInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutMerchantInput
@@ -650,6 +762,9 @@ export type MerchantUncheckedCreateInput = {
   email: string
   phone: string
   address: string
+  country?: string
+  city?: string | null
+  area?: string | null
   openingHours: string
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -666,6 +781,11 @@ export type MerchantUncheckedCreateInput = {
   recommendationRank?: number | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   foods?: Prisma.FoodUncheckedCreateNestedManyWithoutMerchantInput
@@ -675,6 +795,7 @@ export type MerchantUncheckedCreateInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutMerchantInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedManyWithoutMerchantInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutMerchantInput
   views?: Prisma.MerchantViewUncheckedCreateNestedManyWithoutMerchantInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutMerchantInput
@@ -690,6 +811,9 @@ export type MerchantUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -706,6 +830,11 @@ export type MerchantUpdateInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   foods?: Prisma.FoodUpdateManyWithoutMerchantNestedInput
@@ -715,6 +844,7 @@ export type MerchantUpdateInput = {
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutMerchantNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUpdateManyWithoutMerchantNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutMerchantNestedInput
   views?: Prisma.MerchantViewUpdateManyWithoutMerchantNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutMerchantNestedInput
@@ -732,6 +862,9 @@ export type MerchantUncheckedUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -748,6 +881,11 @@ export type MerchantUncheckedUpdateInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   foods?: Prisma.FoodUncheckedUpdateManyWithoutMerchantNestedInput
@@ -757,6 +895,7 @@ export type MerchantUncheckedUpdateInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUncheckedUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutMerchantNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedUpdateManyWithoutMerchantNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutMerchantNestedInput
   views?: Prisma.MerchantViewUncheckedUpdateManyWithoutMerchantNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutMerchantNestedInput
@@ -773,6 +912,9 @@ export type MerchantCreateManyInput = {
   email: string
   phone: string
   address: string
+  country?: string
+  city?: string | null
+  area?: string | null
   openingHours: string
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -789,6 +931,11 @@ export type MerchantCreateManyInput = {
   recommendationRank?: number | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -803,6 +950,9 @@ export type MerchantUpdateManyMutationInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -819,6 +969,11 @@ export type MerchantUpdateManyMutationInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -834,6 +989,9 @@ export type MerchantUncheckedUpdateManyInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -850,6 +1008,11 @@ export type MerchantUncheckedUpdateManyInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -870,6 +1033,9 @@ export type MerchantCountOrderByAggregateInput = {
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  country?: Prisma.SortOrder
+  city?: Prisma.SortOrder
+  area?: Prisma.SortOrder
   openingHours?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
@@ -886,6 +1052,11 @@ export type MerchantCountOrderByAggregateInput = {
   recommendationRank?: Prisma.SortOrder
   lastRebalancedAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  verificationStatus?: Prisma.SortOrder
+  listingVisibility?: Prisma.SortOrder
+  safetySuppressed?: Prisma.SortOrder
+  safetySuppressedUntil?: Prisma.SortOrder
+  safetyRiskScore?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -899,6 +1070,7 @@ export type MerchantAvgOrderByAggregateInput = {
   strengthIndex?: Prisma.SortOrder
   underratedScore?: Prisma.SortOrder
   recommendationRank?: Prisma.SortOrder
+  safetyRiskScore?: Prisma.SortOrder
 }
 
 export type MerchantMaxOrderByAggregateInput = {
@@ -912,6 +1084,9 @@ export type MerchantMaxOrderByAggregateInput = {
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  country?: Prisma.SortOrder
+  city?: Prisma.SortOrder
+  area?: Prisma.SortOrder
   openingHours?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
@@ -928,6 +1103,11 @@ export type MerchantMaxOrderByAggregateInput = {
   recommendationRank?: Prisma.SortOrder
   lastRebalancedAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  verificationStatus?: Prisma.SortOrder
+  listingVisibility?: Prisma.SortOrder
+  safetySuppressed?: Prisma.SortOrder
+  safetySuppressedUntil?: Prisma.SortOrder
+  safetyRiskScore?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -943,6 +1123,9 @@ export type MerchantMinOrderByAggregateInput = {
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  country?: Prisma.SortOrder
+  city?: Prisma.SortOrder
+  area?: Prisma.SortOrder
   openingHours?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
@@ -959,6 +1142,11 @@ export type MerchantMinOrderByAggregateInput = {
   recommendationRank?: Prisma.SortOrder
   lastRebalancedAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  verificationStatus?: Prisma.SortOrder
+  listingVisibility?: Prisma.SortOrder
+  safetySuppressed?: Prisma.SortOrder
+  safetySuppressedUntil?: Prisma.SortOrder
+  safetyRiskScore?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -972,6 +1160,7 @@ export type MerchantSumOrderByAggregateInput = {
   strengthIndex?: Prisma.SortOrder
   underratedScore?: Prisma.SortOrder
   recommendationRank?: Prisma.SortOrder
+  safetyRiskScore?: Prisma.SortOrder
 }
 
 export type MerchantScalarRelationFilter = {
@@ -1021,6 +1210,14 @@ export type NullableIntFieldUpdateOperationsInput = {
 
 export type EnumMerchantStatusFieldUpdateOperationsInput = {
   set?: $Enums.MerchantStatus
+}
+
+export type EnumMerchantVerificationStatusFieldUpdateOperationsInput = {
+  set?: $Enums.MerchantVerificationStatus
+}
+
+export type EnumMerchantListingVisibilityFieldUpdateOperationsInput = {
+  set?: $Enums.MerchantListingVisibility
 }
 
 export type MerchantCreateNestedOneWithoutFoodsInput = {
@@ -1121,6 +1318,20 @@ export type MerchantUpdateOneRequiredWithoutCheckInsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MerchantUpdateToOneWithWhereWithoutCheckInsInput, Prisma.MerchantUpdateWithoutCheckInsInput>, Prisma.MerchantUncheckedUpdateWithoutCheckInsInput>
 }
 
+export type MerchantCreateNestedOneWithoutAcquisitionEventsInput = {
+  create?: Prisma.XOR<Prisma.MerchantCreateWithoutAcquisitionEventsInput, Prisma.MerchantUncheckedCreateWithoutAcquisitionEventsInput>
+  connectOrCreate?: Prisma.MerchantCreateOrConnectWithoutAcquisitionEventsInput
+  connect?: Prisma.MerchantWhereUniqueInput
+}
+
+export type MerchantUpdateOneRequiredWithoutAcquisitionEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.MerchantCreateWithoutAcquisitionEventsInput, Prisma.MerchantUncheckedCreateWithoutAcquisitionEventsInput>
+  connectOrCreate?: Prisma.MerchantCreateOrConnectWithoutAcquisitionEventsInput
+  upsert?: Prisma.MerchantUpsertWithoutAcquisitionEventsInput
+  connect?: Prisma.MerchantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MerchantUpdateToOneWithWhereWithoutAcquisitionEventsInput, Prisma.MerchantUpdateWithoutAcquisitionEventsInput>, Prisma.MerchantUncheckedUpdateWithoutAcquisitionEventsInput>
+}
+
 export type MerchantCreateNestedOneWithoutSupportTicketsInput = {
   create?: Prisma.XOR<Prisma.MerchantCreateWithoutSupportTicketsInput, Prisma.MerchantUncheckedCreateWithoutSupportTicketsInput>
   connectOrCreate?: Prisma.MerchantCreateOrConnectWithoutSupportTicketsInput
@@ -1173,6 +1384,9 @@ export type MerchantCreateWithoutUserInput = {
   email: string
   phone: string
   address: string
+  country?: string
+  city?: string | null
+  area?: string | null
   openingHours: string
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1189,6 +1403,11 @@ export type MerchantCreateWithoutUserInput = {
   recommendationRank?: number | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   foods?: Prisma.FoodCreateNestedManyWithoutMerchantInput
@@ -1198,6 +1417,7 @@ export type MerchantCreateWithoutUserInput = {
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutMerchantInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventCreateNestedManyWithoutMerchantInput
   bookings?: Prisma.BookingCreateNestedManyWithoutMerchantInput
   views?: Prisma.MerchantViewCreateNestedManyWithoutMerchantInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutMerchantInput
@@ -1213,6 +1433,9 @@ export type MerchantUncheckedCreateWithoutUserInput = {
   email: string
   phone: string
   address: string
+  country?: string
+  city?: string | null
+  area?: string | null
   openingHours: string
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1229,6 +1452,11 @@ export type MerchantUncheckedCreateWithoutUserInput = {
   recommendationRank?: number | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   foods?: Prisma.FoodUncheckedCreateNestedManyWithoutMerchantInput
@@ -1238,6 +1466,7 @@ export type MerchantUncheckedCreateWithoutUserInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutMerchantInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedManyWithoutMerchantInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutMerchantInput
   views?: Prisma.MerchantViewUncheckedCreateNestedManyWithoutMerchantInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutMerchantInput
@@ -1269,6 +1498,9 @@ export type MerchantUpdateWithoutUserInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1285,6 +1517,11 @@ export type MerchantUpdateWithoutUserInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   foods?: Prisma.FoodUpdateManyWithoutMerchantNestedInput
@@ -1294,6 +1531,7 @@ export type MerchantUpdateWithoutUserInput = {
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutMerchantNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUpdateManyWithoutMerchantNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutMerchantNestedInput
   views?: Prisma.MerchantViewUpdateManyWithoutMerchantNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutMerchantNestedInput
@@ -1309,6 +1547,9 @@ export type MerchantUncheckedUpdateWithoutUserInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1325,6 +1566,11 @@ export type MerchantUncheckedUpdateWithoutUserInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   foods?: Prisma.FoodUncheckedUpdateManyWithoutMerchantNestedInput
@@ -1334,6 +1580,7 @@ export type MerchantUncheckedUpdateWithoutUserInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUncheckedUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutMerchantNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedUpdateManyWithoutMerchantNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutMerchantNestedInput
   views?: Prisma.MerchantViewUncheckedUpdateManyWithoutMerchantNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutMerchantNestedInput
@@ -1349,6 +1596,9 @@ export type MerchantCreateWithoutFoodsInput = {
   email: string
   phone: string
   address: string
+  country?: string
+  city?: string | null
+  area?: string | null
   openingHours: string
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1365,6 +1615,11 @@ export type MerchantCreateWithoutFoodsInput = {
   recommendationRank?: number | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   orders?: Prisma.OrderCreateNestedManyWithoutMerchantInput
@@ -1373,6 +1628,7 @@ export type MerchantCreateWithoutFoodsInput = {
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutMerchantInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventCreateNestedManyWithoutMerchantInput
   bookings?: Prisma.BookingCreateNestedManyWithoutMerchantInput
   views?: Prisma.MerchantViewCreateNestedManyWithoutMerchantInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutMerchantInput
@@ -1390,6 +1646,9 @@ export type MerchantUncheckedCreateWithoutFoodsInput = {
   email: string
   phone: string
   address: string
+  country?: string
+  city?: string | null
+  area?: string | null
   openingHours: string
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1406,6 +1665,11 @@ export type MerchantUncheckedCreateWithoutFoodsInput = {
   recommendationRank?: number | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutMerchantInput
@@ -1414,6 +1678,7 @@ export type MerchantUncheckedCreateWithoutFoodsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutMerchantInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedManyWithoutMerchantInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutMerchantInput
   views?: Prisma.MerchantViewUncheckedCreateNestedManyWithoutMerchantInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutMerchantInput
@@ -1445,6 +1710,9 @@ export type MerchantUpdateWithoutFoodsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1461,6 +1729,11 @@ export type MerchantUpdateWithoutFoodsInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   orders?: Prisma.OrderUpdateManyWithoutMerchantNestedInput
@@ -1469,6 +1742,7 @@ export type MerchantUpdateWithoutFoodsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutMerchantNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUpdateManyWithoutMerchantNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutMerchantNestedInput
   views?: Prisma.MerchantViewUpdateManyWithoutMerchantNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutMerchantNestedInput
@@ -1486,6 +1760,9 @@ export type MerchantUncheckedUpdateWithoutFoodsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1502,6 +1779,11 @@ export type MerchantUncheckedUpdateWithoutFoodsInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   orders?: Prisma.OrderUncheckedUpdateManyWithoutMerchantNestedInput
@@ -1510,6 +1792,7 @@ export type MerchantUncheckedUpdateWithoutFoodsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUncheckedUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutMerchantNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedUpdateManyWithoutMerchantNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutMerchantNestedInput
   views?: Prisma.MerchantViewUncheckedUpdateManyWithoutMerchantNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutMerchantNestedInput
@@ -1525,6 +1808,9 @@ export type MerchantCreateWithoutOrdersInput = {
   email: string
   phone: string
   address: string
+  country?: string
+  city?: string | null
+  area?: string | null
   openingHours: string
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1541,6 +1827,11 @@ export type MerchantCreateWithoutOrdersInput = {
   recommendationRank?: number | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   foods?: Prisma.FoodCreateNestedManyWithoutMerchantInput
@@ -1549,6 +1840,7 @@ export type MerchantCreateWithoutOrdersInput = {
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutMerchantInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventCreateNestedManyWithoutMerchantInput
   bookings?: Prisma.BookingCreateNestedManyWithoutMerchantInput
   views?: Prisma.MerchantViewCreateNestedManyWithoutMerchantInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutMerchantInput
@@ -1566,6 +1858,9 @@ export type MerchantUncheckedCreateWithoutOrdersInput = {
   email: string
   phone: string
   address: string
+  country?: string
+  city?: string | null
+  area?: string | null
   openingHours: string
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1582,6 +1877,11 @@ export type MerchantUncheckedCreateWithoutOrdersInput = {
   recommendationRank?: number | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   foods?: Prisma.FoodUncheckedCreateNestedManyWithoutMerchantInput
@@ -1590,6 +1890,7 @@ export type MerchantUncheckedCreateWithoutOrdersInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutMerchantInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedManyWithoutMerchantInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutMerchantInput
   views?: Prisma.MerchantViewUncheckedCreateNestedManyWithoutMerchantInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutMerchantInput
@@ -1621,6 +1922,9 @@ export type MerchantUpdateWithoutOrdersInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1637,6 +1941,11 @@ export type MerchantUpdateWithoutOrdersInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   foods?: Prisma.FoodUpdateManyWithoutMerchantNestedInput
@@ -1645,6 +1954,7 @@ export type MerchantUpdateWithoutOrdersInput = {
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutMerchantNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUpdateManyWithoutMerchantNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutMerchantNestedInput
   views?: Prisma.MerchantViewUpdateManyWithoutMerchantNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutMerchantNestedInput
@@ -1662,6 +1972,9 @@ export type MerchantUncheckedUpdateWithoutOrdersInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1678,6 +1991,11 @@ export type MerchantUncheckedUpdateWithoutOrdersInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   foods?: Prisma.FoodUncheckedUpdateManyWithoutMerchantNestedInput
@@ -1686,6 +2004,7 @@ export type MerchantUncheckedUpdateWithoutOrdersInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUncheckedUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutMerchantNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedUpdateManyWithoutMerchantNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutMerchantNestedInput
   views?: Prisma.MerchantViewUncheckedUpdateManyWithoutMerchantNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutMerchantNestedInput
@@ -1701,6 +2020,9 @@ export type MerchantCreateWithoutWishlistsInput = {
   email: string
   phone: string
   address: string
+  country?: string
+  city?: string | null
+  area?: string | null
   openingHours: string
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1717,6 +2039,11 @@ export type MerchantCreateWithoutWishlistsInput = {
   recommendationRank?: number | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   foods?: Prisma.FoodCreateNestedManyWithoutMerchantInput
@@ -1725,6 +2052,7 @@ export type MerchantCreateWithoutWishlistsInput = {
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutMerchantInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventCreateNestedManyWithoutMerchantInput
   bookings?: Prisma.BookingCreateNestedManyWithoutMerchantInput
   views?: Prisma.MerchantViewCreateNestedManyWithoutMerchantInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutMerchantInput
@@ -1742,6 +2070,9 @@ export type MerchantUncheckedCreateWithoutWishlistsInput = {
   email: string
   phone: string
   address: string
+  country?: string
+  city?: string | null
+  area?: string | null
   openingHours: string
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1758,6 +2089,11 @@ export type MerchantUncheckedCreateWithoutWishlistsInput = {
   recommendationRank?: number | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   foods?: Prisma.FoodUncheckedCreateNestedManyWithoutMerchantInput
@@ -1766,6 +2102,7 @@ export type MerchantUncheckedCreateWithoutWishlistsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutMerchantInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedManyWithoutMerchantInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutMerchantInput
   views?: Prisma.MerchantViewUncheckedCreateNestedManyWithoutMerchantInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutMerchantInput
@@ -1797,6 +2134,9 @@ export type MerchantUpdateWithoutWishlistsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1813,6 +2153,11 @@ export type MerchantUpdateWithoutWishlistsInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   foods?: Prisma.FoodUpdateManyWithoutMerchantNestedInput
@@ -1821,6 +2166,7 @@ export type MerchantUpdateWithoutWishlistsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutMerchantNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUpdateManyWithoutMerchantNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutMerchantNestedInput
   views?: Prisma.MerchantViewUpdateManyWithoutMerchantNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutMerchantNestedInput
@@ -1838,6 +2184,9 @@ export type MerchantUncheckedUpdateWithoutWishlistsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1854,6 +2203,11 @@ export type MerchantUncheckedUpdateWithoutWishlistsInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   foods?: Prisma.FoodUncheckedUpdateManyWithoutMerchantNestedInput
@@ -1862,6 +2216,7 @@ export type MerchantUncheckedUpdateWithoutWishlistsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUncheckedUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutMerchantNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedUpdateManyWithoutMerchantNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutMerchantNestedInput
   views?: Prisma.MerchantViewUncheckedUpdateManyWithoutMerchantNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutMerchantNestedInput
@@ -1877,6 +2232,9 @@ export type MerchantCreateWithoutReviewsInput = {
   email: string
   phone: string
   address: string
+  country?: string
+  city?: string | null
+  area?: string | null
   openingHours: string
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1893,6 +2251,11 @@ export type MerchantCreateWithoutReviewsInput = {
   recommendationRank?: number | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   foods?: Prisma.FoodCreateNestedManyWithoutMerchantInput
@@ -1901,6 +2264,7 @@ export type MerchantCreateWithoutReviewsInput = {
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutMerchantInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventCreateNestedManyWithoutMerchantInput
   bookings?: Prisma.BookingCreateNestedManyWithoutMerchantInput
   views?: Prisma.MerchantViewCreateNestedManyWithoutMerchantInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutMerchantInput
@@ -1918,6 +2282,9 @@ export type MerchantUncheckedCreateWithoutReviewsInput = {
   email: string
   phone: string
   address: string
+  country?: string
+  city?: string | null
+  area?: string | null
   openingHours: string
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1934,6 +2301,11 @@ export type MerchantUncheckedCreateWithoutReviewsInput = {
   recommendationRank?: number | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   foods?: Prisma.FoodUncheckedCreateNestedManyWithoutMerchantInput
@@ -1942,6 +2314,7 @@ export type MerchantUncheckedCreateWithoutReviewsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutMerchantInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedManyWithoutMerchantInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutMerchantInput
   views?: Prisma.MerchantViewUncheckedCreateNestedManyWithoutMerchantInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutMerchantInput
@@ -1973,6 +2346,9 @@ export type MerchantUpdateWithoutReviewsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1989,6 +2365,11 @@ export type MerchantUpdateWithoutReviewsInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   foods?: Prisma.FoodUpdateManyWithoutMerchantNestedInput
@@ -1997,6 +2378,7 @@ export type MerchantUpdateWithoutReviewsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutMerchantNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUpdateManyWithoutMerchantNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutMerchantNestedInput
   views?: Prisma.MerchantViewUpdateManyWithoutMerchantNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutMerchantNestedInput
@@ -2014,6 +2396,9 @@ export type MerchantUncheckedUpdateWithoutReviewsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2030,6 +2415,11 @@ export type MerchantUncheckedUpdateWithoutReviewsInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   foods?: Prisma.FoodUncheckedUpdateManyWithoutMerchantNestedInput
@@ -2038,6 +2428,7 @@ export type MerchantUncheckedUpdateWithoutReviewsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUncheckedUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutMerchantNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedUpdateManyWithoutMerchantNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutMerchantNestedInput
   views?: Prisma.MerchantViewUncheckedUpdateManyWithoutMerchantNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutMerchantNestedInput
@@ -2053,6 +2444,9 @@ export type MerchantCreateWithoutAffiliateLinksInput = {
   email: string
   phone: string
   address: string
+  country?: string
+  city?: string | null
+  area?: string | null
   openingHours: string
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2069,6 +2463,11 @@ export type MerchantCreateWithoutAffiliateLinksInput = {
   recommendationRank?: number | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   foods?: Prisma.FoodCreateNestedManyWithoutMerchantInput
@@ -2077,6 +2476,7 @@ export type MerchantCreateWithoutAffiliateLinksInput = {
   reviews?: Prisma.ReviewCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutMerchantInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventCreateNestedManyWithoutMerchantInput
   bookings?: Prisma.BookingCreateNestedManyWithoutMerchantInput
   views?: Prisma.MerchantViewCreateNestedManyWithoutMerchantInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutMerchantInput
@@ -2094,6 +2494,9 @@ export type MerchantUncheckedCreateWithoutAffiliateLinksInput = {
   email: string
   phone: string
   address: string
+  country?: string
+  city?: string | null
+  area?: string | null
   openingHours: string
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2110,6 +2513,11 @@ export type MerchantUncheckedCreateWithoutAffiliateLinksInput = {
   recommendationRank?: number | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   foods?: Prisma.FoodUncheckedCreateNestedManyWithoutMerchantInput
@@ -2118,6 +2526,7 @@ export type MerchantUncheckedCreateWithoutAffiliateLinksInput = {
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutMerchantInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedManyWithoutMerchantInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutMerchantInput
   views?: Prisma.MerchantViewUncheckedCreateNestedManyWithoutMerchantInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutMerchantInput
@@ -2149,6 +2558,9 @@ export type MerchantUpdateWithoutAffiliateLinksInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2165,6 +2577,11 @@ export type MerchantUpdateWithoutAffiliateLinksInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   foods?: Prisma.FoodUpdateManyWithoutMerchantNestedInput
@@ -2173,6 +2590,7 @@ export type MerchantUpdateWithoutAffiliateLinksInput = {
   reviews?: Prisma.ReviewUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutMerchantNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUpdateManyWithoutMerchantNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutMerchantNestedInput
   views?: Prisma.MerchantViewUpdateManyWithoutMerchantNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutMerchantNestedInput
@@ -2190,6 +2608,9 @@ export type MerchantUncheckedUpdateWithoutAffiliateLinksInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2206,6 +2627,11 @@ export type MerchantUncheckedUpdateWithoutAffiliateLinksInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   foods?: Prisma.FoodUncheckedUpdateManyWithoutMerchantNestedInput
@@ -2214,6 +2640,7 @@ export type MerchantUncheckedUpdateWithoutAffiliateLinksInput = {
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUncheckedUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutMerchantNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedUpdateManyWithoutMerchantNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutMerchantNestedInput
   views?: Prisma.MerchantViewUncheckedUpdateManyWithoutMerchantNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutMerchantNestedInput
@@ -2229,6 +2656,9 @@ export type MerchantCreateWithoutCampaignsInput = {
   email: string
   phone: string
   address: string
+  country?: string
+  city?: string | null
+  area?: string | null
   openingHours: string
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2245,6 +2675,11 @@ export type MerchantCreateWithoutCampaignsInput = {
   recommendationRank?: number | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   foods?: Prisma.FoodCreateNestedManyWithoutMerchantInput
@@ -2253,6 +2688,7 @@ export type MerchantCreateWithoutCampaignsInput = {
   reviews?: Prisma.ReviewCreateNestedManyWithoutMerchantInput
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutMerchantInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventCreateNestedManyWithoutMerchantInput
   bookings?: Prisma.BookingCreateNestedManyWithoutMerchantInput
   views?: Prisma.MerchantViewCreateNestedManyWithoutMerchantInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutMerchantInput
@@ -2270,6 +2706,9 @@ export type MerchantUncheckedCreateWithoutCampaignsInput = {
   email: string
   phone: string
   address: string
+  country?: string
+  city?: string | null
+  area?: string | null
   openingHours: string
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2286,6 +2725,11 @@ export type MerchantUncheckedCreateWithoutCampaignsInput = {
   recommendationRank?: number | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   foods?: Prisma.FoodUncheckedCreateNestedManyWithoutMerchantInput
@@ -2294,6 +2738,7 @@ export type MerchantUncheckedCreateWithoutCampaignsInput = {
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMerchantInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutMerchantInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedManyWithoutMerchantInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutMerchantInput
   views?: Prisma.MerchantViewUncheckedCreateNestedManyWithoutMerchantInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutMerchantInput
@@ -2325,6 +2770,9 @@ export type MerchantUpdateWithoutCampaignsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2341,6 +2789,11 @@ export type MerchantUpdateWithoutCampaignsInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   foods?: Prisma.FoodUpdateManyWithoutMerchantNestedInput
@@ -2349,6 +2802,7 @@ export type MerchantUpdateWithoutCampaignsInput = {
   reviews?: Prisma.ReviewUpdateManyWithoutMerchantNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutMerchantNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUpdateManyWithoutMerchantNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutMerchantNestedInput
   views?: Prisma.MerchantViewUpdateManyWithoutMerchantNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutMerchantNestedInput
@@ -2366,6 +2820,9 @@ export type MerchantUncheckedUpdateWithoutCampaignsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2382,6 +2839,11 @@ export type MerchantUncheckedUpdateWithoutCampaignsInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   foods?: Prisma.FoodUncheckedUpdateManyWithoutMerchantNestedInput
@@ -2390,6 +2852,7 @@ export type MerchantUncheckedUpdateWithoutCampaignsInput = {
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMerchantNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutMerchantNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedUpdateManyWithoutMerchantNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutMerchantNestedInput
   views?: Prisma.MerchantViewUncheckedUpdateManyWithoutMerchantNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutMerchantNestedInput
@@ -2405,6 +2868,9 @@ export type MerchantCreateWithoutCheckInsInput = {
   email: string
   phone: string
   address: string
+  country?: string
+  city?: string | null
+  area?: string | null
   openingHours: string
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2421,6 +2887,11 @@ export type MerchantCreateWithoutCheckInsInput = {
   recommendationRank?: number | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   foods?: Prisma.FoodCreateNestedManyWithoutMerchantInput
@@ -2429,6 +2900,7 @@ export type MerchantCreateWithoutCheckInsInput = {
   reviews?: Prisma.ReviewCreateNestedManyWithoutMerchantInput
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignCreateNestedManyWithoutMerchantInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventCreateNestedManyWithoutMerchantInput
   bookings?: Prisma.BookingCreateNestedManyWithoutMerchantInput
   views?: Prisma.MerchantViewCreateNestedManyWithoutMerchantInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutMerchantInput
@@ -2446,6 +2918,9 @@ export type MerchantUncheckedCreateWithoutCheckInsInput = {
   email: string
   phone: string
   address: string
+  country?: string
+  city?: string | null
+  area?: string | null
   openingHours: string
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2462,6 +2937,11 @@ export type MerchantUncheckedCreateWithoutCheckInsInput = {
   recommendationRank?: number | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   foods?: Prisma.FoodUncheckedCreateNestedManyWithoutMerchantInput
@@ -2470,6 +2950,7 @@ export type MerchantUncheckedCreateWithoutCheckInsInput = {
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMerchantInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutMerchantInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedManyWithoutMerchantInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutMerchantInput
   views?: Prisma.MerchantViewUncheckedCreateNestedManyWithoutMerchantInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutMerchantInput
@@ -2501,6 +2982,9 @@ export type MerchantUpdateWithoutCheckInsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2517,6 +3001,11 @@ export type MerchantUpdateWithoutCheckInsInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   foods?: Prisma.FoodUpdateManyWithoutMerchantNestedInput
@@ -2525,6 +3014,7 @@ export type MerchantUpdateWithoutCheckInsInput = {
   reviews?: Prisma.ReviewUpdateManyWithoutMerchantNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUpdateManyWithoutMerchantNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUpdateManyWithoutMerchantNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutMerchantNestedInput
   views?: Prisma.MerchantViewUpdateManyWithoutMerchantNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutMerchantNestedInput
@@ -2542,6 +3032,9 @@ export type MerchantUncheckedUpdateWithoutCheckInsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2558,6 +3051,11 @@ export type MerchantUncheckedUpdateWithoutCheckInsInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   foods?: Prisma.FoodUncheckedUpdateManyWithoutMerchantNestedInput
@@ -2566,12 +3064,13 @@ export type MerchantUncheckedUpdateWithoutCheckInsInput = {
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMerchantNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUncheckedUpdateManyWithoutMerchantNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedUpdateManyWithoutMerchantNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutMerchantNestedInput
   views?: Prisma.MerchantViewUncheckedUpdateManyWithoutMerchantNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
-export type MerchantCreateWithoutSupportTicketsInput = {
+export type MerchantCreateWithoutAcquisitionEventsInput = {
   id?: string
   name: string
   description?: string | null
@@ -2581,6 +3080,9 @@ export type MerchantCreateWithoutSupportTicketsInput = {
   email: string
   phone: string
   address: string
+  country?: string
+  city?: string | null
+  area?: string | null
   openingHours: string
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2597,6 +3099,11 @@ export type MerchantCreateWithoutSupportTicketsInput = {
   recommendationRank?: number | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   foods?: Prisma.FoodCreateNestedManyWithoutMerchantInput
@@ -2606,6 +3113,219 @@ export type MerchantCreateWithoutSupportTicketsInput = {
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutMerchantInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutMerchantInput
+  views?: Prisma.MerchantViewCreateNestedManyWithoutMerchantInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutMerchantInput
+  user: Prisma.UserCreateNestedOneWithoutMerchantInput
+}
+
+export type MerchantUncheckedCreateWithoutAcquisitionEventsInput = {
+  id?: string
+  userId: string
+  name: string
+  description?: string | null
+  restaurantType: string
+  mainDishType: string
+  priceRange: string
+  email: string
+  phone: string
+  address: string
+  country?: string
+  city?: string | null
+  area?: string | null
+  openingHours: string
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
+  rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  reviewCount?: number
+  totalViews?: number
+  strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: number | null
+  lastRebalancedAt?: Date | string | null
+  status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  foods?: Prisma.FoodUncheckedCreateNestedManyWithoutMerchantInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutMerchantInput
+  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutMerchantInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMerchantInput
+  affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutMerchantInput
+  campaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutMerchantInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutMerchantInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutMerchantInput
+  views?: Prisma.MerchantViewUncheckedCreateNestedManyWithoutMerchantInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutMerchantInput
+}
+
+export type MerchantCreateOrConnectWithoutAcquisitionEventsInput = {
+  where: Prisma.MerchantWhereUniqueInput
+  create: Prisma.XOR<Prisma.MerchantCreateWithoutAcquisitionEventsInput, Prisma.MerchantUncheckedCreateWithoutAcquisitionEventsInput>
+}
+
+export type MerchantUpsertWithoutAcquisitionEventsInput = {
+  update: Prisma.XOR<Prisma.MerchantUpdateWithoutAcquisitionEventsInput, Prisma.MerchantUncheckedUpdateWithoutAcquisitionEventsInput>
+  create: Prisma.XOR<Prisma.MerchantCreateWithoutAcquisitionEventsInput, Prisma.MerchantUncheckedCreateWithoutAcquisitionEventsInput>
+  where?: Prisma.MerchantWhereInput
+}
+
+export type MerchantUpdateToOneWithWhereWithoutAcquisitionEventsInput = {
+  where?: Prisma.MerchantWhereInput
+  data: Prisma.XOR<Prisma.MerchantUpdateWithoutAcquisitionEventsInput, Prisma.MerchantUncheckedUpdateWithoutAcquisitionEventsInput>
+}
+
+export type MerchantUpdateWithoutAcquisitionEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  restaurantType?: Prisma.StringFieldUpdateOperationsInput | string
+  mainDishType?: Prisma.StringFieldUpdateOperationsInput | string
+  priceRange?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  openingHours?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalViews?: Prisma.IntFieldUpdateOperationsInput | number
+  strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  foods?: Prisma.FoodUpdateManyWithoutMerchantNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutMerchantNestedInput
+  wishlists?: Prisma.WishlistUpdateManyWithoutMerchantNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutMerchantNestedInput
+  affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutMerchantNestedInput
+  campaigns?: Prisma.CampaignUpdateManyWithoutMerchantNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutMerchantNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutMerchantNestedInput
+  views?: Prisma.MerchantViewUpdateManyWithoutMerchantNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutMerchantNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
+}
+
+export type MerchantUncheckedUpdateWithoutAcquisitionEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  restaurantType?: Prisma.StringFieldUpdateOperationsInput | string
+  mainDishType?: Prisma.StringFieldUpdateOperationsInput | string
+  priceRange?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  openingHours?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalViews?: Prisma.IntFieldUpdateOperationsInput | number
+  strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  foods?: Prisma.FoodUncheckedUpdateManyWithoutMerchantNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutMerchantNestedInput
+  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutMerchantNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMerchantNestedInput
+  affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutMerchantNestedInput
+  campaigns?: Prisma.CampaignUncheckedUpdateManyWithoutMerchantNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutMerchantNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutMerchantNestedInput
+  views?: Prisma.MerchantViewUncheckedUpdateManyWithoutMerchantNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutMerchantNestedInput
+}
+
+export type MerchantCreateWithoutSupportTicketsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  restaurantType: string
+  mainDishType: string
+  priceRange: string
+  email: string
+  phone: string
+  address: string
+  country?: string
+  city?: string | null
+  area?: string | null
+  openingHours: string
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  logoUrl?: string | null
+  bankCode?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  bankTransferEnabled?: boolean
+  rating?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  reviewCount?: number
+  totalViews?: number
+  strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  recommendationRank?: number | null
+  lastRebalancedAt?: Date | string | null
+  status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  foods?: Prisma.FoodCreateNestedManyWithoutMerchantInput
+  orders?: Prisma.OrderCreateNestedManyWithoutMerchantInput
+  wishlists?: Prisma.WishlistCreateNestedManyWithoutMerchantInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutMerchantInput
+  affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutMerchantInput
+  campaigns?: Prisma.CampaignCreateNestedManyWithoutMerchantInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutMerchantInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventCreateNestedManyWithoutMerchantInput
   bookings?: Prisma.BookingCreateNestedManyWithoutMerchantInput
   views?: Prisma.MerchantViewCreateNestedManyWithoutMerchantInput
   user: Prisma.UserCreateNestedOneWithoutMerchantInput
@@ -2622,6 +3342,9 @@ export type MerchantUncheckedCreateWithoutSupportTicketsInput = {
   email: string
   phone: string
   address: string
+  country?: string
+  city?: string | null
+  area?: string | null
   openingHours: string
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2638,6 +3361,11 @@ export type MerchantUncheckedCreateWithoutSupportTicketsInput = {
   recommendationRank?: number | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   foods?: Prisma.FoodUncheckedCreateNestedManyWithoutMerchantInput
@@ -2647,6 +3375,7 @@ export type MerchantUncheckedCreateWithoutSupportTicketsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutMerchantInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedManyWithoutMerchantInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutMerchantInput
   views?: Prisma.MerchantViewUncheckedCreateNestedManyWithoutMerchantInput
 }
@@ -2677,6 +3406,9 @@ export type MerchantUpdateWithoutSupportTicketsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2693,6 +3425,11 @@ export type MerchantUpdateWithoutSupportTicketsInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   foods?: Prisma.FoodUpdateManyWithoutMerchantNestedInput
@@ -2702,6 +3439,7 @@ export type MerchantUpdateWithoutSupportTicketsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutMerchantNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUpdateManyWithoutMerchantNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutMerchantNestedInput
   views?: Prisma.MerchantViewUpdateManyWithoutMerchantNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
@@ -2718,6 +3456,9 @@ export type MerchantUncheckedUpdateWithoutSupportTicketsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2734,6 +3475,11 @@ export type MerchantUncheckedUpdateWithoutSupportTicketsInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   foods?: Prisma.FoodUncheckedUpdateManyWithoutMerchantNestedInput
@@ -2743,6 +3489,7 @@ export type MerchantUncheckedUpdateWithoutSupportTicketsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUncheckedUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutMerchantNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedUpdateManyWithoutMerchantNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutMerchantNestedInput
   views?: Prisma.MerchantViewUncheckedUpdateManyWithoutMerchantNestedInput
 }
@@ -2757,6 +3504,9 @@ export type MerchantCreateWithoutBookingsInput = {
   email: string
   phone: string
   address: string
+  country?: string
+  city?: string | null
+  area?: string | null
   openingHours: string
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2773,6 +3523,11 @@ export type MerchantCreateWithoutBookingsInput = {
   recommendationRank?: number | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   foods?: Prisma.FoodCreateNestedManyWithoutMerchantInput
@@ -2782,6 +3537,7 @@ export type MerchantCreateWithoutBookingsInput = {
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutMerchantInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventCreateNestedManyWithoutMerchantInput
   views?: Prisma.MerchantViewCreateNestedManyWithoutMerchantInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutMerchantInput
   user: Prisma.UserCreateNestedOneWithoutMerchantInput
@@ -2798,6 +3554,9 @@ export type MerchantUncheckedCreateWithoutBookingsInput = {
   email: string
   phone: string
   address: string
+  country?: string
+  city?: string | null
+  area?: string | null
   openingHours: string
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2814,6 +3573,11 @@ export type MerchantUncheckedCreateWithoutBookingsInput = {
   recommendationRank?: number | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   foods?: Prisma.FoodUncheckedCreateNestedManyWithoutMerchantInput
@@ -2823,6 +3587,7 @@ export type MerchantUncheckedCreateWithoutBookingsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutMerchantInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedManyWithoutMerchantInput
   views?: Prisma.MerchantViewUncheckedCreateNestedManyWithoutMerchantInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutMerchantInput
 }
@@ -2853,6 +3618,9 @@ export type MerchantUpdateWithoutBookingsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2869,6 +3637,11 @@ export type MerchantUpdateWithoutBookingsInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   foods?: Prisma.FoodUpdateManyWithoutMerchantNestedInput
@@ -2878,6 +3651,7 @@ export type MerchantUpdateWithoutBookingsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutMerchantNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUpdateManyWithoutMerchantNestedInput
   views?: Prisma.MerchantViewUpdateManyWithoutMerchantNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutMerchantNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
@@ -2894,6 +3668,9 @@ export type MerchantUncheckedUpdateWithoutBookingsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2910,6 +3687,11 @@ export type MerchantUncheckedUpdateWithoutBookingsInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   foods?: Prisma.FoodUncheckedUpdateManyWithoutMerchantNestedInput
@@ -2919,6 +3701,7 @@ export type MerchantUncheckedUpdateWithoutBookingsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUncheckedUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutMerchantNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedUpdateManyWithoutMerchantNestedInput
   views?: Prisma.MerchantViewUncheckedUpdateManyWithoutMerchantNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutMerchantNestedInput
 }
@@ -2933,6 +3716,9 @@ export type MerchantCreateWithoutViewsInput = {
   email: string
   phone: string
   address: string
+  country?: string
+  city?: string | null
+  area?: string | null
   openingHours: string
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2949,6 +3735,11 @@ export type MerchantCreateWithoutViewsInput = {
   recommendationRank?: number | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   foods?: Prisma.FoodCreateNestedManyWithoutMerchantInput
@@ -2958,6 +3749,7 @@ export type MerchantCreateWithoutViewsInput = {
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutMerchantInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventCreateNestedManyWithoutMerchantInput
   bookings?: Prisma.BookingCreateNestedManyWithoutMerchantInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutMerchantInput
   user: Prisma.UserCreateNestedOneWithoutMerchantInput
@@ -2974,6 +3766,9 @@ export type MerchantUncheckedCreateWithoutViewsInput = {
   email: string
   phone: string
   address: string
+  country?: string
+  city?: string | null
+  area?: string | null
   openingHours: string
   latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2990,6 +3785,11 @@ export type MerchantUncheckedCreateWithoutViewsInput = {
   recommendationRank?: number | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
+  verificationStatus?: $Enums.MerchantVerificationStatus
+  listingVisibility?: $Enums.MerchantListingVisibility
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: Date | string | null
+  safetyRiskScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   foods?: Prisma.FoodUncheckedCreateNestedManyWithoutMerchantInput
@@ -2999,6 +3799,7 @@ export type MerchantUncheckedCreateWithoutViewsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutMerchantInput
   campaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutMerchantInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutMerchantInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedCreateNestedManyWithoutMerchantInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutMerchantInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutMerchantInput
 }
@@ -3029,6 +3830,9 @@ export type MerchantUpdateWithoutViewsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -3045,6 +3849,11 @@ export type MerchantUpdateWithoutViewsInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   foods?: Prisma.FoodUpdateManyWithoutMerchantNestedInput
@@ -3054,6 +3863,7 @@ export type MerchantUpdateWithoutViewsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutMerchantNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUpdateManyWithoutMerchantNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutMerchantNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutMerchantNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
@@ -3070,6 +3880,9 @@ export type MerchantUncheckedUpdateWithoutViewsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   openingHours?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -3086,6 +3899,11 @@ export type MerchantUncheckedUpdateWithoutViewsInput = {
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
+  listingVisibility?: Prisma.EnumMerchantListingVisibilityFieldUpdateOperationsInput | $Enums.MerchantListingVisibility
+  safetySuppressed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  safetySuppressedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  safetyRiskScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   foods?: Prisma.FoodUncheckedUpdateManyWithoutMerchantNestedInput
@@ -3095,6 +3913,7 @@ export type MerchantUncheckedUpdateWithoutViewsInput = {
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutMerchantNestedInput
   campaigns?: Prisma.CampaignUncheckedUpdateManyWithoutMerchantNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutMerchantNestedInput
+  acquisitionEvents?: Prisma.MerchantAcquisitionEventUncheckedUpdateManyWithoutMerchantNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutMerchantNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutMerchantNestedInput
 }
@@ -3112,6 +3931,7 @@ export type MerchantCountOutputType = {
   affiliateLinks: number
   campaigns: number
   checkIns: number
+  acquisitionEvents: number
   bookings: number
   views: number
   supportTickets: number
@@ -3125,6 +3945,7 @@ export type MerchantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensio
   affiliateLinks?: boolean | MerchantCountOutputTypeCountAffiliateLinksArgs
   campaigns?: boolean | MerchantCountOutputTypeCountCampaignsArgs
   checkIns?: boolean | MerchantCountOutputTypeCountCheckInsArgs
+  acquisitionEvents?: boolean | MerchantCountOutputTypeCountAcquisitionEventsArgs
   bookings?: boolean | MerchantCountOutputTypeCountBookingsArgs
   views?: boolean | MerchantCountOutputTypeCountViewsArgs
   supportTickets?: boolean | MerchantCountOutputTypeCountSupportTicketsArgs
@@ -3192,6 +4013,13 @@ export type MerchantCountOutputTypeCountCheckInsArgs<ExtArgs extends runtime.Typ
 /**
  * MerchantCountOutputType without action
  */
+export type MerchantCountOutputTypeCountAcquisitionEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MerchantAcquisitionEventWhereInput
+}
+
+/**
+ * MerchantCountOutputType without action
+ */
 export type MerchantCountOutputTypeCountBookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.BookingWhereInput
 }
@@ -3222,6 +4050,9 @@ export type MerchantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   email?: boolean
   phone?: boolean
   address?: boolean
+  country?: boolean
+  city?: boolean
+  area?: boolean
   openingHours?: boolean
   latitude?: boolean
   longitude?: boolean
@@ -3238,6 +4069,11 @@ export type MerchantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   recommendationRank?: boolean
   lastRebalancedAt?: boolean
   status?: boolean
+  verificationStatus?: boolean
+  listingVisibility?: boolean
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: boolean
+  safetyRiskScore?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   foods?: boolean | Prisma.Merchant$foodsArgs<ExtArgs>
@@ -3247,6 +4083,7 @@ export type MerchantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   affiliateLinks?: boolean | Prisma.Merchant$affiliateLinksArgs<ExtArgs>
   campaigns?: boolean | Prisma.Merchant$campaignsArgs<ExtArgs>
   checkIns?: boolean | Prisma.Merchant$checkInsArgs<ExtArgs>
+  acquisitionEvents?: boolean | Prisma.Merchant$acquisitionEventsArgs<ExtArgs>
   bookings?: boolean | Prisma.Merchant$bookingsArgs<ExtArgs>
   views?: boolean | Prisma.Merchant$viewsArgs<ExtArgs>
   supportTickets?: boolean | Prisma.Merchant$supportTicketsArgs<ExtArgs>
@@ -3265,6 +4102,9 @@ export type MerchantSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   email?: boolean
   phone?: boolean
   address?: boolean
+  country?: boolean
+  city?: boolean
+  area?: boolean
   openingHours?: boolean
   latitude?: boolean
   longitude?: boolean
@@ -3281,6 +4121,11 @@ export type MerchantSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   recommendationRank?: boolean
   lastRebalancedAt?: boolean
   status?: boolean
+  verificationStatus?: boolean
+  listingVisibility?: boolean
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: boolean
+  safetyRiskScore?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -3297,6 +4142,9 @@ export type MerchantSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   email?: boolean
   phone?: boolean
   address?: boolean
+  country?: boolean
+  city?: boolean
+  area?: boolean
   openingHours?: boolean
   latitude?: boolean
   longitude?: boolean
@@ -3313,6 +4161,11 @@ export type MerchantSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   recommendationRank?: boolean
   lastRebalancedAt?: boolean
   status?: boolean
+  verificationStatus?: boolean
+  listingVisibility?: boolean
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: boolean
+  safetyRiskScore?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -3329,6 +4182,9 @@ export type MerchantSelectScalar = {
   email?: boolean
   phone?: boolean
   address?: boolean
+  country?: boolean
+  city?: boolean
+  area?: boolean
   openingHours?: boolean
   latitude?: boolean
   longitude?: boolean
@@ -3345,11 +4201,16 @@ export type MerchantSelectScalar = {
   recommendationRank?: boolean
   lastRebalancedAt?: boolean
   status?: boolean
+  verificationStatus?: boolean
+  listingVisibility?: boolean
+  safetySuppressed?: boolean
+  safetySuppressedUntil?: boolean
+  safetyRiskScore?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type MerchantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "description" | "restaurantType" | "mainDishType" | "priceRange" | "email" | "phone" | "address" | "openingHours" | "latitude" | "longitude" | "logoUrl" | "bankCode" | "bankAccountNumber" | "bankAccountName" | "bankTransferEnabled" | "rating" | "reviewCount" | "totalViews" | "strengthIndex" | "underratedScore" | "recommendationRank" | "lastRebalancedAt" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["merchant"]>
+export type MerchantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "description" | "restaurantType" | "mainDishType" | "priceRange" | "email" | "phone" | "address" | "country" | "city" | "area" | "openingHours" | "latitude" | "longitude" | "logoUrl" | "bankCode" | "bankAccountNumber" | "bankAccountName" | "bankTransferEnabled" | "rating" | "reviewCount" | "totalViews" | "strengthIndex" | "underratedScore" | "recommendationRank" | "lastRebalancedAt" | "status" | "verificationStatus" | "listingVisibility" | "safetySuppressed" | "safetySuppressedUntil" | "safetyRiskScore" | "createdAt" | "updatedAt", ExtArgs["result"]["merchant"]>
 export type MerchantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   foods?: boolean | Prisma.Merchant$foodsArgs<ExtArgs>
   orders?: boolean | Prisma.Merchant$ordersArgs<ExtArgs>
@@ -3358,6 +4219,7 @@ export type MerchantInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   affiliateLinks?: boolean | Prisma.Merchant$affiliateLinksArgs<ExtArgs>
   campaigns?: boolean | Prisma.Merchant$campaignsArgs<ExtArgs>
   checkIns?: boolean | Prisma.Merchant$checkInsArgs<ExtArgs>
+  acquisitionEvents?: boolean | Prisma.Merchant$acquisitionEventsArgs<ExtArgs>
   bookings?: boolean | Prisma.Merchant$bookingsArgs<ExtArgs>
   views?: boolean | Prisma.Merchant$viewsArgs<ExtArgs>
   supportTickets?: boolean | Prisma.Merchant$supportTicketsArgs<ExtArgs>
@@ -3381,6 +4243,7 @@ export type $MerchantPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     affiliateLinks: Prisma.$AffiliateLinkPayload<ExtArgs>[]
     campaigns: Prisma.$CampaignPayload<ExtArgs>[]
     checkIns: Prisma.$CheckInPayload<ExtArgs>[]
+    acquisitionEvents: Prisma.$MerchantAcquisitionEventPayload<ExtArgs>[]
     bookings: Prisma.$BookingPayload<ExtArgs>[]
     views: Prisma.$MerchantViewPayload<ExtArgs>[]
     supportTickets: Prisma.$SupportTicketPayload<ExtArgs>[]
@@ -3397,6 +4260,9 @@ export type $MerchantPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     email: string
     phone: string
     address: string
+    country: string
+    city: string | null
+    area: string | null
     openingHours: string
     latitude: runtime.Decimal | null
     longitude: runtime.Decimal | null
@@ -3413,6 +4279,11 @@ export type $MerchantPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     recommendationRank: number | null
     lastRebalancedAt: Date | null
     status: $Enums.MerchantStatus
+    verificationStatus: $Enums.MerchantVerificationStatus
+    listingVisibility: $Enums.MerchantListingVisibility
+    safetySuppressed: boolean
+    safetySuppressedUntil: Date | null
+    safetyRiskScore: runtime.Decimal
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["merchant"]>
@@ -3816,6 +4687,7 @@ export interface Prisma__MerchantClient<T, Null = never, ExtArgs extends runtime
   affiliateLinks<T extends Prisma.Merchant$affiliateLinksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Merchant$affiliateLinksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AffiliateLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   campaigns<T extends Prisma.Merchant$campaignsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Merchant$campaignsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CampaignPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   checkIns<T extends Prisma.Merchant$checkInsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Merchant$checkInsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CheckInPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  acquisitionEvents<T extends Prisma.Merchant$acquisitionEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Merchant$acquisitionEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MerchantAcquisitionEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   bookings<T extends Prisma.Merchant$bookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Merchant$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   views<T extends Prisma.Merchant$viewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Merchant$viewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MerchantViewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   supportTickets<T extends Prisma.Merchant$supportTicketsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Merchant$supportTicketsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SupportTicketPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3859,6 +4731,9 @@ export interface MerchantFieldRefs {
   readonly email: Prisma.FieldRef<"Merchant", 'String'>
   readonly phone: Prisma.FieldRef<"Merchant", 'String'>
   readonly address: Prisma.FieldRef<"Merchant", 'String'>
+  readonly country: Prisma.FieldRef<"Merchant", 'String'>
+  readonly city: Prisma.FieldRef<"Merchant", 'String'>
+  readonly area: Prisma.FieldRef<"Merchant", 'String'>
   readonly openingHours: Prisma.FieldRef<"Merchant", 'String'>
   readonly latitude: Prisma.FieldRef<"Merchant", 'Decimal'>
   readonly longitude: Prisma.FieldRef<"Merchant", 'Decimal'>
@@ -3875,6 +4750,11 @@ export interface MerchantFieldRefs {
   readonly recommendationRank: Prisma.FieldRef<"Merchant", 'Int'>
   readonly lastRebalancedAt: Prisma.FieldRef<"Merchant", 'DateTime'>
   readonly status: Prisma.FieldRef<"Merchant", 'MerchantStatus'>
+  readonly verificationStatus: Prisma.FieldRef<"Merchant", 'MerchantVerificationStatus'>
+  readonly listingVisibility: Prisma.FieldRef<"Merchant", 'MerchantListingVisibility'>
+  readonly safetySuppressed: Prisma.FieldRef<"Merchant", 'Boolean'>
+  readonly safetySuppressedUntil: Prisma.FieldRef<"Merchant", 'DateTime'>
+  readonly safetyRiskScore: Prisma.FieldRef<"Merchant", 'Decimal'>
   readonly createdAt: Prisma.FieldRef<"Merchant", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Merchant", 'DateTime'>
 }
@@ -4443,6 +5323,30 @@ export type Merchant$checkInsArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.CheckInScalarFieldEnum | Prisma.CheckInScalarFieldEnum[]
+}
+
+/**
+ * Merchant.acquisitionEvents
+ */
+export type Merchant$acquisitionEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MerchantAcquisitionEvent
+   */
+  select?: Prisma.MerchantAcquisitionEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MerchantAcquisitionEvent
+   */
+  omit?: Prisma.MerchantAcquisitionEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MerchantAcquisitionEventInclude<ExtArgs> | null
+  where?: Prisma.MerchantAcquisitionEventWhereInput
+  orderBy?: Prisma.MerchantAcquisitionEventOrderByWithRelationInput | Prisma.MerchantAcquisitionEventOrderByWithRelationInput[]
+  cursor?: Prisma.MerchantAcquisitionEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MerchantAcquisitionEventScalarFieldEnum | Prisma.MerchantAcquisitionEventScalarFieldEnum[]
 }
 
 /**

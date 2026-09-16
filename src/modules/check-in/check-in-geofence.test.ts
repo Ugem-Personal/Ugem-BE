@@ -15,6 +15,7 @@ describe("verifyCheckIn Geo-fencing", () => {
     paymentStatus: "Paid",
     merchant: {
       id: "merch-1",
+      userId: "user-merch-1",
       name: "Bếp Nhà UAT",
       latitude: merchantLat,
       longitude: merchantLng,
@@ -31,9 +32,29 @@ describe("verifyCheckIn Geo-fencing", () => {
     const customerLng = 106.7010;
 
     vi.spyOn(prisma.order, "findUnique").mockResolvedValue(mockOrder as any);
-    vi.spyOn(prisma.checkIn, "updateMany").mockResolvedValue({ count: 1 });
+    vi.spyOn(prisma.checkIn, "count").mockResolvedValue(0);
     vi.spyOn(prisma.customer, "findUnique").mockResolvedValue({ reviewerPoints: 50 } as any);
-    vi.spyOn(prisma, "$transaction").mockResolvedValue([{}, {}] as any);
+    vi.spyOn(prisma, "$transaction").mockImplementation(async (operation: any) => {
+      if (Array.isArray(operation)) return [{}, {}] as any;
+      return operation({
+        checkIn: {
+          updateMany: vi.fn().mockResolvedValue({ count: 1 }),
+          findUniqueOrThrow: vi.fn().mockResolvedValue({
+            id: "checkin-1",
+            customerId: "cust-1",
+            merchantId: "merch-1",
+            campaignId: null,
+            orderId: "order-checkin-1",
+            bookingId: null,
+            affiliateLinkId: null,
+            source: "OrderQr",
+            checkInMethod: "OrderQr",
+            checkedInAt: new Date(),
+          }),
+        },
+        merchantAcquisitionEvent: { create: vi.fn().mockResolvedValue({}) },
+      });
+    });
     vi.spyOn(prisma.notification, "create").mockResolvedValue({} as any);
 
     const result = await verifyCheckIn(

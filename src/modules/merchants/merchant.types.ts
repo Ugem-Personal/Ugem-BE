@@ -7,6 +7,9 @@ export interface MerchantListQuery {
   restaurantType?: string;
   mainDishType?: string;
   priceRange?: string;
+  country?: string;
+  city?: string;
+  area?: string;
 
   latitude?: number;
   longitude?: number;
@@ -31,6 +34,9 @@ export interface UpdateMerchantProfileInput {
   phone?: string;
   address?: string;
   openingHours?: string;
+  country?: string;
+  city?: string | null;
+  area?: string | null;
 
   bankCode?: string | null;
   bankAccountNumber?: string | null;

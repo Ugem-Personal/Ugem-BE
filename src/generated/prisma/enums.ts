@@ -165,10 +165,126 @@ export const CheckInStatus = {
   Pending: 'Pending',
   Verified: 'Verified',
   Rejected: 'Rejected',
-  Expired: 'Expired'
+  Expired: 'Expired',
+  Disputed: 'Disputed'
 } as const
 
 export type CheckInStatus = (typeof CheckInStatus)[keyof typeof CheckInStatus]
+
+
+export const CheckInMethod = {
+  OrderQr: 'OrderQr',
+  CustomerCode: 'CustomerCode'
+} as const
+
+export type CheckInMethod = (typeof CheckInMethod)[keyof typeof CheckInMethod]
+
+
+export const MerchantVerificationStatus = {
+  Unverified: 'Unverified',
+  PendingVerification: 'PendingVerification',
+  VerifiedBusiness: 'VerifiedBusiness',
+  UnderReview: 'UnderReview',
+  Suspended: 'Suspended',
+  Removed: 'Removed'
+} as const
+
+export type MerchantVerificationStatus = (typeof MerchantVerificationStatus)[keyof typeof MerchantVerificationStatus]
+
+
+export const MerchantListingVisibility = {
+  Public: 'Public',
+  Hidden: 'Hidden'
+} as const
+
+export type MerchantListingVisibility = (typeof MerchantListingVisibility)[keyof typeof MerchantListingVisibility]
+
+
+export const IncidentType = {
+  FoodSafety: 'FoodSafety',
+  Hygiene: 'Hygiene',
+  Fraud: 'Fraud',
+  WrongInformation: 'WrongInformation',
+  BadService: 'BadService',
+  Other: 'Other'
+} as const
+
+export type IncidentType = (typeof IncidentType)[keyof typeof IncidentType]
+
+
+export const IncidentSeverity = {
+  Low: 'Low',
+  Medium: 'Medium',
+  High: 'High',
+  Critical: 'Critical'
+} as const
+
+export type IncidentSeverity = (typeof IncidentSeverity)[keyof typeof IncidentSeverity]
+
+
+export const IncidentStatus = {
+  Open: 'Open',
+  UnderReview: 'UnderReview',
+  Resolved: 'Resolved',
+  Rejected: 'Rejected'
+} as const
+
+export type IncidentStatus = (typeof IncidentStatus)[keyof typeof IncidentStatus]
+
+
+export const MerchantClaimStatus = {
+  Pending: 'Pending',
+  UnderReview: 'UnderReview',
+  Approved: 'Approved',
+  Rejected: 'Rejected'
+} as const
+
+export type MerchantClaimStatus = (typeof MerchantClaimStatus)[keyof typeof MerchantClaimStatus]
+
+
+export const MerchantRemovalStatus = {
+  Pending: 'Pending',
+  UnderReview: 'UnderReview',
+  Approved: 'Approved',
+  Rejected: 'Rejected'
+} as const
+
+export type MerchantRemovalStatus = (typeof MerchantRemovalStatus)[keyof typeof MerchantRemovalStatus]
+
+
+export const RestaurantSuggestionStatus = {
+  Pending: 'Pending',
+  UnderReview: 'UnderReview',
+  Approved: 'Approved',
+  Rejected: 'Rejected',
+  Published: 'Published'
+} as const
+
+export type RestaurantSuggestionStatus = (typeof RestaurantSuggestionStatus)[keyof typeof RestaurantSuggestionStatus]
+
+
+export const FunnelEventType = {
+  Register: 'Register',
+  ActiveUser: 'ActiveUser',
+  RestaurantView: 'RestaurantView',
+  Save: 'Save',
+  Visit: 'Visit',
+  CheckIn: 'CheckIn',
+  VerifiedVisit: 'VerifiedVisit',
+  RepeatVisit: 'RepeatVisit'
+} as const
+
+export type FunnelEventType = (typeof FunnelEventType)[keyof typeof FunnelEventType]
+
+
+export const MonetizationFeeType = {
+  VerifiedVisitFee: 'VerifiedVisitFee',
+  CampaignFee: 'CampaignFee',
+  PremiumAnalytics: 'PremiumAnalytics',
+  OptionalOrderFee: 'OptionalOrderFee'
+} as const
+
+export type MonetizationFeeType = (typeof MonetizationFeeType)[keyof typeof MonetizationFeeType]
 
 
 export const RebalancingStatus = {

@@ -121,6 +121,8 @@ export const createCampaign = async (
     where: {
       id: merchantId,
       status: MerchantStatus.Active,
+      listingVisibility: "Public",
+      safetySuppressed: false,
     },
   });
 

@@ -119,6 +119,89 @@ enum CheckInStatus {
   Verified
   Rejected
   Expired
+  Disputed
+}
+
+enum CheckInMethod {
+  OrderQr
+  CustomerCode
+}
+
+enum MerchantVerificationStatus {
+  Unverified
+  PendingVerification
+  VerifiedBusiness
+  UnderReview
+  Suspended
+  Removed
+}
+
+enum MerchantListingVisibility {
+  Public
+  Hidden
+}
+
+enum IncidentType {
+  FoodSafety
+  Hygiene
+  Fraud
+  WrongInformation
+  BadService
+  Other
+}
+
+enum IncidentSeverity {
+  Low
+  Medium
+  High
+  Critical
+}
+
+enum IncidentStatus {
+  Open
+  UnderReview
+  Resolved
+  Rejected
+}
+
+enum MerchantClaimStatus {
+  Pending
+  UnderReview
+  Approved
+  Rejected
+}
+
+enum MerchantRemovalStatus {
+  Pending
+  UnderReview
+  Approved
+  Rejected
+}
+
+enum RestaurantSuggestionStatus {
+  Pending
+  UnderReview
+  Approved
+  Rejected
+  Published
+}
+
+enum FunnelEventType {
+  Register
+  ActiveUser
+  RestaurantView
+  Save
+  Visit
+  CheckIn
+  VerifiedVisit
+  RepeatVisit
+}
+
+enum MonetizationFeeType {
+  VerifiedVisitFee
+  CampaignFee
+  PremiumAnalytics
+  OptionalOrderFee
 }
 
 enum RebalancingStatus {
@@ -179,6 +262,7 @@ model Customer {
   earningTransactions  ReviewerEarningTransaction[]
   affiliateClicks      AffiliateClick[]
   checkIns             CheckIn[]
+  acquisitionEvents    MerchantAcquisitionEvent[]
   bookings             Booking[]
   reviewerPoints       Int                          @default(0)
   reviewerRank         String                       @default("Bronze")
@@ -287,6 +371,9 @@ model Merchant {
   email        String
   phone        String
   address      String
+  country      String @default("VN")
+  city         String?
+  area         String?
   openingHours String
 
   latitude  Decimal? @db.Decimal(10, 7)
@@ -309,6 +396,11 @@ model Merchant {
   lastRebalancedAt   DateTime?
 
   status         MerchantStatus  @default(Active)
+  verificationStatus MerchantVerificationStatus @default(Unverified)
+  listingVisibility MerchantListingVisibility @default(Public)
+  safetySuppressed Boolean @default(false)
+  safetySuppressedUntil DateTime?
+  safetyRiskScore Decimal @default(0) @db.Decimal(10, 4)
   foods          Food[]
   orders         Order[]
   wishlists      Wishlist[]
@@ -316,6 +408,7 @@ model Merchant {
   affiliateLinks AffiliateLink[]
   campaigns      Campaign[]
   checkIns       CheckIn[]
+  acquisitionEvents MerchantAcquisitionEvent[]
   bookings       Booking[]
   views          MerchantView[]
   supportTickets SupportTicket[]
@@ -330,6 +423,7 @@ model Merchant {
   @@index([recommendationRank])
   @@index([underratedScore])
   @@index([latitude, longitude])
+  @@index([country, city, area])
   @@map("merchants")
 }
 
@@ -485,6 +579,7 @@ model Order {
   bill    Bill?
   review  Review?
   checkIn CheckIn?
+  acquisitionEvents MerchantAcquisitionEvent[]
 
   @@index([customerId])
   @@index([merchantId])
@@ -686,6 +781,8 @@ model AffiliateLink {
   orders Order[]
   bookings Booking[]
   affiliateTransactions AffiliateTransaction[]
+  checkIns CheckIn[]
+  acquisitionEvents MerchantAcquisitionEvent[]
 
   @@unique([reviewerId, merchantId])
   @@index([reviewerId])
@@ -805,6 +902,8 @@ model Campaign {
   merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
 
   orders Order[]
+  checkIns CheckIn[]
+  acquisitionEvents MerchantAcquisitionEvent[]
 
   @@index([merchantId])
   @@index([isActive])
@@ -822,6 +921,14 @@ model CheckIn {
 
   rewardBenefit String?
   notes         String?
+  source        String?
+  campaignId    String?
+  bookingId     String?
+  affiliateLinkId String?
+  checkInMethod CheckInMethod @default(OrderQr)
+  suspicious    Boolean      @default(false)
+  suspiciousReason String?
+  disputedAt    DateTime?
 
   generatedAt DateTime       @default(now())
   expiresAt   DateTime?
@@ -834,12 +941,154 @@ model CheckIn {
   order    Order?   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   customer Customer @relation(fields: [customerId], references: [id], onDelete: Restrict)
   merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Restrict)
+  campaign Campaign? @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+  booking Booking? @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  affiliateLink AffiliateLink? @relation(fields: [affiliateLinkId], references: [id], onDelete: SetNull)
+  acquisitionEvent MerchantAcquisitionEvent?
 
   @@index([customerId])
   @@index([merchantId])
   @@index([checkedInAt])
   @@index([status])
+  @@index([merchantId, customerId, checkedInAt])
+  @@index([suspicious, status])
   @@map("check_ins")
+}
+
+model MerchantAcquisitionEvent {
+  id              String   @id @default(uuid())
+  merchantId      String
+  customerId      String
+  checkInId       String   @unique
+  campaignId      String?
+  orderId         String?
+  bookingId       String?
+  affiliateLinkId String?
+  source          String?
+  verificationMethod CheckInMethod
+  occurredAt      DateTime @default(now())
+  createdAt       DateTime @default(now())
+
+  merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Restrict)
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  checkIn CheckIn @relation(fields: [checkInId], references: [id], onDelete: Restrict)
+  campaign Campaign? @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+  order Order? @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  booking Booking? @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  affiliateLink AffiliateLink? @relation(fields: [affiliateLinkId], references: [id], onDelete: SetNull)
+
+  @@index([merchantId, occurredAt])
+  @@index([customerId, occurredAt])
+  @@index([source])
+  @@map("merchant_acquisition_events")
+}
+
+model MerchantIncident {
+  id              String         @id @default(uuid())
+  merchantId      String
+  reporterUserId  String
+  type            IncidentType
+  severity        IncidentSeverity @default(Medium)
+  status          IncidentStatus @default(Open)
+  description     String
+  evidenceUrls    String[]       @default([])
+  adminDecision   String?
+  resolution      String?
+  reviewedByUserId String?
+  reviewedAt      DateTime?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@index([merchantId, status])
+  @@index([merchantId, severity, createdAt])
+  @@index([reporterUserId])
+  @@map("merchant_incidents")
+}
+
+model MerchantClaim {
+  id             String             @id @default(uuid())
+  merchantId     String
+  submittedByUserId String
+  status         MerchantClaimStatus @default(Pending)
+  evidenceUrls   String[]           @default([])
+  decision       String?
+  reviewedByUserId String?
+  reviewedAt     DateTime?
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+
+  @@index([merchantId, status])
+  @@index([submittedByUserId])
+  @@map("merchant_claims")
+}
+
+model MerchantRemovalRequest {
+  id             String              @id @default(uuid())
+  merchantId     String
+  submittedByUserId String
+  status         MerchantRemovalStatus @default(Pending)
+  reason         String
+  decision       String?
+  reviewedByUserId String?
+  reviewedAt     DateTime?
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+
+  @@index([merchantId, status])
+  @@index([submittedByUserId])
+  @@map("merchant_removal_requests")
+}
+
+model RestaurantSuggestion {
+  id               String                    @id @default(uuid())
+  name             String
+  address          String
+  category         String?
+  recommendedDish  String?
+  description      String?
+  images           String[]                  @default([])
+  reason           String
+  submittedByUserId String?
+  status           RestaurantSuggestionStatus @default(Pending)
+  reviewedByUserId String?
+  publishedMerchantId String?
+  reviewedAt       DateTime?
+  createdAt        DateTime                  @default(now())
+  updatedAt        DateTime                  @updatedAt
+
+  @@index([status, createdAt])
+  @@index([submittedByUserId])
+  @@map("restaurant_suggestions")
+}
+
+model FunnelEvent {
+  id         String          @id @default(uuid())
+  eventType  FunnelEventType
+  userId     String?
+  merchantId String?
+  sessionKey String?
+  metadata   Json?
+  occurredAt DateTime        @default(now())
+
+  @@index([eventType, occurredAt])
+  @@index([merchantId, eventType, occurredAt])
+  @@index([userId, eventType, occurredAt])
+  @@map("funnel_events")
+}
+
+model MonetizationFeePolicy {
+  id          String              @id @default(uuid())
+  feeType     MonetizationFeeType
+  amount      Decimal?
+  currency    String              @default("VND")
+  isActive    Boolean             @default(false)
+  effectiveAt DateTime            @default(now())
+  metadata    Json?
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  @@index([feeType, isActive])
+  @@map("monetization_fee_policies")
 }
 
 model Notification {
@@ -973,6 +1222,8 @@ model Booking {
   affiliateLink        AffiliateLink?              @relation(fields: [affiliateLinkId], references: [id], onDelete: SetNull)
   affiliateTransaction AffiliateTransaction?
   earningTransaction   ReviewerEarningTransaction?
+  checkIns             CheckIn[]
+  acquisitionEvents    MerchantAcquisitionEvent[]
 
   @@index([customerId])
   @@index([merchantId])
