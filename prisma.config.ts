@@ -4,12 +4,27 @@
 import "dotenv/config";
 import { defineConfig } from "prisma/config";
 
+const directUrl = process.env["DIRECT_URL"];
+const migrationUrl = directUrl ?? process.env["DATABASE_URL"];
+const migrationConnection = migrationUrl ? new URL(migrationUrl) : undefined;
+
+// Supabase's transaction pooler (6543) cannot hold the session-level lock
+// Prisma Migrate needs. Prefer a configured direct URL; otherwise use the
+// pooler's session mode on 5432 for migrations.
+if (
+  !directUrl &&
+  migrationConnection?.hostname.endsWith(".pooler.supabase.com") &&
+  migrationConnection.port === "6543"
+) {
+  migrationConnection.port = "5432";
+}
+
 export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    url: migrationConnection?.toString(),
   },
 });
