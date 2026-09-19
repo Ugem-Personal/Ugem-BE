@@ -1,7 +1,8 @@
 /**
  * Discovery scores used by the rebalancing engine.
  *
- * SI = verified visits * 0.5 + reviews * 0.3 + (organic views / 10) * 0.2
+ * Quality and exposure are scored separately so popularity does not look like
+ * quality and highly rated, low exposure places can be surfaced as gems.
  */
 export const calculateStrengthIndex = (
   verifiedVisits: number,
