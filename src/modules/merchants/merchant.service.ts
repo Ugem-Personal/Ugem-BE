@@ -24,6 +24,20 @@ import {
 } from "../../common/utils/preference-score.js";
 import { calculateOrganicRecommendationScore } from "../../common/utils/merchant-score.js";
 
+const productionDiscoveryFilter: Prisma.MerchantWhereInput =
+  env.NODE_ENV === "production"
+    ? {
+        user: {
+          email: {
+            mode: "insensitive",
+            not: {
+              endsWith: "@uat.ugem.local",
+            },
+          },
+        },
+      }
+    : {};
+
 function calculateDistanceKm(
   lat1: number,
   lon1: number,
@@ -304,6 +318,7 @@ const getOrganicMerchants = async (query: MerchantListQuery) => {
     : null;
 
   const where: Prisma.MerchantWhereInput = {
+    ...productionDiscoveryFilter,
     id: query.merchantIds ? { in: query.merchantIds } : undefined,
     status: MerchantStatus.Active,
     listingVisibility: "Public",
@@ -547,6 +562,7 @@ const getSponsoredMerchantsInternal = async (
       startAt: { lte: now },
       endAt: { gte: now },
       merchant: {
+        ...productionDiscoveryFilter,
         status: MerchantStatus.Active,
         listingVisibility: "Public",
         safetySuppressed: false,
@@ -806,6 +822,7 @@ export const getMerchants = async (query: MerchantListQuery) => {
 export const getMerchantById = async (merchantId: string) => {
   const merchant = await prisma.merchant.findFirst({
     where: {
+      ...productionDiscoveryFilter,
       id: merchantId,
       status: MerchantStatus.Active,
       listingVisibility: "Public",
@@ -983,6 +1000,7 @@ export const updateMyMerchant = async (
 export const getMerchantsForMap = async (query: MerchantMapQuery) => {
   const merchants = await prisma.merchant.findMany({
     where: {
+      ...productionDiscoveryFilter,
       status: MerchantStatus.Active,
       listingVisibility: "Public",
       safetySuppressed: false,
