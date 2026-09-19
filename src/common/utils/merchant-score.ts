@@ -1,5 +1,5 @@
 /**
- * Organic merchant strength used by the rebalancing engine.
+ * Discovery scores used by the rebalancing engine.
  *
  * SI = verified visits * 0.5 + reviews * 0.3 + (organic views / 10) * 0.2
  */
@@ -17,12 +17,62 @@ export const calculateStrengthIndex = (
 };
 
 export const GEM_THRESHOLDS = {
-  minimumRating: 4,
+  minimumRating: 4.5,
   minimumReviews: 3,
   minimumVerifiedVisits: 3,
   hiddenMaxExposure: 20,
   risingMaxExposure: 60,
 } as const;
+
+const clamp = (value: number) => Math.max(0, Math.min(1, value));
+
+/** Quality uses only signals tied to real customer experience. */
+export const calculateQualityScore = (input: {
+  rating: number;
+  verifiedReviews: number;
+  verifiedVisits: number;
+  repeatRate?: number;
+}) => {
+  const ratingScore = clamp(input.rating / 5);
+  const reviewConfidence = clamp(input.verifiedReviews / 10);
+  const visitConfidence = clamp(input.verifiedVisits / 10);
+  const repeatRate = clamp(input.repeatRate ?? 0);
+
+  return Number(
+    (
+      ratingScore * 0.5 +
+      reviewConfidence * 0.2 +
+      visitConfidence * 0.2 +
+      repeatRate * 0.1
+    ).toFixed(4),
+  );
+};
+
+/** Exposure is kept separate from quality so popular places are not gems. */
+export const calculateExposureIndex = (input: {
+  organicViews: number;
+  uniqueVisitors: number;
+  reviews: number;
+  wishlists: number;
+}) =>
+  Number(
+    (
+      Math.log1p(Math.max(0, input.organicViews)) * 0.45 +
+      Math.log1p(Math.max(0, input.uniqueVisitors)) * 0.25 +
+      Math.log1p(Math.max(0, input.reviews)) * 0.15 +
+      Math.log1p(Math.max(0, input.wishlists)) * 0.15
+    ).toFixed(4),
+  );
+
+export const calculateHiddenGemScore = (
+  qualityScore: number,
+  exposureIndex: number,
+  maxExposureIndex: number,
+) => {
+  if (qualityScore <= 0 || maxExposureIndex <= 0) return 0;
+  const exposureRatio = clamp(exposureIndex / maxExposureIndex);
+  return Number((clamp(qualityScore) * (1 - exposureRatio)).toFixed(4));
+};
 
 export type GemStatus = "HiddenGem" | "RisingGem" | "HallOfFame";
 

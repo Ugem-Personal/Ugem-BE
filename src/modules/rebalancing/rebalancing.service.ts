@@ -6,8 +6,9 @@ import {
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
 import {
-  calculateNormalizedUnderratedScore,
-  calculateStrengthIndex,
+  calculateExposureIndex,
+  calculateHiddenGemScore,
+  calculateQualityScore,
   determineGemStatus,
 } from "../../common/utils/merchant-score.js";
 import { recommendationCache } from "../../common/services/recommendation-cache.js";
@@ -50,6 +51,7 @@ export const runRebalancing = async () => {
   });
 
   try {
+    const exposureSince = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000);
     await prisma.merchant.updateMany({
       where: { OR: [{ status: { not: "Active" } }, { listingVisibility: { not: "Public" } }, { safetySuppressed: true }] },
       data: { gemStatus: null },
@@ -76,6 +78,7 @@ export const runRebalancing = async () => {
             },
             views: {
               where: {
+                createdAt: { gte: exposureSince },
                 source: {
                   in: [
                     MerchantTrafficSource.Recommendation,
@@ -86,9 +89,17 @@ export const runRebalancing = async () => {
                 },
               },
             },
+            wishlists: {
+              where: { createdAt: { gte: exposureSince } },
+            },
           },
         },
-        reviews: { select: { rating: true } },
+        reviews: {
+          where: {
+            OR: [{ checkInId: { not: null } }, { orderId: { not: null } }],
+          },
+          select: { rating: true },
+        },
       },
     });
 
@@ -113,48 +124,94 @@ export const runRebalancing = async () => {
       };
     }
 
+    const verifiedCheckInGroups = await prisma.checkIn.groupBy({
+      by: ["merchantId", "customerId"],
+      where: {
+        merchantId: { in: merchants.map((merchant) => merchant.id) },
+        status: CheckInStatus.Verified,
+        campaignId: null,
+      },
+      _count: { _all: true },
+    });
+    const visitorStats = new Map<
+      string,
+      { uniqueVisitors: number; repeatCustomers: number }
+    >();
+    for (const group of verifiedCheckInGroups) {
+      const stats = visitorStats.get(group.merchantId) ?? {
+        uniqueVisitors: 0,
+        repeatCustomers: 0,
+      };
+      stats.uniqueVisitors += 1;
+      if (group._count._all >= 2) stats.repeatCustomers += 1;
+      visitorStats.set(group.merchantId, stats);
+    }
+
     const computed = merchants.map((m) => {
       const reviewsCount = m._count.reviews;
       const rating = Number(m.rating);
       const verifiedVisits = m._count.checkIns;
       const organicViews = m._count.views;
-      const strengthIndex = calculateStrengthIndex(
+      const wishlists = m._count.wishlists;
+      const visitorStat = visitorStats.get(m.id) ?? {
+        uniqueVisitors: 0,
+        repeatCustomers: 0,
+      };
+      const repeatRate = visitorStat.uniqueVisitors
+        ? visitorStat.repeatCustomers / visitorStat.uniqueVisitors
+        : 0;
+      const qualityScore = calculateQualityScore({
+        rating,
+        verifiedReviews: reviewsCount,
         verifiedVisits,
-        reviewsCount,
+        repeatRate,
+      });
+      const exposureIndex = calculateExposureIndex({
         organicViews,
-      );
+        uniqueVisitors: visitorStat.uniqueVisitors,
+        reviews: reviewsCount,
+        wishlists,
+      });
 
       return {
         merchant: m,
         rating,
-        strengthIndex,
+        strengthIndex: exposureIndex,
         oldRank: m.recommendationRank,
         signals: {
           verifiedVisits,
           reviews: reviewsCount,
           organicViews,
+          uniqueVisitors: visitorStat.uniqueVisitors,
+          repeatRate,
+          wishlists,
+          qualityScore,
+          exposureIndex,
         },
-        gemStatus: determineGemStatus({
-          rating,
-          verifiedReviews: reviewsCount,
-          verifiedVisits,
-          exposure: strengthIndex,
-        }),
       };
     });
 
-    const maxStrengthIndex = Math.max(
-      ...computed.map((c) => c.strengthIndex),
+    const maxExposureIndex = Math.max(
+      ...computed.map((c) => c.signals.exposureIndex),
       0,
     );
 
     const scored = computed.map((c) => {
-      const underratedScore = calculateNormalizedUnderratedScore(
-        c.strengthIndex,
-        maxStrengthIndex,
-        c.rating,
+      const exposurePercent = maxExposureIndex
+        ? (c.signals.exposureIndex / maxExposureIndex) * 100
+        : 0;
+      const underratedScore = calculateHiddenGemScore(
+        c.signals.qualityScore,
+        c.signals.exposureIndex,
+        maxExposureIndex,
       );
-      return { ...c, underratedScore };
+      const gemStatus = determineGemStatus({
+        rating: c.rating,
+        verifiedReviews: c.signals.reviews,
+        verifiedVisits: c.signals.verifiedVisits,
+        exposure: exposurePercent,
+      });
+      return { ...c, underratedScore, gemStatus };
     });
 
     // Sort by underrated score, quality, then verified visits.
