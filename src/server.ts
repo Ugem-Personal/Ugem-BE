@@ -18,7 +18,7 @@ const startServer = async () => {
     startRebalancingJob();
     startSepayOrderExpirationJob();
 
-    const server = app.listen(env.PORT, () => {
+    const server = app.listen(env.PORT, "0.0.0.0", () => {
       logger.info("server.started", {
         port: env.PORT,
         environment: env.NODE_ENV,
