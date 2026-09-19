@@ -9,6 +9,7 @@ import {
 
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
+import { MAIN_DISH_TYPES } from "../../common/constants/discovery-options.js";
 
 import type {
   MerchantListQuery,
@@ -36,7 +37,35 @@ const productionDiscoveryFilter: Prisma.MerchantWhereInput =
           },
         },
       }
-    : {};
+      : {};
+
+const MAIN_DISH_SEARCH_TERMS: Record<string, string[]> = {
+  [MAIN_DISH_TYPES[0]]: ["Cơm"],
+  [MAIN_DISH_TYPES[1]]: ["Bún", "Phở", "Mì", "Hủ tiếu"],
+  [MAIN_DISH_TYPES[2]]: ["Món Việt", "Đặc sản"],
+  [MAIN_DISH_TYPES[3]]: ["Bánh mì", "Thức ăn nhanh", "Xôi", "Burger"],
+  [MAIN_DISH_TYPES[4]]: ["Ăn vặt", "Tráng miệng", "Chè", "Bánh tráng", "Kem"],
+  [MAIN_DISH_TYPES[5]]: ["Trà sữa", "Cà phê", "Đồ uống"],
+  [MAIN_DISH_TYPES[6]]: ["Lẩu", "Nướng"],
+  [MAIN_DISH_TYPES[7]]: ["Chay", "Thực dưỡng"],
+  [MAIN_DISH_TYPES[8]]: ["Hàn", "Nhật", "Thái"],
+  [MAIN_DISH_TYPES[9]]: ["Món Âu", "Pizza", "Pasta", "Steak"],
+};
+
+function getMainDishTypeFilter(mainDishType?: string): Prisma.MerchantWhereInput | undefined {
+  if (!mainDishType) return undefined;
+
+  const option = MAIN_DISH_TYPES.find(
+    (value) => value.toLocaleLowerCase() === mainDishType.toLocaleLowerCase(),
+  );
+  const terms = (option ? MAIN_DISH_SEARCH_TERMS[option] : undefined) ?? [mainDishType];
+
+  return {
+    OR: terms.map((term) => ({
+      mainDishType: { contains: term, mode: "insensitive" },
+    })),
+  };
+}
 
 function calculateDistanceKm(
   lat1: number,
@@ -337,12 +366,7 @@ const getOrganicMerchants = async (query: MerchantListQuery) => {
         }
       : undefined,
 
-    mainDishType: query.mainDishType
-      ? {
-          contains: query.mainDishType,
-          mode: "insensitive",
-        }
-      : undefined,
+    AND: query.mainDishType ? [getMainDishTypeFilter(query.mainDishType)!] : undefined,
 
     priceRange: query.priceRange
       ? {
@@ -576,9 +600,7 @@ const getSponsoredMerchantsInternal = async (
         restaurantType: query.restaurantType
           ? { contains: query.restaurantType, mode: "insensitive" }
           : undefined,
-        mainDishType: query.mainDishType
-          ? { contains: query.mainDishType, mode: "insensitive" }
-          : undefined,
+        AND: query.mainDishType ? [getMainDishTypeFilter(query.mainDishType)!] : undefined,
         priceRange: query.priceRange
           ? { contains: query.priceRange, mode: "insensitive" }
           : undefined,
