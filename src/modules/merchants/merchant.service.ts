@@ -23,7 +23,10 @@ import {
   calculatePreferenceScore,
   type CustomerPreferenceInput,
 } from "../../common/utils/preference-score.js";
-import { calculateOrganicRecommendationScore } from "../../common/utils/merchant-score.js";
+import {
+  calculateOrganicRecommendationScore,
+  calculateQualityScore,
+} from "../../common/utils/merchant-score.js";
 
 const productionDiscoveryFilter: Prisma.MerchantWhereInput =
   env.NODE_ENV === "production"
@@ -191,6 +194,11 @@ const mapMerchant = (
     });
 
   const checkInCount = (merchant as any)._count?.checkIns ?? 0;
+  const qualityScore = calculateQualityScore({
+    rating,
+    verifiedReviews: merchant.reviewCount,
+    verifiedVisits: checkInCount,
+  });
   const checkInScore = Math.min(100, checkInCount * 12);
 
   const isFavorite =
@@ -262,6 +270,15 @@ const mapMerchant = (
     preferenceScore,
     recommendationRank,
     gemStatus: merchant.gemStatus ?? null,
+    gemSignals: {
+      qualityScore,
+      exposureScore: strengthIndex,
+      underratedScore,
+      rating,
+      verifiedReviews: merchant.reviewCount,
+      verifiedVisits: checkInCount,
+      exposureWindowDays: 90,
+    },
     distance,
     checkInCount,
     isFavorite,
