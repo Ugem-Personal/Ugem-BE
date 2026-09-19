@@ -124,6 +124,7 @@ enum CheckInStatus {
 
 enum CheckInMethod {
   OrderQr
+  DirectQr
   CustomerCode
 }
 
@@ -145,6 +146,12 @@ enum MerchantVerificationStatus {
 enum MerchantListingVisibility {
   Public
   Hidden
+}
+
+enum GemStatus {
+  HiddenGem
+  RisingGem
+  HallOfFame
 }
 
 enum IncidentType {
@@ -235,25 +242,25 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  customer            Customer?
-  merchant            Merchant?
-  refreshTokens       RefreshToken[]
-  passwordResetTokens PasswordResetToken[]
-  applications        Application[]
-  notifications       Notification[]
-  auditLogs           AuditLog[]
-  createdSupportTickets SupportTicket[] @relation("SupportTicketCreator")
-  assignedSupportTickets SupportTicket[] @relation("SupportTicketAssignee")
-  supportMessages      SupportMessage[]
+  customer               Customer?
+  merchant               Merchant?
+  refreshTokens          RefreshToken[]
+  passwordResetTokens    PasswordResetToken[]
+  applications           Application[]
+  notifications          Notification[]
+  auditLogs              AuditLog[]
+  createdSupportTickets  SupportTicket[]      @relation("SupportTicketCreator")
+  assignedSupportTickets SupportTicket[]      @relation("SupportTicketAssignee")
+  supportMessages        SupportMessage[]
 
   @@map("users")
 }
 
 model Customer {
-  id                   String                       @id @default(uuid())
-  userId               String                       @unique
-  createdAt            DateTime                     @default(now())
-  updatedAt            DateTime                     @updatedAt
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   preferredRestaurantTypes String[] @default([])
   preferredMainDishTypes   String[] @default([])
@@ -272,6 +279,8 @@ model Customer {
   bookings             Booking[]
   reviewerPoints       Int                          @default(0)
   reviewerRank         String                       @default("Bronze")
+  gemPoints            Int                          @default(0)
+  contributionRank     String                       @default("Bronze")
   pointTransactions    ReviewerPointTransaction[]
   merchantViews        MerchantView[]
   customerCode         String?                      @unique
@@ -377,7 +386,7 @@ model Merchant {
   email        String
   phone        String
   address      String
-  country      String @default("VN")
+  country      String  @default("VN")
   city         String?
   area         String?
   openingHours String
@@ -396,28 +405,29 @@ model Merchant {
   reviewCount Int     @default(0)
   totalViews  Int     @default(0)
 
-  strengthIndex      Decimal   @default(0) @db.Decimal(10, 4)
-  underratedScore    Decimal   @default(0) @db.Decimal(10, 4)
+  strengthIndex      Decimal    @default(0) @db.Decimal(10, 4)
+  underratedScore    Decimal    @default(0) @db.Decimal(10, 4)
   recommendationRank Int?
+  gemStatus          GemStatus?
   lastRebalancedAt   DateTime?
 
-  status         MerchantStatus  @default(Active)
-  verificationStatus MerchantVerificationStatus @default(Unverified)
-  listingVisibility MerchantListingVisibility @default(Public)
-  safetySuppressed Boolean @default(false)
+  status                MerchantStatus             @default(Active)
+  verificationStatus    MerchantVerificationStatus @default(Unverified)
+  listingVisibility     MerchantListingVisibility  @default(Public)
+  safetySuppressed      Boolean                    @default(false)
   safetySuppressedUntil DateTime?
-  safetyRiskScore Decimal @default(0) @db.Decimal(10, 4)
-  foods          Food[]
-  orders         Order[]
-  wishlists      Wishlist[]
-  reviews        Review[]
-  affiliateLinks AffiliateLink[]
-  campaigns      Campaign[]
-  checkIns       CheckIn[]
-  acquisitionEvents MerchantAcquisitionEvent[]
-  bookings       Booking[]
-  views          MerchantView[]
-  supportTickets SupportTicket[]
+  safetyRiskScore       Decimal                    @default(0) @db.Decimal(10, 4)
+  foods                 Food[]
+  orders                Order[]
+  wishlists             Wishlist[]
+  reviews               Review[]
+  affiliateLinks        AffiliateLink[]
+  campaigns             Campaign[]
+  checkIns              CheckIn[]
+  acquisitionEvents     MerchantAcquisitionEvent[]
+  bookings              Booking[]
+  views                 MerchantView[]
+  supportTickets        SupportTicket[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -454,15 +464,15 @@ model Category {
 }
 
 model Food {
-  id          String  @id @default(uuid())
-  merchantId  String
-  name        String
-  description String?
-  cuisine     String?
-  price       Decimal @db.Decimal(12, 2)
-  imageUrl    String?
-  isAvailable Boolean  @default(true)
-  isCombo     Boolean  @default(false)
+  id            String   @id @default(uuid())
+  merchantId    String
+  name          String
+  description   String?
+  cuisine       String?
+  price         Decimal  @db.Decimal(12, 2)
+  imageUrl      String?
+  isAvailable   Boolean  @default(true)
+  isCombo       Boolean  @default(false)
   originalPrice Decimal? @db.Decimal(12, 2)
   servingSize   String?
 
@@ -474,8 +484,8 @@ model Food {
   categories       FoodCategory[]
   toppings         FoodTopping[]
   orderDetails     OrderDetail[]
-  comboItems       ComboItem[]   @relation("ComboParent")
-  includedInCombos ComboItem[]   @relation("ComboChild")
+  comboItems       ComboItem[]    @relation("ComboParent")
+  includedInCombos ComboItem[]    @relation("ComboChild")
 
   @@index([merchantId])
   @@index([isAvailable])
@@ -547,8 +557,8 @@ model Order {
   status        OrderStatus        @default(Pending)
   paymentStatus OrderPaymentStatus @default(Unpaid)
 
-  notes           String?
-  deliveryAddress String?
+  notes             String?
+  deliveryAddress   String?
   deliveryLatitude  Decimal? @db.Decimal(10, 7)
   deliveryLongitude Decimal? @db.Decimal(10, 7)
 
@@ -578,13 +588,13 @@ model Order {
 
   campaign Campaign? @relation(fields: [campaignId], references: [id], onDelete: SetNull)
 
-  earningTransaction ReviewerEarningTransaction?
+  earningTransaction   ReviewerEarningTransaction?
   affiliateTransaction AffiliateTransaction?
 
-  details OrderDetail[]
-  bill    Bill?
-  review  Review?
-  checkIn CheckIn?
+  details           OrderDetail[]
+  bill              Bill?
+  review            Review?
+  checkIn           CheckIn?
   acquisitionEvents MerchantAcquisitionEvent[]
 
   @@index([customerId])
@@ -689,10 +699,11 @@ model Wishlist {
 }
 
 model Review {
-  id         String @id @default(uuid())
+  id         String  @id @default(uuid())
   customerId String
   merchantId String
-  orderId    String @unique
+  orderId    String? @unique
+  checkInId  String? @unique
 
   rating   Int
   content  String?
@@ -705,7 +716,8 @@ model Review {
 
   merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Restrict)
 
-  order Order @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  order   Order?   @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  checkIn CheckIn? @relation(fields: [checkInId], references: [id], onDelete: Restrict)
 
   details ReviewDetail[]
 
@@ -783,12 +795,12 @@ model AffiliateLink {
 
   merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
 
-  clicks AffiliateClick[]
-  orders Order[]
-  bookings Booking[]
+  clicks                AffiliateClick[]
+  orders                Order[]
+  bookings              Booking[]
   affiliateTransactions AffiliateTransaction[]
-  checkIns CheckIn[]
-  acquisitionEvents MerchantAcquisitionEvent[]
+  checkIns              CheckIn[]
+  acquisitionEvents     MerchantAcquisitionEvent[]
 
   @@unique([reviewerId, merchantId])
   @@index([reviewerId])
@@ -860,7 +872,6 @@ model AffiliateTransaction {
   @@map("affiliate_transactions")
 }
 
-
 model ReviewerPointTransaction {
   id          String   @id @default(uuid())
   reviewerId  String
@@ -869,6 +880,7 @@ model ReviewerPointTransaction {
   type        String
   reason      String?
   referenceId String?
+  rewardKey   String?  @unique
   createdAt   DateTime @default(now())
 
   reviewer Customer @relation(fields: [reviewerId], references: [id], onDelete: Restrict)
@@ -895,20 +907,22 @@ model Campaign {
   startAt DateTime
   endAt   DateTime
 
-  usageLimit      Int?
-  usedCount       Int     @default(0)
-  maxUsagePerUser Int     @default(1)
-  isGlobal        Boolean @default(false)
-  isNewUserOnly   Boolean @default(false)
-  isActive        Boolean @default(true)
+  usageLimit                   Int?
+  usedCount                    Int     @default(0)
+  maxUsagePerUser              Int     @default(1)
+  verifiedVisitLimit           Int?
+  maxVerifiedVisitsPerCustomer Int     @default(1)
+  isGlobal                     Boolean @default(false)
+  isNewUserOnly                Boolean @default(false)
+  isActive                     Boolean @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
 
-  orders Order[]
-  checkIns CheckIn[]
+  orders            Order[]
+  checkIns          CheckIn[]
   acquisitionEvents MerchantAcquisitionEvent[]
 
   @@index([merchantId])
@@ -919,38 +933,39 @@ model Campaign {
 }
 
 model CheckIn {
-  id         String @id @default(uuid())
+  id         String  @id @default(uuid())
   orderId    String? @unique
   customerId String
   merchantId String
   qrToken    String? @unique
 
-  rewardBenefit String?
-  notes         String?
-  source        String?
-  campaignId    String?
-  bookingId     String?
-  affiliateLinkId String?
-  checkInMethod CheckInMethod @default(OrderQr)
-  suspicious    Boolean      @default(false)
+  rewardBenefit    String?
+  notes            String?
+  source           String?
+  campaignId       String?
+  bookingId        String?
+  affiliateLinkId  String?
+  checkInMethod    CheckInMethod @default(OrderQr)
+  suspicious       Boolean       @default(false)
   suspiciousReason String?
-  disputedAt    DateTime?
+  disputedAt       DateTime?
 
-  generatedAt DateTime       @default(now())
+  generatedAt DateTime      @default(now())
   expiresAt   DateTime?
   checkedInAt DateTime?
   verifiedAt  DateTime?
-  latitude    Decimal?       @db.Decimal(10, 7)
-  longitude   Decimal?       @db.Decimal(10, 7)
-  status      CheckInStatus  @default(Pending)
+  latitude    Decimal?      @db.Decimal(10, 7)
+  longitude   Decimal?      @db.Decimal(10, 7)
+  status      CheckInStatus @default(Pending)
 
-  order    Order?   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  customer Customer @relation(fields: [customerId], references: [id], onDelete: Restrict)
-  merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Restrict)
-  campaign Campaign? @relation(fields: [campaignId], references: [id], onDelete: SetNull)
-  booking Booking? @relation(fields: [bookingId], references: [id], onDelete: SetNull)
-  affiliateLink AffiliateLink? @relation(fields: [affiliateLinkId], references: [id], onDelete: SetNull)
+  order            Order?                    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  customer         Customer                  @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  merchant         Merchant                  @relation(fields: [merchantId], references: [id], onDelete: Restrict)
+  campaign         Campaign?                 @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+  booking          Booking?                  @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  affiliateLink    AffiliateLink?            @relation(fields: [affiliateLinkId], references: [id], onDelete: SetNull)
   acquisitionEvent MerchantAcquisitionEvent?
+  review           Review?
 
   @@index([customerId])
   @@index([merchantId])
@@ -962,26 +977,26 @@ model CheckIn {
 }
 
 model MerchantAcquisitionEvent {
-  id              String   @id @default(uuid())
-  merchantId      String
-  customerId      String
-  checkInId       String   @unique
-  campaignId      String?
-  orderId         String?
-  bookingId       String?
-  affiliateLinkId String?
-  source          String?
+  id                 String                         @id @default(uuid())
+  merchantId         String
+  customerId         String
+  checkInId          String                         @unique
+  campaignId         String?
+  orderId            String?
+  bookingId          String?
+  affiliateLinkId    String?
+  source             String?
   verificationMethod CheckInMethod
-  status          MerchantAcquisitionEventStatus @default(Valid)
-  occurredAt      DateTime @default(now())
-  createdAt       DateTime @default(now())
+  status             MerchantAcquisitionEventStatus @default(Valid)
+  occurredAt         DateTime                       @default(now())
+  createdAt          DateTime                       @default(now())
 
-  merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Restrict)
-  customer Customer @relation(fields: [customerId], references: [id], onDelete: Restrict)
-  checkIn CheckIn @relation(fields: [checkInId], references: [id], onDelete: Restrict)
-  campaign Campaign? @relation(fields: [campaignId], references: [id], onDelete: SetNull)
-  order Order? @relation(fields: [orderId], references: [id], onDelete: SetNull)
-  booking Booking? @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  merchant      Merchant       @relation(fields: [merchantId], references: [id], onDelete: Restrict)
+  customer      Customer       @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  checkIn       CheckIn        @relation(fields: [checkInId], references: [id], onDelete: Restrict)
+  campaign      Campaign?      @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+  order         Order?         @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  booking       Booking?       @relation(fields: [bookingId], references: [id], onDelete: SetNull)
   affiliateLink AffiliateLink? @relation(fields: [affiliateLinkId], references: [id], onDelete: SetNull)
 
   @@index([merchantId, occurredAt])
@@ -992,20 +1007,20 @@ model MerchantAcquisitionEvent {
 }
 
 model MerchantIncident {
-  id              String         @id @default(uuid())
-  merchantId      String
-  reporterUserId  String
-  type            IncidentType
-  severity        IncidentSeverity @default(Medium)
-  status          IncidentStatus @default(Open)
-  description     String
-  evidenceUrls    String[]       @default([])
-  adminDecision   String?
-  resolution      String?
+  id               String           @id @default(uuid())
+  merchantId       String
+  reporterUserId   String
+  type             IncidentType
+  severity         IncidentSeverity @default(Medium)
+  status           IncidentStatus   @default(Open)
+  description      String
+  evidenceUrls     String[]         @default([])
+  adminDecision    String?
+  resolution       String?
   reviewedByUserId String?
-  reviewedAt      DateTime?
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
+  reviewedAt       DateTime?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
 
   @@index([merchantId, status])
   @@index([merchantId, severity, createdAt])
@@ -1014,16 +1029,16 @@ model MerchantIncident {
 }
 
 model MerchantClaim {
-  id             String             @id @default(uuid())
-  merchantId     String
+  id                String              @id @default(uuid())
+  merchantId        String
   submittedByUserId String
-  status         MerchantClaimStatus @default(Pending)
-  evidenceUrls   String[]           @default([])
-  decision       String?
-  reviewedByUserId String?
-  reviewedAt     DateTime?
-  createdAt      DateTime           @default(now())
-  updatedAt      DateTime           @updatedAt
+  status            MerchantClaimStatus @default(Pending)
+  evidenceUrls      String[]            @default([])
+  decision          String?
+  reviewedByUserId  String?
+  reviewedAt        DateTime?
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
 
   @@index([merchantId, status])
   @@index([submittedByUserId])
@@ -1031,16 +1046,16 @@ model MerchantClaim {
 }
 
 model MerchantRemovalRequest {
-  id             String              @id @default(uuid())
-  merchantId     String
+  id                String                @id @default(uuid())
+  merchantId        String
   submittedByUserId String
-  status         MerchantRemovalStatus @default(Pending)
-  reason         String
-  decision       String?
-  reviewedByUserId String?
-  reviewedAt     DateTime?
-  createdAt      DateTime            @default(now())
-  updatedAt      DateTime            @updatedAt
+  status            MerchantRemovalStatus @default(Pending)
+  reason            String
+  decision          String?
+  reviewedByUserId  String?
+  reviewedAt        DateTime?
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
 
   @@index([merchantId, status])
   @@index([submittedByUserId])
@@ -1048,21 +1063,21 @@ model MerchantRemovalRequest {
 }
 
 model RestaurantSuggestion {
-  id               String                    @id @default(uuid())
-  name             String
-  address          String
-  category         String?
-  recommendedDish  String?
-  description      String?
-  images           String[]                  @default([])
-  reason           String
-  submittedByUserId String?
-  status           RestaurantSuggestionStatus @default(Pending)
-  reviewedByUserId String?
+  id                  String                     @id @default(uuid())
+  name                String
+  address             String
+  category            String?
+  recommendedDish     String?
+  description         String?
+  images              String[]                   @default([])
+  reason              String
+  submittedByUserId   String?
+  status              RestaurantSuggestionStatus @default(Pending)
+  reviewedByUserId    String?
   publishedMerchantId String?
-  reviewedAt       DateTime?
-  createdAt        DateTime                  @default(now())
-  updatedAt        DateTime                  @updatedAt
+  reviewedAt          DateTime?
+  createdAt           DateTime                   @default(now())
+  updatedAt           DateTime                   @updatedAt
 
   @@index([status, createdAt])
   @@index([submittedByUserId])
@@ -1138,9 +1153,9 @@ model SupportTicket {
   createdAt       DateTime              @default(now())
   updatedAt       DateTime              @updatedAt
 
-  merchant      Merchant        @relation(fields: [merchantId], references: [id], onDelete: Cascade)
-  createdBy     User            @relation("SupportTicketCreator", fields: [createdByUserId], references: [id], onDelete: Cascade)
-  assignedStaff User?           @relation("SupportTicketAssignee", fields: [assignedStaffId], references: [id], onDelete: SetNull)
+  merchant      Merchant         @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  createdBy     User             @relation("SupportTicketCreator", fields: [createdByUserId], references: [id], onDelete: Cascade)
+  assignedStaff User?            @relation("SupportTicketAssignee", fields: [assignedStaffId], references: [id], onDelete: SetNull)
   messages      SupportMessage[]
 
   @@index([merchantId, status])
@@ -1159,7 +1174,7 @@ model SupportMessage {
   createdAt     DateTime @default(now())
 
   ticket SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
-  sender User   @relation(fields: [senderUserId], references: [id], onDelete: Cascade)
+  sender User          @relation(fields: [senderUserId], references: [id], onDelete: Cascade)
 
   @@index([ticketId, createdAt])
   @@index([senderUserId])
@@ -1244,6 +1259,7 @@ enum MerchantTrafficSource {
   Recommendation
   Search
   Map
+  Sponsored
   Affiliate
   Direct
 }
@@ -1264,5 +1280,3 @@ model MerchantView {
   @@index([createdAt])
   @@map("merchant_views")
 }
-
-

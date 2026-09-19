@@ -1,8 +1,6 @@
 import {
   CheckInStatus,
   NotificationType,
-  OrderPaymentStatus,
-  OrderType,
   OrderStatus,
   Prisma,
 } from "../../generated/prisma/client.js";
@@ -16,6 +14,7 @@ import type {
   UpdateReviewInput,
 } from "./review.types.js";
 import { createNotification } from "../notifications/notification.service.js";
+import { awardGemPoints } from "../gem-points/gem-point.service.js";
 
 const reviewInclude = {
   customer: {
@@ -52,22 +51,23 @@ const reviewInclude = {
     },
   },
 
+  checkIn: { select: { id: true, status: true, verifiedAt: true } },
+
   details: {
     include: {
       orderDetail: true,
     },
   },
 };
-
 const mapReview = (review: any) => {
   const customerName = review.customer?.user?.fullName ?? null;
 
   const customerAvatarUrl = review.customer?.user?.avatarUrl ?? null;
 
   const isVerifiedDiner =
+    review.checkIn?.status === CheckInStatus.Verified ||
     review.order?.checkIn?.status === CheckInStatus.Verified ||
-    !!review.order?.checkIn?.verifiedAt ||
-    !!review.order?.completedAt;
+    !!review.order?.checkIn?.verifiedAt;
 
   const reviewDetails = review.details.map((detail: any) => ({
     reviewDetailId: detail.id,
@@ -94,6 +94,8 @@ const mapReview = (review: any) => {
     merchantId: review.merchantId,
 
     orderId: review.orderId,
+
+    checkInId: review.checkInId,
 
     rating: review.rating,
 
@@ -156,10 +158,174 @@ const updateMerchantRating = async (
   });
 };
 
+const createCheckInReview = async (
+  customerId: string,
+  input: CreateReviewInput,
+) => {
+  if (!input.checkInId) {
+    throw new AppError(400, "Thiếu Check-in ID");
+  }
+
+  const checkIn = await prisma.checkIn.findUnique({
+    where: {
+      id: input.checkInId,
+    },
+    include: {
+      merchant: {
+        select: {
+          id: true,
+          userId: true,
+          name: true,
+        },
+      },
+      customer: {
+        select: {
+          userId: true,
+        },
+      },
+    },
+  });
+
+  if (!checkIn) {
+    throw new AppError(404, "Không tìm thấy Check-in");
+  }
+
+  if (checkIn.customerId !== customerId) {
+    throw new AppError(403, "Check-in không thuộc Customer này");
+  }
+
+  if (
+    checkIn.status !== CheckInStatus.Verified ||
+    !checkIn.verifiedAt
+  ) {
+    throw new AppError(
+      403,
+      "Chỉ có thể đánh giá từ lượt ghé đã được xác minh",
+    );
+  }
+
+  if (
+    input.merchantId &&
+    input.merchantId !== checkIn.merchantId
+  ) {
+    throw new AppError(
+      400,
+      "Merchant ID không khớp với Check-in",
+    );
+  }
+
+  const existingReview = await prisma.review.findUnique({
+    where: {
+      checkInId: checkIn.id,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (existingReview) {
+    throw new AppError(
+      409,
+      "Lượt ghé này đã được đánh giá",
+    );
+  }
+
+  let reviewResult;
+
+  try {
+    reviewResult = await prisma.$transaction(
+      async (transaction) => {
+        const createdReview = await transaction.review.create({
+          data: {
+            customerId,
+            merchantId: checkIn.merchantId,
+            checkInId: checkIn.id,
+            orderId: null,
+            rating: input.rating,
+            content: input.content?.trim() || null,
+            imageUrl: input.imageUrl?.trim() || null,
+          },
+          include: reviewInclude,
+        });
+
+        await updateMerchantRating(
+          transaction,
+          checkIn.merchantId,
+        );
+
+        const gemReward = await awardGemPoints(transaction, {
+          customerId,
+          action: input.imageUrl?.trim()
+            ? "VERIFIED_REVIEW_WITH_IMAGE"
+            : "VERIFIED_REVIEW",
+          referenceId: createdReview.id,
+          reason: `Đóng góp đánh giá Verified Visit tại ${checkIn.merchant.name}`,
+        });
+
+        return { review: createdReview, reward: gemReward };
+      },
+    );
+  } catch (error: any) {
+    if (error?.code === "P2002") {
+      throw new AppError(
+        409,
+        "Lượt ghé này đã được đánh giá",
+      );
+    }
+
+    throw error;
+  }
+
+  const { review, reward } = reviewResult;
+
+  await createNotification({
+    userId: checkIn.merchant.userId,
+    type: NotificationType.Review,
+    title: "Quán vừa nhận được đánh giá mới",
+    message:
+      `Khách hàng đã đánh giá ${checkIn.merchant.name} ${review.rating}/5 sao.`,
+    referenceId: review.id,
+    referenceType: "Review",
+  }).catch(() => null);
+
+  if (reward.awarded) {
+    await createNotification({
+      userId: checkIn.customer.userId,
+      type: NotificationType.System,
+      title: "Cảm ơn đóng góp của bạn",
+      message: `Cảm ơn đóng góp của bạn (+${reward.amount} Gem Points).`,
+      referenceId: review.id,
+      referenceType: "Review",
+    }).catch(() => null);
+  }
+
+  return mapReview(review);
+};
+
 export const createReview = async (
   customerId: string,
   input: CreateReviewInput,
 ) => {
+  // Verified CheckIn is the primary UFind review flow. Order review remains
+  // available only for compatibility with the legacy commerce module.
+  if (input.checkInId) {
+    return createCheckInReview(customerId, input);
+  }
+
+  return createLegacyOrderReview(customerId, input);
+};
+
+/**
+ * @deprecated Legacy Order-based review flow. Keep for old clients only.
+ */
+const createLegacyOrderReview = async (
+  customerId: string,
+  input: CreateReviewInput,
+) => {
+  if (!input.orderId) {
+    throw new AppError(400, "Thiếu Order ID");
+  }
+
   const order = await prisma.order.findUnique({
     where: {
       id: input.orderId,
@@ -252,28 +418,13 @@ export const createReview = async (
 
     await updateMerchantRating(transaction, order.merchantId);
 
-    const REVIEW_REWARD_POINTS = input.imageUrl?.trim() ? 20 : 15;
-    const currentCustomer = await transaction.customer.findUnique({
-      where: { id: customerId },
-      select: { reviewerPoints: true },
-    });
-    const currentPoints = currentCustomer?.reviewerPoints ?? 0;
-    const newPoints = currentPoints + REVIEW_REWARD_POINTS;
-
-    await transaction.customer.update({
-      where: { id: customerId },
-      data: { reviewerPoints: { increment: REVIEW_REWARD_POINTS } },
-    });
-
-    await transaction.reviewerPointTransaction.create({
-      data: {
-        reviewerId: customerId,
-        amount: REVIEW_REWARD_POINTS,
-        pointsAfter: newPoints,
-        type: "REVIEW_REWARD",
-        reason: `Điểm thưởng đánh giá tại ${order.merchant.name}`,
-        referenceId: createdReview.id,
-      },
+    await awardGemPoints(transaction, {
+      customerId,
+      action: input.imageUrl?.trim()
+        ? "VERIFIED_REVIEW_WITH_IMAGE"
+        : "VERIFIED_REVIEW",
+      referenceId: createdReview.id,
+      reason: `Điểm Gem thưởng đánh giá tại ${order.merchant.name}`,
     });
 
     return createdReview;

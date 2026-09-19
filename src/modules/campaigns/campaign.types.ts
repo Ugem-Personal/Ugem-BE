@@ -21,6 +21,8 @@ export interface CreateCampaignInput {
   quantity?: number | null;
 
   maxUsagePerUser?: number;
+  verifiedVisitLimit?: number | null;
+  maxVerifiedVisitsPerCustomer?: number;
 
   isGlobal?: boolean;
   isNewUserOnly?: boolean;

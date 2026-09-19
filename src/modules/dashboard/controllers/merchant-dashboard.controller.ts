@@ -6,6 +6,7 @@ import { sendSuccess } from "../../../common/utils/api-response.js";
 
 import {
   getMerchantDashboard as getMerchantDashboardService,
+  getMerchantAnalytics as getMerchantAnalyticsService,
   getMerchantRevenueByYear as getMerchantRevenueByYearService,
   getMerchantTopFoods as getMerchantTopFoodsService,
   getMerchantRecentOrders as getMerchantRecentOrdersService,
@@ -37,6 +38,22 @@ export const getMerchantDashboard = asyncHandler(
     return sendSuccess(res, {
       message: "Lấy Dashboard Merchant thành công",
       data: dashboard,
+    });
+  },
+);
+
+export const getMerchantAnalytics = asyncHandler(
+  async (req: Request, res: Response) => {
+    const from = req.query.from ? new Date(String(req.query.from)) : undefined;
+    const to = req.query.to ? new Date(String(req.query.to)) : undefined;
+    const result = await getMerchantAnalyticsService(getMerchantId(req), {
+      from,
+      to,
+    });
+
+    return sendSuccess(res, {
+      message: "Lấy Merchant Analytics thành công",
+      data: result,
     });
   },
 );

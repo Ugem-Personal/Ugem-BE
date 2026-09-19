@@ -1,7 +1,7 @@
-import { RebalancingStatus } from "../../generated/prisma/client.js";
+import { CheckInStatus, MerchantTrafficSource, RebalancingStatus, } from "../../generated/prisma/client.js";
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
-import { calculateNormalizedUnderratedScore, calculateStrengthIndex, } from "../../common/utils/merchant-score.js";
+import { calculateNormalizedUnderratedScore, calculateStrengthIndex, determineGemStatus, } from "../../common/utils/merchant-score.js";
 import { recommendationCache } from "../../common/services/recommendation-cache.js";
 export const runRebalancing = async () => {
     // Check for any concurrent active rebalancing run
@@ -31,29 +31,45 @@ export const runRebalancing = async () => {
         },
     });
     try {
+        await prisma.merchant.updateMany({
+            where: { OR: [{ status: { not: "Active" } }, { listingVisibility: { not: "Public" } }, { safetySuppressed: true }] },
+            data: { gemStatus: null },
+        });
         const merchants = await prisma.merchant.findMany({
             where: {
                 status: "Active",
+                listingVisibility: "Public",
+                safetySuppressed: false,
             },
             select: {
                 id: true,
                 name: true,
                 rating: true,
-                totalViews: true,
                 recommendationRank: true,
                 _count: {
                     select: {
-                        orders: {
+                        reviews: true,
+                        checkIns: {
                             where: {
-                                status: {
-                                    notIn: ["Cancelled", "Rejected"],
+                                status: CheckInStatus.Verified,
+                                campaignId: null,
+                            },
+                        },
+                        views: {
+                            where: {
+                                source: {
+                                    in: [
+                                        MerchantTrafficSource.Recommendation,
+                                        MerchantTrafficSource.Search,
+                                        MerchantTrafficSource.Map,
+                                        MerchantTrafficSource.Direct,
+                                    ],
                                 },
                             },
                         },
-                        reviews: true,
-                        checkIns: true,
                     },
                 },
+                reviews: { select: { rating: true } },
             },
         });
         if (merchants.length === 0) {
@@ -76,25 +92,38 @@ export const runRebalancing = async () => {
             };
         }
         const computed = merchants.map((m) => {
-            const ordersCount = m._count.orders;
             const reviewsCount = m._count.reviews;
-            const checkInsCount = m._count.checkIns;
-            const viewsCount = m.totalViews;
-            const si = calculateStrengthIndex(ordersCount, reviewsCount, viewsCount, checkInsCount);
+            const rating = Number(m.rating);
+            const verifiedVisits = m._count.checkIns;
+            const organicViews = m._count.views;
+            const strengthIndex = calculateStrengthIndex(verifiedVisits, reviewsCount, organicViews);
             return {
                 merchant: m,
-                rating: Number(m.rating),
-                si,
+                rating,
+                strengthIndex,
                 oldRank: m.recommendationRank,
+                signals: {
+                    verifiedVisits,
+                    reviews: reviewsCount,
+                    organicViews,
+                },
+                gemStatus: determineGemStatus({
+                    rating,
+                    verifiedReviews: reviewsCount,
+                    verifiedVisits,
+                    exposure: strengthIndex,
+                }),
             };
         });
-        const maxSI = Math.max(...computed.map((c) => c.si), 0);
+        const maxStrengthIndex = Math.max(...computed.map((c) => c.strengthIndex), 0);
         const scored = computed.map((c) => {
-            const us = calculateNormalizedUnderratedScore(c.si, maxSI, c.rating);
-            return { ...c, us };
+            const underratedScore = calculateNormalizedUnderratedScore(c.strengthIndex, maxStrengthIndex, c.rating);
+            return { ...c, underratedScore };
         });
-        // Sort descending by underrated score. Higher US gets higher recommendation rank (1, 2, 3...)
-        scored.sort((a, b) => b.us - a.us || b.rating - a.rating);
+        // Sort by underrated score, quality, then verified visits.
+        scored.sort((a, b) => b.underratedScore - a.underratedScore ||
+            b.rating - a.rating ||
+            b.signals.verifiedVisits - a.signals.verifiedVisits);
         let increasedVisibility = 0;
         let decreasedVisibility = 0;
         let unchangedVisibility = 0;
@@ -117,9 +146,10 @@ export const runRebalancing = async () => {
             return prisma.merchant.update({
                 where: { id: item.merchant.id },
                 data: {
-                    strengthIndex: item.si,
-                    underratedScore: item.us,
+                    strengthIndex: item.strengthIndex,
+                    underratedScore: item.underratedScore,
                     recommendationRank: newRank,
+                    gemStatus: item.gemStatus,
                     lastRebalancedAt: now,
                 },
             });
@@ -181,6 +211,7 @@ export const getRebalancingStatus = async () => {
             strengthIndex: true,
             underratedScore: true,
             recommendationRank: true,
+            gemStatus: true,
             lastRebalancedAt: true,
         },
         orderBy: [
@@ -204,6 +235,7 @@ export const getRebalancingStatus = async () => {
             strengthIndex: Number(m.strengthIndex),
             underratedScore: Number(m.underratedScore),
             recommendationRank: m.recommendationRank,
+            gemStatus: m.gemStatus,
             lastRebalancedAt: m.lastRebalancedAt,
         })),
     };

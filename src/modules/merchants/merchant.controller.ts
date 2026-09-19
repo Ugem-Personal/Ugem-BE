@@ -3,8 +3,10 @@ import type { Request, Response } from "express";
 import { AppError } from "../../common/errors/app-error.js";
 import { asyncHandler } from "../../common/utils/async-handler.js";
 import { sendSuccess } from "../../common/utils/api-response.js";
+import { paginationMeta } from "../../common/utils/pagination.js";
 
 import * as merchantService from "./merchant.service.js";
+import type { DiscoveryType } from "./merchant.types.js";
 
 const getRouteId = (req: Request) => {
   const { id } = req.params;
@@ -26,43 +28,59 @@ const getMerchantId = (req: Request): string => {
   return merchantId;
 };
 
+const getMerchantListQuery = (
+  req: Request,
+  discoveryType?: DiscoveryType,
+) => ({
+  customerId: req.user?.CustomerId ?? undefined,
+  search: req.query.search as string | undefined,
+  categoryId: req.query.categoryId as string | undefined,
+  restaurantType: req.query.restaurantType as string | undefined,
+  mainDishType: req.query.mainDishType as string | undefined,
+  priceRange: req.query.priceRange as string | undefined,
+  country: req.query.country as string | undefined,
+  city: req.query.city as string | undefined,
+  area: req.query.area as string | undefined,
+  latitude:
+    req.query.latitude !== undefined
+      ? Number(req.query.latitude)
+      : undefined,
+  longitude:
+    req.query.longitude !== undefined
+      ? Number(req.query.longitude)
+      : undefined,
+  radiusKm:
+    req.query.radiusKm !== undefined
+      ? Number(req.query.radiusKm)
+      : undefined,
+  discoveryType:
+    discoveryType ??
+    (req.query.discoveryType as DiscoveryType | undefined),
+  pageIndex: Number(req.query.pageIndex ?? 1),
+  pageSize: Number(req.query.pageSize ?? 10),
+});
+
 export const getMerchants = asyncHandler(
   async (req: Request, res: Response) => {
-    const result = await merchantService.getMerchants({
-      customerId: req.user?.CustomerId ?? undefined,
-
-      search: req.query.search as string | undefined,
-
-      categoryId: req.query.categoryId as string | undefined,
-
-      restaurantType: req.query.restaurantType as string | undefined,
-
-      mainDishType: req.query.mainDishType as string | undefined,
-
-      priceRange: req.query.priceRange as string | undefined,
-
-      latitude:
-        req.query.latitude !== undefined
-          ? Number(req.query.latitude)
-          : undefined,
-
-      longitude:
-        req.query.longitude !== undefined
-          ? Number(req.query.longitude)
-          : undefined,
-
-      radiusKm:
-        req.query.radiusKm !== undefined
-          ? Number(req.query.radiusKm)
-          : undefined,
-
-      pageIndex: Number(req.query.pageIndex ?? 1),
-
-      pageSize: Number(req.query.pageSize ?? 10),
-    });
+    const result = await merchantService.getMerchants(
+      getMerchantListQuery(req),
+    );
 
     return sendSuccess(res, {
-      message: "Lấy danh sách Merchant thành công",
+      message: "Láº¥y danh sÃ¡ch Merchant thÃ nh cÃ´ng",
+      data: result,
+    });
+  },
+);
+
+export const getSponsoredMerchants = asyncHandler(
+  async (req: Request, res: Response) => {
+    const result = await merchantService.getMerchants(
+      getMerchantListQuery(req, "Sponsored"),
+    );
+
+    return sendSuccess(res, {
+      message: "Láº¥y danh sÃ¡ch Merchant Sponsored thÃ nh cÃ´ng",
       data: result,
     });
   },
@@ -142,7 +160,7 @@ export const incrementMerchantView = asyncHandler(
     const result = await merchantService.incrementMerchantView({
       merchantId: getRouteId(req),
       customerId: req.user?.CustomerId ?? undefined,
-      source: req.body?.source as any,
+      source: req.body?.source,
     });
 
     return sendSuccess(res, {
@@ -232,3 +250,4 @@ export const getMerchantsByCategory = asyncHandler(
     });
   },
 );
+

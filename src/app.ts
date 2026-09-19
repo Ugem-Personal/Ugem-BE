@@ -88,6 +88,8 @@ app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/foods", foodRouter);
 
 app.use("/api/v1/food-toppings", foodToppingRouter);
+// Legacy optional commerce API. Kept for existing clients; UFind Core does not
+// route Discovery, Verified Visit, Review, Gem Points or Analytics through it.
 app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/check-in", checkInRouter);
 app.use("/api/v1/check-ins", checkInRouter);
@@ -95,6 +97,8 @@ app.use("/api/v1/wishlists", wishlistRouter);
 
 app.use("/api/v1/reviews", reviewRouter);
 app.use("/api/v1/reviewer-application", reviewerApplicationRouter);
+// Legacy optional affiliate API. It remains available but is not a UFind Core
+// ranking, attribution or contribution dependency.
 app.use("/api/v1/affiliate-links", affiliateLinkRouter);
 app.use("/api/v1/campaigns", campaignRouter);
 app.use("/api/v1/notifications", notificationRouter);

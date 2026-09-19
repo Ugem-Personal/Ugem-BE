@@ -18,6 +18,14 @@ import type {
   OrderListQuery,
   UpdateOrderStatusInput,
 } from "./order.types.js";
+
+/**
+ * @deprecated Legacy optional commerce module.
+ *
+ * UFind Core MVP does not require Orders for discovery, verified visits,
+ * reviews, rebalancing, campaign attribution, Gem Points or analytics.
+ * Keep this service available for existing commerce clients.
+ */
 import { createReviewerCommission } from "../affiliate-links/affiliate-earning.service.js";
 import { createNotification } from "../notifications/notification.service.js";
 import { realtimeService } from "../realtime/realtime.service.js";

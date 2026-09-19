@@ -19,6 +19,14 @@ import type {
   SubmitBillInput,
 } from "./payment.types.js";
 
+/**
+ * @deprecated Legacy optional commerce/payment module.
+ *
+ * UFind Core MVP does not create or require Payment records for discovery,
+ * verified visits, reviews, Gem Points, rebalancing or PPVV preview.
+ * Existing order payment flows remain available for compatibility.
+ */
+
 import { createReviewerCommission } from "../affiliate-links/affiliate-earning.service.js";
 import { createNotification } from "../notifications/notification.service.js";
 import { realtimeService } from "../realtime/realtime.service.js";

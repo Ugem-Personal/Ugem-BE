@@ -38,6 +38,10 @@ const campaignCompatibilityBodySchema = z.object({
         .union([z.coerce.number().int().positive(), z.literal(""), z.null()])
         .optional(),
     maxUsagePerUser: z.coerce.number().int().positive().optional(),
+    verifiedVisitLimit: z
+        .union([z.coerce.number().int().positive(), z.literal(""), z.null()])
+        .optional(),
+    maxVerifiedVisitsPerCustomer: z.coerce.number().int().positive().optional(),
     isGlobal: z.boolean().optional(),
     isNewUserOnly: z.boolean().optional(),
     startAt: z.string().datetime().optional(),

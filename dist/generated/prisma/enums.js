@@ -108,6 +108,7 @@ export const CheckInStatus = {
 };
 export const CheckInMethod = {
     OrderQr: 'OrderQr',
+    DirectQr: 'DirectQr',
     CustomerCode: 'CustomerCode'
 };
 export const MerchantAcquisitionEventStatus = {
@@ -126,6 +127,11 @@ export const MerchantVerificationStatus = {
 export const MerchantListingVisibility = {
     Public: 'Public',
     Hidden: 'Hidden'
+};
+export const GemStatus = {
+    HiddenGem: 'HiddenGem',
+    RisingGem: 'RisingGem',
+    HallOfFame: 'HallOfFame'
 };
 export const IncidentType = {
     FoodSafety: 'FoodSafety',
@@ -204,6 +210,7 @@ export const MerchantTrafficSource = {
     Recommendation: 'Recommendation',
     Search: 'Search',
     Map: 'Map',
+    Sponsored: 'Sponsored',
     Affiliate: 'Affiliate',
     Direct: 'Direct'
 };

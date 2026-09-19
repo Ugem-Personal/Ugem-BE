@@ -28,10 +28,12 @@ export type AggregateCustomer = {
 
 export type CustomerAvgAggregateOutputType = {
   reviewerPoints: number | null
+  gemPoints: number | null
 }
 
 export type CustomerSumAggregateOutputType = {
   reviewerPoints: number | null
+  gemPoints: number | null
 }
 
 export type CustomerMinAggregateOutputType = {
@@ -41,6 +43,8 @@ export type CustomerMinAggregateOutputType = {
   updatedAt: Date | null
   reviewerPoints: number | null
   reviewerRank: string | null
+  gemPoints: number | null
+  contributionRank: string | null
   customerCode: string | null
 }
 
@@ -51,6 +55,8 @@ export type CustomerMaxAggregateOutputType = {
   updatedAt: Date | null
   reviewerPoints: number | null
   reviewerRank: string | null
+  gemPoints: number | null
+  contributionRank: string | null
   customerCode: string | null
 }
 
@@ -65,6 +71,8 @@ export type CustomerCountAggregateOutputType = {
   preferredPriceRanges: number
   reviewerPoints: number
   reviewerRank: number
+  gemPoints: number
+  contributionRank: number
   customerCode: number
   _all: number
 }
@@ -72,10 +80,12 @@ export type CustomerCountAggregateOutputType = {
 
 export type CustomerAvgAggregateInputType = {
   reviewerPoints?: true
+  gemPoints?: true
 }
 
 export type CustomerSumAggregateInputType = {
   reviewerPoints?: true
+  gemPoints?: true
 }
 
 export type CustomerMinAggregateInputType = {
@@ -85,6 +95,8 @@ export type CustomerMinAggregateInputType = {
   updatedAt?: true
   reviewerPoints?: true
   reviewerRank?: true
+  gemPoints?: true
+  contributionRank?: true
   customerCode?: true
 }
 
@@ -95,6 +107,8 @@ export type CustomerMaxAggregateInputType = {
   updatedAt?: true
   reviewerPoints?: true
   reviewerRank?: true
+  gemPoints?: true
+  contributionRank?: true
   customerCode?: true
 }
 
@@ -109,6 +123,8 @@ export type CustomerCountAggregateInputType = {
   preferredPriceRanges?: true
   reviewerPoints?: true
   reviewerRank?: true
+  gemPoints?: true
+  contributionRank?: true
   customerCode?: true
   _all?: true
 }
@@ -210,6 +226,8 @@ export type CustomerGroupByOutputType = {
   preferredPriceRanges: string[]
   reviewerPoints: number
   reviewerRank: string
+  gemPoints: number
+  contributionRank: string
   customerCode: string | null
   _count: CustomerCountAggregateOutputType | null
   _avg: CustomerAvgAggregateOutputType | null
@@ -247,6 +265,8 @@ export type CustomerWhereInput = {
   preferredPriceRanges?: Prisma.StringNullableListFilter<"Customer">
   reviewerPoints?: Prisma.IntFilter<"Customer"> | number
   reviewerRank?: Prisma.StringFilter<"Customer"> | string
+  gemPoints?: Prisma.IntFilter<"Customer"> | number
+  contributionRank?: Prisma.StringFilter<"Customer"> | string
   customerCode?: Prisma.StringNullableFilter<"Customer"> | string | null
   orders?: Prisma.OrderListRelationFilter
   wishlists?: Prisma.WishlistListRelationFilter
@@ -274,6 +294,8 @@ export type CustomerOrderByWithRelationInput = {
   preferredPriceRanges?: Prisma.SortOrder
   reviewerPoints?: Prisma.SortOrder
   reviewerRank?: Prisma.SortOrder
+  gemPoints?: Prisma.SortOrder
+  contributionRank?: Prisma.SortOrder
   customerCode?: Prisma.SortOrderInput | Prisma.SortOrder
   orders?: Prisma.OrderOrderByRelationAggregateInput
   wishlists?: Prisma.WishlistOrderByRelationAggregateInput
@@ -305,6 +327,8 @@ export type CustomerWhereUniqueInput = Prisma.AtLeast<{
   preferredPriceRanges?: Prisma.StringNullableListFilter<"Customer">
   reviewerPoints?: Prisma.IntFilter<"Customer"> | number
   reviewerRank?: Prisma.StringFilter<"Customer"> | string
+  gemPoints?: Prisma.IntFilter<"Customer"> | number
+  contributionRank?: Prisma.StringFilter<"Customer"> | string
   orders?: Prisma.OrderListRelationFilter
   wishlists?: Prisma.WishlistListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
@@ -331,6 +355,8 @@ export type CustomerOrderByWithAggregationInput = {
   preferredPriceRanges?: Prisma.SortOrder
   reviewerPoints?: Prisma.SortOrder
   reviewerRank?: Prisma.SortOrder
+  gemPoints?: Prisma.SortOrder
+  contributionRank?: Prisma.SortOrder
   customerCode?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.CustomerCountOrderByAggregateInput
   _avg?: Prisma.CustomerAvgOrderByAggregateInput
@@ -353,6 +379,8 @@ export type CustomerScalarWhereWithAggregatesInput = {
   preferredPriceRanges?: Prisma.StringNullableListFilter<"Customer">
   reviewerPoints?: Prisma.IntWithAggregatesFilter<"Customer"> | number
   reviewerRank?: Prisma.StringWithAggregatesFilter<"Customer"> | string
+  gemPoints?: Prisma.IntWithAggregatesFilter<"Customer"> | number
+  contributionRank?: Prisma.StringWithAggregatesFilter<"Customer"> | string
   customerCode?: Prisma.StringNullableWithAggregatesFilter<"Customer"> | string | null
 }
 
@@ -366,6 +394,8 @@ export type CustomerCreateInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
   wishlists?: Prisma.WishlistCreateNestedManyWithoutCustomerInput
@@ -393,6 +423,8 @@ export type CustomerUncheckedCreateInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
   wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutCustomerInput
@@ -418,6 +450,8 @@ export type CustomerUpdateInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
   wishlists?: Prisma.WishlistUpdateManyWithoutCustomerNestedInput
@@ -445,6 +479,8 @@ export type CustomerUncheckedUpdateInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
   wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutCustomerNestedInput
@@ -471,6 +507,8 @@ export type CustomerCreateManyInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
 }
 
@@ -484,6 +522,8 @@ export type CustomerUpdateManyMutationInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
@@ -498,6 +538,8 @@ export type CustomerUncheckedUpdateManyInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
@@ -525,11 +567,14 @@ export type CustomerCountOrderByAggregateInput = {
   preferredPriceRanges?: Prisma.SortOrder
   reviewerPoints?: Prisma.SortOrder
   reviewerRank?: Prisma.SortOrder
+  gemPoints?: Prisma.SortOrder
+  contributionRank?: Prisma.SortOrder
   customerCode?: Prisma.SortOrder
 }
 
 export type CustomerAvgOrderByAggregateInput = {
   reviewerPoints?: Prisma.SortOrder
+  gemPoints?: Prisma.SortOrder
 }
 
 export type CustomerMaxOrderByAggregateInput = {
@@ -539,6 +584,8 @@ export type CustomerMaxOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   reviewerPoints?: Prisma.SortOrder
   reviewerRank?: Prisma.SortOrder
+  gemPoints?: Prisma.SortOrder
+  contributionRank?: Prisma.SortOrder
   customerCode?: Prisma.SortOrder
 }
 
@@ -549,11 +596,14 @@ export type CustomerMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   reviewerPoints?: Prisma.SortOrder
   reviewerRank?: Prisma.SortOrder
+  gemPoints?: Prisma.SortOrder
+  contributionRank?: Prisma.SortOrder
   customerCode?: Prisma.SortOrder
 }
 
 export type CustomerSumOrderByAggregateInput = {
   reviewerPoints?: Prisma.SortOrder
+  gemPoints?: Prisma.SortOrder
 }
 
 export type CustomerScalarRelationFilter = {
@@ -819,6 +869,8 @@ export type CustomerCreateWithoutUserInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
   wishlists?: Prisma.WishlistCreateNestedManyWithoutCustomerInput
@@ -844,6 +896,8 @@ export type CustomerUncheckedCreateWithoutUserInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
   wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutCustomerInput
@@ -885,6 +939,8 @@ export type CustomerUpdateWithoutUserInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
   wishlists?: Prisma.WishlistUpdateManyWithoutCustomerNestedInput
@@ -910,6 +966,8 @@ export type CustomerUncheckedUpdateWithoutUserInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
   wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutCustomerNestedInput
@@ -935,6 +993,8 @@ export type CustomerCreateWithoutOrdersInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   wishlists?: Prisma.WishlistCreateNestedManyWithoutCustomerInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutCustomerInput
@@ -961,6 +1021,8 @@ export type CustomerUncheckedCreateWithoutOrdersInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutCustomerInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutCustomerInput
@@ -1001,6 +1063,8 @@ export type CustomerUpdateWithoutOrdersInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   wishlists?: Prisma.WishlistUpdateManyWithoutCustomerNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutCustomerNestedInput
@@ -1027,6 +1091,8 @@ export type CustomerUncheckedUpdateWithoutOrdersInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutCustomerNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutCustomerNestedInput
@@ -1051,6 +1117,8 @@ export type CustomerCreateWithoutWishlistsInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutCustomerInput
@@ -1077,6 +1145,8 @@ export type CustomerUncheckedCreateWithoutWishlistsInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutCustomerInput
@@ -1117,6 +1187,8 @@ export type CustomerUpdateWithoutWishlistsInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutCustomerNestedInput
@@ -1143,6 +1215,8 @@ export type CustomerUncheckedUpdateWithoutWishlistsInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutCustomerNestedInput
@@ -1167,6 +1241,8 @@ export type CustomerCreateWithoutReviewsInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
   wishlists?: Prisma.WishlistCreateNestedManyWithoutCustomerInput
@@ -1193,6 +1269,8 @@ export type CustomerUncheckedCreateWithoutReviewsInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
   wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutCustomerInput
@@ -1233,6 +1311,8 @@ export type CustomerUpdateWithoutReviewsInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
   wishlists?: Prisma.WishlistUpdateManyWithoutCustomerNestedInput
@@ -1259,6 +1339,8 @@ export type CustomerUncheckedUpdateWithoutReviewsInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
   wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutCustomerNestedInput
@@ -1283,6 +1365,8 @@ export type CustomerCreateWithoutReviewerApplicationsInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
   wishlists?: Prisma.WishlistCreateNestedManyWithoutCustomerInput
@@ -1309,6 +1393,8 @@ export type CustomerUncheckedCreateWithoutReviewerApplicationsInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
   wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutCustomerInput
@@ -1349,6 +1435,8 @@ export type CustomerUpdateWithoutReviewerApplicationsInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
   wishlists?: Prisma.WishlistUpdateManyWithoutCustomerNestedInput
@@ -1375,6 +1463,8 @@ export type CustomerUncheckedUpdateWithoutReviewerApplicationsInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
   wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutCustomerNestedInput
@@ -1399,6 +1489,8 @@ export type CustomerCreateWithoutAffiliateLinksInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
   wishlists?: Prisma.WishlistCreateNestedManyWithoutCustomerInput
@@ -1425,6 +1517,8 @@ export type CustomerUncheckedCreateWithoutAffiliateLinksInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
   wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutCustomerInput
@@ -1465,6 +1559,8 @@ export type CustomerUpdateWithoutAffiliateLinksInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
   wishlists?: Prisma.WishlistUpdateManyWithoutCustomerNestedInput
@@ -1491,6 +1587,8 @@ export type CustomerUncheckedUpdateWithoutAffiliateLinksInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
   wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutCustomerNestedInput
@@ -1515,6 +1613,8 @@ export type CustomerCreateWithoutAffiliateClicksInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
   wishlists?: Prisma.WishlistCreateNestedManyWithoutCustomerInput
@@ -1541,6 +1641,8 @@ export type CustomerUncheckedCreateWithoutAffiliateClicksInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
   wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutCustomerInput
@@ -1581,6 +1683,8 @@ export type CustomerUpdateWithoutAffiliateClicksInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
   wishlists?: Prisma.WishlistUpdateManyWithoutCustomerNestedInput
@@ -1607,6 +1711,8 @@ export type CustomerUncheckedUpdateWithoutAffiliateClicksInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
   wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutCustomerNestedInput
@@ -1631,6 +1737,8 @@ export type CustomerCreateWithoutEarningTransactionsInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
   wishlists?: Prisma.WishlistCreateNestedManyWithoutCustomerInput
@@ -1657,6 +1765,8 @@ export type CustomerUncheckedCreateWithoutEarningTransactionsInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
   wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutCustomerInput
@@ -1697,6 +1807,8 @@ export type CustomerUpdateWithoutEarningTransactionsInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
   wishlists?: Prisma.WishlistUpdateManyWithoutCustomerNestedInput
@@ -1723,6 +1835,8 @@ export type CustomerUncheckedUpdateWithoutEarningTransactionsInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
   wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutCustomerNestedInput
@@ -1747,6 +1861,8 @@ export type CustomerCreateWithoutPointTransactionsInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
   wishlists?: Prisma.WishlistCreateNestedManyWithoutCustomerInput
@@ -1773,6 +1889,8 @@ export type CustomerUncheckedCreateWithoutPointTransactionsInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
   wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutCustomerInput
@@ -1813,6 +1931,8 @@ export type CustomerUpdateWithoutPointTransactionsInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
   wishlists?: Prisma.WishlistUpdateManyWithoutCustomerNestedInput
@@ -1839,6 +1959,8 @@ export type CustomerUncheckedUpdateWithoutPointTransactionsInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
   wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutCustomerNestedInput
@@ -1863,6 +1985,8 @@ export type CustomerCreateWithoutCheckInsInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
   wishlists?: Prisma.WishlistCreateNestedManyWithoutCustomerInput
@@ -1889,6 +2013,8 @@ export type CustomerUncheckedCreateWithoutCheckInsInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
   wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutCustomerInput
@@ -1929,6 +2055,8 @@ export type CustomerUpdateWithoutCheckInsInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
   wishlists?: Prisma.WishlistUpdateManyWithoutCustomerNestedInput
@@ -1955,6 +2083,8 @@ export type CustomerUncheckedUpdateWithoutCheckInsInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
   wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutCustomerNestedInput
@@ -1979,6 +2109,8 @@ export type CustomerCreateWithoutAcquisitionEventsInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
   wishlists?: Prisma.WishlistCreateNestedManyWithoutCustomerInput
@@ -2005,6 +2137,8 @@ export type CustomerUncheckedCreateWithoutAcquisitionEventsInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
   wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutCustomerInput
@@ -2045,6 +2179,8 @@ export type CustomerUpdateWithoutAcquisitionEventsInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
   wishlists?: Prisma.WishlistUpdateManyWithoutCustomerNestedInput
@@ -2071,6 +2207,8 @@ export type CustomerUncheckedUpdateWithoutAcquisitionEventsInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
   wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutCustomerNestedInput
@@ -2095,6 +2233,8 @@ export type CustomerCreateWithoutBookingsInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
   wishlists?: Prisma.WishlistCreateNestedManyWithoutCustomerInput
@@ -2121,6 +2261,8 @@ export type CustomerUncheckedCreateWithoutBookingsInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
   wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutCustomerInput
@@ -2161,6 +2303,8 @@ export type CustomerUpdateWithoutBookingsInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
   wishlists?: Prisma.WishlistUpdateManyWithoutCustomerNestedInput
@@ -2187,6 +2331,8 @@ export type CustomerUncheckedUpdateWithoutBookingsInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
   wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutCustomerNestedInput
@@ -2211,6 +2357,8 @@ export type CustomerCreateWithoutMerchantViewsInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
   wishlists?: Prisma.WishlistCreateNestedManyWithoutCustomerInput
@@ -2237,6 +2385,8 @@ export type CustomerUncheckedCreateWithoutMerchantViewsInput = {
   preferredPriceRanges?: Prisma.CustomerCreatepreferredPriceRangesInput | string[]
   reviewerPoints?: number
   reviewerRank?: string
+  gemPoints?: number
+  contributionRank?: string
   customerCode?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
   wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutCustomerInput
@@ -2277,6 +2427,8 @@ export type CustomerUpdateWithoutMerchantViewsInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
   wishlists?: Prisma.WishlistUpdateManyWithoutCustomerNestedInput
@@ -2303,6 +2455,8 @@ export type CustomerUncheckedUpdateWithoutMerchantViewsInput = {
   preferredPriceRanges?: Prisma.CustomerUpdatepreferredPriceRangesInput | string[]
   reviewerPoints?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerRank?: Prisma.StringFieldUpdateOperationsInput | string
+  gemPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  contributionRank?: Prisma.StringFieldUpdateOperationsInput | string
   customerCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
   wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutCustomerNestedInput
@@ -2458,6 +2612,8 @@ export type CustomerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   preferredPriceRanges?: boolean
   reviewerPoints?: boolean
   reviewerRank?: boolean
+  gemPoints?: boolean
+  contributionRank?: boolean
   customerCode?: boolean
   orders?: boolean | Prisma.Customer$ordersArgs<ExtArgs>
   wishlists?: boolean | Prisma.Customer$wishlistsArgs<ExtArgs>
@@ -2486,6 +2642,8 @@ export type CustomerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   preferredPriceRanges?: boolean
   reviewerPoints?: boolean
   reviewerRank?: boolean
+  gemPoints?: boolean
+  contributionRank?: boolean
   customerCode?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["customer"]>
@@ -2501,6 +2659,8 @@ export type CustomerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   preferredPriceRanges?: boolean
   reviewerPoints?: boolean
   reviewerRank?: boolean
+  gemPoints?: boolean
+  contributionRank?: boolean
   customerCode?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["customer"]>
@@ -2516,10 +2676,12 @@ export type CustomerSelectScalar = {
   preferredPriceRanges?: boolean
   reviewerPoints?: boolean
   reviewerRank?: boolean
+  gemPoints?: boolean
+  contributionRank?: boolean
   customerCode?: boolean
 }
 
-export type CustomerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "createdAt" | "updatedAt" | "preferredRestaurantTypes" | "preferredMainDishTypes" | "preferredCategoryIds" | "preferredPriceRanges" | "reviewerPoints" | "reviewerRank" | "customerCode", ExtArgs["result"]["customer"]>
+export type CustomerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "createdAt" | "updatedAt" | "preferredRestaurantTypes" | "preferredMainDishTypes" | "preferredCategoryIds" | "preferredPriceRanges" | "reviewerPoints" | "reviewerRank" | "gemPoints" | "contributionRank" | "customerCode", ExtArgs["result"]["customer"]>
 export type CustomerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   orders?: boolean | Prisma.Customer$ordersArgs<ExtArgs>
   wishlists?: boolean | Prisma.Customer$wishlistsArgs<ExtArgs>
@@ -2571,6 +2733,8 @@ export type $CustomerPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     preferredPriceRanges: string[]
     reviewerPoints: number
     reviewerRank: string
+    gemPoints: number
+    contributionRank: string
     customerCode: string | null
   }, ExtArgs["result"]["customer"]>
   composites: {}
@@ -3018,6 +3182,8 @@ export interface CustomerFieldRefs {
   readonly preferredPriceRanges: Prisma.FieldRef<"Customer", 'String[]'>
   readonly reviewerPoints: Prisma.FieldRef<"Customer", 'Int'>
   readonly reviewerRank: Prisma.FieldRef<"Customer", 'String'>
+  readonly gemPoints: Prisma.FieldRef<"Customer", 'Int'>
+  readonly contributionRank: Prisma.FieldRef<"Customer", 'String'>
   readonly customerCode: Prisma.FieldRef<"Customer", 'String'>
 }
     

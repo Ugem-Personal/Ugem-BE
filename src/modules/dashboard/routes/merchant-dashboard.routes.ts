@@ -9,6 +9,7 @@ import {
   getMerchantCustomerStatisticsByYear,
   getMerchantDailyRevenue,
   getMerchantDashboard,
+  getMerchantAnalytics,
   getMerchantOrderGrowthByYear,
   getMerchantOrderPerformanceByYear,
   getMerchantPaymentStatisticsByYear,
@@ -22,6 +23,7 @@ import {
 
 import {
   merchantCampaignPerformanceSchema,
+  merchantAnalyticsSchema,
   merchantCustomerStatisticsSchema,
   merchantDailyRevenueSchema,
   merchantOrderGrowthSchema,
@@ -39,6 +41,12 @@ export const merchantDashboardRouter = Router();
 merchantDashboardRouter.use(authenticate, requireApprovedMerchant);
 
 merchantDashboardRouter.get("/", getMerchantDashboard);
+
+merchantDashboardRouter.get(
+  "/analytics",
+  validate(merchantAnalyticsSchema),
+  getMerchantAnalytics,
+);
 
 merchantDashboardRouter.get(
   "/revenue",

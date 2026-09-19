@@ -11,6 +11,13 @@ import type {
   UpdateAffiliateLinkStatusInput,
 } from "./affiliate-link.types.js";
 
+/**
+ * @deprecated Legacy optional affiliate/referral module.
+ *
+ * Affiliate clicks and commission earnings must not influence UFind organic
+ * discovery, merchant scoring, rebalancing or Verified Visit billing.
+ */
+
 import { env } from "../../config/env.js";
 import { getReviewerCommissionRate } from "../../common/utils/reviewer-rank.js";
 

@@ -34,7 +34,7 @@ describe("verifyCheckIn Geo-fencing", () => {
     vi.spyOn(prisma.order, "findUnique").mockResolvedValue(mockOrder as any);
     vi.spyOn(prisma.checkIn, "count").mockResolvedValue(0);
     vi.spyOn(prisma.customer, "findUnique").mockResolvedValue({
-      reviewerPoints: 50,
+      gemPoints: 50,
     } as any);
     vi.spyOn(prisma, "$transaction").mockImplementation(
       async (operation: any) => {
@@ -56,6 +56,11 @@ describe("verifyCheckIn Geo-fencing", () => {
             }),
           },
           merchantAcquisitionEvent: { create: vi.fn().mockResolvedValue({}) },
+          customer: { update: vi.fn().mockResolvedValue({ gemPoints: 60 }) },
+          reviewerPointTransaction: {
+            createMany: vi.fn().mockResolvedValue({ count: 1 }),
+            update: vi.fn().mockResolvedValue({}),
+          },
         });
       },
     );

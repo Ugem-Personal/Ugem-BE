@@ -1,5 +1,9 @@
 import { AffiliateTransactionStatus, NotificationType, OrderPaymentStatus, OrderStatus, Prisma, } from "../../generated/prisma/client.js";
 import { prisma } from "../../config/prisma.js";
+/**
+ * @deprecated Legacy Order-based affiliate commission flow.
+ * UFind contribution and Gem Points are separate from affiliate earnings.
+ */
 import { AppError } from "../../common/errors/app-error.js";
 import { createNotification } from "../notifications/notification.service.js";
 import { calculateReviewerRank, getReviewerCommissionRate, } from "../../common/utils/reviewer-rank.js";

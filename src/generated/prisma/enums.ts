@@ -174,6 +174,7 @@ export type CheckInStatus = (typeof CheckInStatus)[keyof typeof CheckInStatus]
 
 export const CheckInMethod = {
   OrderQr: 'OrderQr',
+  DirectQr: 'DirectQr',
   CustomerCode: 'CustomerCode'
 } as const
 
@@ -207,6 +208,15 @@ export const MerchantListingVisibility = {
 } as const
 
 export type MerchantListingVisibility = (typeof MerchantListingVisibility)[keyof typeof MerchantListingVisibility]
+
+
+export const GemStatus = {
+  HiddenGem: 'HiddenGem',
+  RisingGem: 'RisingGem',
+  HallOfFame: 'HallOfFame'
+} as const
+
+export type GemStatus = (typeof GemStatus)[keyof typeof GemStatus]
 
 
 export const IncidentType = {
@@ -330,6 +340,7 @@ export const MerchantTrafficSource = {
   Recommendation: 'Recommendation',
   Search: 'Search',
   Map: 'Map',
+  Sponsored: 'Sponsored',
   Affiliate: 'Affiliate',
   Direct: 'Direct'
 } as const

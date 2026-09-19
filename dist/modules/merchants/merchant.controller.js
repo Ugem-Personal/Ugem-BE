@@ -16,28 +16,41 @@ const getMerchantId = (req) => {
     }
     return merchantId;
 };
+const getMerchantListQuery = (req, discoveryType) => ({
+    customerId: req.user?.CustomerId ?? undefined,
+    search: req.query.search,
+    categoryId: req.query.categoryId,
+    restaurantType: req.query.restaurantType,
+    mainDishType: req.query.mainDishType,
+    priceRange: req.query.priceRange,
+    country: req.query.country,
+    city: req.query.city,
+    area: req.query.area,
+    latitude: req.query.latitude !== undefined
+        ? Number(req.query.latitude)
+        : undefined,
+    longitude: req.query.longitude !== undefined
+        ? Number(req.query.longitude)
+        : undefined,
+    radiusKm: req.query.radiusKm !== undefined
+        ? Number(req.query.radiusKm)
+        : undefined,
+    discoveryType: discoveryType ??
+        req.query.discoveryType,
+    pageIndex: Number(req.query.pageIndex ?? 1),
+    pageSize: Number(req.query.pageSize ?? 10),
+});
 export const getMerchants = asyncHandler(async (req, res) => {
-    const result = await merchantService.getMerchants({
-        customerId: req.user?.CustomerId ?? undefined,
-        search: req.query.search,
-        categoryId: req.query.categoryId,
-        restaurantType: req.query.restaurantType,
-        mainDishType: req.query.mainDishType,
-        priceRange: req.query.priceRange,
-        latitude: req.query.latitude !== undefined
-            ? Number(req.query.latitude)
-            : undefined,
-        longitude: req.query.longitude !== undefined
-            ? Number(req.query.longitude)
-            : undefined,
-        radiusKm: req.query.radiusKm !== undefined
-            ? Number(req.query.radiusKm)
-            : undefined,
-        pageIndex: Number(req.query.pageIndex ?? 1),
-        pageSize: Number(req.query.pageSize ?? 10),
-    });
+    const result = await merchantService.getMerchants(getMerchantListQuery(req));
     return sendSuccess(res, {
-        message: "Lấy danh sách Merchant thành công",
+        message: "Láº¥y danh sÃ¡ch Merchant thÃ nh cÃ´ng",
+        data: result,
+    });
+});
+export const getSponsoredMerchants = asyncHandler(async (req, res) => {
+    const result = await merchantService.getMerchants(getMerchantListQuery(req, "Sponsored"));
+    return sendSuccess(res, {
+        message: "Láº¥y danh sÃ¡ch Merchant Sponsored thÃ nh cÃ´ng",
         data: result,
     });
 });

@@ -113,6 +113,8 @@ export const CustomerScalarFieldEnum = {
     preferredPriceRanges: 'preferredPriceRanges',
     reviewerPoints: 'reviewerPoints',
     reviewerRank: 'reviewerRank',
+    gemPoints: 'gemPoints',
+    contributionRank: 'contributionRank',
     customerCode: 'customerCode'
 };
 export const RefreshTokenScalarFieldEnum = {
@@ -194,6 +196,7 @@ export const MerchantScalarFieldEnum = {
     strengthIndex: 'strengthIndex',
     underratedScore: 'underratedScore',
     recommendationRank: 'recommendationRank',
+    gemStatus: 'gemStatus',
     lastRebalancedAt: 'lastRebalancedAt',
     status: 'status',
     verificationStatus: 'verificationStatus',
@@ -328,6 +331,7 @@ export const ReviewScalarFieldEnum = {
     customerId: 'customerId',
     merchantId: 'merchantId',
     orderId: 'orderId',
+    checkInId: 'checkInId',
     rating: 'rating',
     content: 'content',
     imageUrl: 'imageUrl',
@@ -408,6 +412,7 @@ export const ReviewerPointTransactionScalarFieldEnum = {
     type: 'type',
     reason: 'reason',
     referenceId: 'referenceId',
+    rewardKey: 'rewardKey',
     createdAt: 'createdAt'
 };
 export const CampaignScalarFieldEnum = {
@@ -425,6 +430,8 @@ export const CampaignScalarFieldEnum = {
     usageLimit: 'usageLimit',
     usedCount: 'usedCount',
     maxUsagePerUser: 'maxUsagePerUser',
+    verifiedVisitLimit: 'verifiedVisitLimit',
+    maxVerifiedVisitsPerCustomer: 'maxVerifiedVisitsPerCustomer',
     isGlobal: 'isGlobal',
     isNewUserOnly: 'isNewUserOnly',
     isActive: 'isActive',

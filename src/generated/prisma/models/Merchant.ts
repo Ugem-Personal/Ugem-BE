@@ -78,6 +78,7 @@ export type MerchantMinAggregateOutputType = {
   strengthIndex: runtime.Decimal | null
   underratedScore: runtime.Decimal | null
   recommendationRank: number | null
+  gemStatus: $Enums.GemStatus | null
   lastRebalancedAt: Date | null
   status: $Enums.MerchantStatus | null
   verificationStatus: $Enums.MerchantVerificationStatus | null
@@ -117,6 +118,7 @@ export type MerchantMaxAggregateOutputType = {
   strengthIndex: runtime.Decimal | null
   underratedScore: runtime.Decimal | null
   recommendationRank: number | null
+  gemStatus: $Enums.GemStatus | null
   lastRebalancedAt: Date | null
   status: $Enums.MerchantStatus | null
   verificationStatus: $Enums.MerchantVerificationStatus | null
@@ -156,6 +158,7 @@ export type MerchantCountAggregateOutputType = {
   strengthIndex: number
   underratedScore: number
   recommendationRank: number
+  gemStatus: number
   lastRebalancedAt: number
   status: number
   verificationStatus: number
@@ -221,6 +224,7 @@ export type MerchantMinAggregateInputType = {
   strengthIndex?: true
   underratedScore?: true
   recommendationRank?: true
+  gemStatus?: true
   lastRebalancedAt?: true
   status?: true
   verificationStatus?: true
@@ -260,6 +264,7 @@ export type MerchantMaxAggregateInputType = {
   strengthIndex?: true
   underratedScore?: true
   recommendationRank?: true
+  gemStatus?: true
   lastRebalancedAt?: true
   status?: true
   verificationStatus?: true
@@ -299,6 +304,7 @@ export type MerchantCountAggregateInputType = {
   strengthIndex?: true
   underratedScore?: true
   recommendationRank?: true
+  gemStatus?: true
   lastRebalancedAt?: true
   status?: true
   verificationStatus?: true
@@ -425,6 +431,7 @@ export type MerchantGroupByOutputType = {
   strengthIndex: runtime.Decimal
   underratedScore: runtime.Decimal
   recommendationRank: number | null
+  gemStatus: $Enums.GemStatus | null
   lastRebalancedAt: Date | null
   status: $Enums.MerchantStatus
   verificationStatus: $Enums.MerchantVerificationStatus
@@ -487,6 +494,7 @@ export type MerchantWhereInput = {
   strengthIndex?: Prisma.DecimalFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.IntNullableFilter<"Merchant"> | number | null
+  gemStatus?: Prisma.EnumGemStatusNullableFilter<"Merchant"> | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.DateTimeNullableFilter<"Merchant"> | Date | string | null
   status?: Prisma.EnumMerchantStatusFilter<"Merchant"> | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFilter<"Merchant"> | $Enums.MerchantVerificationStatus
@@ -538,6 +546,7 @@ export type MerchantOrderByWithRelationInput = {
   strengthIndex?: Prisma.SortOrder
   underratedScore?: Prisma.SortOrder
   recommendationRank?: Prisma.SortOrderInput | Prisma.SortOrder
+  gemStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   lastRebalancedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   verificationStatus?: Prisma.SortOrder
@@ -592,6 +601,7 @@ export type MerchantWhereUniqueInput = Prisma.AtLeast<{
   strengthIndex?: Prisma.DecimalFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.IntNullableFilter<"Merchant"> | number | null
+  gemStatus?: Prisma.EnumGemStatusNullableFilter<"Merchant"> | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.DateTimeNullableFilter<"Merchant"> | Date | string | null
   status?: Prisma.EnumMerchantStatusFilter<"Merchant"> | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFilter<"Merchant"> | $Enums.MerchantVerificationStatus
@@ -643,6 +653,7 @@ export type MerchantOrderByWithAggregationInput = {
   strengthIndex?: Prisma.SortOrder
   underratedScore?: Prisma.SortOrder
   recommendationRank?: Prisma.SortOrderInput | Prisma.SortOrder
+  gemStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   lastRebalancedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   verificationStatus?: Prisma.SortOrder
@@ -690,6 +701,7 @@ export type MerchantScalarWhereWithAggregatesInput = {
   strengthIndex?: Prisma.DecimalWithAggregatesFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalWithAggregatesFilter<"Merchant"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.IntNullableWithAggregatesFilter<"Merchant"> | number | null
+  gemStatus?: Prisma.EnumGemStatusNullableWithAggregatesFilter<"Merchant"> | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Merchant"> | Date | string | null
   status?: Prisma.EnumMerchantStatusWithAggregatesFilter<"Merchant"> | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusWithAggregatesFilter<"Merchant"> | $Enums.MerchantVerificationStatus
@@ -728,6 +740,7 @@ export type MerchantCreateInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -779,6 +792,7 @@ export type MerchantUncheckedCreateInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -828,6 +842,7 @@ export type MerchantUpdateInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -879,6 +894,7 @@ export type MerchantUncheckedUpdateInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -929,6 +945,7 @@ export type MerchantCreateManyInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -967,6 +984,7 @@ export type MerchantUpdateManyMutationInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -1006,6 +1024,7 @@ export type MerchantUncheckedUpdateManyInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -1050,6 +1069,7 @@ export type MerchantCountOrderByAggregateInput = {
   strengthIndex?: Prisma.SortOrder
   underratedScore?: Prisma.SortOrder
   recommendationRank?: Prisma.SortOrder
+  gemStatus?: Prisma.SortOrder
   lastRebalancedAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   verificationStatus?: Prisma.SortOrder
@@ -1101,6 +1121,7 @@ export type MerchantMaxOrderByAggregateInput = {
   strengthIndex?: Prisma.SortOrder
   underratedScore?: Prisma.SortOrder
   recommendationRank?: Prisma.SortOrder
+  gemStatus?: Prisma.SortOrder
   lastRebalancedAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   verificationStatus?: Prisma.SortOrder
@@ -1140,6 +1161,7 @@ export type MerchantMinOrderByAggregateInput = {
   strengthIndex?: Prisma.SortOrder
   underratedScore?: Prisma.SortOrder
   recommendationRank?: Prisma.SortOrder
+  gemStatus?: Prisma.SortOrder
   lastRebalancedAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   verificationStatus?: Prisma.SortOrder
@@ -1206,6 +1228,10 @@ export type NullableIntFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type NullableEnumGemStatusFieldUpdateOperationsInput = {
+  set?: $Enums.GemStatus | null
 }
 
 export type EnumMerchantStatusFieldUpdateOperationsInput = {
@@ -1401,6 +1427,7 @@ export type MerchantCreateWithoutUserInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -1450,6 +1477,7 @@ export type MerchantUncheckedCreateWithoutUserInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -1515,6 +1543,7 @@ export type MerchantUpdateWithoutUserInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -1564,6 +1593,7 @@ export type MerchantUncheckedUpdateWithoutUserInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -1613,6 +1643,7 @@ export type MerchantCreateWithoutFoodsInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -1663,6 +1694,7 @@ export type MerchantUncheckedCreateWithoutFoodsInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -1727,6 +1759,7 @@ export type MerchantUpdateWithoutFoodsInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -1777,6 +1810,7 @@ export type MerchantUncheckedUpdateWithoutFoodsInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -1825,6 +1859,7 @@ export type MerchantCreateWithoutOrdersInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -1875,6 +1910,7 @@ export type MerchantUncheckedCreateWithoutOrdersInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -1939,6 +1975,7 @@ export type MerchantUpdateWithoutOrdersInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -1989,6 +2026,7 @@ export type MerchantUncheckedUpdateWithoutOrdersInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -2037,6 +2075,7 @@ export type MerchantCreateWithoutWishlistsInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -2087,6 +2126,7 @@ export type MerchantUncheckedCreateWithoutWishlistsInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -2151,6 +2191,7 @@ export type MerchantUpdateWithoutWishlistsInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -2201,6 +2242,7 @@ export type MerchantUncheckedUpdateWithoutWishlistsInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -2249,6 +2291,7 @@ export type MerchantCreateWithoutReviewsInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -2299,6 +2342,7 @@ export type MerchantUncheckedCreateWithoutReviewsInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -2363,6 +2407,7 @@ export type MerchantUpdateWithoutReviewsInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -2413,6 +2458,7 @@ export type MerchantUncheckedUpdateWithoutReviewsInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -2461,6 +2507,7 @@ export type MerchantCreateWithoutAffiliateLinksInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -2511,6 +2558,7 @@ export type MerchantUncheckedCreateWithoutAffiliateLinksInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -2575,6 +2623,7 @@ export type MerchantUpdateWithoutAffiliateLinksInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -2625,6 +2674,7 @@ export type MerchantUncheckedUpdateWithoutAffiliateLinksInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -2673,6 +2723,7 @@ export type MerchantCreateWithoutCampaignsInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -2723,6 +2774,7 @@ export type MerchantUncheckedCreateWithoutCampaignsInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -2787,6 +2839,7 @@ export type MerchantUpdateWithoutCampaignsInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -2837,6 +2890,7 @@ export type MerchantUncheckedUpdateWithoutCampaignsInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -2885,6 +2939,7 @@ export type MerchantCreateWithoutCheckInsInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -2935,6 +2990,7 @@ export type MerchantUncheckedCreateWithoutCheckInsInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -2999,6 +3055,7 @@ export type MerchantUpdateWithoutCheckInsInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -3049,6 +3106,7 @@ export type MerchantUncheckedUpdateWithoutCheckInsInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -3097,6 +3155,7 @@ export type MerchantCreateWithoutAcquisitionEventsInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -3147,6 +3206,7 @@ export type MerchantUncheckedCreateWithoutAcquisitionEventsInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -3211,6 +3271,7 @@ export type MerchantUpdateWithoutAcquisitionEventsInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -3261,6 +3322,7 @@ export type MerchantUncheckedUpdateWithoutAcquisitionEventsInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -3309,6 +3371,7 @@ export type MerchantCreateWithoutSupportTicketsInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -3359,6 +3422,7 @@ export type MerchantUncheckedCreateWithoutSupportTicketsInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -3423,6 +3487,7 @@ export type MerchantUpdateWithoutSupportTicketsInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -3473,6 +3538,7 @@ export type MerchantUncheckedUpdateWithoutSupportTicketsInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -3521,6 +3587,7 @@ export type MerchantCreateWithoutBookingsInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -3571,6 +3638,7 @@ export type MerchantUncheckedCreateWithoutBookingsInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -3635,6 +3703,7 @@ export type MerchantUpdateWithoutBookingsInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -3685,6 +3754,7 @@ export type MerchantUncheckedUpdateWithoutBookingsInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -3733,6 +3803,7 @@ export type MerchantCreateWithoutViewsInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -3783,6 +3854,7 @@ export type MerchantUncheckedCreateWithoutViewsInput = {
   strengthIndex?: runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: number | null
+  gemStatus?: $Enums.GemStatus | null
   lastRebalancedAt?: Date | string | null
   status?: $Enums.MerchantStatus
   verificationStatus?: $Enums.MerchantVerificationStatus
@@ -3847,6 +3919,7 @@ export type MerchantUpdateWithoutViewsInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -3897,6 +3970,7 @@ export type MerchantUncheckedUpdateWithoutViewsInput = {
   strengthIndex?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   underratedScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recommendationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gemStatus?: Prisma.NullableEnumGemStatusFieldUpdateOperationsInput | $Enums.GemStatus | null
   lastRebalancedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
   verificationStatus?: Prisma.EnumMerchantVerificationStatusFieldUpdateOperationsInput | $Enums.MerchantVerificationStatus
@@ -4067,6 +4141,7 @@ export type MerchantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   strengthIndex?: boolean
   underratedScore?: boolean
   recommendationRank?: boolean
+  gemStatus?: boolean
   lastRebalancedAt?: boolean
   status?: boolean
   verificationStatus?: boolean
@@ -4119,6 +4194,7 @@ export type MerchantSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   strengthIndex?: boolean
   underratedScore?: boolean
   recommendationRank?: boolean
+  gemStatus?: boolean
   lastRebalancedAt?: boolean
   status?: boolean
   verificationStatus?: boolean
@@ -4159,6 +4235,7 @@ export type MerchantSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   strengthIndex?: boolean
   underratedScore?: boolean
   recommendationRank?: boolean
+  gemStatus?: boolean
   lastRebalancedAt?: boolean
   status?: boolean
   verificationStatus?: boolean
@@ -4199,6 +4276,7 @@ export type MerchantSelectScalar = {
   strengthIndex?: boolean
   underratedScore?: boolean
   recommendationRank?: boolean
+  gemStatus?: boolean
   lastRebalancedAt?: boolean
   status?: boolean
   verificationStatus?: boolean
@@ -4210,7 +4288,7 @@ export type MerchantSelectScalar = {
   updatedAt?: boolean
 }
 
-export type MerchantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "description" | "restaurantType" | "mainDishType" | "priceRange" | "email" | "phone" | "address" | "country" | "city" | "area" | "openingHours" | "latitude" | "longitude" | "logoUrl" | "bankCode" | "bankAccountNumber" | "bankAccountName" | "bankTransferEnabled" | "rating" | "reviewCount" | "totalViews" | "strengthIndex" | "underratedScore" | "recommendationRank" | "lastRebalancedAt" | "status" | "verificationStatus" | "listingVisibility" | "safetySuppressed" | "safetySuppressedUntil" | "safetyRiskScore" | "createdAt" | "updatedAt", ExtArgs["result"]["merchant"]>
+export type MerchantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "description" | "restaurantType" | "mainDishType" | "priceRange" | "email" | "phone" | "address" | "country" | "city" | "area" | "openingHours" | "latitude" | "longitude" | "logoUrl" | "bankCode" | "bankAccountNumber" | "bankAccountName" | "bankTransferEnabled" | "rating" | "reviewCount" | "totalViews" | "strengthIndex" | "underratedScore" | "recommendationRank" | "gemStatus" | "lastRebalancedAt" | "status" | "verificationStatus" | "listingVisibility" | "safetySuppressed" | "safetySuppressedUntil" | "safetyRiskScore" | "createdAt" | "updatedAt", ExtArgs["result"]["merchant"]>
 export type MerchantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   foods?: boolean | Prisma.Merchant$foodsArgs<ExtArgs>
   orders?: boolean | Prisma.Merchant$ordersArgs<ExtArgs>
@@ -4277,6 +4355,7 @@ export type $MerchantPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     strengthIndex: runtime.Decimal
     underratedScore: runtime.Decimal
     recommendationRank: number | null
+    gemStatus: $Enums.GemStatus | null
     lastRebalancedAt: Date | null
     status: $Enums.MerchantStatus
     verificationStatus: $Enums.MerchantVerificationStatus
@@ -4748,6 +4827,7 @@ export interface MerchantFieldRefs {
   readonly strengthIndex: Prisma.FieldRef<"Merchant", 'Decimal'>
   readonly underratedScore: Prisma.FieldRef<"Merchant", 'Decimal'>
   readonly recommendationRank: Prisma.FieldRef<"Merchant", 'Int'>
+  readonly gemStatus: Prisma.FieldRef<"Merchant", 'GemStatus'>
   readonly lastRebalancedAt: Prisma.FieldRef<"Merchant", 'DateTime'>
   readonly status: Prisma.FieldRef<"Merchant", 'MerchantStatus'>
   readonly verificationStatus: Prisma.FieldRef<"Merchant", 'MerchantVerificationStatus'>

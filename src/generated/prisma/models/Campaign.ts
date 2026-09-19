@@ -33,6 +33,8 @@ export type CampaignAvgAggregateOutputType = {
   usageLimit: number | null
   usedCount: number | null
   maxUsagePerUser: number | null
+  verifiedVisitLimit: number | null
+  maxVerifiedVisitsPerCustomer: number | null
 }
 
 export type CampaignSumAggregateOutputType = {
@@ -42,6 +44,8 @@ export type CampaignSumAggregateOutputType = {
   usageLimit: number | null
   usedCount: number | null
   maxUsagePerUser: number | null
+  verifiedVisitLimit: number | null
+  maxVerifiedVisitsPerCustomer: number | null
 }
 
 export type CampaignMinAggregateOutputType = {
@@ -59,6 +63,8 @@ export type CampaignMinAggregateOutputType = {
   usageLimit: number | null
   usedCount: number | null
   maxUsagePerUser: number | null
+  verifiedVisitLimit: number | null
+  maxVerifiedVisitsPerCustomer: number | null
   isGlobal: boolean | null
   isNewUserOnly: boolean | null
   isActive: boolean | null
@@ -81,6 +87,8 @@ export type CampaignMaxAggregateOutputType = {
   usageLimit: number | null
   usedCount: number | null
   maxUsagePerUser: number | null
+  verifiedVisitLimit: number | null
+  maxVerifiedVisitsPerCustomer: number | null
   isGlobal: boolean | null
   isNewUserOnly: boolean | null
   isActive: boolean | null
@@ -103,6 +111,8 @@ export type CampaignCountAggregateOutputType = {
   usageLimit: number
   usedCount: number
   maxUsagePerUser: number
+  verifiedVisitLimit: number
+  maxVerifiedVisitsPerCustomer: number
   isGlobal: number
   isNewUserOnly: number
   isActive: number
@@ -119,6 +129,8 @@ export type CampaignAvgAggregateInputType = {
   usageLimit?: true
   usedCount?: true
   maxUsagePerUser?: true
+  verifiedVisitLimit?: true
+  maxVerifiedVisitsPerCustomer?: true
 }
 
 export type CampaignSumAggregateInputType = {
@@ -128,6 +140,8 @@ export type CampaignSumAggregateInputType = {
   usageLimit?: true
   usedCount?: true
   maxUsagePerUser?: true
+  verifiedVisitLimit?: true
+  maxVerifiedVisitsPerCustomer?: true
 }
 
 export type CampaignMinAggregateInputType = {
@@ -145,6 +159,8 @@ export type CampaignMinAggregateInputType = {
   usageLimit?: true
   usedCount?: true
   maxUsagePerUser?: true
+  verifiedVisitLimit?: true
+  maxVerifiedVisitsPerCustomer?: true
   isGlobal?: true
   isNewUserOnly?: true
   isActive?: true
@@ -167,6 +183,8 @@ export type CampaignMaxAggregateInputType = {
   usageLimit?: true
   usedCount?: true
   maxUsagePerUser?: true
+  verifiedVisitLimit?: true
+  maxVerifiedVisitsPerCustomer?: true
   isGlobal?: true
   isNewUserOnly?: true
   isActive?: true
@@ -189,6 +207,8 @@ export type CampaignCountAggregateInputType = {
   usageLimit?: true
   usedCount?: true
   maxUsagePerUser?: true
+  verifiedVisitLimit?: true
+  maxVerifiedVisitsPerCustomer?: true
   isGlobal?: true
   isNewUserOnly?: true
   isActive?: true
@@ -298,6 +318,8 @@ export type CampaignGroupByOutputType = {
   usageLimit: number | null
   usedCount: number
   maxUsagePerUser: number
+  verifiedVisitLimit: number | null
+  maxVerifiedVisitsPerCustomer: number
   isGlobal: boolean
   isNewUserOnly: boolean
   isActive: boolean
@@ -343,6 +365,8 @@ export type CampaignWhereInput = {
   usageLimit?: Prisma.IntNullableFilter<"Campaign"> | number | null
   usedCount?: Prisma.IntFilter<"Campaign"> | number
   maxUsagePerUser?: Prisma.IntFilter<"Campaign"> | number
+  verifiedVisitLimit?: Prisma.IntNullableFilter<"Campaign"> | number | null
+  maxVerifiedVisitsPerCustomer?: Prisma.IntFilter<"Campaign"> | number
   isGlobal?: Prisma.BoolFilter<"Campaign"> | boolean
   isNewUserOnly?: Prisma.BoolFilter<"Campaign"> | boolean
   isActive?: Prisma.BoolFilter<"Campaign"> | boolean
@@ -369,6 +393,8 @@ export type CampaignOrderByWithRelationInput = {
   usageLimit?: Prisma.SortOrderInput | Prisma.SortOrder
   usedCount?: Prisma.SortOrder
   maxUsagePerUser?: Prisma.SortOrder
+  verifiedVisitLimit?: Prisma.SortOrderInput | Prisma.SortOrder
+  maxVerifiedVisitsPerCustomer?: Prisma.SortOrder
   isGlobal?: Prisma.SortOrder
   isNewUserOnly?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -398,6 +424,8 @@ export type CampaignWhereUniqueInput = Prisma.AtLeast<{
   usageLimit?: Prisma.IntNullableFilter<"Campaign"> | number | null
   usedCount?: Prisma.IntFilter<"Campaign"> | number
   maxUsagePerUser?: Prisma.IntFilter<"Campaign"> | number
+  verifiedVisitLimit?: Prisma.IntNullableFilter<"Campaign"> | number | null
+  maxVerifiedVisitsPerCustomer?: Prisma.IntFilter<"Campaign"> | number
   isGlobal?: Prisma.BoolFilter<"Campaign"> | boolean
   isNewUserOnly?: Prisma.BoolFilter<"Campaign"> | boolean
   isActive?: Prisma.BoolFilter<"Campaign"> | boolean
@@ -424,6 +452,8 @@ export type CampaignOrderByWithAggregationInput = {
   usageLimit?: Prisma.SortOrderInput | Prisma.SortOrder
   usedCount?: Prisma.SortOrder
   maxUsagePerUser?: Prisma.SortOrder
+  verifiedVisitLimit?: Prisma.SortOrderInput | Prisma.SortOrder
+  maxVerifiedVisitsPerCustomer?: Prisma.SortOrder
   isGlobal?: Prisma.SortOrder
   isNewUserOnly?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -454,6 +484,8 @@ export type CampaignScalarWhereWithAggregatesInput = {
   usageLimit?: Prisma.IntNullableWithAggregatesFilter<"Campaign"> | number | null
   usedCount?: Prisma.IntWithAggregatesFilter<"Campaign"> | number
   maxUsagePerUser?: Prisma.IntWithAggregatesFilter<"Campaign"> | number
+  verifiedVisitLimit?: Prisma.IntNullableWithAggregatesFilter<"Campaign"> | number | null
+  maxVerifiedVisitsPerCustomer?: Prisma.IntWithAggregatesFilter<"Campaign"> | number
   isGlobal?: Prisma.BoolWithAggregatesFilter<"Campaign"> | boolean
   isNewUserOnly?: Prisma.BoolWithAggregatesFilter<"Campaign"> | boolean
   isActive?: Prisma.BoolWithAggregatesFilter<"Campaign"> | boolean
@@ -475,6 +507,8 @@ export type CampaignCreateInput = {
   usageLimit?: number | null
   usedCount?: number
   maxUsagePerUser?: number
+  verifiedVisitLimit?: number | null
+  maxVerifiedVisitsPerCustomer?: number
   isGlobal?: boolean
   isNewUserOnly?: boolean
   isActive?: boolean
@@ -501,6 +535,8 @@ export type CampaignUncheckedCreateInput = {
   usageLimit?: number | null
   usedCount?: number
   maxUsagePerUser?: number
+  verifiedVisitLimit?: number | null
+  maxVerifiedVisitsPerCustomer?: number
   isGlobal?: boolean
   isNewUserOnly?: boolean
   isActive?: boolean
@@ -525,6 +561,8 @@ export type CampaignUpdateInput = {
   usageLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   usedCount?: Prisma.IntFieldUpdateOperationsInput | number
   maxUsagePerUser?: Prisma.IntFieldUpdateOperationsInput | number
+  verifiedVisitLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxVerifiedVisitsPerCustomer?: Prisma.IntFieldUpdateOperationsInput | number
   isGlobal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isNewUserOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -551,6 +589,8 @@ export type CampaignUncheckedUpdateInput = {
   usageLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   usedCount?: Prisma.IntFieldUpdateOperationsInput | number
   maxUsagePerUser?: Prisma.IntFieldUpdateOperationsInput | number
+  verifiedVisitLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxVerifiedVisitsPerCustomer?: Prisma.IntFieldUpdateOperationsInput | number
   isGlobal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isNewUserOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -576,6 +616,8 @@ export type CampaignCreateManyInput = {
   usageLimit?: number | null
   usedCount?: number
   maxUsagePerUser?: number
+  verifiedVisitLimit?: number | null
+  maxVerifiedVisitsPerCustomer?: number
   isGlobal?: boolean
   isNewUserOnly?: boolean
   isActive?: boolean
@@ -597,6 +639,8 @@ export type CampaignUpdateManyMutationInput = {
   usageLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   usedCount?: Prisma.IntFieldUpdateOperationsInput | number
   maxUsagePerUser?: Prisma.IntFieldUpdateOperationsInput | number
+  verifiedVisitLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxVerifiedVisitsPerCustomer?: Prisma.IntFieldUpdateOperationsInput | number
   isGlobal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isNewUserOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -619,6 +663,8 @@ export type CampaignUncheckedUpdateManyInput = {
   usageLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   usedCount?: Prisma.IntFieldUpdateOperationsInput | number
   maxUsagePerUser?: Prisma.IntFieldUpdateOperationsInput | number
+  verifiedVisitLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxVerifiedVisitsPerCustomer?: Prisma.IntFieldUpdateOperationsInput | number
   isGlobal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isNewUserOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -656,6 +702,8 @@ export type CampaignCountOrderByAggregateInput = {
   usageLimit?: Prisma.SortOrder
   usedCount?: Prisma.SortOrder
   maxUsagePerUser?: Prisma.SortOrder
+  verifiedVisitLimit?: Prisma.SortOrder
+  maxVerifiedVisitsPerCustomer?: Prisma.SortOrder
   isGlobal?: Prisma.SortOrder
   isNewUserOnly?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -670,6 +718,8 @@ export type CampaignAvgOrderByAggregateInput = {
   usageLimit?: Prisma.SortOrder
   usedCount?: Prisma.SortOrder
   maxUsagePerUser?: Prisma.SortOrder
+  verifiedVisitLimit?: Prisma.SortOrder
+  maxVerifiedVisitsPerCustomer?: Prisma.SortOrder
 }
 
 export type CampaignMaxOrderByAggregateInput = {
@@ -687,6 +737,8 @@ export type CampaignMaxOrderByAggregateInput = {
   usageLimit?: Prisma.SortOrder
   usedCount?: Prisma.SortOrder
   maxUsagePerUser?: Prisma.SortOrder
+  verifiedVisitLimit?: Prisma.SortOrder
+  maxVerifiedVisitsPerCustomer?: Prisma.SortOrder
   isGlobal?: Prisma.SortOrder
   isNewUserOnly?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -709,6 +761,8 @@ export type CampaignMinOrderByAggregateInput = {
   usageLimit?: Prisma.SortOrder
   usedCount?: Prisma.SortOrder
   maxUsagePerUser?: Prisma.SortOrder
+  verifiedVisitLimit?: Prisma.SortOrder
+  maxVerifiedVisitsPerCustomer?: Prisma.SortOrder
   isGlobal?: Prisma.SortOrder
   isNewUserOnly?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -723,6 +777,8 @@ export type CampaignSumOrderByAggregateInput = {
   usageLimit?: Prisma.SortOrder
   usedCount?: Prisma.SortOrder
   maxUsagePerUser?: Prisma.SortOrder
+  verifiedVisitLimit?: Prisma.SortOrder
+  maxVerifiedVisitsPerCustomer?: Prisma.SortOrder
 }
 
 export type CampaignCreateNestedManyWithoutMerchantInput = {
@@ -833,6 +889,8 @@ export type CampaignCreateWithoutMerchantInput = {
   usageLimit?: number | null
   usedCount?: number
   maxUsagePerUser?: number
+  verifiedVisitLimit?: number | null
+  maxVerifiedVisitsPerCustomer?: number
   isGlobal?: boolean
   isNewUserOnly?: boolean
   isActive?: boolean
@@ -857,6 +915,8 @@ export type CampaignUncheckedCreateWithoutMerchantInput = {
   usageLimit?: number | null
   usedCount?: number
   maxUsagePerUser?: number
+  verifiedVisitLimit?: number | null
+  maxVerifiedVisitsPerCustomer?: number
   isGlobal?: boolean
   isNewUserOnly?: boolean
   isActive?: boolean
@@ -911,6 +971,8 @@ export type CampaignScalarWhereInput = {
   usageLimit?: Prisma.IntNullableFilter<"Campaign"> | number | null
   usedCount?: Prisma.IntFilter<"Campaign"> | number
   maxUsagePerUser?: Prisma.IntFilter<"Campaign"> | number
+  verifiedVisitLimit?: Prisma.IntNullableFilter<"Campaign"> | number | null
+  maxVerifiedVisitsPerCustomer?: Prisma.IntFilter<"Campaign"> | number
   isGlobal?: Prisma.BoolFilter<"Campaign"> | boolean
   isNewUserOnly?: Prisma.BoolFilter<"Campaign"> | boolean
   isActive?: Prisma.BoolFilter<"Campaign"> | boolean
@@ -932,6 +994,8 @@ export type CampaignCreateWithoutOrdersInput = {
   usageLimit?: number | null
   usedCount?: number
   maxUsagePerUser?: number
+  verifiedVisitLimit?: number | null
+  maxVerifiedVisitsPerCustomer?: number
   isGlobal?: boolean
   isNewUserOnly?: boolean
   isActive?: boolean
@@ -957,6 +1021,8 @@ export type CampaignUncheckedCreateWithoutOrdersInput = {
   usageLimit?: number | null
   usedCount?: number
   maxUsagePerUser?: number
+  verifiedVisitLimit?: number | null
+  maxVerifiedVisitsPerCustomer?: number
   isGlobal?: boolean
   isNewUserOnly?: boolean
   isActive?: boolean
@@ -996,6 +1062,8 @@ export type CampaignUpdateWithoutOrdersInput = {
   usageLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   usedCount?: Prisma.IntFieldUpdateOperationsInput | number
   maxUsagePerUser?: Prisma.IntFieldUpdateOperationsInput | number
+  verifiedVisitLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxVerifiedVisitsPerCustomer?: Prisma.IntFieldUpdateOperationsInput | number
   isGlobal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isNewUserOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1021,6 +1089,8 @@ export type CampaignUncheckedUpdateWithoutOrdersInput = {
   usageLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   usedCount?: Prisma.IntFieldUpdateOperationsInput | number
   maxUsagePerUser?: Prisma.IntFieldUpdateOperationsInput | number
+  verifiedVisitLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxVerifiedVisitsPerCustomer?: Prisma.IntFieldUpdateOperationsInput | number
   isGlobal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isNewUserOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1044,6 +1114,8 @@ export type CampaignCreateWithoutCheckInsInput = {
   usageLimit?: number | null
   usedCount?: number
   maxUsagePerUser?: number
+  verifiedVisitLimit?: number | null
+  maxVerifiedVisitsPerCustomer?: number
   isGlobal?: boolean
   isNewUserOnly?: boolean
   isActive?: boolean
@@ -1069,6 +1141,8 @@ export type CampaignUncheckedCreateWithoutCheckInsInput = {
   usageLimit?: number | null
   usedCount?: number
   maxUsagePerUser?: number
+  verifiedVisitLimit?: number | null
+  maxVerifiedVisitsPerCustomer?: number
   isGlobal?: boolean
   isNewUserOnly?: boolean
   isActive?: boolean
@@ -1108,6 +1182,8 @@ export type CampaignUpdateWithoutCheckInsInput = {
   usageLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   usedCount?: Prisma.IntFieldUpdateOperationsInput | number
   maxUsagePerUser?: Prisma.IntFieldUpdateOperationsInput | number
+  verifiedVisitLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxVerifiedVisitsPerCustomer?: Prisma.IntFieldUpdateOperationsInput | number
   isGlobal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isNewUserOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1133,6 +1209,8 @@ export type CampaignUncheckedUpdateWithoutCheckInsInput = {
   usageLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   usedCount?: Prisma.IntFieldUpdateOperationsInput | number
   maxUsagePerUser?: Prisma.IntFieldUpdateOperationsInput | number
+  verifiedVisitLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxVerifiedVisitsPerCustomer?: Prisma.IntFieldUpdateOperationsInput | number
   isGlobal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isNewUserOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1156,6 +1234,8 @@ export type CampaignCreateWithoutAcquisitionEventsInput = {
   usageLimit?: number | null
   usedCount?: number
   maxUsagePerUser?: number
+  verifiedVisitLimit?: number | null
+  maxVerifiedVisitsPerCustomer?: number
   isGlobal?: boolean
   isNewUserOnly?: boolean
   isActive?: boolean
@@ -1181,6 +1261,8 @@ export type CampaignUncheckedCreateWithoutAcquisitionEventsInput = {
   usageLimit?: number | null
   usedCount?: number
   maxUsagePerUser?: number
+  verifiedVisitLimit?: number | null
+  maxVerifiedVisitsPerCustomer?: number
   isGlobal?: boolean
   isNewUserOnly?: boolean
   isActive?: boolean
@@ -1220,6 +1302,8 @@ export type CampaignUpdateWithoutAcquisitionEventsInput = {
   usageLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   usedCount?: Prisma.IntFieldUpdateOperationsInput | number
   maxUsagePerUser?: Prisma.IntFieldUpdateOperationsInput | number
+  verifiedVisitLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxVerifiedVisitsPerCustomer?: Prisma.IntFieldUpdateOperationsInput | number
   isGlobal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isNewUserOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1245,6 +1329,8 @@ export type CampaignUncheckedUpdateWithoutAcquisitionEventsInput = {
   usageLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   usedCount?: Prisma.IntFieldUpdateOperationsInput | number
   maxUsagePerUser?: Prisma.IntFieldUpdateOperationsInput | number
+  verifiedVisitLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxVerifiedVisitsPerCustomer?: Prisma.IntFieldUpdateOperationsInput | number
   isGlobal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isNewUserOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1268,6 +1354,8 @@ export type CampaignCreateManyMerchantInput = {
   usageLimit?: number | null
   usedCount?: number
   maxUsagePerUser?: number
+  verifiedVisitLimit?: number | null
+  maxVerifiedVisitsPerCustomer?: number
   isGlobal?: boolean
   isNewUserOnly?: boolean
   isActive?: boolean
@@ -1289,6 +1377,8 @@ export type CampaignUpdateWithoutMerchantInput = {
   usageLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   usedCount?: Prisma.IntFieldUpdateOperationsInput | number
   maxUsagePerUser?: Prisma.IntFieldUpdateOperationsInput | number
+  verifiedVisitLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxVerifiedVisitsPerCustomer?: Prisma.IntFieldUpdateOperationsInput | number
   isGlobal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isNewUserOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1313,6 +1403,8 @@ export type CampaignUncheckedUpdateWithoutMerchantInput = {
   usageLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   usedCount?: Prisma.IntFieldUpdateOperationsInput | number
   maxUsagePerUser?: Prisma.IntFieldUpdateOperationsInput | number
+  verifiedVisitLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxVerifiedVisitsPerCustomer?: Prisma.IntFieldUpdateOperationsInput | number
   isGlobal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isNewUserOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1337,6 +1429,8 @@ export type CampaignUncheckedUpdateManyWithoutMerchantInput = {
   usageLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   usedCount?: Prisma.IntFieldUpdateOperationsInput | number
   maxUsagePerUser?: Prisma.IntFieldUpdateOperationsInput | number
+  verifiedVisitLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxVerifiedVisitsPerCustomer?: Prisma.IntFieldUpdateOperationsInput | number
   isGlobal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isNewUserOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1408,6 +1502,8 @@ export type CampaignSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   usageLimit?: boolean
   usedCount?: boolean
   maxUsagePerUser?: boolean
+  verifiedVisitLimit?: boolean
+  maxVerifiedVisitsPerCustomer?: boolean
   isGlobal?: boolean
   isNewUserOnly?: boolean
   isActive?: boolean
@@ -1435,6 +1531,8 @@ export type CampaignSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   usageLimit?: boolean
   usedCount?: boolean
   maxUsagePerUser?: boolean
+  verifiedVisitLimit?: boolean
+  maxVerifiedVisitsPerCustomer?: boolean
   isGlobal?: boolean
   isNewUserOnly?: boolean
   isActive?: boolean
@@ -1458,6 +1556,8 @@ export type CampaignSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   usageLimit?: boolean
   usedCount?: boolean
   maxUsagePerUser?: boolean
+  verifiedVisitLimit?: boolean
+  maxVerifiedVisitsPerCustomer?: boolean
   isGlobal?: boolean
   isNewUserOnly?: boolean
   isActive?: boolean
@@ -1481,6 +1581,8 @@ export type CampaignSelectScalar = {
   usageLimit?: boolean
   usedCount?: boolean
   maxUsagePerUser?: boolean
+  verifiedVisitLimit?: boolean
+  maxVerifiedVisitsPerCustomer?: boolean
   isGlobal?: boolean
   isNewUserOnly?: boolean
   isActive?: boolean
@@ -1488,7 +1590,7 @@ export type CampaignSelectScalar = {
   updatedAt?: boolean
 }
 
-export type CampaignOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "merchantId" | "name" | "description" | "code" | "discountType" | "discountValue" | "minimumOrderAmount" | "maximumDiscount" | "startAt" | "endAt" | "usageLimit" | "usedCount" | "maxUsagePerUser" | "isGlobal" | "isNewUserOnly" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["campaign"]>
+export type CampaignOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "merchantId" | "name" | "description" | "code" | "discountType" | "discountValue" | "minimumOrderAmount" | "maximumDiscount" | "startAt" | "endAt" | "usageLimit" | "usedCount" | "maxUsagePerUser" | "verifiedVisitLimit" | "maxVerifiedVisitsPerCustomer" | "isGlobal" | "isNewUserOnly" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["campaign"]>
 export type CampaignInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
   orders?: boolean | Prisma.Campaign$ordersArgs<ExtArgs>
@@ -1526,6 +1628,8 @@ export type $CampaignPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     usageLimit: number | null
     usedCount: number
     maxUsagePerUser: number
+    verifiedVisitLimit: number | null
+    maxVerifiedVisitsPerCustomer: number
     isGlobal: boolean
     isNewUserOnly: boolean
     isActive: boolean
@@ -1972,6 +2076,8 @@ export interface CampaignFieldRefs {
   readonly usageLimit: Prisma.FieldRef<"Campaign", 'Int'>
   readonly usedCount: Prisma.FieldRef<"Campaign", 'Int'>
   readonly maxUsagePerUser: Prisma.FieldRef<"Campaign", 'Int'>
+  readonly verifiedVisitLimit: Prisma.FieldRef<"Campaign", 'Int'>
+  readonly maxVerifiedVisitsPerCustomer: Prisma.FieldRef<"Campaign", 'Int'>
   readonly isGlobal: Prisma.FieldRef<"Campaign", 'Boolean'>
   readonly isNewUserOnly: Prisma.FieldRef<"Campaign", 'Boolean'>
   readonly isActive: Prisma.FieldRef<"Campaign", 'Boolean'>

@@ -1,7 +1,7 @@
 import { AppError } from "../../../common/errors/app-error.js";
 import { asyncHandler } from "../../../common/utils/async-handler.js";
 import { sendSuccess } from "../../../common/utils/api-response.js";
-import { getMerchantDashboard as getMerchantDashboardService, getMerchantRevenueByYear as getMerchantRevenueByYearService, getMerchantTopFoods as getMerchantTopFoodsService, getMerchantRecentOrders as getMerchantRecentOrdersService, getMerchantOrderGrowthByYear as getMerchantOrderGrowthByYearService, getMerchantCampaignPerformance as getMerchantCampaignPerformanceService, getMerchantReviewStatistics as getMerchantReviewStatisticsService, getMerchantPaymentStatisticsByYear as getMerchantPaymentStatisticsByYearService, getMerchantCustomerStatisticsByYear as getMerchantCustomerStatisticsByYearService, getMerchantPeakHoursByYear as getMerchantPeakHoursByYearService, getMerchantWeekdayStatisticsByYear as getMerchantWeekdayStatisticsByYearService, getMerchantOrderPerformanceByYear as getMerchantOrderPerformanceByYearService, getMerchantDailyRevenue as getMerchantDailyRevenueService, } from "../services/merchant-dashboard.service.js";
+import { getMerchantDashboard as getMerchantDashboardService, getMerchantAnalytics as getMerchantAnalyticsService, getMerchantRevenueByYear as getMerchantRevenueByYearService, getMerchantTopFoods as getMerchantTopFoodsService, getMerchantRecentOrders as getMerchantRecentOrdersService, getMerchantOrderGrowthByYear as getMerchantOrderGrowthByYearService, getMerchantCampaignPerformance as getMerchantCampaignPerformanceService, getMerchantReviewStatistics as getMerchantReviewStatisticsService, getMerchantPaymentStatisticsByYear as getMerchantPaymentStatisticsByYearService, getMerchantCustomerStatisticsByYear as getMerchantCustomerStatisticsByYearService, getMerchantPeakHoursByYear as getMerchantPeakHoursByYearService, getMerchantWeekdayStatisticsByYear as getMerchantWeekdayStatisticsByYearService, getMerchantOrderPerformanceByYear as getMerchantOrderPerformanceByYearService, getMerchantDailyRevenue as getMerchantDailyRevenueService, } from "../services/merchant-dashboard.service.js";
 const getMerchantId = (req) => {
     const merchantId = req.user?.MerchantId;
     if (!merchantId) {
@@ -14,6 +14,18 @@ export const getMerchantDashboard = asyncHandler(async (req, res) => {
     return sendSuccess(res, {
         message: "Lấy Dashboard Merchant thành công",
         data: dashboard,
+    });
+});
+export const getMerchantAnalytics = asyncHandler(async (req, res) => {
+    const from = req.query.from ? new Date(String(req.query.from)) : undefined;
+    const to = req.query.to ? new Date(String(req.query.to)) : undefined;
+    const result = await getMerchantAnalyticsService(getMerchantId(req), {
+        from,
+        to,
+    });
+    return sendSuccess(res, {
+        message: "Lấy Merchant Analytics thành công",
+        data: result,
     });
 });
 export const getMerchantRevenueByYear = asyncHandler(async (req, res) => {

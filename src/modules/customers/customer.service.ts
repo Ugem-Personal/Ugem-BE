@@ -200,6 +200,8 @@ export const getReviewerProfile = async (customerId: string) => {
       id: true,
       reviewerPoints: true,
       reviewerRank: true,
+      gemPoints: true,
+      contributionRank: true,
       pointTransactions: {
         orderBy: { createdAt: "desc" },
         take: 50,
@@ -212,6 +214,9 @@ export const getReviewerProfile = async (customerId: string) => {
   }
 
   return {
+    // Expose the independent UFind Gem balance alongside legacy Reviewer data.
+    gemPoints: customer.gemPoints ?? 0,
+    contributionRank: customer.contributionRank || "Bronze",
     reviewerPoints: customer.reviewerPoints ?? 0,
     reviewerRank: customer.reviewerRank || "Bronze",
     pointTransactions: customer.pointTransactions,
@@ -376,4 +381,3 @@ export const getMyRedeemedVouchers = async (customerId: string) => {
     };
   });
 };
-

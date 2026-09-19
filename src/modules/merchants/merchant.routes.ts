@@ -10,6 +10,7 @@ import { validate } from "../../common/middleware/validate.middleware.js";
 import {
   getMerchantById,
   getMerchants,
+  getSponsoredMerchants,
   getMerchantsByCategory,
   getMerchantsForMap,
   getMyMerchant,
@@ -25,6 +26,7 @@ import {
   merchantListSchema,
   merchantMapSchema,
   merchantsByCategorySchema,
+  merchantViewSchema,
   staffMerchantListSchema,
   updateMerchantSchema,
 } from "./merchant.schema.js";
@@ -38,6 +40,8 @@ merchantRouter.get(
   validate(merchantListSchema),
   getMerchants,
 );
+
+merchantRouter.get("/sponsored", optionalAuthenticate, validate(merchantListSchema), getSponsoredMerchants);
 
 merchantRouter.get("/map", validate(merchantMapSchema), getMerchantsForMap);
 
@@ -90,7 +94,7 @@ merchantRouter.put(
 merchantRouter.post(
   "/:id/views",
   optionalAuthenticate,
-  validate(merchantIdSchema),
+  validate(merchantViewSchema),
   incrementMerchantView,
 );
 

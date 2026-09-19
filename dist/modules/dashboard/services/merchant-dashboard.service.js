@@ -1,6 +1,7 @@
-import { OrderPaymentStatus, OrderStatus, } from "../../../generated/prisma/client.js";
+import { MonetizationFeeType, OrderPaymentStatus, OrderStatus, } from "../../../generated/prisma/client.js";
 import { prisma } from "../../../config/prisma.js";
 import { AppError } from "../../../common/errors/app-error.js";
+import { getMerchantAnalytics as getAggregatedMerchantAnalytics } from "../../../common/services/merchant-analytics.service.js";
 import { createDateKeys, getVietnamDateRange, getYearRange, toVietnamDateKey, } from "../utils/dashboard-date.util.js";
 export const getMerchantDashboard = async (merchantId) => {
     const merchant = await prisma.merchant.findUnique({
@@ -106,6 +107,13 @@ export const getMerchantDashboard = async (merchantId) => {
             active: activeCampaigns,
         },
     };
+};
+export const getMerchantAnalytics = async (merchantId, range = {}) => {
+    const analytics = await getAggregatedMerchantAnalytics(merchantId, range);
+    if (!analytics) {
+        throw new AppError(404, "Không tìm thấy Merchant");
+    }
+    return analytics;
 };
 export const getMerchantRevenueByYear = async (merchantId, year) => {
     const merchant = await prisma.merchant.findUnique({
@@ -449,6 +457,8 @@ export const getMerchantCampaignPerformance = async (merchantId, limit) => {
             endAt: true,
             usageLimit: true,
             usedCount: true,
+            verifiedVisitLimit: true,
+            maxVerifiedVisitsPerCustomer: true,
             isActive: true,
             orders: {
                 select: {
@@ -460,18 +470,40 @@ export const getMerchantCampaignPerformance = async (merchantId, limit) => {
                     paymentStatus: true,
                 },
             },
+            acquisitionEvents: {
+                where: { status: "Valid" },
+                select: {
+                    id: true,
+                    customerId: true,
+                    occurredAt: true,
+                    verificationMethod: true,
+                },
+            },
         },
         orderBy: {
             createdAt: "desc",
         },
     });
     const now = new Date();
+    const feePolicy = await prisma.monetizationFeePolicy.findFirst({
+        where: {
+            feeType: MonetizationFeeType.VerifiedVisitFee,
+            isActive: true,
+        },
+        orderBy: { effectiveAt: "desc" },
+    });
+    const feePerVerifiedVisit = feePolicy?.amount !== null && feePolicy?.amount !== undefined
+        ? Number(feePolicy.amount)
+        : null;
     const items = campaigns
         .map((campaign) => {
         const paidOrders = campaign.orders.filter((order) => order.paymentStatus === OrderPaymentStatus.Paid);
         const completedPaidOrders = paidOrders.filter((order) => order.status === OrderStatus.Completed);
         const totalRevenue = completedPaidOrders.reduce((total, order) => total + Number(order.finalPrice), 0);
         const totalDiscount = campaign.orders.reduce((total, order) => total + Number(order.discount), 0);
+        const verifiedVisits = campaign.acquisitionEvents.length;
+        const uniqueVisitors = new Set(campaign.acquisitionEvents.map((event) => event.customerId)).size;
+        const repeatVisits = Math.max(verifiedVisits - uniqueVisitors, 0);
         const averageOrderValue = completedPaidOrders.length > 0
             ? Number((totalRevenue / completedPaidOrders.length).toFixed(2))
             : 0;
@@ -482,6 +514,10 @@ export const getMerchantCampaignPerformance = async (merchantId, limit) => {
         else if (campaign.usageLimit !== null &&
             campaign.usedCount >= campaign.usageLimit) {
             campaignStatus = "OutOfUsage";
+        }
+        else if (campaign.verifiedVisitLimit !== null &&
+            verifiedVisits >= campaign.verifiedVisitLimit) {
+            campaignStatus = "VisitLimitReached";
         }
         else if (now < campaign.startAt) {
             campaignStatus = "Upcoming";
@@ -507,6 +543,23 @@ export const getMerchantCampaignPerformance = async (merchantId, limit) => {
             remainingUsage: campaign.usageLimit !== null
                 ? Math.max(campaign.usageLimit - campaign.usedCount, 0)
                 : null,
+            verifiedVisitLimit: campaign.verifiedVisitLimit,
+            remainingVerifiedVisits: campaign.verifiedVisitLimit !== null
+                ? Math.max(campaign.verifiedVisitLimit - verifiedVisits, 0)
+                : null,
+            verifiedVisits,
+            uniqueVisitors,
+            repeatVisits,
+            billingPreview: {
+                billableVerifiedVisits: verifiedVisits,
+                feePerVerifiedVisit,
+                estimatedAmount: feePerVerifiedVisit === null
+                    ? null
+                    : verifiedVisits * feePerVerifiedVisit,
+                currency: feePolicy?.currency ?? null,
+                isEstimate: true,
+                billingStatus: "PreviewOnly",
+            },
             totalOrders: campaign.orders.length,
             paidOrders: paidOrders.length,
             completedPaidOrders: completedPaidOrders.length,
@@ -519,7 +572,7 @@ export const getMerchantCampaignPerformance = async (merchantId, limit) => {
             endAt: campaign.endAt,
         };
     })
-        .sort((first, second) => second.totalRevenue - first.totalRevenue)
+        .sort((first, second) => second.verifiedVisits - first.verifiedVisits)
         .slice(0, limit)
         .map((campaign, index) => ({
         rank: index + 1,

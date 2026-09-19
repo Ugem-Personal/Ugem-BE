@@ -1,6 +1,7 @@
 import { IncidentSeverity, IncidentStatus, IncidentType, MerchantClaimStatus, MerchantListingVisibility, MerchantRemovalStatus, MerchantStatus, MerchantVerificationStatus, FunnelEventType, MonetizationFeeType, RestaurantSuggestionStatus, UserRole, } from "../../generated/prisma/client.js";
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
+import { getMerchantAnalytics as getAggregatedMerchantAnalytics } from "../../common/services/merchant-analytics.service.js";
 const audit = async (actor, action, entityType, entityId, metadata) => {
     await prisma.auditLog.create({
         data: {
@@ -310,34 +311,7 @@ export const reviewSuggestion = async (actor, id, input) => {
     return suggestion;
 };
 export const getMerchantAnalytics = async (merchantId) => {
-    const [views, saves, checkIns, verifiedVisits, reviews, acquisitions, repeatVisitors,] = await prisma.$transaction([
-        prisma.merchantView.count({ where: { merchantId } }),
-        prisma.wishlist.count({ where: { merchantId } }),
-        prisma.checkIn.count({ where: { merchantId } }),
-        prisma.checkIn.count({ where: { merchantId, status: "Verified" } }),
-        prisma.review.count({ where: { merchantId } }),
-        prisma.merchantAcquisitionEvent.count({
-            where: { merchantId, status: "Valid" },
-        }),
-        prisma.merchantAcquisitionEvent.groupBy({
-            by: ["customerId"],
-            where: { merchantId, status: "Valid" },
-            _count: { customerId: true },
-            having: { customerId: { _count: { gt: 1 } } },
-        }),
-    ]);
-    return {
-        views,
-        saves,
-        visits: verifiedVisits,
-        checkIns,
-        verifiedVisits,
-        repeatVisitors: repeatVisitors.length,
-        reviewCount: reviews,
-        acquisitionEvents: acquisitions,
-        conversionRate: views ? verifiedVisits / views : 0,
-        paidAcquisition: 0,
-    };
+    return getAggregatedMerchantAnalytics(merchantId);
 };
 export const listModeration = async (kind) => {
     if (kind === "incidents")

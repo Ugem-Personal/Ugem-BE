@@ -34,6 +34,8 @@ export const merchantListSchema = z.object({
         Latitude: z.coerce.number().min(-90).max(90).optional(),
         Longitude: z.coerce.number().min(-180).max(180).optional(),
         RadiusKm: z.coerce.number().positive().max(100).optional(),
+        discoveryType: z.enum(["Organic", "Sponsored"]).optional(),
+        DiscoveryType: z.enum(["Organic", "Sponsored"]).optional(),
         PageIndex: z.coerce.number().int().min(1).optional(),
         PageSize: z.coerce.number().int().min(1).max(100).optional(),
     })
@@ -49,6 +51,9 @@ export const merchantListSchema = z.object({
         latitude: query.latitude ?? query.Latitude,
         longitude: query.longitude ?? query.Longitude,
         radiusKm: query.radiusKm ?? query.RadiusKm,
+        discoveryType: query.discoveryType ??
+            query.DiscoveryType ??
+            "Organic",
         pageIndex: query.pageIndex ?? query.PageIndex ?? 1,
         pageSize: query.pageSize ?? query.PageSize ?? 10,
     })),
@@ -201,4 +206,23 @@ export const merchantMapSchema = z.object({
             });
         }
     }),
+});
+export const merchantViewSchema = z.object({
+    params: z.object({
+        id: z.string().uuid("Merchant ID không hợp lệ"),
+    }),
+    body: z
+        .object({
+        source: z
+            .enum([
+            "Recommendation",
+            "Search",
+            "Map",
+            "Sponsored",
+            "Affiliate",
+            "Direct",
+        ])
+            .optional(),
+    })
+        .default({}),
 });

@@ -1096,10 +1096,12 @@ export type OrderCreateNestedOneWithoutReviewInput = {
   connect?: Prisma.OrderWhereUniqueInput
 }
 
-export type OrderUpdateOneRequiredWithoutReviewNestedInput = {
+export type OrderUpdateOneWithoutReviewNestedInput = {
   create?: Prisma.XOR<Prisma.OrderCreateWithoutReviewInput, Prisma.OrderUncheckedCreateWithoutReviewInput>
   connectOrCreate?: Prisma.OrderCreateOrConnectWithoutReviewInput
   upsert?: Prisma.OrderUpsertWithoutReviewInput
+  disconnect?: Prisma.OrderWhereInput | boolean
+  delete?: Prisma.OrderWhereInput | boolean
   connect?: Prisma.OrderWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.OrderUpdateToOneWithWhereWithoutReviewInput, Prisma.OrderUpdateWithoutReviewInput>, Prisma.OrderUncheckedUpdateWithoutReviewInput>
 }

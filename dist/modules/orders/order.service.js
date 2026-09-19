@@ -2,6 +2,13 @@ import { AffiliateTransactionStatus, NotificationType, OrderPaymentStatus, Order
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
 import { recommendationCache } from "../../common/services/recommendation-cache.js";
+/**
+ * @deprecated Legacy optional commerce module.
+ *
+ * UFind Core MVP does not require Orders for discovery, verified visits,
+ * reviews, rebalancing, campaign attribution, Gem Points or analytics.
+ * Keep this service available for existing commerce clients.
+ */
 import { createReviewerCommission } from "../affiliate-links/affiliate-earning.service.js";
 import { createNotification } from "../notifications/notification.service.js";
 import { realtimeService } from "../realtime/realtime.service.js";

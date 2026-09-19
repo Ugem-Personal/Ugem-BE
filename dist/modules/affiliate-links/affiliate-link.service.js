@@ -2,6 +2,12 @@ import crypto from "node:crypto";
 import { MerchantStatus, UserRole } from "../../generated/prisma/client.js";
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
+/**
+ * @deprecated Legacy optional affiliate/referral module.
+ *
+ * Affiliate clicks and commission earnings must not influence UFind organic
+ * discovery, merchant scoring, rebalancing or Verified Visit billing.
+ */
 import { env } from "../../config/env.js";
 import { getReviewerCommissionRate } from "../../common/utils/reviewer-rank.js";
 const CLICK_DEDUP_WINDOW_MS = 24 * 60 * 60 * 1000;

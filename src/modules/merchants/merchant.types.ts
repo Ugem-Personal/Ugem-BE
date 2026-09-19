@@ -1,4 +1,7 @@
+export type DiscoveryType = "Organic" | "Sponsored";
+
 export interface MerchantListQuery {
+  merchantIds?: string[];
   customerId?: string;
   search?: string;
 
@@ -14,6 +17,8 @@ export interface MerchantListQuery {
   latitude?: number;
   longitude?: number;
   radiusKm?: number;
+
+  discoveryType?: DiscoveryType;
 
   pageIndex: number;
   pageSize: number;

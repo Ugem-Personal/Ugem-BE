@@ -5,7 +5,6 @@ export const reviewIdSchema = z.object({
     id: z.string().uuid("Review ID không hợp lệ"),
   }),
 });
-
 export const merchantReviewsSchema = z.object({
   params: z.object({
     merchantId: z.string().uuid("Merchant ID không hợp lệ"),
@@ -84,13 +83,22 @@ export const updateReviewByBodySchema = z.object({
 export const createReviewSchema = z.object({
   body: z
     .object({
-      /*
-       * FE gửi merchantId, nhưng BE không được tin field này.
-       * Merchant thật sẽ được lấy từ Order.
-       */
-      merchantId: z.string().uuid("Merchant ID không hợp lệ").optional(),
+      merchantId: z
+        .string()
+        .uuid("Merchant ID không hợp lệ")
+        .optional(),
 
-      orderId: z.string().uuid("Order ID không hợp lệ"),
+      // Primary UFind review contract: a review is attached to a Verified CheckIn.
+      checkInId: z
+        .string()
+        .uuid("Check-in ID không hợp lệ")
+        .optional(),
+
+      // Legacy compatibility only. New clients must not use Order reviews.
+      orderId: z
+        .string()
+        .uuid("Order ID không hợp lệ")
+        .optional(),
 
       rating: z.coerce
         .number()
@@ -99,7 +107,11 @@ export const createReviewSchema = z.object({
         .max(5, "Rating tối đa là 5"),
 
       content: z
-        .union([z.string().trim().max(3000), z.literal(""), z.null()])
+        .union([
+          z.string().trim().max(3000),
+          z.literal(""),
+          z.null(),
+        ])
         .optional(),
 
       imageUrl: z
@@ -110,17 +122,34 @@ export const createReviewSchema = z.object({
         ])
         .optional(),
 
+      // Chỉ phục vụ legacy Order Review.
       details: z.array(reviewDetailSchema).max(100).optional(),
     })
-    .transform((body) => ({
-      orderId: body.orderId,
-      merchantId: body.merchantId,
-      rating: body.rating,
-      content: body.content,
-      imageUrl: body.imageUrl,
+    .superRefine((body, ctx) => {
+      if (!body.checkInId && !body.orderId) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Phải cung cấp checkInId hoặc orderId",
+          path: ["checkInId"],
+        });
+      }
 
-      details: body.details ?? [],
-    })),
+      if (body.checkInId && body.orderId) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Không được cung cấp đồng thời checkInId và orderId",
+          path: ["checkInId"],
+        });
+      }
+
+      if (body.checkInId && body.details?.length) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Review theo Verified Check-in không hỗ trợ Order Detail",
+          path: ["details"],
+        });
+      }
+    }),
 });
 
 export const updateReviewSchema = z.object({

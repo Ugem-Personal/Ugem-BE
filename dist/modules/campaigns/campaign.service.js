@@ -53,9 +53,11 @@ const mapCampaign = (campaign) => {
         quantity: campaign.usageLimit ?? 0,
         usedCount: campaign.usedCount,
         /*
-         * Database hiện chưa có hai field này.
+         * Visit attribution policy is separate from legacy Order usage.
          */
         maxUsagePerUser: campaign.maxUsagePerUser,
+        verifiedVisitLimit: campaign.verifiedVisitLimit,
+        maxVerifiedVisitsPerCustomer: campaign.maxVerifiedVisitsPerCustomer,
         isGlobal: campaign.isGlobal,
         isNewUserOnly: campaign.isNewUserOnly,
         isActive: campaign.isActive,
@@ -126,6 +128,8 @@ export const createCampaign = async (merchantId, input) => {
             endAt,
             usageLimit: input.usageLimit === null ? null : (input.usageLimit ?? null),
             maxUsagePerUser: input.maxUsagePerUser ?? 1,
+            verifiedVisitLimit: input.verifiedVisitLimit ?? null,
+            maxVerifiedVisitsPerCustomer: input.maxVerifiedVisitsPerCustomer ?? 1,
             isGlobal: input.isGlobal ?? false,
             isNewUserOnly: input.isNewUserOnly ?? false,
             isActive: input.isActive ?? true,
@@ -162,7 +166,14 @@ export const getActiveCampaignsByMerchant = async (merchantId) => {
                 gte: currentTime,
             },
         },
-        include: campaignInclude,
+        include: {
+            ...campaignInclude,
+            _count: {
+                select: {
+                    acquisitionEvents: { where: { status: "Valid" } },
+                },
+            },
+        },
         orderBy: [
             {
                 discountValue: "desc",
@@ -173,8 +184,8 @@ export const getActiveCampaignsByMerchant = async (merchantId) => {
         ],
     });
     return campaigns
-        .filter((campaign) => campaign.usageLimit === null ||
-        campaign.usedCount < campaign.usageLimit)
+        .filter((campaign) => campaign.verifiedVisitLimit === null ||
+        (campaign._count?.acquisitionEvents ?? 0) < campaign.verifiedVisitLimit)
         .map(mapCampaign);
 };
 export const getCampaignById = async (campaignId) => {
@@ -237,6 +248,10 @@ export const updateCampaign = async (merchantId, campaignId, input) => {
             endAt: input.endAt !== undefined ? endAt : undefined,
             usageLimit: input.usageLimit !== undefined ? input.usageLimit : undefined,
             maxUsagePerUser: input.maxUsagePerUser,
+            verifiedVisitLimit: input.verifiedVisitLimit !== undefined
+                ? input.verifiedVisitLimit
+                : undefined,
+            maxVerifiedVisitsPerCustomer: input.maxVerifiedVisitsPerCustomer,
             isGlobal: input.isGlobal,
             isNewUserOnly: input.isNewUserOnly,
             isActive: input.isActive,

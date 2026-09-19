@@ -15,6 +15,7 @@ import {
 import type { Prisma } from "../../generated/prisma/client.js";
 import { prisma } from "../../config/prisma.js";
 import { AppError } from "../../common/errors/app-error.js";
+import { getMerchantAnalytics as getAggregatedMerchantAnalytics } from "../../common/services/merchant-analytics.service.js";
 
 export type AuditActor = { userId: string; role: UserRole };
 
@@ -450,42 +451,7 @@ export const reviewSuggestion = async (
 };
 
 export const getMerchantAnalytics = async (merchantId: string) => {
-  const [
-    views,
-    saves,
-    checkIns,
-    verifiedVisits,
-    reviews,
-    acquisitions,
-    repeatVisitors,
-  ] = await prisma.$transaction([
-    prisma.merchantView.count({ where: { merchantId } }),
-    prisma.wishlist.count({ where: { merchantId } }),
-    prisma.checkIn.count({ where: { merchantId } }),
-    prisma.checkIn.count({ where: { merchantId, status: "Verified" } }),
-    prisma.review.count({ where: { merchantId } }),
-    prisma.merchantAcquisitionEvent.count({
-      where: { merchantId, status: "Valid" },
-    }),
-    prisma.merchantAcquisitionEvent.groupBy({
-      by: ["customerId"],
-      where: { merchantId, status: "Valid" },
-      _count: { customerId: true },
-      having: { customerId: { _count: { gt: 1 } } },
-    }),
-  ]);
-  return {
-    views,
-    saves,
-    visits: verifiedVisits,
-    checkIns,
-    verifiedVisits,
-    repeatVisitors: repeatVisitors.length,
-    reviewCount: reviews,
-    acquisitionEvents: acquisitions,
-    conversionRate: views ? verifiedVisits / views : 0,
-    paidAcquisition: 0,
-  };
+  return getAggregatedMerchantAnalytics(merchantId);
 };
 
 export const listModeration = async (

@@ -30,7 +30,8 @@ export const generateCheckInQr = asyncHandler(
   async (req: Request, res: Response) => {
     const qrImage = await checkInService.generateCheckInQr(
       getMerchantId(req),
-      String(req.query.orderId),
+      typeof req.query.orderId === "string" ? req.query.orderId : undefined,
+      typeof req.query.campaignId === "string" ? req.query.campaignId : undefined,
     );
 
     res.status(200);

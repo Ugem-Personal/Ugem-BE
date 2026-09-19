@@ -291,6 +291,13 @@ export type IntNullableFilter<$PrismaModel = never> = {
   not?: Prisma.NestedIntNullableFilter<$PrismaModel> | number | null
 }
 
+export type EnumGemStatusNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.GemStatus | Prisma.EnumGemStatusFieldRefInput<$PrismaModel> | null
+  in?: $Enums.GemStatus[] | Prisma.ListEnumGemStatusFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.GemStatus[] | Prisma.ListEnumGemStatusFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumGemStatusNullableFilter<$PrismaModel> | $Enums.GemStatus | null
+}
+
 export type EnumMerchantStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.MerchantStatus | Prisma.EnumMerchantStatusFieldRefInput<$PrismaModel>
   in?: $Enums.MerchantStatus[] | Prisma.ListEnumMerchantStatusFieldRefInput<$PrismaModel>
@@ -326,6 +333,16 @@ export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
   _sum?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _max?: Prisma.NestedIntNullableFilter<$PrismaModel>
+}
+
+export type EnumGemStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GemStatus | Prisma.EnumGemStatusFieldRefInput<$PrismaModel> | null
+  in?: $Enums.GemStatus[] | Prisma.ListEnumGemStatusFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.GemStatus[] | Prisma.ListEnumGemStatusFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumGemStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.GemStatus | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGemStatusNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGemStatusNullableFilter<$PrismaModel>
 }
 
 export type EnumMerchantStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -1147,6 +1164,13 @@ export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDecimalFilter<$PrismaModel>
 }
 
+export type NestedEnumGemStatusNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.GemStatus | Prisma.EnumGemStatusFieldRefInput<$PrismaModel> | null
+  in?: $Enums.GemStatus[] | Prisma.ListEnumGemStatusFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.GemStatus[] | Prisma.ListEnumGemStatusFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumGemStatusNullableFilter<$PrismaModel> | $Enums.GemStatus | null
+}
+
 export type NestedEnumMerchantStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.MerchantStatus | Prisma.EnumMerchantStatusFieldRefInput<$PrismaModel>
   in?: $Enums.MerchantStatus[] | Prisma.ListEnumMerchantStatusFieldRefInput<$PrismaModel>
@@ -1193,6 +1217,16 @@ export type NestedFloatNullableFilter<$PrismaModel = never> = {
   gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   not?: Prisma.NestedFloatNullableFilter<$PrismaModel> | number | null
+}
+
+export type NestedEnumGemStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GemStatus | Prisma.EnumGemStatusFieldRefInput<$PrismaModel> | null
+  in?: $Enums.GemStatus[] | Prisma.ListEnumGemStatusFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.GemStatus[] | Prisma.ListEnumGemStatusFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumGemStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.GemStatus | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGemStatusNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGemStatusNullableFilter<$PrismaModel>
 }
 
 export type NestedEnumMerchantStatusWithAggregatesFilter<$PrismaModel = never> = {

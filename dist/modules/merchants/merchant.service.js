@@ -4,6 +4,7 @@ import { AppError } from "../../common/errors/app-error.js";
 import { env } from "../../config/env.js";
 import { recommendationCache } from "../../common/services/recommendation-cache.js";
 import { calculatePreferenceScore, } from "../../common/utils/preference-score.js";
+import { calculateOrganicRecommendationScore } from "../../common/utils/merchant-score.js";
 function calculateDistanceKm(lat1, lon1, lat2, lon2) {
     const R = 6371; // Radius of Earth in km
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
@@ -27,13 +28,6 @@ const mapMerchant = (merchant, customerLat, customerLng, customerPreferences) =>
         merchantLng !== null) {
         distance = calculateDistanceKm(customerLat, customerLng, merchantLat, merchantLng);
     }
-    const now = new Date();
-    const hasActiveCampaign = merchant.campaigns
-        ? merchant.campaigns.some((c) => c.isActive &&
-            new Date(c.startAt) <= now &&
-            new Date(c.endAt) >= now &&
-            (c.usageLimit == null || c.usedCount < c.usageLimit))
-        : false;
     const rawUnderratedScore = merchant.underratedScore;
     const underratedScore = rawUnderratedScore !== null && rawUnderratedScore !== undefined
         ? Number(rawUnderratedScore)
@@ -54,29 +48,32 @@ const mapMerchant = (merchant, customerLat, customerLng, customerPreferences) =>
         categoryIds,
     });
     const checkInCount = merchant._count?.checkIns ?? 0;
-    // Ranking logic: Lượt check-in thực tế quyết định độ yêu thích của quán
-    // Quán nhiều check-in -> quán yêu thích, xếp trên đầu
-    // Quán ít check-in -> quán flop, xếp phía dưới
-    // Quán flop có chạy Campaign kích cầu (chủ quán nạp tiền/tài trợ voucher) -> boost ranking & badge nổi bật
     const checkInScore = Math.min(100, checkInCount * 12);
-    const isFavorite = checkInCount >= 8 || (checkInCount >= 4 && rating >= 4.2);
+    const isFavorite = checkInCount >= 8 ||
+        (checkInCount >= 4 && rating >= 4.2);
     const isFlop = checkInCount < 4;
-    const isBoosted = isFlop && hasActiveCampaign;
+    const hasActiveCampaign = (merchant.campaigns ?? []).some((campaign) => campaign.isActive &&
+        new Date(campaign.startAt) <= new Date() &&
+        new Date(campaign.endAt) >= new Date() &&
+        (campaign.verifiedVisitLimit == null ||
+            (campaign.acquisitionEvents?.length ?? 0) < campaign.verifiedVisitLimit));
     const distanceScore = distance !== null ? Math.max(0, 100 - distance * 5) : 100;
     const ratingScore = (rating / 5) * 100;
-    // Boost điểm hiển thị cho quán kích cầu
-    const boostBonus = isBoosted ? 45 : hasActiveCampaign ? 20 : 0;
-    // preferenceScore là 0 - 100, underratedScore là 0 - 1.
-    // Chuẩn hóa underratedScore lên thang 0 - 100 để đóng góp công bằng 10% (tối đa 10 điểm)
     const underratedScore100 = Math.min(100, Math.max(0, underratedScore * 100));
-    const recommendationScore = Math.round((checkInScore * 0.4 +
-        ratingScore * 0.2 +
-        distanceScore * 0.2 +
-        (hasUserPreferences
-            ? preferenceScore * 0.1
-            : underratedScore100 * 0.1) +
-        boostBonus) *
-        100) / 100;
+    /*
+     * ORGANIC SCORE ONLY.
+     *
+     * Campaign/sponsorship is discovery metadata and must never affect
+     * recommendationScore.
+     */
+    const recommendationScore = calculateOrganicRecommendationScore({
+        checkInScore,
+        ratingScore,
+        distanceScore,
+        preferenceOrUnderratedScore: hasUserPreferences
+            ? preferenceScore
+            : underratedScore100,
+    });
     const featuredFoods = merchant.foods
         ? merchant.foods.slice(0, 3).map((f) => f.name)
         : [];
@@ -105,12 +102,14 @@ const mapMerchant = (merchant, customerLat, customerLng, customerPreferences) =>
         underratedScore,
         preferenceScore,
         recommendationRank,
+        gemStatus: merchant.gemStatus ?? null,
         distance,
         checkInCount,
         isFavorite,
         isFlop,
-        isBoosted,
         hasActiveCampaign,
+        discoveryType: "Organic",
+        isSponsored: false,
         checkInPerks: [
             "Giảm 5% cho hóa đơn tiếp theo",
             "Tặng 1 ly nước ngọt khi check-in",
@@ -147,10 +146,10 @@ const mapStaffMerchant = (merchant) => {
         status: merchant.status,
     };
 };
-export const getMerchants = async (query) => {
+const getOrganicMerchants = async (query) => {
     const pageIndex = query.pageIndex || 1;
     const pageSize = query.pageSize || 10;
-    const cacheKey = `recommendation:${JSON.stringify(query)}`;
+    const cacheKey = `recommendation:organic:${JSON.stringify(query)}`;
     const cachedResult = recommendationCache.get(cacheKey);
     if (cachedResult) {
         return cachedResult;
@@ -169,6 +168,7 @@ export const getMerchants = async (query) => {
         })
         : null;
     const where = {
+        id: query.merchantIds ? { in: query.merchantIds } : undefined,
         status: MerchantStatus.Active,
         listingVisibility: "Public",
         safetySuppressed: false,
@@ -292,6 +292,7 @@ export const getMerchants = async (query) => {
                     checkIns: {
                         where: {
                             status: CheckInStatus.Verified,
+                            campaignId: null,
                         },
                     },
                 },
@@ -299,6 +300,16 @@ export const getMerchants = async (query) => {
             campaigns: {
                 where: {
                     isActive: true,
+                },
+                select: {
+                    isActive: true,
+                    startAt: true,
+                    endAt: true,
+                    verifiedVisitLimit: true,
+                    acquisitionEvents: {
+                        where: { status: "Valid" },
+                        select: { id: true },
+                    },
                 },
             },
             foods: {
@@ -336,9 +347,249 @@ export const getMerchants = async (query) => {
         pageIndex,
         pageSize,
         totalPages: Math.ceil(totalItems / pageSize),
+        discoveryType: "Organic",
     };
     recommendationCache.set(cacheKey, result);
     return result;
+};
+const getSponsoredMerchantsInternal = async (query) => {
+    const pageIndex = query.pageIndex || 1;
+    const pageSize = query.pageSize || 10;
+    const cacheKey = `recommendation:sponsored:${JSON.stringify(query)}`;
+    const cachedResult = recommendationCache.get(cacheKey);
+    if (cachedResult) {
+        return cachedResult;
+    }
+    const now = new Date();
+    const campaigns = await prisma.campaign.findMany({
+        where: {
+            isActive: true,
+            startAt: { lte: now },
+            endAt: { gte: now },
+            merchant: {
+                status: MerchantStatus.Active,
+                listingVisibility: "Public",
+                safetySuppressed: false,
+                NOT: [
+                    { openingHours: { contains: "nghỉ", mode: "insensitive" } },
+                    { openingHours: { contains: "tạm đóng", mode: "insensitive" } },
+                    { openingHours: { contains: "đóng cửa", mode: "insensitive" } },
+                ],
+                restaurantType: query.restaurantType
+                    ? { contains: query.restaurantType, mode: "insensitive" }
+                    : undefined,
+                mainDishType: query.mainDishType
+                    ? { contains: query.mainDishType, mode: "insensitive" }
+                    : undefined,
+                priceRange: query.priceRange
+                    ? { contains: query.priceRange, mode: "insensitive" }
+                    : undefined,
+                country: query.country
+                    ? { equals: query.country, mode: "insensitive" }
+                    : undefined,
+                city: query.city
+                    ? { contains: query.city, mode: "insensitive" }
+                    : undefined,
+                area: query.area
+                    ? { contains: query.area, mode: "insensitive" }
+                    : undefined,
+                foods: query.categoryId
+                    ? {
+                        some: {
+                            isAvailable: true,
+                            categories: {
+                                some: {
+                                    category: {
+                                        isActive: true,
+                                        OR: [
+                                            { id: query.categoryId },
+                                            { parentId: query.categoryId },
+                                        ],
+                                    },
+                                },
+                            },
+                        },
+                    }
+                    : undefined,
+                OR: query.search
+                    ? [
+                        {
+                            name: {
+                                contains: query.search,
+                                mode: "insensitive",
+                            },
+                        },
+                        {
+                            description: {
+                                contains: query.search,
+                                mode: "insensitive",
+                            },
+                        },
+                        {
+                            address: {
+                                contains: query.search,
+                                mode: "insensitive",
+                            },
+                        },
+                        {
+                            mainDishType: {
+                                contains: query.search,
+                                mode: "insensitive",
+                            },
+                        },
+                        {
+                            foods: {
+                                some: {
+                                    isAvailable: true,
+                                    name: {
+                                        contains: query.search,
+                                        mode: "insensitive",
+                                    },
+                                },
+                            },
+                        },
+                    ]
+                    : undefined,
+            },
+        },
+        orderBy: {
+            createdAt: "desc",
+        },
+        select: {
+            id: true,
+            merchantId: true,
+            name: true,
+            description: true,
+            code: true,
+            discountType: true,
+            discountValue: true,
+            startAt: true,
+            endAt: true,
+            createdAt: true,
+            verifiedVisitLimit: true,
+            maxVerifiedVisitsPerCustomer: true,
+            isActive: true,
+            acquisitionEvents: {
+                where: { status: "Valid" },
+                select: { id: true },
+            },
+            merchant: {
+                include: {
+                    _count: {
+                        select: {
+                            checkIns: {
+                                where: {
+                                    status: CheckInStatus.Verified,
+                                    campaignId: null,
+                                },
+                            },
+                        },
+                    },
+                    campaigns: {
+                        where: {
+                            isActive: true,
+                        },
+                        select: {
+                            isActive: true,
+                            startAt: true,
+                            endAt: true,
+                            verifiedVisitLimit: true,
+                            acquisitionEvents: {
+                                where: { status: "Valid" },
+                                select: { id: true },
+                            },
+                        },
+                    },
+                    foods: {
+                        where: {
+                            isAvailable: true,
+                        },
+                        select: {
+                            name: true,
+                            categories: {
+                                select: {
+                                    categoryId: true,
+                                    category: {
+                                        select: {
+                                            parentId: true,
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    });
+    const eligibleCampaigns = campaigns.filter((campaign) => campaign.isActive &&
+        campaign.startAt <= now &&
+        campaign.endAt >= now &&
+        (campaign.verifiedVisitLimit == null ||
+            (campaign.acquisitionEvents?.length ?? 0) < campaign.verifiedVisitLimit) &&
+        campaign.merchant.status === MerchantStatus.Active &&
+        campaign.merchant.listingVisibility === "Public" &&
+        !campaign.merchant.safetySuppressed);
+    const campaignByMerchant = new Map();
+    for (const campaign of eligibleCampaigns) {
+        if (!campaignByMerchant.has(campaign.merchantId)) {
+            campaignByMerchant.set(campaign.merchantId, campaign);
+        }
+    }
+    const selectedCampaigns = [...campaignByMerchant.values()];
+    const customerPreferences = query.customerId
+        ? await prisma.customer.findUnique({
+            where: { id: query.customerId },
+            select: {
+                preferredRestaurantTypes: true,
+                preferredMainDishTypes: true,
+                preferredCategoryIds: true,
+                preferredPriceRanges: true,
+            },
+        })
+        : null;
+    let items = selectedCampaigns.map((campaign) => {
+        const organicMerchant = mapMerchant(campaign.merchant, query.latitude, query.longitude, customerPreferences);
+        return {
+            ...organicMerchant,
+            discoveryType: "Sponsored",
+            isSponsored: true,
+            sponsoredCampaign: {
+                id: campaign.id,
+                name: campaign.name,
+                description: campaign.description,
+                code: campaign.code,
+                discountType: campaign.discountType,
+                discountValue: Number(campaign.discountValue),
+                startAt: campaign.startAt,
+                endAt: campaign.endAt,
+            },
+        };
+    });
+    if (query.latitude !== undefined &&
+        query.longitude !== undefined) {
+        const radiusKm = query.radiusKm ?? 15;
+        items = items.filter((item) => item.distance === null || item.distance <= radiusKm);
+    }
+    const totalItems = items.length;
+    const skip = (pageIndex - 1) * pageSize;
+    const result = {
+        items: items.slice(skip, skip + pageSize),
+        totalItems,
+        pageIndex,
+        pageSize,
+        totalPages: Math.ceil(totalItems / pageSize),
+        discoveryType: "Sponsored",
+    };
+    recommendationCache.set(cacheKey, result);
+    return result;
+};
+export const getSponsoredMerchants = getSponsoredMerchantsInternal;
+export const getMerchants = async (query) => {
+    if (query.discoveryType === "Sponsored") {
+        return getSponsoredMerchantsInternal(query);
+    }
+    return getOrganicMerchants(query);
 };
 export const getMerchantById = async (merchantId) => {
     const merchant = await prisma.merchant.findFirst({
@@ -354,13 +605,9 @@ export const getMerchantById = async (merchantId) => {
                     checkIns: {
                         where: {
                             status: CheckInStatus.Verified,
+                            campaignId: null,
                         },
                     },
-                },
-            },
-            campaigns: {
-                where: {
-                    isActive: true,
                 },
             },
             foods: {
@@ -609,6 +856,10 @@ export const getMyMerchantViews = async (merchantId) => {
         }),
     };
 };
+/**
+ * @deprecated Legacy Order/Revenue dashboard aggregate.
+ * UFind Core dashboards should use Merchant Analytics instead.
+ */
 export const getMyMerchantStatistics = async (merchantId) => {
     const merchant = await prisma.merchant.findUnique({
         where: {

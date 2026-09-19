@@ -44,6 +44,7 @@ export type ReviewerPointTransactionMinAggregateOutputType = {
   type: string | null
   reason: string | null
   referenceId: string | null
+  rewardKey: string | null
   createdAt: Date | null
 }
 
@@ -55,6 +56,7 @@ export type ReviewerPointTransactionMaxAggregateOutputType = {
   type: string | null
   reason: string | null
   referenceId: string | null
+  rewardKey: string | null
   createdAt: Date | null
 }
 
@@ -66,6 +68,7 @@ export type ReviewerPointTransactionCountAggregateOutputType = {
   type: number
   reason: number
   referenceId: number
+  rewardKey: number
   createdAt: number
   _all: number
 }
@@ -89,6 +92,7 @@ export type ReviewerPointTransactionMinAggregateInputType = {
   type?: true
   reason?: true
   referenceId?: true
+  rewardKey?: true
   createdAt?: true
 }
 
@@ -100,6 +104,7 @@ export type ReviewerPointTransactionMaxAggregateInputType = {
   type?: true
   reason?: true
   referenceId?: true
+  rewardKey?: true
   createdAt?: true
 }
 
@@ -111,6 +116,7 @@ export type ReviewerPointTransactionCountAggregateInputType = {
   type?: true
   reason?: true
   referenceId?: true
+  rewardKey?: true
   createdAt?: true
   _all?: true
 }
@@ -209,6 +215,7 @@ export type ReviewerPointTransactionGroupByOutputType = {
   type: string
   reason: string | null
   referenceId: string | null
+  rewardKey: string | null
   createdAt: Date
   _count: ReviewerPointTransactionCountAggregateOutputType | null
   _avg: ReviewerPointTransactionAvgAggregateOutputType | null
@@ -243,6 +250,7 @@ export type ReviewerPointTransactionWhereInput = {
   type?: Prisma.StringFilter<"ReviewerPointTransaction"> | string
   reason?: Prisma.StringNullableFilter<"ReviewerPointTransaction"> | string | null
   referenceId?: Prisma.StringNullableFilter<"ReviewerPointTransaction"> | string | null
+  rewardKey?: Prisma.StringNullableFilter<"ReviewerPointTransaction"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ReviewerPointTransaction"> | Date | string
   reviewer?: Prisma.XOR<Prisma.CustomerScalarRelationFilter, Prisma.CustomerWhereInput>
 }
@@ -255,12 +263,14 @@ export type ReviewerPointTransactionOrderByWithRelationInput = {
   type?: Prisma.SortOrder
   reason?: Prisma.SortOrderInput | Prisma.SortOrder
   referenceId?: Prisma.SortOrderInput | Prisma.SortOrder
+  rewardKey?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   reviewer?: Prisma.CustomerOrderByWithRelationInput
 }
 
 export type ReviewerPointTransactionWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  rewardKey?: string
   AND?: Prisma.ReviewerPointTransactionWhereInput | Prisma.ReviewerPointTransactionWhereInput[]
   OR?: Prisma.ReviewerPointTransactionWhereInput[]
   NOT?: Prisma.ReviewerPointTransactionWhereInput | Prisma.ReviewerPointTransactionWhereInput[]
@@ -272,7 +282,7 @@ export type ReviewerPointTransactionWhereUniqueInput = Prisma.AtLeast<{
   referenceId?: Prisma.StringNullableFilter<"ReviewerPointTransaction"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ReviewerPointTransaction"> | Date | string
   reviewer?: Prisma.XOR<Prisma.CustomerScalarRelationFilter, Prisma.CustomerWhereInput>
-}, "id">
+}, "id" | "rewardKey">
 
 export type ReviewerPointTransactionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -282,6 +292,7 @@ export type ReviewerPointTransactionOrderByWithAggregationInput = {
   type?: Prisma.SortOrder
   reason?: Prisma.SortOrderInput | Prisma.SortOrder
   referenceId?: Prisma.SortOrderInput | Prisma.SortOrder
+  rewardKey?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.ReviewerPointTransactionCountOrderByAggregateInput
   _avg?: Prisma.ReviewerPointTransactionAvgOrderByAggregateInput
@@ -301,6 +312,7 @@ export type ReviewerPointTransactionScalarWhereWithAggregatesInput = {
   type?: Prisma.StringWithAggregatesFilter<"ReviewerPointTransaction"> | string
   reason?: Prisma.StringNullableWithAggregatesFilter<"ReviewerPointTransaction"> | string | null
   referenceId?: Prisma.StringNullableWithAggregatesFilter<"ReviewerPointTransaction"> | string | null
+  rewardKey?: Prisma.StringNullableWithAggregatesFilter<"ReviewerPointTransaction"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ReviewerPointTransaction"> | Date | string
 }
 
@@ -311,6 +323,7 @@ export type ReviewerPointTransactionCreateInput = {
   type: string
   reason?: string | null
   referenceId?: string | null
+  rewardKey?: string | null
   createdAt?: Date | string
   reviewer: Prisma.CustomerCreateNestedOneWithoutPointTransactionsInput
 }
@@ -323,6 +336,7 @@ export type ReviewerPointTransactionUncheckedCreateInput = {
   type: string
   reason?: string | null
   referenceId?: string | null
+  rewardKey?: string | null
   createdAt?: Date | string
 }
 
@@ -333,6 +347,7 @@ export type ReviewerPointTransactionUpdateInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   referenceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewer?: Prisma.CustomerUpdateOneRequiredWithoutPointTransactionsNestedInput
 }
@@ -345,6 +360,7 @@ export type ReviewerPointTransactionUncheckedUpdateInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   referenceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -356,6 +372,7 @@ export type ReviewerPointTransactionCreateManyInput = {
   type: string
   reason?: string | null
   referenceId?: string | null
+  rewardKey?: string | null
   createdAt?: Date | string
 }
 
@@ -366,6 +383,7 @@ export type ReviewerPointTransactionUpdateManyMutationInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   referenceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -377,6 +395,7 @@ export type ReviewerPointTransactionUncheckedUpdateManyInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   referenceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -398,6 +417,7 @@ export type ReviewerPointTransactionCountOrderByAggregateInput = {
   type?: Prisma.SortOrder
   reason?: Prisma.SortOrder
   referenceId?: Prisma.SortOrder
+  rewardKey?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -414,6 +434,7 @@ export type ReviewerPointTransactionMaxOrderByAggregateInput = {
   type?: Prisma.SortOrder
   reason?: Prisma.SortOrder
   referenceId?: Prisma.SortOrder
+  rewardKey?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -425,6 +446,7 @@ export type ReviewerPointTransactionMinOrderByAggregateInput = {
   type?: Prisma.SortOrder
   reason?: Prisma.SortOrder
   referenceId?: Prisma.SortOrder
+  rewardKey?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -482,6 +504,7 @@ export type ReviewerPointTransactionCreateWithoutReviewerInput = {
   type: string
   reason?: string | null
   referenceId?: string | null
+  rewardKey?: string | null
   createdAt?: Date | string
 }
 
@@ -492,6 +515,7 @@ export type ReviewerPointTransactionUncheckedCreateWithoutReviewerInput = {
   type: string
   reason?: string | null
   referenceId?: string | null
+  rewardKey?: string | null
   createdAt?: Date | string
 }
 
@@ -532,6 +556,7 @@ export type ReviewerPointTransactionScalarWhereInput = {
   type?: Prisma.StringFilter<"ReviewerPointTransaction"> | string
   reason?: Prisma.StringNullableFilter<"ReviewerPointTransaction"> | string | null
   referenceId?: Prisma.StringNullableFilter<"ReviewerPointTransaction"> | string | null
+  rewardKey?: Prisma.StringNullableFilter<"ReviewerPointTransaction"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ReviewerPointTransaction"> | Date | string
 }
 
@@ -542,6 +567,7 @@ export type ReviewerPointTransactionCreateManyReviewerInput = {
   type: string
   reason?: string | null
   referenceId?: string | null
+  rewardKey?: string | null
   createdAt?: Date | string
 }
 
@@ -552,6 +578,7 @@ export type ReviewerPointTransactionUpdateWithoutReviewerInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   referenceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -562,6 +589,7 @@ export type ReviewerPointTransactionUncheckedUpdateWithoutReviewerInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   referenceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -572,6 +600,7 @@ export type ReviewerPointTransactionUncheckedUpdateManyWithoutReviewerInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   referenceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -585,6 +614,7 @@ export type ReviewerPointTransactionSelect<ExtArgs extends runtime.Types.Extensi
   type?: boolean
   reason?: boolean
   referenceId?: boolean
+  rewardKey?: boolean
   createdAt?: boolean
   reviewer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["reviewerPointTransaction"]>
@@ -597,6 +627,7 @@ export type ReviewerPointTransactionSelectCreateManyAndReturn<ExtArgs extends ru
   type?: boolean
   reason?: boolean
   referenceId?: boolean
+  rewardKey?: boolean
   createdAt?: boolean
   reviewer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["reviewerPointTransaction"]>
@@ -609,6 +640,7 @@ export type ReviewerPointTransactionSelectUpdateManyAndReturn<ExtArgs extends ru
   type?: boolean
   reason?: boolean
   referenceId?: boolean
+  rewardKey?: boolean
   createdAt?: boolean
   reviewer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["reviewerPointTransaction"]>
@@ -621,10 +653,11 @@ export type ReviewerPointTransactionSelectScalar = {
   type?: boolean
   reason?: boolean
   referenceId?: boolean
+  rewardKey?: boolean
   createdAt?: boolean
 }
 
-export type ReviewerPointTransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "reviewerId" | "amount" | "pointsAfter" | "type" | "reason" | "referenceId" | "createdAt", ExtArgs["result"]["reviewerPointTransaction"]>
+export type ReviewerPointTransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "reviewerId" | "amount" | "pointsAfter" | "type" | "reason" | "referenceId" | "rewardKey" | "createdAt", ExtArgs["result"]["reviewerPointTransaction"]>
 export type ReviewerPointTransactionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   reviewer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
 }
@@ -648,6 +681,7 @@ export type $ReviewerPointTransactionPayload<ExtArgs extends runtime.Types.Exten
     type: string
     reason: string | null
     referenceId: string | null
+    rewardKey: string | null
     createdAt: Date
   }, ExtArgs["result"]["reviewerPointTransaction"]>
   composites: {}
@@ -1080,6 +1114,7 @@ export interface ReviewerPointTransactionFieldRefs {
   readonly type: Prisma.FieldRef<"ReviewerPointTransaction", 'String'>
   readonly reason: Prisma.FieldRef<"ReviewerPointTransaction", 'String'>
   readonly referenceId: Prisma.FieldRef<"ReviewerPointTransaction", 'String'>
+  readonly rewardKey: Prisma.FieldRef<"ReviewerPointTransaction", 'String'>
   readonly createdAt: Prisma.FieldRef<"ReviewerPointTransaction", 'DateTime'>
 }
     

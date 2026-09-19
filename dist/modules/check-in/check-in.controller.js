@@ -17,7 +17,7 @@ const getCustomerId = (req) => {
     return customerId;
 };
 export const generateCheckInQr = asyncHandler(async (req, res) => {
-    const qrImage = await checkInService.generateCheckInQr(getMerchantId(req), String(req.query.orderId));
+    const qrImage = await checkInService.generateCheckInQr(getMerchantId(req), typeof req.query.orderId === "string" ? req.query.orderId : undefined, typeof req.query.campaignId === "string" ? req.query.campaignId : undefined);
     res.status(200);
     res.setHeader("Content-Type", "image/png");
     res.setHeader("Content-Length", qrImage.length.toString());

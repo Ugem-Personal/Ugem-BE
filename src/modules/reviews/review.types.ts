@@ -7,7 +7,8 @@ export interface ReviewDetailInput {
 export interface CreateReviewInput {
   merchantId?: string;
 
-  orderId: string;
+  orderId?: string;
+  checkInId?: string;
   rating: number;
 
   content?: string | null;
