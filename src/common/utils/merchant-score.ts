@@ -19,13 +19,38 @@ export const calculateStrengthIndex = (
 
 export const GEM_THRESHOLDS = {
   minimumRating: 4.5,
-  minimumReviews: 3,
-  minimumVerifiedVisits: 3,
-  hiddenMaxExposure: 20,
-  risingMaxExposure: 60,
+  minimumReviews: 5,
+  minimumVerifiedVisits: 5,
+  minimumRecentSignals: 1,
+  minimumConfidenceAdjustedRating: 4.35,
+  hiddenMaxExposurePercentile: 35,
+  risingMaxExposurePercentile: 70,
 } as const;
 
 const clamp = (value: number) => Math.max(0, Math.min(1, value));
+
+/**
+ * Shrinks small-sample ratings toward the local prior so a 5.0 from three
+ * reviews does not outrank a stable 4.7 from a much larger sample.
+ */
+export const calculateBayesianRating = (
+  rating: number,
+  reviewCount: number,
+  priorRating = 4.2,
+  priorWeight = 10,
+) => {
+  const safeRating = Math.max(0, Math.min(5, rating));
+  const safeReviewCount = Math.max(0, reviewCount);
+  const confidence =
+    safeReviewCount / Math.max(1, safeReviewCount + priorWeight);
+
+  return Number(
+    (
+      safeRating * confidence +
+      Math.max(0, Math.min(5, priorRating)) * (1 - confidence)
+    ).toFixed(4),
+  );
+};
 
 /** Quality uses only signals tied to real customer experience. */
 export const calculateQualityScore = (input: {
@@ -34,7 +59,11 @@ export const calculateQualityScore = (input: {
   verifiedVisits: number;
   repeatRate?: number;
 }) => {
-  const ratingScore = clamp(input.rating / 5);
+  const confidenceAdjustedRating = calculateBayesianRating(
+    input.rating,
+    input.verifiedReviews,
+  );
+  const ratingScore = clamp(confidenceAdjustedRating / 5);
   const reviewConfidence = clamp(input.verifiedReviews / 10);
   const visitConfidence = clamp(input.verifiedVisits / 10);
   const repeatRate = clamp(input.repeatRate ?? 0);
@@ -67,12 +96,25 @@ export const calculateExposureIndex = (input: {
 
 export const calculateHiddenGemScore = (
   qualityScore: number,
-  exposureIndex: number,
-  maxExposureIndex: number,
+  exposurePercentile: number,
 ) => {
-  if (qualityScore <= 0 || maxExposureIndex <= 0) return 0;
-  const exposureRatio = clamp(exposureIndex / maxExposureIndex);
+  if (qualityScore <= 0) return 0;
+  const exposureRatio = clamp(exposurePercentile / 100);
   return Number((clamp(qualityScore) * (1 - exposureRatio)).toFixed(4));
+};
+
+/** Return the percentile of a value inside its comparison cohort. */
+export const calculatePercentileRank = (
+  value: number,
+  cohortValues: number[],
+) => {
+  const values = cohortValues.filter((item) => Number.isFinite(item));
+  if (values.length < 2) return 50;
+
+  const lower = values.filter((item) => item < value).length;
+  const equal = values.filter((item) => item === value).length;
+
+  return Number((((lower + equal * 0.5) / values.length) * 100).toFixed(2));
 };
 
 export type GemStatus = "HiddenGem" | "RisingGem" | "HallOfFame";
@@ -82,10 +124,38 @@ export const determineGemStatus = (input: {
   verifiedReviews: number;
   verifiedVisits: number;
   exposure: number;
+  qualityScore?: number;
+  recentSignals?: number;
 }): GemStatus | null => {
-  if (input.rating < GEM_THRESHOLDS.minimumRating || input.verifiedReviews < GEM_THRESHOLDS.minimumReviews || input.verifiedVisits < GEM_THRESHOLDS.minimumVerifiedVisits) return null;
-  if (input.exposure < GEM_THRESHOLDS.hiddenMaxExposure) return "HiddenGem";
-  if (input.exposure < GEM_THRESHOLDS.risingMaxExposure) return "RisingGem";
+  const qualityScore =
+    input.qualityScore ??
+    calculateQualityScore({
+      rating: input.rating,
+      verifiedReviews: input.verifiedReviews,
+      verifiedVisits: input.verifiedVisits,
+    });
+  const confidenceAdjustedRating = calculateBayesianRating(
+    input.rating,
+    input.verifiedReviews,
+  );
+
+  if (
+    input.rating < GEM_THRESHOLDS.minimumRating ||
+    confidenceAdjustedRating < GEM_THRESHOLDS.minimumConfidenceAdjustedRating ||
+    input.verifiedReviews < GEM_THRESHOLDS.minimumReviews ||
+    input.verifiedVisits < GEM_THRESHOLDS.minimumVerifiedVisits ||
+    (input.recentSignals ?? 0) < GEM_THRESHOLDS.minimumRecentSignals ||
+    qualityScore <= 0
+  ) {
+    return null;
+  }
+
+  if (input.exposure < GEM_THRESHOLDS.hiddenMaxExposurePercentile) {
+    return "HiddenGem";
+  }
+  if (input.exposure < GEM_THRESHOLDS.risingMaxExposurePercentile) {
+    return "RisingGem";
+  }
   return "HallOfFame";
 };
 

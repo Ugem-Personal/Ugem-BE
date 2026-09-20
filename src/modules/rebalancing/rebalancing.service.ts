@@ -8,10 +8,33 @@ import { AppError } from "../../common/errors/app-error.js";
 import {
   calculateExposureIndex,
   calculateHiddenGemScore,
+  calculatePercentileRank,
   calculateQualityScore,
   determineGemStatus,
 } from "../../common/utils/merchant-score.js";
 import { recommendationCache } from "../../common/services/recommendation-cache.js";
+
+const EXPOSURE_WINDOW_DAYS = 90;
+const ACTIVITY_WINDOW_DAYS = 120;
+const MIN_LOCAL_COHORT_SIZE = 5;
+
+const normalizeCohortValue = (value: string | null | undefined) =>
+  value?.trim().toLocaleLowerCase() || "unknown";
+
+const getMerchantCohortKey = (merchant: {
+  city?: string | null;
+  area?: string | null;
+  restaurantType: string;
+  mainDishType: string;
+}) =>
+  [
+    merchant.city,
+    merchant.area,
+    merchant.restaurantType,
+    merchant.mainDishType,
+  ]
+    .map(normalizeCohortValue)
+    .join("|");
 
 export const runRebalancing = async () => {
   // Check for any concurrent active rebalancing run
@@ -51,7 +74,12 @@ export const runRebalancing = async () => {
   });
 
   try {
-    const exposureSince = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000);
+    const exposureSince = new Date(
+      Date.now() - EXPOSURE_WINDOW_DAYS * 24 * 60 * 60 * 1000,
+    );
+    const activitySince = new Date(
+      Date.now() - ACTIVITY_WINDOW_DAYS * 24 * 60 * 60 * 1000,
+    );
     await prisma.merchant.updateMany({
       where: { OR: [{ status: { not: "Active" } }, { listingVisibility: { not: "Public" } }, { safetySuppressed: true }] },
       data: { gemStatus: null },
@@ -66,10 +94,18 @@ export const runRebalancing = async () => {
         id: true,
         name: true,
         rating: true,
+        city: true,
+        area: true,
+        restaurantType: true,
+        mainDishType: true,
         recommendationRank: true,
         _count: {
           select: {
-            reviews: true,
+            reviews: {
+              where: {
+                OR: [{ checkInId: { not: null } }, { orderId: { not: null } }],
+              },
+            },
             checkIns: {
               where: {
                 status: CheckInStatus.Verified,
@@ -93,12 +129,6 @@ export const runRebalancing = async () => {
               where: { createdAt: { gte: exposureSince } },
             },
           },
-        },
-        reviews: {
-          where: {
-            OR: [{ checkInId: { not: null } }, { orderId: { not: null } }],
-          },
-          select: { rating: true },
         },
       },
     });
@@ -133,6 +163,34 @@ export const runRebalancing = async () => {
       },
       _count: { _all: true },
     });
+    const recentReviewGroups = await prisma.review.groupBy({
+      by: ["merchantId"],
+      where: {
+        merchantId: { in: merchants.map((merchant) => merchant.id) },
+        createdAt: { gte: activitySince },
+        OR: [{ checkInId: { not: null } }, { orderId: { not: null } }],
+      },
+      _count: { _all: true },
+    });
+    const recentVerifiedCheckInGroups = await prisma.checkIn.groupBy({
+      by: ["merchantId"],
+      where: {
+        merchantId: { in: merchants.map((merchant) => merchant.id) },
+        status: CheckInStatus.Verified,
+        campaignId: null,
+        createdAt: { gte: activitySince },
+      },
+      _count: { _all: true },
+    });
+    const recentReviewCounts = new Map(
+      recentReviewGroups.map((group) => [group.merchantId, group._count._all]),
+    );
+    const recentVerifiedVisitCounts = new Map(
+      recentVerifiedCheckInGroups.map((group) => [
+        group.merchantId,
+        group._count._all,
+      ]),
+    );
     const visitorStats = new Map<
       string,
       { uniqueVisitors: number; repeatCustomers: number }
@@ -151,6 +209,8 @@ export const runRebalancing = async () => {
       const reviewsCount = m._count.reviews;
       const rating = Number(m.rating);
       const verifiedVisits = m._count.checkIns;
+      const recentReviews = recentReviewCounts.get(m.id) ?? 0;
+      const recentVerifiedVisits = recentVerifiedVisitCounts.get(m.id) ?? 0;
       const organicViews = m._count.views;
       const wishlists = m._count.wishlists;
       const visitorStat = visitorStats.get(m.id) ?? {
@@ -169,7 +229,7 @@ export const runRebalancing = async () => {
       const exposureIndex = calculateExposureIndex({
         organicViews,
         uniqueVisitors: visitorStat.uniqueVisitors,
-        reviews: reviewsCount,
+        reviews: recentReviews,
         wishlists,
       });
 
@@ -187,31 +247,52 @@ export const runRebalancing = async () => {
           wishlists,
           qualityScore,
           exposureIndex,
+          recentReviews,
+          recentVerifiedVisits,
         },
+        cohortKey: getMerchantCohortKey(m),
       };
     });
 
-    const maxExposureIndex = Math.max(
-      ...computed.map((c) => c.signals.exposureIndex),
-      0,
+    const exposureByCohort = new Map<string, number[]>();
+    for (const item of computed) {
+      const values = exposureByCohort.get(item.cohortKey) ?? [];
+      values.push(item.signals.exposureIndex);
+      exposureByCohort.set(item.cohortKey, values);
+    }
+    const globalExposureValues = computed.map(
+      (item) => item.signals.exposureIndex,
     );
 
     const scored = computed.map((c) => {
-      const exposurePercent = maxExposureIndex
-        ? (c.signals.exposureIndex / maxExposureIndex) * 100
-        : 0;
+      const cohortValues = exposureByCohort.get(c.cohortKey) ?? [];
+      const comparisonValues =
+        cohortValues.length >= MIN_LOCAL_COHORT_SIZE
+          ? cohortValues
+          : globalExposureValues;
+      const exposurePercent = calculatePercentileRank(
+        c.signals.exposureIndex,
+        comparisonValues,
+      );
       const underratedScore = calculateHiddenGemScore(
         c.signals.qualityScore,
-        c.signals.exposureIndex,
-        maxExposureIndex,
+        exposurePercent,
       );
       const gemStatus = determineGemStatus({
         rating: c.rating,
         verifiedReviews: c.signals.reviews,
         verifiedVisits: c.signals.verifiedVisits,
         exposure: exposurePercent,
+        qualityScore: c.signals.qualityScore,
+        recentSignals:
+          c.signals.recentReviews + c.signals.recentVerifiedVisits,
       });
-      return { ...c, underratedScore, gemStatus };
+      return {
+        ...c,
+        underratedScore,
+        gemStatus,
+        exposurePercentile: exposurePercent,
+      };
     });
 
     // Sort by underrated score, quality, then verified visits.

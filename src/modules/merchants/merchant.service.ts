@@ -112,6 +112,7 @@ type MapMerchantInput = {
   reviewCount: number;
   totalViews: number;
   gemStatus?: "HiddenGem" | "RisingGem" | "HallOfFame" | null;
+  lastRebalancedAt?: Date | null;
   status: MerchantStatus;
   createdAt: Date;
   updatedAt: Date;
@@ -278,6 +279,7 @@ const mapMerchant = (
       verifiedReviews: merchant.reviewCount,
       verifiedVisits: checkInCount,
       exposureWindowDays: 90,
+      lastRebalancedAt: merchant.lastRebalancedAt?.toISOString() ?? null,
     },
     distance,
     checkInCount,
